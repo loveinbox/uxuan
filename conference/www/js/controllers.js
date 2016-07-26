@@ -215,13 +215,13 @@ angular.module('starter.controllers', ['starter.services'])
                 }
             })
             .done(function(e) {
-                var rs = JSON.parse(e);
+                // var rs = JSON.parse(e);
                 wx.config({
                     debug: false,
-                    appId: rs.appId,
-                    timestamp: rs.timestamp,
-                    nonceStr: rs.nonceStr,
-                    signature: rs.signature,
+                    appId: e.appId,
+                    timestamp: e.timestamp,
+                    nonceStr: e.nonceStr,
+                    signature: e.signature,
                     jsApiList: ['checkJsApi', 'openAddress']
                 });
                 wx.error(function(res) {});
@@ -251,14 +251,14 @@ angular.module('starter.controllers', ['starter.services'])
                     }
                 })
                 .done(function(e) {
-                    var res = JSON.parse(e);
+                    // var res = JSON.parse(e);
                     wx.ready(function() {
                         wx.chooseWXPay({
-                            timestamp: res.timeStamp,
-                            nonceStr: res.nonceStr,
-                            package: res.package,
-                            signType: res.signType,
-                            paySign: res.paySign,
+                            timestamp: e.timeStamp,
+                            nonceStr: e.nonceStr,
+                            package: e.package,
+                            signType: e.signType,
+                            paySign: e.paySign,
                             success: function(res) {
                                 // alert('success');
                                 $rootScope.message = 'success';
@@ -322,9 +322,9 @@ angular.module('starter.controllers', ['starter.services'])
         })
         .done(function(e) {
             // alert(e);
-            var res = JSON.parse(e);
-            $scope.userName = res.nickname;
-            $scope.userImg = res.headimgurl;
+            // var res = JSON.parse(e);
+            $scope.userName = e.nickname;
+            $scope.userImg = e.headimgurl;
 
         })
         .fail(function(e) {
