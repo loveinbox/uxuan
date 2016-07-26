@@ -216,6 +216,7 @@ angular.module('starter.controllers', ['starter.services'])
             })
             .done(function(e) {
                 // var rs = JSON.parse(e);
+                alert(e);
                 wx.config({
                     debug: false,
                     appId: e.appId,
