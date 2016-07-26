@@ -361,7 +361,8 @@ a {
 .time-wrap label {
     margin-right: 10px;
     display: inline-block;
-    width: 100px;
+    width: 110px;
+    white-space: nowrap;
 }
 
 .order-server label {
