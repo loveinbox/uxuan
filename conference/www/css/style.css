@@ -354,13 +354,14 @@ a {
 }
 
 .time-wrap {
-    padding: 0 10px 0 50px;
+    width: 230px;
+    margin: 0 auto;
 }
 
 .time-wrap label {
     margin-right: 10px;
     display: inline-block;
-    width: 29%;
+    width: 100px;
 }
 
 .order-server label {
