@@ -254,6 +254,7 @@ angular.module('starter.controllers', ['starter.services'])
                 .done(function(e) {
                     // var res = JSON.parse(e);
                     wx.ready(function() {
+                        alert(e);
                         wx.chooseWXPay({
                             timestamp: e.timeStamp,
                             nonceStr: e.nonceStr,
@@ -322,7 +323,7 @@ angular.module('starter.controllers', ['starter.services'])
             data: {}
         })
         .done(function(e) {
-            // alert(e);
+            alert(e);
             // var res = JSON.parse(e);
             $scope.userName = e.nickname;
             $scope.userImg = e.headimgurl;
