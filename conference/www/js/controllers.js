@@ -262,12 +262,11 @@ angular.module('starter.controllers', ['starter.services'])
                 // }]
         },function () {
             $rootScope.message = 'success';
-            $state.go('orderStatus');
             ForwardPay();
+            // $state.go('orderStatus');
         },function () {
             $rootScope.message = 'fail';
             $state.go('orderStatus');
-            ForwardPay();
         })
 
         // $.ajax({
