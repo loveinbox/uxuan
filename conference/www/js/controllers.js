@@ -240,7 +240,7 @@ angular.module('starter.controllers', ['starter.services'])
         var date = new Date();
         var moment = addZero(date.getFullYear()) + '-' + addZero(date.getMonth()) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
 
-        function ForwardPay() {
+        (function ForwardPay() {
 
             $.ajax({
                     url: 'http://www.lifeuxuan.com/backend/wxpay/pay/WxPayCtrl.php',
@@ -272,7 +272,7 @@ angular.module('starter.controllers', ['starter.services'])
                 })
                 .fail(function(e) {})
                 .always(function() {});
-        }
+        })();
 
         // $state.go('orderStatus');
     }
