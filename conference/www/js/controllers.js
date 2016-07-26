@@ -252,9 +252,9 @@ angular.module('starter.controllers', ['starter.services'])
                     }
                 })
                 .done(function(e) {
-                    // var res = JSON.parse(e);
+                    alert(e);
                     wx.ready(function() {
-                        alert(e);
+                        // alert(e);
                         wx.chooseWXPay({
                             timestamp: e.timeStamp,
                             nonceStr: e.nonceStr,
