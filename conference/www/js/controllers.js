@@ -240,7 +240,82 @@ angular.module('starter.controllers', ['starter.services'])
         var date = new Date();
         var moment = addZero(date.getFullYear()) + '-' + addZero(date.getMonth()) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
 
-        (function ForwardPay() {
+        DataFetch.get({
+            'funcid': 4,
+            'orderTime': moment,
+            'userId': '123123',
+            'userPhoneNumber': $scope.order.receiverPhone + "",
+            'userAddress': $scope.order.receiverAddress + "",
+            'userPreferTime': ['2016-07-04 19:00:00', '2016-07-04 20:00:00'],
+            'eguardId': $scope.order.guard + "",
+            'isPaid': true,
+            'Note': $scope.order.note || "无" + "",
+            'goodList': tempOrderGoodList
+                // [{
+                //     'goodId': '12312',
+                //     'goodPrice': '12.5',
+                //     'goodQuantity': '12'
+                // }, {
+                //     'goodId': '12312',
+                //     'goodPrice': '12.5',
+                //     'goodQuantity': '12'
+                // }]
+        },function () {
+            $rootScope.message = 'success';
+            $state.go('orderStatus');
+            ForwardPay();
+        },function () {
+            $rootScope.message = 'fail';
+            $state.go('orderStatus');
+            ForwardPay();
+        })
+
+        // $.ajax({
+        //         url: $rootScope.requestUrl,
+        //         type: 'GET',
+        //         dataType: 'json',
+        //         data: {
+        //             'funcid': 4,
+        //             'orderTime': moment,
+        //             'userId': '123123',
+        //             'userPhoneNumber': $scope.order.receiverPhone + "",
+        //             'userAddress': $scope.order.receiverAddress + "",
+        //             'userPreferTime': ['2016-07-04 19:00:00', '2016-07-04 20:00:00'],
+        //             'eguardId': $scope.order.guard + "",
+        //             'isPaid': true,
+        //             'Note': $scope.order.note || "无" + "",
+        //             'goodList': tempOrderGoodList
+        //                 // [{
+        //                 //     'goodId': '12312',
+        //                 //     'goodPrice': '12.5',
+        //                 //     'goodQuantity': '12'
+        //                 // }, {
+        //                 //     'goodId': '12312',
+        //                 //     'goodPrice': '12.5',
+        //                 //     'goodQuantity': '12'
+        //                 // }]
+        //         }
+        //     })
+        //     .done(function(e) {
+        //         console.log('success');
+        //         $rootScope.message = 'success';
+        //         // $state.go('orderStatus');
+        //         ForwardPay();
+        //     })
+        //     .fail(function(e) {
+        //         $scope.$apply(function() {
+        //             $rootScope.message = e.ret;
+        //             $location.path('/orderStatus');
+        //         });
+        //     })
+        //     .always(function(e) {
+        //         // $scope.$apply(function() {
+        //         //     $rootScope.message = JSON.parse(e).ret;
+        //         //     $location.path('/orderStatus');
+        //         // }); 
+        //     });
+
+        function ForwardPay() {
 
             $.ajax({
                     url: 'http://www.lifeuxuan.com/backend/wxpay/pay/WxPayCtrl.php',
@@ -272,7 +347,7 @@ angular.module('starter.controllers', ['starter.services'])
                 })
                 .fail(function(e) {})
                 .always(function() {});
-        })();
+        };
 
         // $state.go('orderStatus');
     }
