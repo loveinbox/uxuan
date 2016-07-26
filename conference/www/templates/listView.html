@@ -1,0 +1,19 @@
+<ion-pane view-title="商品列表">
+
+  <header class="index-header">
+  	<div class="back-wrap" ng-click="myGoBack()">
+            <i class="ion-arrow-left-c"></i><span>返回11</span>
+        </div>
+  </header>
+    <dvi class="tabs-striped tabs-top">
+    <div class="tabs">
+      <a class="tab-item" ng-class="{active:!isFirstActive}" ng-click="firstActive(false)" href="#/list-view/goods/1">
+        品类
+      </a>
+      <a class="tab-item" ng-class="{active:isFirstActive}" ng-click="firstActive(true)" href="#/list-view/sellers">
+        商家
+      </a>
+    </div>
+  </dvi>
+  <ion-nav-view name="list-tab-view" class="list-ion-view"></ion-nav-view>
+</ion-pane>

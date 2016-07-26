@@ -1,0 +1,26 @@
+.list-ion-view{
+	top:90px;
+}
+.category-list, .fruit-list{
+	float: left;
+}
+.category-list{
+	height: 100%;
+	width: 20%;
+    z-index: 50;
+    position: absolute;
+    overflow: auto;
+}
+.fruit-list{
+	width: 80%;
+    overflow: auto;
+}
+
+.category-list .item-content{
+	padding:10px;
+}
+
+.list-goods-change-view{
+	left:20%;
+	z-index: 40;
+}

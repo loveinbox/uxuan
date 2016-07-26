@@ -1,0 +1,99 @@
+<ion-view view-title="Index">
+    <ion-content>
+        <div class="index-header">
+            <label class="item item-input item-select distract-select">
+                <select>
+                    <option selected>徐汇区</option>
+                    <option>闵行区</option>
+                    <option>长宁区</option>
+                </select>
+            </label>
+        </div>
+        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true" auto-play="true">
+            <ion-slide>
+                <div class="box blue">
+                    <!-- <h1>水果推荐1</h1> -->
+                    <img src="img/1.jpg">
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="box yellow">
+                    <!-- <h1>水果推荐2</h1> -->
+                    <img src="img/2.jpg">
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="box pink">
+                    <!-- <h1>洗衣推荐</h1> -->
+                    <img src="img/3.jpg">
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="box pink">
+                    <!-- <h1>洗衣推荐</h1> -->
+                    <img src="img/4.jpg">
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="box pink">
+                    <!-- <h1>洗衣推荐</h1> -->
+                    <img src="img/5.jpg">
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+        <div class="item item-input-inset header-search">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search" placeholder="请输入要搜索的商品名">
+            </label>
+        </div>
+        <nav class="index-nav">
+            <div class="fruit">
+                <a href="#/list-view/goods/1">
+                    <div>
+                        <span class="icon-wrap"><i class="icon ion-waterdrop"></i></span>                        
+                    </div>
+                    <p>水果</p>
+                </a>
+            </div>
+            <div class="washing">
+                <a href="#/">
+                    <div>
+                        <span class="icon-wrap"><i class="icon ion-tshirt"></i></span>
+                    </div>
+                    <p>洗衣</p>
+                </a>
+            </div>
+        </nav>
+        <!-- <section class="index-promate">
+            <div>
+                <a  href="#/app/orders">
+                    <div>
+                        <i class="icon ion-waterdrop"></i>
+                        <span>水果</span>
+                    </div> 
+                </a>
+            </div>
+            <div>
+                <a  href="#/app/orders">
+                <div>
+                    <i class="icon ion-tshirt"></i>
+                    <span>洗衣</span>
+                </div> 
+                </a> 
+            </div>
+        </section> -->
+        <ion-list class="index-list clearfix">
+            <ion-item class="index-list-item" ng-repeat="session in sessions" href="#/sessions/{{session.goodId}}">
+                <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}" alt="">
+                <span class="name">{{session.goodName}}</span>
+                <div class="tejia">特价</div>
+                <div class="good-info-wrap">
+                    <p class="distance">{{session.distance}}</p>
+                    <p class="price">￥{{session.goodPrice}}</p>
+                </div>
+                <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

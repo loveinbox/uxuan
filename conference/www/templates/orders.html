@@ -1,0 +1,11 @@
+<ion-view view-title="Browse">
+  <ion-content>
+    <ion-list class="">
+        <ion-item class="" ng-repeat="order in orders" href="#/list-sellers/{{seller.id}}">
+            <p class="name">订单编号:{{order.orderId}}</p>
+            <p class="name">订单时间:{{order.orderTime}}</p>
+            <p class="name">订单金额:{{order.totalMoney}}</p>
+        </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
