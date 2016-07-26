@@ -216,7 +216,7 @@ angular.module('starter.controllers', ['starter.services'])
             })
             .done(function(e) {
                 // var rs = JSON.parse(e);
-                alert(e);
+                // alert(e);
                 wx.config({
                     debug: false,
                     appId: e.appId,
@@ -327,7 +327,7 @@ angular.module('starter.controllers', ['starter.services'])
                     }
                 })
                 .done(function(e) {
-                    alert(e);
+                    // alert(e);
                     wx.ready(function() {
                         // alert(e);
                         wx.chooseWXPay({
