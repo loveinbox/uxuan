@@ -1,37 +1,54 @@
-<ion-view view-title="Session">
+<ion-view view-title="Session" class="backE">
     <div class="index-header">
         <div class="back-wrap" ng-click="myGoBack()">
             <i class="ion-arrow-left-c"></i><span>返回11</span>
         </div>
     </div>
-    <div class="good-img">
-        <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}">
-    </div>
-    <div class="good-main-info">
-        <div class="good-name">{{session.goodName}}</div>
-        <div class="good-price">￥{{session.goodPrice}}</div>
-        <div class="button button-assertive add-cart" ng-click="addCart($event)" ng-hide="isHideAddCart">加入购物车</div>
-        <div class="plus-wrap add-cart-plus-minus" ng-show="isHideAddCart">
-            <div class="button-assertive add-cart-plus cart-action" ng-click="removeCart($event)">
-                <i class="icon ion-minus-round"></i>
-            </div>
-            <div class="cart-number">{{singleNumber}}</div>
-            <div class="button-assertive add-cart-plus cart-action" ng-click="addCart($event)">
-                <i class="icon ion-plus-round"></i>
+    <ion-scroll direction="y" overflow-scroll="true" class="height100">
+        <div class="good-img">
+            <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}"> -->
+            <img src="img/single.jpg">
+        </div>
+        <div class="good-main-info">
+            <div class="good-name">{{session.goodName}}</div>
+            <div class="good-descirbe">{{session.goodName}}</div>
+            <div class="good-price">￥{{session.goodPrice}}</div>
+            <div class="button button-assertive add-cart" ng-click="addCart($event)" ng-hide="isHideAddCart">加入购物车</div>
+            <div class="plus-wrap add-cart-plus-minus" ng-show="isHideAddCart">
+                <div class="button-assertive add-cart-plus cart-action" ng-click="removeCart($event)">
+                    <i class="icon ion-minus-round"></i>
+                </div>
+                <div class="cart-number">{{singleNumber}}</div>
+                <div class="button-assertive add-cart-plus cart-action" ng-click="addCart($event)">
+                    <i class="icon ion-plus-round"></i>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="good-more-info">
-        <p>
-            {{session.goodName}}
-        </p>
-    </div>
+        <div class="good-seller">
+            <div class="shop-icon"><i class="icon ion-ios-home"></i></div>
+            <div class="shop-name">{{session.shopName}}</div>
+            <div class="shop-time">
+                <p>营业时间</p>
+                <p>{{session.shopId}}</p>
+            </div>
+            <p>
+                地址：{{session.goodName}}
+            </p>
+        </div>
+        <div class="good-more-info">
+            <img src="img/single.jpg">
+            <img src="img/single.jpg">
+            <img src="img/single.jpg">
+            <img src="img/single.jpg">
+            <img src="img/single.jpg">
+        </div>
+    </ion-scroll>
     <div class="bottom-bar shopping-cart-bar">
         <i class="icon ion-ios-cart icon-cart" ng-click="openModal()"></i>
         <div class="cart-number-tip" ng-show="allNumber > 0">{{allNumber}}</div>
         <div class="total-price">
-          <span>共</span>
-          <span>￥{{totalPrice}}</span>
+            <span>共</span>
+            <span>￥{{totalPrice}}</span>
         </div>
         <a href="#/order">
             <div class="button button-assertive go-cart">选好了</div>

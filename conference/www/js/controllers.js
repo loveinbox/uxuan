@@ -31,15 +31,52 @@ angular.module('starter.controllers', ['starter.services'])
     });
 
 
-    DataFetch.query({
-        'funcid': 1,
-        'longitude': 131424,
-        'latitude': 34
-    }, function(data) {
-        $scope.sessions = data;
-    }, function(data) {
-        alert('NO DATA');
-    });
+    // DataFetch.query({
+    //     'funcid': 1,
+    //     'longitude': 131424,
+    //     'latitude': 34
+    // }, function(data) {
+    //     $scope.sessions = data;
+    // }, function(data) {
+    //     alert('NO DATA');
+    // });
+
+    $scope.sessions = [{
+        'shopId':'1123',
+        'shopName':'苗先生',
+        'distance':'0.1km',
+        'goodId':'3123123',
+        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+        'goodListPic':'src1',
+        'goodPrice':'12.5'
+    },
+    {
+        'shopId':'1123',
+        'shopName':'苗先生',
+        'distance':'0.1km',
+        'goodId':'3123123',
+        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+        'goodListPic':'src1',
+        'goodPrice':'12.5'
+    },
+    {
+        'shopId':'1123',
+        'shopName':'苗先生',
+        'distance':'0.1km',
+        'goodId':'3123123',
+        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+        'goodListPic':'src1',
+        'goodPrice':'12.5'
+    },
+    {
+        'shopId':'1123',
+        'shopName':'苗先生',
+        'distance':'0.1km',
+        'goodId':'3123123',
+        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+        'goodListPic':'src1',
+        'goodPrice':'12.5'
+    }];
 
     $scope.addCart = function($event) {
         $event.stopPropagation();
@@ -78,12 +115,22 @@ angular.module('starter.controllers', ['starter.services'])
     };
     console.log($stateParams);
 
-    DataFetch.get({
-        'funcid': 2,
-        'goodId': $stateParams.sessionId
-    }, function (data) {
-         $scope.session = data;
-    })
+    // DataFetch.get({
+    //     'funcid': 2,
+    //     'goodId': $stateParams.sessionId
+    // }, function (data) {
+    //      $scope.session = data;
+    // });
+
+    $scope.session = {
+        'shopId':'1123',
+        'shopName':'苗先生',
+        'distance':'0.1km',
+        'goodId':'3123123',
+        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+        'goodListPic':'src1',
+        'goodPrice':'12.5'
+    }
 
     $scope.addCart = function(event) {
         var offset = $(".icon-cart:visible").offset();
