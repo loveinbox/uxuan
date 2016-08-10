@@ -6,6 +6,34 @@ angular.module('starter.controllers', ['starter.services'])
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope) {
     $rootScope.goods = new Map;
     $rootScope.totalPrice = 0;
+    (function register() {
+            $.ajax({
+                    url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        'url': window.location.href.split("#")[0]
+                    }
+                })
+                .done(function(e) {
+                    // var rs = JSON.parse(e);
+                    // alert(e);
+                    wx.config({
+                        debug: true,
+                        appId: e.appId,
+                        timestamp: e.timestamp,
+                        nonceStr: e.nonceStr,
+                        signature: e.signature,
+                        jsApiList: ['checkJsApi', 'openAddress']
+                    });
+                    wx.error(function(res) {});
+                })
+                .fail(function(e) {
+                    // alert(e);
+                })
+                .always(function() {});
+
+    })();
 })
 
 .controller('SessionsCtrl', function($scope, DataFetch, $rootScope) {
@@ -28,6 +56,17 @@ angular.module('starter.controllers', ['starter.services'])
         // note: the indexes are 0-based
         $scope.activeIndex = data.activeIndex;
         $scope.previousIndex = data.previousIndex;
+    });
+
+
+    wx.getLocation({
+        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+        success: function (res) {
+            $rootScope.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+            $rootScope.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+            $rootScope.speed = res.speed; // 速度，以米/每秒计
+            $rootScope.accuracy = res.accuracy; // 位置精度
+        }
     });
 
 
@@ -124,7 +163,7 @@ angular.module('starter.controllers', ['starter.services'])
 
     $scope.session = {
         'shopId':'1123',
-        'shopName':'苗先生',
+        '':'苗先生',
         'distance':'0.1km',
         'goodId':'3123123',
         'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
@@ -251,35 +290,6 @@ angular.module('starter.controllers', ['starter.services'])
     })
     $scope.goods = tempGoods;
     $rootScope.totalPrice = tempPrice;
-
-    (function register() {
-        $.ajax({
-                url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
-                type: 'GET',
-                dataType: 'json',
-                data: {
-                    'url': window.location.href.split("#")[0]
-                }
-            })
-            .done(function(e) {
-                // var rs = JSON.parse(e);
-                // alert(e);
-                wx.config({
-                    debug: false,
-                    appId: e.appId,
-                    timestamp: e.timestamp,
-                    nonceStr: e.nonceStr,
-                    signature: e.signature,
-                    jsApiList: ['checkJsApi', 'openAddress']
-                });
-                wx.error(function(res) {});
-            })
-            .fail(function(e) {
-                // alert(e);
-            })
-            .always(function() {});
-
-    })();
 
     $scope.confirmOrder = function() {
 
