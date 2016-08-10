@@ -66,6 +66,7 @@ angular.module('starter.controllers', ['starter.services'])
             $rootScope.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
             $rootScope.speed = res.speed; // 速度，以米/每秒计
             $rootScope.accuracy = res.accuracy; // 位置精度
+            alert(res.latitude);
         }
     });
 
