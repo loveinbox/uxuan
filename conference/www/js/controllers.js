@@ -24,7 +24,7 @@ angular.module('starter.controllers', ['starter.services'])
                         timestamp: e.timestamp,
                         nonceStr: e.nonceStr,
                         signature: e.signature,
-                        jsApiList: ['checkJsApi', 'openAddress']
+                        jsApiList: ['checkJsApi', 'openAddress', 'getLocation']
                     });
                     wx.error(function(res) {});
                 })
