@@ -603,7 +603,7 @@ angular.module('starter.controllers', ['starter.services'])
                     'totalMoney': tempPrice,
                     'note': $scope.order.note || "无" + "",
                     'productList': tempOrderGoodList,
-                    'username': $rootScope.user.name
+                    'username': $rootScope.user.nickname
                 }
             };
             for(var p in orderRequestObj['data']){
