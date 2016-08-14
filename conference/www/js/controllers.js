@@ -44,12 +44,11 @@ angular.module('starter.controllers', ['starter.services'])
                 function(e) {
                     console.log('openid', e.openid);
                     $rootScope.openid = e.openid;
-                    for(var p in e){
+                    for (var p in e) {
                         console.log(p, e[p]);
                     }
                     // var res = JSON.parse(e);
-                    $rootScope.user = { name: e.nickname };
-                    $rootScope.user = { img: e.headimgurl };
+                    $rootScope.user = { name: e.nickname, img: e.headimgurl };
                     UserRegister.get({
                         'latitude': $rootScope.latitude,
                         'longitude': $rootScope.longitude,
@@ -514,9 +513,9 @@ angular.module('starter.controllers', ['starter.services'])
             value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00'
         })
     }
-    if($scope.order.orderTime.length > 0){
+    if ($scope.order.orderTime.length > 0) {
         $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
-    }    
+    }
 
     $scope.changeDate = function() {
         if ($scope.order.preferTimeDay != today) {
@@ -589,27 +588,27 @@ angular.module('starter.controllers', ['starter.services'])
         ];
 
         var orderRequestObj = {
-                url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
-                data: {
-                    'longitude': $rootScope.longitude || 121.470257,
-                    'latitude': $rootScope.latitude || 31.3234,
-                    // 'orderTime': moment,
-                    'userId': $rootScope.userid,
-                    'userPhoneNumber': $scope.order.receiverPhone + "",
-                    'userAddress': $scope.order.receiverAddress + "",
-                    'userPreferTime': userPreferTime,
-                    'eguardId': $scope.order.guard + "",
-                    'isPaid': true,
-                    'totalMoney': tempPrice,
-                    'note': $scope.order.note || "无" + "",
-                    'productList': tempOrderGoodList,
-                    'username': $rootScope.user.name
-                }
-            };
-            for(var p in orderRequestObj['data']){
-                console.log(p, orderRequestObj['data'][p]);
+            url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
+            data: {
+                'longitude': $rootScope.longitude || 121.470257,
+                'latitude': $rootScope.latitude || 31.3234,
+                // 'orderTime': moment,
+                'userId': $rootScope.userid,
+                'userPhoneNumber': $scope.order.receiverPhone + "",
+                'userAddress': $scope.order.receiverAddress + "",
+                'userPreferTime': userPreferTime,
+                'eguardId': $scope.order.guard + "",
+                'isPaid': true,
+                'totalMoney': tempPrice,
+                'note': $scope.order.note || "无" + "",
+                'productList': tempOrderGoodList,
+                'username': $rootScope.user.name
             }
-            // console.log('orderRequestObj', orderRequestObj);
+        };
+        for (var p in orderRequestObj['data']) {
+            console.log(p, orderRequestObj['data'][p]);
+        }
+        // console.log('orderRequestObj', orderRequestObj);
         $.ajax(orderRequestObj)
             .done(function(e) {
                 console.log(e);
@@ -715,7 +714,7 @@ angular.module('starter.controllers', ['starter.services'])
     // }
     if ($rootScope.message == "success") {
         $scope.status = "下单成功";
-    }else{
+    } else {
         $scope.status = $rootScope.message;
     }
 })
