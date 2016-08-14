@@ -1,0 +1,74 @@
+<ion-view view-title="U选到家">
+    <ion-content class="backE">
+        <div class="index-header">
+            <label class="item item-input item-select distract-select">
+                <select>
+                    <option selected>徐汇区</option>
+                    <option>闵行区</option>
+                    <option>长宁区</option>
+                </select>
+            </label>
+            <p class="guard">管家赵腾飞为您服务</p>
+            <label class="header-search">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+            </label>
+        </div>
+        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true" auto-play="true">
+            <ion-slide>
+                <div class="box blue">
+                    <!-- <h1>水果推荐1</h1> -->
+                    <img src="img/1.jpg">
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="box yellow">
+                    <!-- <h1>水果推荐2</h1> -->
+                    <img src="img/2.jpg">
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="box pink">
+                    <!-- <h1>洗衣推荐</h1> -->
+                    <img src="img/3.jpg">
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="box pink">
+                    <!-- <h1>洗衣推荐</h1> -->
+                    <img src="img/4.jpg">
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="box pink">
+                    <!-- <h1>洗衣推荐</h1> -->
+                    <img src="img/5.jpg">
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+        <div class="divider">U选爆款</div>
+        <ion-scroll direction="x" scrollbar-x="false" class="marginM5">
+            <ion-list class="single goods index-list clearfix">
+                <ion-item class="index-list-item" ng-repeat="session in sessions" href="#/sessions/{{session.goodId}}">
+                    <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}" alt=""> -->
+                    <img src="img/single.jpg">
+                    <span class="name">{{session.goodName}}</span>
+                    <p class="price">￥{{session.goodPrice}}/{{session.distance}}</p>
+                </ion-item>
+            </ion-list>
+        </ion-scroll>
+        <div class="divider">U选生鲜水果</div>
+        <div seller-list></div>
+        <div class="divider">U选排行榜</div>
+        <ion-list class="rank index-list clearfix">
+            <ion-item class="index-list-item" ng-repeat="good in goods" href="#/sessions/{{good.goodId}}">
+                <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}" alt=""> -->
+                <img src="img/single.jpg">
+                <span class="name">{{good.productName}}</span>
+                <span class="name">{{good.description}}</span>
+                <p class="price">￥{{good.price}}/{{good.unit}}</p>
+                <i class="icon ion-ios-cart list-cart"></i>
+                <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

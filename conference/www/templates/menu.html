@@ -34,32 +34,28 @@
     </ion-content>
   </ion-side-menu>
 </ion-side-menus> -->
-
 <!--
 Create tabs with an icon and label, using the tabs-positive style.
 Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
-<ion-tabs class="tabs-icon-top tabs-color-active-positive">
-
-  <!-- Dashboard Tab -->
-  <ion-tab title="首页" icon-off="ion-navicon" icon-on="ion-navicon-round" href="#/app/index">
-    <ion-nav-view name="tab-index"></ion-nav-view>
-  </ion-tab>
-
-  <!-- Chats Tab -->
-  <ion-tab title="订单" icon-off="ion-document-text" icon-on="ion-document" href="#/app/orders">
-    <ion-nav-view name="tab-orders"></ion-nav-view>
-  </ion-tab>
-  <!-- Account Tab -->
-  <ion-tab title="购物车" icon-off="ion-ios-cart" icon-on="ion-ios-cart-outline" href="#/app/cart">
-    <ion-nav-view name="tab-cart"></ion-nav-view>
-  </ion-tab>
-  <!-- Account Tab -->
-  <ion-tab title="账户" icon-off="ion-person" icon-on="ion-person-add" href="#/app/account">
-    <ion-nav-view name="tab-account"></ion-nav-view>
-  </ion-tab>
-
-
-</ion-tabs>
-
+<ion-view animation="slide-left-right">
+    <ion-tabs class="tabs-icon-top tabs-color-active-positive">
+        <!-- Dashboard Tab -->
+        <ion-tab title="首页" icon-off="ion-navicon" icon-on="ion-navicon-round" href="#/app/index">
+            <ion-nav-view name="tab-index"></ion-nav-view>
+        </ion-tab>
+        <!-- Account Tab -->
+        <ion-tab title="购物车" icon-off="ion-ios-cart" icon-on="ion-ios-cart-outline" href="#/app/cart">
+            <ion-nav-view name="tab-cart"></ion-nav-view>
+        </ion-tab>
+        <!-- Chats Tab -->
+        <ion-tab title="订单" icon-off="ion-document-text" icon-on="ion-document" href="#/app/orders">
+            <ion-nav-view name="tab-orders"></ion-nav-view>
+        </ion-tab>
+        <!-- Account Tab -->
+        <ion-tab title="账户" icon-off="ion-person" icon-on="ion-person-add" href="#/app/account">
+            <ion-nav-view name="tab-account"></ion-nav-view>
+        </ion-tab>
+    </ion-tabs>
+</ion-view>

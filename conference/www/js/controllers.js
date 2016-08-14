@@ -1,42 +1,54 @@
 angular.module('starter.controllers', ['starter.services'])
-    .run(function run($rootScope) {
-        $rootScope.requestUrl = 'http://www.lifeuxuan.com/backend/index.php';
-    })
+
+.run(function run($rootScope) {
+    (function register() {
+        $.ajax({
+                url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    'url': window.location.href.split("#")[0]
+                }
+            })
+            .done(function(e) {
+                // var rs = JSON.parse(e);
+                // alert(e);
+                wx.config({
+                    debug: true,
+                    appId: e.appId,
+                    timestamp: e.timestamp,
+                    nonceStr: e.nonceStr,
+                    signature: e.signature,
+                    jsApiList: ['checkJsApi', 'openAddress', 'getLocation']
+                });
+                wx.error(function(res) {});
+            })
+            .fail(function(e) {
+                // alert(e);
+            })
+            .always(function() {});
+
+    })();
+    wx.ready(function() {
+        wx.getLocation({
+            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            success: function(res) {
+                $rootScope.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                $rootScope.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                $rootScope.speed = res.speed; // 速度，以米/每秒计
+                $rootScope.accuracy = res.accuracy; // 位置精度
+                alert(res.latitude);
+            }
+        });
+    });
+})
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope) {
     $rootScope.goods = new Map;
     $rootScope.totalPrice = 0;
-    (function register() {
-            $.ajax({
-                    url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        'url': window.location.href.split("#")[0]
-                    }
-                })
-                .done(function(e) {
-                    // var rs = JSON.parse(e);
-                    // alert(e);
-                    wx.config({
-                        debug: true,
-                        appId: e.appId,
-                        timestamp: e.timestamp,
-                        nonceStr: e.nonceStr,
-                        signature: e.signature,
-                        jsApiList: ['checkJsApi', 'openAddress', 'getLocation']
-                    });
-                    wx.error(function(res) {});
-                })
-                .fail(function(e) {
-                    // alert(e);
-                })
-                .always(function() {});
-
-    })();
 })
 
-.controller('SessionsCtrl', function($scope, DataFetch, $rootScope) {
+.controller('SessionsCtrl', function($scope, $rootScope, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank) {
     $scope.options = {
         // loop: false,
         effect: 'fade',
@@ -58,67 +70,69 @@ angular.module('starter.controllers', ['starter.services'])
         $scope.previousIndex = data.previousIndex;
     });
 
-    wx.ready(function () {
-        wx.getLocation({
-            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-            success: function (res) {
-                $rootScope.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                $rootScope.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                $rootScope.speed = res.speed; // 速度，以米/每秒计
-                $rootScope.accuracy = res.accuracy; // 位置精度
-                alert(res.latitude);
-            }
-        });
+    NearByEguard.get({
+        'longitude': $rootScope.longitude || 121.470257,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.eGuard = data.data[0];
+    }, function(data) {
+        alert('NO DATA');
     });
 
+    MainPageHot.get({
+        'longitude': $rootScope.longitude || 121.470257,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.sessions = data.data;
+    }, function(data) {
+        alert('NO DATA');
+    });
 
+    FruitUxuanRank.get({
+        'longitude': $rootScope.longitude || 121.470257,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.goods = data.data;
+    }, function(data) {
+        alert('NO DATA');
+    });
 
-    // DataFetch.query({
-    //     'funcid': 1,
-    //     'longitude': 131424,
-    //     'latitude': 34
-    // }, function(data) {
-    //     $scope.sessions = data;
-    // }, function(data) {
-    //     alert('NO DATA');
-    // });
-
-    $scope.sessions = [{
-        'shopId':'1123',
-        'shopName':'苗先生',
-        'distance':'0.1km',
-        'goodId':'3123123',
-        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-        'goodListPic':'src1',
-        'goodPrice':'12.5'
-    },
-    {
-        'shopId':'1123',
-        'shopName':'苗先生',
-        'distance':'0.1km',
-        'goodId':'3123123',
-        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-        'goodListPic':'src1',
-        'goodPrice':'12.5'
-    },
-    {
-        'shopId':'1123',
-        'shopName':'苗先生',
-        'distance':'0.1km',
-        'goodId':'3123123',
-        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-        'goodListPic':'src1',
-        'goodPrice':'12.5'
-    },
-    {
-        'shopId':'1123',
-        'shopName':'苗先生',
-        'distance':'0.1km',
-        'goodId':'3123123',
-        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-        'goodListPic':'src1',
-        'goodPrice':'12.5'
-    }];
+    // $scope.sessions = [{
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // },
+    // {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // },
+    // {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // },
+    // {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // }];
 
     $scope.addCart = function($event) {
         $event.stopPropagation();
@@ -145,34 +159,41 @@ angular.module('starter.controllers', ['starter.services'])
     };
 })
 
-.controller('SessionCtrl', function($rootScope, $scope, $stateParams, DataFetch, $ionicHistory, $ionicModal) {
+.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $ionicHistory, $ionicModal, FruitDetail, FruitPicShow) {
     $rootScope.goods = $rootScope.goods || new Map;
     $scope.isHideAddCart = false;
     $scope.singleNumber = 0;
     $scope.allNumber = $rootScope.goods.size;
     $rootScope.totalPrice = $rootScope.totalPrice || 0;
 
-    $scope.myGoBack = function() {
-        $ionicHistory.goBack();
-    };
-    console.log($stateParams);
+    // $scope.session = {
+    //     'shopId':'1123',
+    //     '':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // }
 
-    // DataFetch.get({
-    //     'funcid': 2,
-    //     'goodId': $stateParams.sessionId
-    // }, function (data) {
-    //      $scope.session = data;
-    // });
-
-    $scope.session = {
-        'shopId':'1123',
-        '':'苗先生',
-        'distance':'0.1km',
-        'goodId':'3123123',
-        'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-        'goodListPic':'src1',
-        'goodPrice':'12.5'
-    }
+    FruitDetail.get({
+        'longitude': $rootScope.longitude || 121.470257,
+        'latitude': $rootScope.latitude || 31.3234,
+        'productId': $stateParams.sessionId
+    }, function(data) {
+        $scope.session = data.data;
+        FruitPicShow.get({
+            'longitude': $rootScope.longitude || 121.470257,
+            'latitude': $rootScope.latitude || 31.3234,
+            'productId': $stateParams.sessionId
+        }, function(data) {
+            $scope.imgs = data.data;
+        }, function(data) {
+            alert('NO DATA');
+        });
+    }, function(data) {
+        alert('NO DATA');
+    });
 
     $scope.addCart = function(event) {
         var offset = $(".icon-cart:visible").offset();
@@ -194,11 +215,11 @@ angular.module('starter.controllers', ['starter.services'])
             }
         });
         // $scope.session.timeId = Date.now();
-        if ($rootScope.goods.has($scope.session.goodId)) {
-            $rootScope.goods.get($scope.session.goodId).buyNumber++;
+        if ($rootScope.goods.has($scope.session.productId)) {
+            $rootScope.goods.get($scope.session.productId).buyNumber++;
         } else {
             $scope.session.buyNumber = 1;
-            $rootScope.goods.set($scope.session.goodId, $scope.session);
+            $rootScope.goods.set($scope.session.productId, $scope.session);
         }
         $scope.allNumber++;
         // $scope.allNumber = $rootScope.goods.size;
@@ -206,20 +227,20 @@ angular.module('starter.controllers', ['starter.services'])
         $scope.isHideAddCart = true;
         var tempPrice = 0;
         $rootScope.goods.forEach(function(value, key) {
-            tempPrice += value.goodPrice * value.buyNumber;
+            tempPrice += value.price * value.buyNumber;
         })
-        $rootScope.totalPrice = tempPrice;
+        $rootScope.totalPrice = tempPrice / 100;
     };
 
     $scope.removeCart = function(event) {
-        // var buyNumber = $rootScope.goods.get($scope.session.goodId).buyNumber;
+        // var buyNumber = $rootScope.goods.get($scope.session.productId).buyNumber;
         if ($scope.singleNumber <= 0) {
             return;
         }
-        var num = $rootScope.goods.get($scope.session.goodId).buyNumber--;
+        var num = $rootScope.goods.get($scope.session.productId).buyNumber--;
         // $scope.allNumber--;
         if (num === 0) {
-            $rootScope.goods.delete($scope.session.goodId);
+            $rootScope.goods.delete($scope.session.productId);
         }
 
         $scope.allNumber--;
@@ -228,7 +249,7 @@ angular.module('starter.controllers', ['starter.services'])
         // $scope.isHideAddCart = true;
         var tempPrice = 0;
         $rootScope.goods.forEach(function(value, key) {
-            tempPrice += value.goodPrice * value.buyNumber;
+            tempPrice += value.price * value.buyNumber;
         })
         $rootScope.totalPrice = tempPrice;
     };
@@ -265,114 +286,325 @@ angular.module('starter.controllers', ['starter.services'])
     });
 })
 
-.controller('OrderCtrl', function($scope, $stateParams, DataFetch, $ionicHistory, $rootScope, $location, $state) {
+.controller('sellerListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank) {
+    NearByEguard.get({
+        'longitude': $rootScope.longitude || 121.470257,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.eGuard = data.data;
+    }, function(data) {
+        alert('NO DATA');
+    })
+
+    MainPageHot.get({
+        'longitude': $rootScope.longitude || 121.470257,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.sessions = data.data;
+    }, function(data) {
+        alert('NO DATA');
+    });
+
+    FruitUxuanRank.get({
+        'longitude': $rootScope.longitude || 121.470257,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.goods = data.data;
+    }, function(data) {
+        alert('NO DATA');
+    });
+
+    // $scope.sessions = [{
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // },
+    // {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // },
+    // {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // },
+    // {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // }];
+
+    $scope.addCart = function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        var offset = $(".ion-ios-cart:visible").offset();
+
+        var flyer = $('<i class="u-flyer icon ion-ios-color-filter"><i/>');
+        flyer.fly({
+            start: {
+                left: event.pageX,
+                top: event.pageY
+            },
+            end: {
+                left: offset.left + 50,
+                top: offset.top + 20,
+                width: 0,
+                height: 0
+            },
+            onEnd: function() {
+                this.destory();
+            }
+        });
+        return false;
+    }
+})
+
+.controller('sellerCtrl', function($scope, $rootScope, $stateParams, FruitsByShop) {
+
+    FruitsByShop.get({
+        'longitude': $rootScope.longitude || 121.470257,
+        'latitude': $rootScope.latitude || 31.3234,
+        'sellerId': $stateParams.sellerId
+    }, function(data) {
+        $scope.seller = data.data.shop;
+        $scope.goods = data.data.products;
+    }, function(data) {
+        alert('NO DATA');
+    })
+
+    // $scope.seller = {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // };
+
+    // $scope.sessions = [{
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // },
+    // {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // },
+    // {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // },
+    // {
+    //     'shopId':'1123',
+    //     'shopName':'苗先生',
+    //     'distance':'0.1km',
+    //     'productId':'3123123',
+    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
+    //     'goodListPic':'src1',
+    //     'price':'12.5'
+    // }];
+
+    $scope.addCart = function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        var offset = $(".ion-ios-cart:visible").offset();
+
+        var flyer = $('<i class="u-flyer icon ion-ios-color-filter"><i/>');
+        flyer.fly({
+            start: {
+                left: event.pageX,
+                top: event.pageY
+            },
+            end: {
+                left: offset.left + 50,
+                top: offset.top + 20,
+                width: 0,
+                height: 0
+            },
+            onEnd: function() {
+                this.destory();
+            }
+        });
+        return false;
+    };
+})
+
+.controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, NearByEguard, FruitOrderInsert) {
     $rootScope.goods = $rootScope.goods || new Map;
     $rootScope.totalPrice = $rootScope.totalPrice || 0;
     $scope.order = {};
     $scope.order.guard = 1;
 
-    $scope.myGoBack = function() {
-        $ionicHistory.goBack();
-    };
-    var date = new Date;
-    $scope.temp = {
-        today: date.getMonth() + 1 + '月' + date.getDate() + '日',
-        tomorrow: date.getMonth() + 1 + '月' + (date.getDate() + 1) + '日'
-    };
+    var date = new Date,
+        today = date.getMonth() + 1 + '月' + date.getDate() + '日',
+        tomorrow = date.getMonth() + 1 + '月' + (date.getDate() + 1) + '日',
+        startHour = date.getHours() > 8 ? date.getHours() : 8;
+
+    $scope.order.orderDate = [
+        { name: '今日（' + today + '）', value: today },
+        { name: '明日（' + tomorrow + '）', value: tomorrow }
+    ];
+    $scope.order.preferTimeDay = today;
+
+    $scope.order.orderTime = [];
+
+    for (var i = 0; startHour + i < 21; i++) {
+        $scope.order.orderTime.push({
+            name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00',
+            value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00'
+        })
+    }
+    $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
+
+    $scope.changeDate = function() {
+        if ($scope.order.preferTimeDay != today) {
+            $scope.order.orderTime = [];
+            for (var i = 8; i < 21; i++) {
+                $scope.order.orderTime.push({
+                    name: addZero(i) + ':00 -- ' + addZero(i + 1) + ':00',
+                    value: addZero(i) + ':00 -- ' + addZero(i + 1) + ':00'
+                })
+            }
+            $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
+        } else {
+            $scope.order.orderTime = [];
+            for (var i = 0; startHour + i < 21; i++) {
+                $scope.order.orderTime.push({
+                    name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00',
+                    value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00'
+                })
+            }
+            $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
+        }
+    }
+
+    NearByEguard.get({
+        'longitude': $rootScope.longitude || 121.470257,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.eGuard = data.data;
+    }, function(data) {
+        alert('NO DATA');
+    });
+
     var tempGoods = [];
     var tempPrice = 0;
     var tempOrderGoodList = [];
     $rootScope.goods.forEach(function(value, key) {
-        tempPrice += value.goodPrice * value.buyNumber;
+        tempPrice += value.price * value.buyNumber;
         tempGoods.push(value);
-        tempOrderGoodList.push({
-            'goodId': value.goodId,
-            'goodPrice': value.goodPrice,
-            'goodQuantity': value.buyNumber
-        })
+        var index = _.findIndex(tempOrderGoodList, { 'sellerId': value.sellerId });
+        if (index < 0) {
+            tempOrderGoodList.push({
+                'sellerId': value.sellerId,
+                'totalMoney': value.price * value.buyNumber,
+                'goodsList': [{
+                    'id': value.productId,
+                    'price': value.price,
+                    'quantity': value.buyNumber
+                }]
+            })
+        } else {
+            tempOrderGoodList[index]['goodsList'].push({
+                'id': value.productId,
+                'price': value.price,
+                'quantity': value.buyNumber
+            })
+            tempOrderGoodList[index]['totalMoney'] += value.price * value.buyNumber;
+        }
     })
     $scope.goods = tempGoods;
-    $rootScope.totalPrice = tempPrice;
+    $rootScope.totalPrice = tempPrice / 100;
 
     $scope.confirmOrder = function() {
 
-        // register();
         var date = new Date();
-        var moment = addZero(date.getFullYear()) + '-' + addZero(date.getMonth()) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
+        // var moment = addZero(date.getFullYear()) + '-' + addZero(date.getMonth()) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
+        var pDate = addZero($scope.order.preferTimeDay.replace('日', '').split('月')[0]) + '-' + addZero($scope.order.preferTimeDay.replace('日', '').split('月')[1]);
+        var userPreferTime = [
+            date.getFullYear() + '-' + pDate + ' ' + $scope.order.preferTimeTime.split(' -- ')[0] + ':00',
+            date.getFullYear() + '-' + pDate + ' ' + $scope.order.preferTimeTime.split(' -- ')[1] + ':00'
+        ];
 
-        DataFetch.get({
-            'funcid': 4,
-            'orderTime': moment,
-            'userId': '123123',
-            'userPhoneNumber': $scope.order.receiverPhone + "",
-            'userAddress': $scope.order.receiverAddress + "",
-            'userPreferTime': ['2016-07-04 19:00:00', '2016-07-04 20:00:00'],
-            'eguardId': $scope.order.guard + "",
-            'isPaid': true,
-            'Note': $scope.order.note || "无" + "",
-            'goodList': tempOrderGoodList
-                // [{
-                //     'goodId': '12312',
-                //     'goodPrice': '12.5',
-                //     'goodQuantity': '12'
-                // }, {
-                //     'goodId': '12312',
-                //     'goodPrice': '12.5',
-                //     'goodQuantity': '12'
-                // }]
-        },function () {
-            $rootScope.message = 'success';
-            ForwardPay();
-            // $state.go('orderStatus');
-        },function () {
-            $rootScope.message = 'fail';
-            $state.go('orderStatus');
-        })
-
-        // $.ajax({
-        //         url: $rootScope.requestUrl,
-        //         type: 'GET',
-        //         dataType: 'json',
-        //         data: {
-        //             'funcid': 4,
-        //             'orderTime': moment,
-        //             'userId': '123123',
-        //             'userPhoneNumber': $scope.order.receiverPhone + "",
-        //             'userAddress': $scope.order.receiverAddress + "",
-        //             'userPreferTime': ['2016-07-04 19:00:00', '2016-07-04 20:00:00'],
-        //             'eguardId': $scope.order.guard + "",
-        //             'isPaid': true,
-        //             'Note': $scope.order.note || "无" + "",
-        //             'goodList': tempOrderGoodList
-        //                 // [{
-        //                 //     'goodId': '12312',
-        //                 //     'goodPrice': '12.5',
-        //                 //     'goodQuantity': '12'
-        //                 // }, {
-        //                 //     'goodId': '12312',
-        //                 //     'goodPrice': '12.5',
-        //                 //     'goodQuantity': '12'
-        //                 // }]
-        //         }
-        //     })
-        //     .done(function(e) {
-        //         console.log('success');
-        //         $rootScope.message = 'success';
-        //         // $state.go('orderStatus');
-        //         ForwardPay();
-        //     })
-        //     .fail(function(e) {
-        //         $scope.$apply(function() {
-        //             $rootScope.message = e.ret;
-        //             $location.path('/orderStatus');
+        $.ajax({
+                url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
+                data: {
+                    'longitude': $rootScope.longitude || 121.470257,
+                    'latitude': $rootScope.latitude || 31.3234,
+                    // 'orderTime': moment,
+                    'userId': '1',
+                    'userPhoneNumber': $scope.order.receiverPhone + "",
+                    'userAddress': $scope.order.receiverAddress + "",
+                    'userPreferTime': userPreferTime,
+                    'eguardId': $scope.order.guard + "",
+                    'isPaid': true,
+                    'totalMoney': tempPrice,
+                    'note': $scope.order.note || "无" + "",
+                    'productList': tempOrderGoodList
+                }
+            })
+            .done(function(e) {
+                var data = JSON.parse(e);
+                $scope.$apply(function() {
+                    if (data.code == 0) {
+                        $rootScope.message = 'success';
+                    } else {
+                        $rootScope.message = 'failed';
+                    }
+                    $state.go('orderStatus');
+                })
+            })
+            .fail(function(e) {
+                console.log(e);
+                console.log("error");
+                x.innerHTML = e.responseText;
+            })
+            .always(function() {
+                console.log("complete");
+            });
+        // , function(e) {
+        //             $rootScope.message = 'success';
+        //             if (e.statusCode == 0) {
+        //                 ForwardPay();
+        //             }
+        //             // $state.go('orderStatus');
+        //         }, function() {
+        //             $rootScope.message = 'fail';
+        //             $state.go('orderStatus');
         //         });
-        //     })
-        //     .always(function(e) {
-        //         // $scope.$apply(function() {
-        //         //     $rootScope.message = JSON.parse(e).ret;
-        //         //     $location.path('/orderStatus');
-        //         // }); 
-        //     });
+
 
         function ForwardPay() {
 
@@ -412,7 +644,6 @@ angular.module('starter.controllers', ['starter.services'])
     }
 
     $scope.getAddress = function() {
-
         wx.ready(function() {
             wx.openAddress({
                 success: function(res) {
@@ -439,7 +670,7 @@ angular.module('starter.controllers', ['starter.services'])
 
 })
 
-.controller('OrderStatusCtrl', function($scope, $stateParams, DataFetch, $ionicHistory, $rootScope) {
+.controller('OrderStatusCtrl', function($scope, $stateParams, $ionicHistory, $rootScope) {
     // $scope.status = $rootScope.message;
     if ($rootScope.message == "failed") {
         $scope.status = "下单失败";
@@ -449,66 +680,98 @@ angular.module('starter.controllers', ['starter.services'])
     }
 })
 
-.controller('AccountCtrl', function($scope) {
-    $.ajax({
-            url: 'http://www.lifeuxuan.com/backend/userinfo.php',
-            type: 'GET',
-            dataType: 'json',
-            data: {}
-        })
-        .done(function(e) {
+.controller('AccountCtrl', function($scope, userinfo) {
+    userinfo.get({},
+        function(e) {
             alert(e);
             // var res = JSON.parse(e);
             $scope.userName = e.nickname;
             $scope.userImg = e.headimgurl;
 
-        })
-        .fail(function(e) {
+        },function(e) {
             //alert(e);
+        })
+    // $.ajax({
+    //         url: 'http://www.lifeuxuan.com/backend/userinfo.php',
+    //         type: 'GET',
+    //         dataType: 'json',
+    //         data: {}
+    //     })
+    //     .done(function(e) {
+    //         alert(e);
+    //         // var res = JSON.parse(e);
+    //         $scope.userName = e.nickname;
+    //         $scope.userImg = e.headimgurl;
+
+    //     })
+    //     .fail(function(e) {
+    //         //alert(e);
+    //     });
+    // console.log('go');
+})
+
+.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList) {
+        $scope.$on("$ionicView.enter", function(event, data) {
+            QueryOrderList.get({
+                'longitude': $rootScope.longitude || 121.470257,
+                'latitude': $rootScope.latitude || 31.3234,
+                'userId': '1'
+            }, function(data) {
+                $scope.orders = data.data;
+            });
         });
-    console.log('go');
-})
 
-.controller('ListViewCtrl', function($scope, $rootScope, $ionicHistory, $location) {
-    $scope.myGoBack = function() {
-        $location.path('/app');
-    };
-    $scope.firstActive = function(param) {
-        $scope.isFirstActive = param;
-    }
-})
 
-.controller('ListGoodsCtrl', function($scope, $rootScope, $stateParams, DataFetch) {
-    var temp = '';
-    var data = DataFetch.get({
-        funcid: 5
-    }, function(data) {
-        $scope.categorys = data.classifys;
-    });
-})
+        $scope.doRefresh = function() {
 
-.controller('ListGoodsChangeCtrl', function($scope, $rootScope, $stateParams, DataFetch) {
-    DataFetch.query({
-        funcid: '6',
-        'classifyId': $stateParams.goodsId 
-    }, function (data) {
-        $scope.fruits = data;
-    });
-})
+            console.log('Refreshing!');
+            QueryOrderList.get({
+                'longitude': $rootScope.longitude || 121.470257,
+                'latitude': $rootScope.latitude || 31.3234,
+                'userId': '1'
+            }, function(data) {
+                $scope.orders = data.data;
+            });
 
-.controller('ListSellersCtrl', function($scope, $rootScope, DataFetch) {
-    DataFetch.query({
-        funcid: '7'
-    }, function (data) {
-        $scope.sellers = data;
-    });
-})
-.controller('OrdersCtrl', function($scope, $rootScope, DataFetch) {
-    DataFetch.query({
-        'funcid': 8,
-        'userId': '123123'
-    }, function (data) {
-        $scope.orders = data;
-    });
-})
+            //Stop the ion-refresher from spinning
+            $scope.$broadcast('scroll.refreshComplete');
+        }
+    })
+    // .controller('ListViewCtrl', function($scope, $rootScope, $ionicHistory, $location) {
+    //     $scope.myGoBack = function() {
+    //         $location.path('/app');
+    //     };
+    //     $scope.firstActive = function(param) {
+    //         $scope.isFirstActive = param;
+    //     }
+    // })
+
+// .controller('ListGoodsCtrl', function($scope, $rootScope, $stateParams, DataFetch) {
+//     var temp = '';
+//     // var data = DataFetch.get({
+//     //     funcid: 5
+//     // }, function(data) {
+//     //     $scope.categorys = data.classifys;
+//     // });
+// })
+
+// .controller('ListGoodsChangeCtrl', function($scope, $rootScope, $stateParams, DataFetch) {
+//     // DataFetch.query({
+//     //     funcid: '6',
+//     //     'classifyId': $stateParams.goodsId 
+//     // }, function (data) {
+//     //     $scope.fruits = data;
+//     // });
+// })
+
+// .controller('ListSellersCtrl', function($scope, $rootScope, DataFetch) {
+//     // DataFetch.query({
+//     //     funcid: '7'
+//     // }, function (data) {
+//     //     $scope.sellers = data;
+//     // });
+// })
+
+
+
 ;

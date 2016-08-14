@@ -1,0 +1,39 @@
+<ion-view view-title="U选到家">
+    <ion-content class="backE">
+        <div class="index-header">
+            <!-- <label class="item item-input item-select distract-select">
+                <select>
+                    <option selected>徐汇区</option>
+                    <option>闵行区</option>
+                    <option>长宁区</option>
+                </select>
+            </label> -->
+            <div go-back></div>
+            <p class="guard">管家赵腾飞为您服务</p>
+            <label class="header-search">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+            </label>
+        </div>
+        <div class="seller-detail">
+            <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
+            <p class="name">{{seller.sellerName}}</p>
+            <ul class="good-info-wrap clearfix">
+                <li class="distance">月售{{seller.soldNumber}}单</li>
+                <li class="distance">{{seller.distance}}米</li>
+                <li class="distance">{{seller.sendPrice}}元起送</li>
+                <li class="distance">{{seller.sendStartPrice}}元配送费</li>
+            </ul>
+            <div class="slogen">{{seller.sellerSlogen}}</div>
+        </div>
+        <ion-list class="rank index-list clearfix">
+            <ion-item class="index-list-item" ng-repeat="good in goods" href="#/sessions/{{good.productId}}">
+                <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
+                <p class="name">{{good.productName}}</p>
+                <p class="description">{{good.description}}</p>
+                <p class="price">￥{{good.price/100  }}/{{good.unit}}</p>
+                <i class="icon ion-ios-cart list-cart"></i>
+                <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

@@ -6,8 +6,12 @@ a {
     margin-bottom: -7px;
 }
 
-.height100{
+.height100 {
     height: 100%;
+}
+
+.cart-bottom {
+    padding-bottom: 60px;
 }
 
 .bottom-bar {
@@ -15,9 +19,9 @@ a {
     bottom: 0px;
     width: 100%;
     height: 65px;
-    border-top: 2px solid #eee;
     z-index: 100;
     background: #fff;
+    border-top: 1px solid #eee;
 }
 
 .u-flyer {
@@ -69,6 +73,7 @@ a {
 .index-header .back-wrap {
     height: 100%;
     width: 80px;
+    color: #fff;
 }
 
 .index-header .back-wrap i {
@@ -83,9 +88,6 @@ a {
 }
 
 .index-header .guard {
-    float: left;
-    width: 50%;
-    margin: 0 auto;
     text-align: center;
     line-height: 40px;
     color: #fff;
@@ -100,7 +102,9 @@ a {
 }
 
 .header-search {
-    float: right;
+    position: absolute;
+    top: 0;
+    right: 15px;
     line-height: 40px;
 }
 
@@ -130,7 +134,7 @@ a {
 }
 
 .index-nav {
-    height: 85px;
+    height: 80px;
     padding: 12px 10% 0 10%;
     /*margin:4px 0; */
     background: #fff;
@@ -174,13 +178,15 @@ a {
     color: #EFDEFF;
 }
 
-.divider {    
+.divider {
     height: 30px;
     line-height: 30px;
     text-align: center;
     background: #fff;
 }
-.divider:before, .divider:after{
+
+.divider:before,
+.divider:after {
     content: '';
     position: absolute;
     left: 10px;
@@ -188,7 +194,8 @@ a {
     height: 14px;
     border-bottom: 1px solid #000;
 }
-.divider:after{
+
+.divider:after {
     right: 10px;
     left: auto;
 }
@@ -216,8 +223,6 @@ a {
 }
 
 .index-list-item .name {
-    display: inline-block;
-    width: 100%;
     font-size: 12px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -232,31 +237,35 @@ a {
 
 .index-list-item .distance {}
 
-.seller .good-info-wrap li{
-    float: left;     
+.seller .good-info-wrap li {
+    float: left;
     width: 24%;
     font-size: 12px;
-   /*margin: 10px 30px 0 15px;*/
+    /*margin: 10px 30px 0 15px;*/
 }
-.seller .good-info-wrap li:nth-child(3){
+
+.seller .good-info-wrap li:nth-child(3) {
     border-right: 1px solid;
 }
-.seller .good-info-wrap li:nth-child(even){
+
+.seller .good-info-wrap li:nth-child(even) {
     padding-left: 8%;
 }
 
-.seller .slogen{
+.seller .slogen {
     font-size: 12px;
     color: #888;
     margin: 0 10px;
 }
-.seller .name{
+
+.seller .name {
     font-size: 14px;
 }
 
-.seller .index-list-item{
-}
-.seller .item-content, .rank .item-content{
+.seller .index-list-item {}
+
+.seller .item-content,
+.rank .item-content {
     width: 95%;
     margin: 0 auto 10px;
     border: 1px solid #ddd;
@@ -285,23 +294,30 @@ a {
     text-align: center;
 }
 
-.rank img{
-    margin:10px;
+.rank img {
+    margin: 10px 30px 10px 10px;
 }
-.rank .name{
+
+.rank .name {
+    margin: 0;
     margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
 }
-.rank .price{
-    margin-top: 10px;
+
+.rank .price {
+    margin-top: 4px;
     font-size: 18px;
 }
 
-.list-cart{
-    position: absolute;    
+.list-cart {
+    position: absolute;
     bottom: 10px;
     right: 20px;
     font-size: 28px;
 }
+
+
 /*goood detail*/
 
 .good-img {
@@ -327,7 +343,7 @@ a {
     padding: 5px 10px;
 }
 
-.good-main-info .good-descirbe{
+.good-main-info .good-descirbe {
     padding: 10px;
 }
 
@@ -375,34 +391,41 @@ a {
     font-size: 20px;
 }
 
-.good-seller{
+.good-seller {
     margin: 5px 0;
-    padding:5px;
+    padding: 5px;
     background: #fff;
 }
-.good-seller div{
+
+.good-seller div {
     float: left;
 }
-.good-seller p{
+
+.good-seller p {
     clear: both;
-    margin:0;
+    margin: 0;
 }
-.good-seller i{
+
+.good-seller i {
     font-size: 30px;
 }
-.good-seller .shop-name{
+
+.good-seller .shop-name {
     height: 40px;
     width: 40%;
     text-align: center;
-    border-right:solid 1px;
+    border-right: solid 1px;
 }
-.good-seller .shop-name{
+
+.good-seller .shop-name {
     line-height: 30px;
 }
-.good-seller .shop-icon{
+
+.good-seller .shop-icon {
     padding: 0 10px;
 }
-.good-seller .shop-time{
+
+.good-seller .shop-time {
     width: 40%;
     margin: 0 auto;
     text-align: center;
@@ -411,8 +434,10 @@ a {
 .good-more-info {
     /*padding: 20px;*/
 }
-.good-more-info img{
+
+.good-more-info img {
     width: 100%;
+    height: auto;
 }
 
 .shopping-cart-bar {
@@ -518,10 +543,15 @@ a {
     color: #fff;
     font-size: 18px;
     margin-left: 15px;
+    max-width: 40%;
 }
 
 .confirm-order .total-price {
     color: #ef473a;
+}
+
+.data-pick{
+    border: 1px solid #eee;
 }
 
 
@@ -532,13 +562,14 @@ a {
 }
 
 .cart-modal.ng-enter-active {
-    transform: translateY(-63px);
+    transform: translateY(-65px);
 }
 
 .cart-modal-list {
     position: absolute;
     bottom: 0;
     width: 100%;
+    padding: 10px;
 }
 
 

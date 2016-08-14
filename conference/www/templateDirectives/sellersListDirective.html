@@ -1,0 +1,15 @@
+<ion-list class="seller index-list clearfix">
+    <ion-item class="index-list-item" ng-repeat="seller in sellers" href="#/seller/{{seller.sellerId}}">
+        <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
+        <span class="name">{{seller.sellerName}}</span>
+        <ul class="good-info-wrap clearfix">
+            <li class="distance">月售{{seller.soldNumber}}单</li>
+            <li class="distance">{{seller.distance}}米</li>
+            <li class="distance">{{seller.sendPrice}}元起送</li>
+            <li class="distance">{{seller.sendStartPrice}}元配送费</li>
+        </ul>
+        <div class="slogen">{{seller.sellerSlogen}}</div>
+        <i class="icon ion-ios-cart list-cart"></i>
+        <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
+    </ion-item>
+</ion-list>

@@ -1,11 +1,21 @@
 <ion-view view-title="U选到家">
-  <ion-content>
-    <ion-list class="">
-        <ion-item class="" ng-repeat="order in orders" href="#/list-sellers/{{seller.id}}">
-            <p class="name">订单编号:{{order.orderId}}</p>
-            <p class="name">订单时间:{{order.orderTime}}</p>
-            <p class="name">订单金额:{{order.totalMoney}}</p>
-        </ion-item>
-    </ion-list>
-  </ion-content>
+    <ion-content>
+    	<ion-refresher on-refresh="doRefresh()">
+                     
+      	</ion-refresher>
+        <ion-list class="">
+            <ion-item class="" ng-repeat="order in orders" href="#/list-sellers/{{seller.id}}">
+                <p class="name">订单编号:{{order.orderId}}</p>
+                <p class="name">订单时间:{{order.orderTime}}</p>
+                <p class="name">订单金额:{{order.totalMoney}}</p>
+                <p class="name">订单金额:{{order.sellerName}}</p>
+                <p class="name">订单状态:{{order.orderStatus}}</p>
+                <ion-list class="">
+                    <ion-item class="" ng-repeat="pic in order.goodsList">
+                        <img ng-src="http://lifeuxuan.com/backend/{{pic.productPicUrl}}">
+                    </ion-item>
+                </ion-list>
+            </ion-item>
+        </ion-list>
+    </ion-content>
 </ion-view>

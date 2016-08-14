@@ -1,18 +1,16 @@
-<ion-view view-title="Session" class="backE">
+<ion-view view-title="Session" class="backE cart-bottom" animation="slide-left-right">
     <div class="index-header">
-        <div class="back-wrap" ng-click="myGoBack()">
-            <i class="ion-arrow-left-c"></i><span>返回11</span>
-        </div>
+        <div go-back></div>
     </div>
     <ion-scroll direction="y" overflow-scroll="true" class="height100">
         <div class="good-img">
-            <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}"> -->
-            <img src="img/single.jpg">
+            <img ng-src="http://lifeuxuan.com/backend/{{session.headPic}}">
+            <!-- <img src="img/single.jpg"> -->
         </div>
         <div class="good-main-info">
-            <div class="good-name">{{session.goodName}}</div>
-            <div class="good-descirbe">{{session.goodName}}</div>
-            <div class="good-price">￥{{session.goodPrice}}</div>
+            <div class="good-name">{{session.productName}}</div>
+            <div class="good-descirbe">{{session.description}}</div>
+            <div class="good-price">￥{{session.price/100}}</div>
             <div class="button button-assertive add-cart" ng-click="addCart($event)" ng-hide="isHideAddCart">加入购物车</div>
             <div class="plus-wrap add-cart-plus-minus" ng-show="isHideAddCart">
                 <div class="button-assertive add-cart-plus cart-action" ng-click="removeCart($event)">
@@ -26,21 +24,21 @@
         </div>
         <div class="good-seller">
             <div class="shop-icon"><i class="icon ion-ios-home"></i></div>
-            <div class="shop-name">{{session.shopName}}</div>
+            <div class="shop-name">{{session.sellerName}}</div>
             <div class="shop-time">
                 <p>营业时间</p>
-                <p>{{session.shopId}}</p>
+                <p>{{session.openTime}}-{{session.closeTime}}</p>
             </div>
             <p>
-                地址：{{session.goodName}}
+                地址：{{session.sellerAddress}}
             </p>
         </div>
         <div class="good-more-info">
-            <img src="img/single.jpg">
-            <img src="img/single.jpg">
-            <img src="img/single.jpg">
-            <img src="img/single.jpg">
-            <img src="img/single.jpg">
+            <ion-list class="index-list">
+                <ion-item class="index-list-item" ng-repeat="img in imgs">
+                    <img ng-src="http://lifeuxuan.com/backend/{{img}}" alt="">
+                </ion-item>
+            </ion-list>
         </div>
     </ion-scroll>
     <div class="bottom-bar shopping-cart-bar">

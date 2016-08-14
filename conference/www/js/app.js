@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -59,45 +59,57 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     })
 
-
-
-    .state('list-view', {
-      url: '/list-view',
-      abstract: true,
-      templateUrl: 'templates/listView.html',
-        controller: 'ListViewCtrl'
+    .state('seller-list', {
+      url: '/sellerList/:sellerId',
+      templateUrl: 'templates/sellerList.html',
+      controller: 'sellerListCtrl'
     })
 
-    .state('list-view.goods', {
-      url: '/goods',
-      views: {
-        'list-tab-view': {
-          templateUrl: 'templates/list-goods.html',
-          controller: 'ListGoodsCtrl'
-        }
-      }
-    })
-
-    .state('list-view.goods.change', {
-      url: '/:goodsId',
-      views: {
-        'list-goods-change-view': {
-          templateUrl: 'templates/list-goods-change.html',
-          controller: 'ListGoodsChangeCtrl'
-        }
-      }
+    .state('seller', {
+      url: '/seller/:sellerId',
+      templateUrl: 'templates/seller.html',
+      controller: 'sellerCtrl'
     })
 
 
-    .state('list-view.sellers', {
-      url: '/sellers',
-      views: {
-        'list-tab-view': {
-          templateUrl: 'templates/list-sellers.html',
-          controller: 'ListSellersCtrl'
-        }
-      }
-    })
+
+    // .state('list-view', {
+    //   url: '/list-view',
+    //   abstract: true,
+    //   templateUrl: 'templates/listView.html',
+    //     controller: 'ListViewCtrl'
+    // })
+
+    // .state('list-view.goods', {
+    //   url: '/goods',
+    //   views: {
+    //     'list-tab-view': {
+    //       templateUrl: 'templates/list-goods.html',
+    //       controller: 'ListGoodsCtrl'
+    //     }
+    //   }
+    // })
+
+    // .state('list-view.goods.change', {
+    //   url: '/:goodsId',
+    //   views: {
+    //     'list-goods-change-view': {
+    //       templateUrl: 'templates/list-goods-change.html',
+    //       controller: 'ListGoodsChangeCtrl'
+    //     }
+    //   }
+    // })
+
+
+    // .state('list-view.sellers', {
+    //   url: '/sellers',
+    //   views: {
+    //     'list-tab-view': {
+    //       templateUrl: 'templates/list-sellers.html',
+    //       controller: 'ListSellersCtrl'
+    //     }
+    //   }
+    // })
 
 
 
