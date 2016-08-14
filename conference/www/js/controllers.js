@@ -511,7 +511,9 @@ angular.module('starter.controllers', ['starter.services'])
             value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00'
         })
     }
-    $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
+    if($scope.order.orderTime){
+        $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
+    }    
 
     $scope.changeDate = function() {
         if ($scope.order.preferTimeDay != today) {
@@ -709,7 +711,7 @@ angular.module('starter.controllers', ['starter.services'])
 
     $scope.user = $rootScope.user;
     console.log('user', $scope.user);
-    console.log('user name', $scope.user.name);
+    console.log('user name', $scope.user.nickname);
     // $.ajax({
     //         url: 'http://www.lifeuxuan.com/backend/userinfo.php',
     //         type: 'GET',
