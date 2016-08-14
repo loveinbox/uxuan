@@ -589,7 +589,7 @@ angular.module('starter.controllers', ['starter.services'])
                     'longitude': $rootScope.longitude || 121.470257,
                     'latitude': $rootScope.latitude || 31.3234,
                     // 'orderTime': moment,
-                    'userId': '1',
+                    'userId': $rootScope.userid,
                     'userPhoneNumber': $scope.order.receiverPhone + "",
                     'userAddress': $scope.order.receiverAddress + "",
                     'userPreferTime': userPreferTime,
