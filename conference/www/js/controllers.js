@@ -608,6 +608,8 @@ angular.module('starter.controllers', ['starter.services'])
         for (var p in orderRequestObj['data']) {
             console.log(p, orderRequestObj['data'][p]);
         }
+
+        var orderIds = null;
         // console.log('orderRequestObj', orderRequestObj);
         $.ajax(orderRequestObj)
             .done(function(e) {
@@ -615,12 +617,8 @@ angular.module('starter.controllers', ['starter.services'])
                 var data = JSON.parse(e);
                 console.log(data.message);
                 $scope.$apply(function() {
-                    if (data.code == 0) {
-                        $rootScope.message = 'success';
-                    } else {
-                        $rootScope.message = data.msg;
-                    }
-                    $state.go('orderStatus');
+                    ForwardPay();
+                    orderIds = data.orderId;
                 })
             })
             .fail(function(e) {
@@ -666,8 +664,17 @@ angular.module('starter.controllers', ['starter.services'])
                             paySign: e.paySign,
                             success: function(res) {
                                 // alert('success');
-                                $rootScope.message = 'success';
-                                $state.go('orderStatus');
+                                PayConfirm.get({
+                                    'longitude': $rootScope.longitude || 121.470257,
+                                    'latitude': $rootScope.latitude || 31.3234,
+                                    'orderId': orderIds
+                                }, function() {
+                                    console.log('paied success');
+                                    $rootScope.message = 'success';
+                                    $state.go('orderStatus');
+                                }, function(data) {
+                                    alert('NO DATA');
+                                });
                             }
                         });
                     });

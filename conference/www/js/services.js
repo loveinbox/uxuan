@@ -43,4 +43,9 @@ angular.module('starter.services', ['ngResource'])
 .factory('UserRegister', function($resource, $http) {
     return $resource('http://www.lifeuxuan.com/backend/api/UserRegister.php');
 })
+
+.factory('PayConfirm', function($resource, $http) {
+    return $resource('http://www.lifeuxuan.com/backend/PayConfirm.php');
+})
+
 ;
