@@ -701,7 +701,7 @@ angular.module('starter.controllers', ['starter.services'])
             alert(e);
             alert(e.msg);
             for(var p in e){
-                alert(p[e]);
+                alert(p, p[e]);
             }
             // var res = JSON.parse(e);
             $scope.userName = e.nickname;
