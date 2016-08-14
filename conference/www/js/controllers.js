@@ -488,7 +488,7 @@ angular.module('starter.controllers', ['starter.services'])
     };
 })
 
-.controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, NearByEguard, FruitOrderInsert) {
+.controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, NearByEguard, FruitOrderInsert, PayConfirm) {
     $rootScope.goods = $rootScope.goods || new Map;
     $rootScope.totalPrice = $rootScope.totalPrice || 0;
     $scope.order = {};
