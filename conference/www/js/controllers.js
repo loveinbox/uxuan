@@ -681,42 +681,44 @@ angular.module('starter.controllers', ['starter.services'])
 })
 
 .controller('AccountCtrl', function($scope, userinfo, $rootScope) {
-    // userinfo.get({},
-    //     function(e) {
-    //         alert(e);
-    //         // var res = JSON.parse(e);
-    //         $scope.userName = e.nickname;
-    //         $scope.userImg = e.headimgurl;
-
-    //     },function(e) {
-    //         alert(e);
-    //     })
-    $.ajax({
-            url: 'http://www.lifeuxuan.com/backend/userinfo.php',
-            type: 'GET',
-            dataType: 'json',
-            data: {}
-        })
-        .done(function(e) {
-            // var res = JSON.parse(e);
-            alert(e.openid);
-            alert(e.nickname);
-            // for(var p in e){
-            //     alert(p);
-            //     alert(e[p])
-            // }
-            $scope.$apply(function() {
-                $rootScope.openid = e.openid;
-                $scope.user = { name: e.nickname };
-                $scope.user = { img: e.headimgurl };
-            })
-        })
-        .fail(function(e) {
+    userinfo.get({},
+        function(e) {
             alert(e);
-            alert(e.msg);
-            alert(JSON.parse(e));
-        });
-    console.log('go');
+            alert(e.openid);
+            $rootScope.openid = e.openid;
+            // var res = JSON.parse(e);
+            $scope.user = $rootScope.user = { name: e.nickname };
+            $scope.user = $rootScope.user = { img: e.headimgurl };
+
+        },function(e) {
+            alert(e);
+        })
+    // $.ajax({
+    //         url: 'http://www.lifeuxuan.com/backend/userinfo.php',
+    //         type: 'GET',
+    //         dataType: 'json',
+    //         data: {}
+    //     })
+    //     .done(function(e) {
+    //         // var res = JSON.parse(e);
+    //         alert(e.openid);
+    //         alert(e.nickname);
+    //         // for(var p in e){
+    //         //     alert(p);
+    //         //     alert(e[p])
+    //         // }
+    //         $scope.$apply(function() {
+    //             $rootScope.openid = e.openid;
+    //             $scope.user = { name: e.nickname };
+    //             $scope.user = { img: e.headimgurl };
+    //         })
+    //     })
+    //     .fail(function(e) {
+    //         alert(e);
+    //         alert(e.msg);
+    //         alert(JSON.parse(e));
+    //     });
+    // console.log('go');
 })
 
 .controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList) {
