@@ -701,7 +701,8 @@ angular.module('starter.controllers', ['starter.services'])
             // var res = JSON.parse(e);
             alert(e.openid);
             for(var p in e){
-                alert(p, 'aa' + p[e]);
+                alert(p);
+                alert(e[p])
             }
             $scope.$apply(function() {
                 $rootScope.openid = e.openid;
