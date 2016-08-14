@@ -618,8 +618,8 @@ angular.module('starter.controllers', ['starter.services'])
                 console.log(data.message);
                 $scope.$apply(function() {
                     ForwardPay();
-                    orderIds = data.orderId;
-                    console.log(data.orderId)
+                    orderIds = data;
+                    console.log('data', data);
                 })
             })
             .fail(function(e) {
