@@ -649,7 +649,7 @@ angular.module('starter.controllers', ['starter.services'])
                     dataType: 'json',
                     data: {
                         //'openId': 'oDHyIvznjdxR2KFmyAjWMs2S0lyU',
-                        'payMoney': tempPrice * 100 + ''
+                        'payMoney': tempOrderGoodList.length * 100 + ''
                     }
                 })
                 .done(function(e) {
