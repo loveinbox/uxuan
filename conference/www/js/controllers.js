@@ -604,6 +604,7 @@ angular.module('starter.controllers', ['starter.services'])
             })
             .done(function(e) {
                 var data = JSON.parse(e);
+                console.log(data);
                 $scope.$apply(function() {
                     if (data.code == 0) {
                         $rootScope.message = 'success';
