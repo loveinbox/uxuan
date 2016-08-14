@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['starter.services'])
 
-.run(function run($rootScope) {
+.run(function run($rootScope, userinfo, UserRegister) {
     (function register() {
         $.ajax({
                 url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
@@ -40,7 +40,30 @@ angular.module('starter.controllers', ['starter.services'])
                 alert(res.latitude);
             }
         });
-    });
+        userinfo.get({},
+            function(e) {
+                alert(e);
+                alert(e.openid);
+                $rootScope.openid = e.openid;
+                // var res = JSON.parse(e);
+                $scope.user = $rootScope.user = { name: e.nickname };
+                $scope.user = $rootScope.user = { img: e.headimgurl };
+                UserRegister.get({
+                    'latitude': $rootScope.latitude,
+                    'longitude': $rootScope.longitude,
+                    'openId': e.openid
+                }, function(e) {
+                    alert(e.data);
+                    alert(e.data.userId);
+                    $rootScope.userid = e.data.userId;
+                    })
+                }, function(e) {
+                    alert(e);
+                })
+            },
+            function(e) {
+                alert(e);
+            });
 })
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope) {
@@ -681,18 +704,9 @@ angular.module('starter.controllers', ['starter.services'])
 })
 
 .controller('AccountCtrl', function($scope, userinfo, $rootScope) {
-    userinfo.get({},
-        function(e) {
-            alert(e);
-            alert(e.openid);
-            $rootScope.openid = e.openid;
-            // var res = JSON.parse(e);
-            $scope.user = $rootScope.user = { name: e.nickname };
-            $scope.user = $rootScope.user = { img: e.headimgurl };
 
-        },function(e) {
-            alert(e);
-        })
+    $scope.user = $rootScope.user;
+    $scope.user = $rootScope.user;
     // $.ajax({
     //         url: 'http://www.lifeuxuan.com/backend/userinfo.php',
     //         type: 'GET',

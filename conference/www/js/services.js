@@ -40,4 +40,7 @@ angular.module('starter.services', ['ngResource'])
     return $resource('http://www.lifeuxuan.com/backend/userinfo.php');
 })
 
+.factory('UserRegister', function($resource, $http) {
+    return $resource('http://www.lifeuxuan.com/backend/api/UserRegister.php');
+})
 ;
