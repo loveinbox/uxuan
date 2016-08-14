@@ -585,7 +585,7 @@ angular.module('starter.controllers', ['starter.services'])
             date.getFullYear() + '-' + pDate + ' ' + $scope.order.preferTimeTime.split(' -- ')[1] + ':00'
         ];
 
-        $.ajax({
+        var orderRequestObj = {
                 url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
                 data: {
                     'longitude': $rootScope.longitude || 121.470257,
@@ -601,7 +601,9 @@ angular.module('starter.controllers', ['starter.services'])
                     'note': $scope.order.note || "无" + "",
                     'productList': tempOrderGoodList
                 }
-            })
+            };
+            console.log('orderRequestObj', orderRequestObj);
+        $.ajax(orderRequestObj)
             .done(function(e) {
                 var data = JSON.parse(e);
                 console.log(data);
