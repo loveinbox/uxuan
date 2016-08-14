@@ -54,6 +54,7 @@ angular.module('starter.controllers', ['starter.services'])
                     'openId': e.openid
                 }, function(e) {
                     alert('userID');
+                    console.log(e);
                     alert(e.data);
                     alert(e.data.userId);
                     $rootScope.userid = e.data.userId;
