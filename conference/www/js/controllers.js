@@ -602,11 +602,14 @@ angular.module('starter.controllers', ['starter.services'])
                     'productList': tempOrderGoodList
                 }
             };
-            console.log('orderRequestObj', orderRequestObj);
+            for(var p in orderRequestObj){
+                console.log(p, orderRequestObj[p]);
+            }
+            // console.log('orderRequestObj', orderRequestObj);
         $.ajax(orderRequestObj)
             .done(function(e) {
                 var data = JSON.parse(e);
-                console.log(data);
+                console.log(data.message);
                 $scope.$apply(function() {
                     if (data.code == 0) {
                         $rootScope.message = 'success';
