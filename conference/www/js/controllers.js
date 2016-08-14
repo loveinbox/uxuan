@@ -663,6 +663,7 @@ angular.module('starter.controllers', ['starter.services'])
                             signType: e.signType,
                             paySign: e.paySign,
                             success: function(res) {
+                                console.log(orderIds);
                                 // alert('success');
                                 PayConfirm.get({
                                     'longitude': $rootScope.longitude || 121.470257,
