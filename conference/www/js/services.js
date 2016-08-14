@@ -45,7 +45,7 @@ angular.module('starter.services', ['ngResource'])
 })
 
 .factory('PayConfirm', function($resource, $http) {
-    return $resource('http://www.lifeuxuan.com/backend/PayConfirm.php');
+    return $resource('http://www.lifeuxuan.com/backend/api/PayConfirm.php');
 })
 
 ;

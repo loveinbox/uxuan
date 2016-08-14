@@ -625,7 +625,6 @@ angular.module('starter.controllers', ['starter.services'])
             .fail(function(e) {
                 console.log(e);
                 console.log("error");
-                x.innerHTML = e.responseText;
             })
             .always(function() {
                 console.log("complete");
