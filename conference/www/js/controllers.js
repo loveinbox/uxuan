@@ -700,11 +700,11 @@ angular.module('starter.controllers', ['starter.services'])
         .done(function(e) {
             // var res = JSON.parse(e);
             alert(e.openid);
-            $scope.$apply(function () {
-                $rootScope.openId = e.openid;
-                $scope.userName = e.nickname;
-                $scope.userImg = e.headimgurl;
-            })     
+            $scope.$apply(function() {
+                $rootScope.openid = e.openid;
+                $scope.user = { name: e.nickname };
+                $scope.user = { img: e.headimgurl };
+            })
         })
         .fail(function(e) {
             alert(e);
