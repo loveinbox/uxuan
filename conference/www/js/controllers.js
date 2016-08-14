@@ -30,45 +30,49 @@ angular.module('starter.controllers', ['starter.services'])
 
     })();
     wx.ready(function() {
-        wx.getLocation({
-            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-            success: function(res) {
-                $rootScope.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                $rootScope.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                $rootScope.speed = res.speed; // 速度，以米/每秒计
-                $rootScope.accuracy = res.accuracy; // 位置精度
-                alert(res.latitude);
-            }
-        });
-        userinfo.get({},
-            function(e) {
-                alert('oepnID');
-                alert(e.openid);
-                $rootScope.openid = e.openid;
-                // var res = JSON.parse(e);
-                $rootScope.user = { name: e.nickname };
-                $rootScope.user = { img: e.headimgurl };
-                UserRegister.get({
-                    'latitude': $rootScope.latitude,
-                    'longitude': $rootScope.longitude,
-                    'openId': e.openid
-                }, function(e) {
-                    alert('userID');
-                    console.log(e);
-                    for(var p in e){
-                        console.log(p, e[p])
-                    }
-                    alert(e.data);
-                    alert(e.data.userId);
-                    $rootScope.userid = e.data.userId;
+            wx.getLocation({
+                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                success: function(res) {
+                    $rootScope.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    $rootScope.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    $rootScope.speed = res.speed; // 速度，以米/每秒计
+                    $rootScope.accuracy = res.accuracy; // 位置精度
+                    alert(res.latitude);
+                }
+            });
+            userinfo.get({},
+                function(e) {
+                    alert('oepnID');
+                    alert(e.openid);
+                    $rootScope.openid = e.openid;
+                    // var res = JSON.parse(e);
+                    $rootScope.user = { name: e.nickname };
+                    $rootScope.user = { img: e.headimgurl };
+                    UserRegister.get({
+                        'latitude': $rootScope.latitude,
+                        'longitude': $rootScope.longitude,
+                        'openId': e.openid,
+                        'username': e.nickname,
+                        'password': '',
+                        'headPicUrl': e.headimgurl
+                    }, function(e) {
+                        alert('userID');
+                        console.log(e);
+                        for (var p in e) {
+                            console.log(p, e[p])
+                        }
+                        alert(e.data);
+                        alert(e.data.userId);
+                        $rootScope.userid = e.data.userId;
                     })
-                }, function(e) {
+                },
+                function(e) {
                     alert(e);
                 })
-            },
-            function(e) {
-                alert(e);
-            });
+        },
+        function(e) {
+            alert(e);
+        });
 })
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope) {
