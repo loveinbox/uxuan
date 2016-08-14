@@ -44,6 +44,9 @@ angular.module('starter.controllers', ['starter.services'])
                 function(e) {
                     console.log('openid', e.openid);
                     $rootScope.openid = e.openid;
+                    for(var p in e){
+                        console.log(p, e[p]);
+                    }
                     // var res = JSON.parse(e);
                     $rootScope.user = { name: e.nickname };
                     $rootScope.user = { img: e.headimgurl };
