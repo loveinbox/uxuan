@@ -42,7 +42,7 @@ angular.module('starter.controllers', ['starter.services'])
         });
         userinfo.get({},
             function(e) {
-                alert(e);
+                alert('oepnID');
                 alert(e.openid);
                 $rootScope.openid = e.openid;
                 // var res = JSON.parse(e);
@@ -53,6 +53,7 @@ angular.module('starter.controllers', ['starter.services'])
                     'longitude': $rootScope.longitude,
                     'openId': e.openid
                 }, function(e) {
+                    alert('userID');
                     alert(e.data);
                     alert(e.data.userId);
                     $rootScope.userid = e.data.userId;
