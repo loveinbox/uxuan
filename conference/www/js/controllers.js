@@ -700,6 +700,7 @@ angular.module('starter.controllers', ['starter.services'])
         .done(function(e) {
             // var res = JSON.parse(e);
             alert(e.openid);
+            alert(e);
             $scope.$apply(function() {
                 $rootScope.openid = e.openid;
                 $scope.user = { name: e.nickname };
