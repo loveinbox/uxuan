@@ -42,7 +42,7 @@ angular.module('starter.controllers', ['starter.services'])
             });
             userinfo.get({},
                 function(e) {
-                    console.log('userId', e.openid);
+                    console.log('openid', e.openid);
                     $rootScope.openid = e.openid;
                     // var res = JSON.parse(e);
                     $rootScope.user = { name: e.nickname };
@@ -708,7 +708,8 @@ angular.module('starter.controllers', ['starter.services'])
 .controller('AccountCtrl', function($scope, userinfo, $rootScope) {
 
     $scope.user = $rootScope.user;
-    console.log('userId', $scope.user);
+    console.log('user', $scope.user);
+    console.log('user name', $scope.user.name);
     // $.ajax({
     //         url: 'http://www.lifeuxuan.com/backend/userinfo.php',
     //         type: 'GET',
