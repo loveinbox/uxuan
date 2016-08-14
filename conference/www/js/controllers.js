@@ -42,8 +42,7 @@ angular.module('starter.controllers', ['starter.services'])
             });
             userinfo.get({},
                 function(e) {
-                    alert('oepnID');
-                    alert(e.openid);
+                    console.log('userId', e.openid);
                     $rootScope.openid = e.openid;
                     // var res = JSON.parse(e);
                     $rootScope.user = { name: e.nickname };
@@ -56,7 +55,7 @@ angular.module('starter.controllers', ['starter.services'])
                         'password': '',
                         'headPicUrl': e.headimgurl
                     }, function(e) {
-                        console.log(e.data.userId);
+                        console.log('userId', e.data.userId);
                         $rootScope.userid = e.data.userId;
                     })
                 },
@@ -709,7 +708,7 @@ angular.module('starter.controllers', ['starter.services'])
 .controller('AccountCtrl', function($scope, userinfo, $rootScope) {
 
     $scope.user = $rootScope.user;
-    $scope.user = $rootScope.user;
+    console.log('userId', $scope.user);
     // $.ajax({
     //         url: 'http://www.lifeuxuan.com/backend/userinfo.php',
     //         type: 'GET',
