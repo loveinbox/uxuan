@@ -37,7 +37,7 @@ angular.module('starter.services', ['ngResource'])
 })
 
 .factory('userinfo', function($resource, $http) {
-    return $resource('http://www.lifeuxuan.com/backend/api/userinfo.php');
+    return $resource('http://www.lifeuxuan.com/backend/userinfo.php');
 })
 
 ;
