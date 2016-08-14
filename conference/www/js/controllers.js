@@ -673,6 +673,10 @@ angular.module('starter.controllers', ['starter.services'])
                                     $rootScope.message = 'success';
                                     $state.go('orderStatus');
                                 }, function(data) {
+                                    console.log(data);
+                                    for(var p in data){
+                                        console.log(p, data[p]);
+                                    }
                                     alert('NO DATA');
                                 });
                             }
