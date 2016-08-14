@@ -680,7 +680,7 @@ angular.module('starter.controllers', ['starter.services'])
     }
 })
 
-.controller('AccountCtrl', function($scope, userinfo) {
+.controller('AccountCtrl', function($scope, userinfo, $rootScope) {
     // userinfo.get({},
     //     function(e) {
     //         alert(e);
