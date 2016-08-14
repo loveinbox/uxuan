@@ -689,7 +689,7 @@ angular.module('starter.controllers', ['starter.services'])
             $scope.userImg = e.headimgurl;
 
         },function(e) {
-            //alert(e);
+            alert(e);
         })
     // $.ajax({
     //         url: 'http://www.lifeuxuan.com/backend/userinfo.php',
