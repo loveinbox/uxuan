@@ -14,7 +14,7 @@ angular.module('starter.controllers', ['starter.services'])
                 // var rs = JSON.parse(e);
                 // alert(e);
                 wx.config({
-                    debug: true,
+                    debug: false,
                     appId: e.appId,
                     timestamp: e.timestamp,
                     nonceStr: e.nonceStr,
@@ -692,13 +692,14 @@ angular.module('starter.controllers', ['starter.services'])
     //         alert(e);
     //     })
     $.ajax({
-            url: 'http://www.lifeuxuan.com/backend/userinfo.php',
+            url: 'http://www.lifeuxuan.com/backend/userinfo.php?XDEBUG_SESSION_START=657409A8',
             type: 'GET',
             dataType: 'json',
             data: {}
         })
         .done(function(e) {
             // var res = JSON.parse(e);
+            alert(e.openId);
             $scope.$apply(function () {
                 $rootScope.openId = e.openId;
                 $scope.userName = e.nickname;
