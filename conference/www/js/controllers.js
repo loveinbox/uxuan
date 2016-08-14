@@ -699,13 +699,15 @@ angular.module('starter.controllers', ['starter.services'])
         })
         .done(function(e) {
             alert(e);
+            alert(JSON.parse(e));
             // var res = JSON.parse(e);
             $scope.userName = e.nickname;
             $scope.userImg = e.headimgurl;
 
         })
         .fail(function(e) {
-            //alert(e);
+            alert(e);
+            alert(JSON.parse(e));
         });
     console.log('go');
 })
