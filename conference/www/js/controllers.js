@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['starter.services'])
 
-.run(function run($scope, $rootScope, userinfo, UserRegister) {
+.run(function run($rootScope, userinfo, UserRegister) {
     (function register() {
         $.ajax({
                 url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
@@ -46,8 +46,8 @@ angular.module('starter.controllers', ['starter.services'])
                 alert(e.openid);
                 $rootScope.openid = e.openid;
                 // var res = JSON.parse(e);
-                $scope.user = $rootScope.user = { name: e.nickname };
-                $scope.user = $rootScope.user = { img: e.headimgurl };
+                $rootScope.user = { name: e.nickname };
+                $rootScope.user = { img: e.headimgurl };
                 UserRegister.get({
                     'latitude': $rootScope.latitude,
                     'longitude': $rootScope.longitude,
