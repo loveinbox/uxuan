@@ -681,33 +681,33 @@ angular.module('starter.controllers', ['starter.services'])
 })
 
 .controller('AccountCtrl', function($scope, userinfo) {
-    userinfo.get({},
-        function(e) {
-            alert(e);
-            // var res = JSON.parse(e);
-            $scope.userName = e.nickname;
-            $scope.userImg = e.headimgurl;
-
-        },function(e) {
-            alert(e);
-        })
-    // $.ajax({
-    //         url: 'http://www.lifeuxuan.com/backend/userinfo.php',
-    //         type: 'GET',
-    //         dataType: 'json',
-    //         data: {}
-    //     })
-    //     .done(function(e) {
+    // userinfo.get({},
+    //     function(e) {
     //         alert(e);
     //         // var res = JSON.parse(e);
     //         $scope.userName = e.nickname;
     //         $scope.userImg = e.headimgurl;
 
+    //     },function(e) {
+    //         alert(e);
     //     })
-    //     .fail(function(e) {
-    //         //alert(e);
-    //     });
-    // console.log('go');
+    $.ajax({
+            url: 'http://www.lifeuxuan.com/backend/userinfo.php',
+            type: 'GET',
+            dataType: 'json',
+            data: {}
+        })
+        .done(function(e) {
+            alert(e);
+            // var res = JSON.parse(e);
+            $scope.userName = e.nickname;
+            $scope.userImg = e.headimgurl;
+
+        })
+        .fail(function(e) {
+            //alert(e);
+        });
+    console.log('go');
 })
 
 .controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList) {
