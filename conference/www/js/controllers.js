@@ -55,6 +55,9 @@ angular.module('starter.controllers', ['starter.services'])
                 }, function(e) {
                     alert('userID');
                     console.log(e);
+                    for(var p in e){
+                        console.log(p, e[p])
+                    }
                     alert(e.data);
                     alert(e.data.userId);
                     $rootScope.userid = e.data.userId;
