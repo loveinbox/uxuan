@@ -757,7 +757,7 @@ angular.module('starter.controllers', ['starter.services'])
             QueryOrderList.get({
                 'longitude': $rootScope.longitude || 121.470257,
                 'latitude': $rootScope.latitude || 31.3234,
-                'userId': '1'
+                'userId': $rootScope.userid
             }, function(data) {
                 $scope.orders = data.data;
             });
@@ -766,11 +766,11 @@ angular.module('starter.controllers', ['starter.services'])
 
         $scope.doRefresh = function() {
 
-            console.log('Refreshing!');
+            console.log('Refreshing!', $rootScope.userid);
             QueryOrderList.get({
                 'longitude': $rootScope.longitude || 121.470257,
                 'latitude': $rootScope.latitude || 31.3234,
-                'userId': '1'
+                'userId': $rootScope.userid
             }, function(data) {
                 $scope.orders = data.data;
             });
