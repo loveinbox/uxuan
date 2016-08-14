@@ -692,21 +692,18 @@ angular.module('starter.controllers', ['starter.services'])
     //         alert(e);
     //     })
     $.ajax({
-            url: 'http://www.lifeuxuan.com/backend/userinfo.php?XDEBUG_SESSION_START=657409A8',
+            url: 'http://www.lifeuxuan.com/backend/userinfo.php',
             type: 'GET',
             dataType: 'json',
             data: {}
         })
         .done(function(e) {
-            alert(e);
-            alert(e.msg);
-            for(var p in e){
-                alert(p, p[e]);
-            }
             // var res = JSON.parse(e);
-            $scope.userName = e.nickname;
-            $scope.userImg = e.headimgurl;
-
+            $scope.$apply(function () {
+                $rootScope.openId = e.openId;
+                $scope.userName = e.nickname;
+                $scope.userImg = e.headimgurl;
+            })     
         })
         .fail(function(e) {
             alert(e);
