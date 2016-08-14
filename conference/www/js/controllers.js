@@ -602,8 +602,8 @@ angular.module('starter.controllers', ['starter.services'])
                     'productList': tempOrderGoodList
                 }
             };
-            for(var p in orderRequestObj[data]){
-                console.log(p, orderRequestObj[data][p]);
+            for(var p in orderRequestObj['data']){
+                console.log(p, orderRequestObj['data'][p]);
             }
             // console.log('orderRequestObj', orderRequestObj);
         $.ajax(orderRequestObj)
