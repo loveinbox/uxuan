@@ -599,7 +599,8 @@ angular.module('starter.controllers', ['starter.services'])
                     'isPaid': true,
                     'totalMoney': tempPrice,
                     'note': $scope.order.note || "无" + "",
-                    'productList': tempOrderGoodList
+                    'productList': tempOrderGoodList,
+                    'username': $rootScope.user.name
                 }
             };
             for(var p in orderRequestObj['data']){
@@ -615,7 +616,7 @@ angular.module('starter.controllers', ['starter.services'])
                     if (data.code == 0) {
                         $rootScope.message = 'success';
                     } else {
-                        $rootScope.message = 'failed';
+                        $rootScope.message = data.message;
                     }
                     $state.go('orderStatus');
                 })
@@ -706,11 +707,13 @@ angular.module('starter.controllers', ['starter.services'])
 
 .controller('OrderStatusCtrl', function($scope, $stateParams, $ionicHistory, $rootScope) {
     // $scope.status = $rootScope.message;
-    if ($rootScope.message == "failed") {
-        $scope.status = "下单失败";
-    }
+    // if ($rootScope.message == "failed") {
+    //     $scope.status = "下单失败";
+    // }
     if ($rootScope.message == "success") {
         $scope.status = "下单成功";
+    }else{
+        $scope.status = $rootScope.message;
     }
 })
 
