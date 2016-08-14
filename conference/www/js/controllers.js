@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['starter.services'])
 
-.run(function run($rootScope, userinfo, UserRegister) {
+.run(function run($scope, $rootScope, userinfo, UserRegister) {
     (function register() {
         $.ajax({
                 url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
