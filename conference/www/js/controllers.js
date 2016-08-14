@@ -511,7 +511,7 @@ angular.module('starter.controllers', ['starter.services'])
             value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00'
         })
     }
-    if($scope.order.orderTime){
+    if($scope.order.orderTime.length > 0){
         $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
     }    
 
