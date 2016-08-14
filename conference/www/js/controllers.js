@@ -699,6 +699,7 @@ angular.module('starter.controllers', ['starter.services'])
         })
         .done(function(e) {
             alert(e);
+            alert(e.msg);
             alert(JSON.parse(e));
             // var res = JSON.parse(e);
             $scope.userName = e.nickname;
@@ -707,6 +708,7 @@ angular.module('starter.controllers', ['starter.services'])
         })
         .fail(function(e) {
             alert(e);
+            alert(e.msg);
             alert(JSON.parse(e));
         });
     console.log('go');
