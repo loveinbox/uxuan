@@ -603,7 +603,7 @@ angular.module('starter.controllers', ['starter.services'])
                     'totalMoney': tempPrice,
                     'note': $scope.order.note || "无" + "",
                     'productList': tempOrderGoodList,
-                    'username': $rootScope.user.nickname
+                    'username': $rootScope.user.name
                 }
             };
             for(var p in orderRequestObj['data']){
@@ -619,7 +619,7 @@ angular.module('starter.controllers', ['starter.services'])
                     if (data.code == 0) {
                         $rootScope.message = 'success';
                     } else {
-                        $rootScope.message = data.message;
+                        $rootScope.message = data.msg;
                     }
                     $state.go('orderStatus');
                 })
