@@ -692,16 +692,16 @@ angular.module('starter.controllers', ['starter.services'])
     //         alert(e);
     //     })
     $.ajax({
-            url: 'http://www.lifeuxuan.com/backend/userinfo.php?XDEBUG_SESSION_START=657409A8',
+            url: 'http://www.lifeuxuan.com/backend/userinfo.php',
             type: 'GET',
             dataType: 'json',
             data: {}
         })
         .done(function(e) {
             // var res = JSON.parse(e);
-            alert(e.openId);
+            alert(e.openid);
             $scope.$apply(function () {
-                $rootScope.openId = e.openId;
+                $rootScope.openId = e.openid;
                 $scope.userName = e.nickname;
                 $scope.userImg = e.headimgurl;
             })     
