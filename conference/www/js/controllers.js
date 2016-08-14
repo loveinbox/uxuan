@@ -692,7 +692,7 @@ angular.module('starter.controllers', ['starter.services'])
     //         alert(e);
     //     })
     $.ajax({
-            url: 'http://www.lifeuxuan.com/backend/userinfo.php',
+            url: 'http://www.lifeuxuan.com/backend/userinfo.php?XDEBUG_SESSION_START=657409A8',
             type: 'GET',
             dataType: 'json',
             data: {}
@@ -700,7 +700,9 @@ angular.module('starter.controllers', ['starter.services'])
         .done(function(e) {
             alert(e);
             alert(e.msg);
-            alert(JSON.parse(e));
+            for(var p in e){
+                alert(p[e]);
+            }
             // var res = JSON.parse(e);
             $scope.userName = e.nickname;
             $scope.userImg = e.headimgurl;
