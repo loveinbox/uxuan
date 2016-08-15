@@ -613,6 +613,8 @@ angular.module('starter.controllers', ['starter.services'])
         // console.log('orderRequestObj', orderRequestObj);
         $.ajax(orderRequestObj)
             .done(function(e) {
+                console.log('empty cart');
+                $rootScope.goods = new Map;
                 console.log(e);
                 var data = JSON.parse(e);
                 console.log(data.message);
@@ -769,7 +771,7 @@ angular.module('starter.controllers', ['starter.services'])
             QueryOrderList.get({
                 'longitude': $rootScope.longitude || 121.470257,
                 'latitude': $rootScope.latitude || 31.3234,
-                'userId': $rootScope.userid
+                'userId': $rootScope.userid || '1'
             }, function(data) {
                 $scope.orders = data.data;
             });

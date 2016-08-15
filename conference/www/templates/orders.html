@@ -1,20 +1,38 @@
 <ion-view view-title="U选到家">
-    <ion-content>
-    	<ion-refresher on-refresh="doRefresh()">
-                     
-      	</ion-refresher>
+    <div class="index-header">
+        <!-- <label class="item item-input item-select distract-select">
+            <select>
+                <option selected>徐汇区</option>
+                <option>闵行区</option>
+                <option>长宁区</option>
+            </select>
+        </label> -->
+        <div go-back></div>
+        <p class="guard">全部订单</p>
+    </div>
+    <ion-content class="has-header">
+        <ion-refresher on-refresh="doRefresh()"></ion-refresher>
         <ion-list class="">
-            <ion-item class="" ng-repeat="order in orders" href="#/list-sellers/{{seller.id}}">
-                <p class="name">订单编号:{{order.orderId}}</p>
-                <p class="name">订单时间:{{order.orderTime}}</p>
-                <p class="name">订单金额:{{order.totalMoney}}</p>
-                <p class="name">订单金额:{{order.sellerName}}</p>
-                <p class="name">订单状态:{{order.orderStatus}}</p>
-                <ion-list class="">
-                    <ion-item class="" ng-repeat="pic in order.goodsList">
-                        <img ng-src="http://lifeuxuan.com/backend/{{pic.productPicUrl}}">
-                    </ion-item>
-                </ion-list>
+            <ion-item class="list-order-list" ng-repeat="order in orders" href="#/list-sellers/{{seller.id}}">
+                <div class="clearfix">
+                	<p class="list-order-id fl">订单号:{{order.orderId}}</p>
+                	<p class="list-order-status fr">{{order.orderStatus}}</p>
+                </div>
+                <div class="h-list clearfix">
+                    <ion-scroll direction="x" scrollbar-x="false">
+                        <ion-list class="clearfix">
+                            <ion-item class="index-list-item" ng-repeat="pic in order.goodsList" href="#/sessions/{{pic.productId}}">
+                                <img ng-src="http://lifeuxuan.com/backend/{{pic.productPicUrl}}">
+                            </ion-item>
+                        </ion-list>
+                    </ion-scroll>
+                </div>
+                <div><p class="list-seller">{{order.sellerName}}</p></div>
+                <div  class="clearfix">
+                	<p class="list-money fl">总计：{{order.totalMoney/100}}元</p>
+                	<p class="fl">共{{order.goodsList.length}}件</p>
+	                <p class="list-order-time fr">{{order.orderTime}}</p>
+                </div>
             </ion-item>
         </ion-list>
     </ion-content>

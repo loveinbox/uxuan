@@ -14,6 +14,13 @@ a {
     padding-bottom: 60px;
 }
 
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+
 .bottom-bar {
     position: absolute;
     bottom: 0px;
@@ -45,7 +52,7 @@ a {
 .index-header {
     position: absolute;
     width: 100%;
-    height: 40px;
+    height: 45px;
     padding: 0 2%;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.4);
@@ -71,6 +78,7 @@ a {
 }
 
 .index-header .back-wrap {
+    position: absolute;
     height: 100%;
     width: 80px;
     color: #fff;
@@ -88,6 +96,7 @@ a {
 }
 
 .index-header .guard {
+    margin: 0;
     text-align: center;
     line-height: 40px;
     color: #fff;
@@ -595,4 +604,19 @@ a {
     overflow: hidden;
     color: #fff;
     height: 40px;
+}
+
+.list-order-list .item-content{
+    padding-right: 16px;
+}
+.list-seller{
+   /* max-width: 100px;
+    padding: 0 10px;*/
+}
+.h-list .index-list-item{
+    display: inline-block;
+    float: none;
+    width: 115px;
+    margin: 0;
+    border: none;
 }
