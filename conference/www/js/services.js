@@ -48,7 +48,7 @@ angular.module('starter.services', ['ngResource'])
     return $resource('http://www.lifeuxuan.com/backend/api/PayConfirm.php');
 })
 
-.factory('Location', function($rootScope, $resource, $q, userinfo) {
+.factory('Location', function($rootScope, $resource, $q, userinfo, UserRegister) {
 
     console.log('start to get loction');
     var deferred = $q.defer();
