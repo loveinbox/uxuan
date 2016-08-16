@@ -20,8 +20,8 @@ angular.module('starter.directives', ['starter.services'])
         templateUrl: 'templateDirectives/sellersListDirective.html',
         controller: function($scope, $rootScope, NearByFruitShops) {
                 NearByFruitShops.get({
-			        'longitude': $rootScope.longitude || 121.470257,
-			        'latitude': $rootScope.latitude || 31.3234,
+			        'longitude': $rootScope.longitude || 121.483159,
+			        'latitude': $rootScope.latitude || 31.2135,
 			    }, function(data) {
 			        $scope.sellers = data.data;
 			    }, function(data) {
