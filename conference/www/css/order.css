@@ -39,10 +39,6 @@
     border: 1px solid #eee;
 }
 
-.order-address textarea {
-    height: 40px;
-}
-
 .create-order input {
     border: 1px solid #eee;
 }
@@ -51,9 +47,26 @@
     float: left;
 }
 
-.order-receiver-name input {
+.order-receiver-name .like-input, .order-receiver-phone .like-input {
+    display: block;
     width: 90px;
     margin-right: 50px;
+    border: 1px solid #eee;
+    color: #ddd;
+}
+
+.order-receiver-address{
+    margin-top: 5px;
+}
+.order-address .like-textarea {
+    height: 40px;
+    border: 1px solid #eee;
+    color: #ddd;
+}
+
+.fromWeChat{
+    color: #F5A623;
+    font-weight: bold;
 }
 
 .time-wrap {
@@ -72,7 +85,14 @@
     margin-left: 20px;
 }
 
-.confirm-order span {
+.pick-all{
+    padding-left: 15px;
+}
+.pick-all input{
+    transform: scale(1.5);
+}
+
+.total-price span {
     font-size: 18px;
     line-height: 60px;
     padding-left: 10px;

@@ -8,19 +8,22 @@
             <div class="order-receiver-name">
                 <label>
                     <span>收货人姓名</span>
-                    <input type="text" name="receiver" placeholder="姓名" ng-model="order.receiverName">
+                    <!-- <input type="text" name="receiver" placeholder="姓名" ng-model="order.receiverName" disabled> -->
+                    <span ng-model="order.receiverName" class="like-input">姓名</span>
                 </label>
             </div>
             <div class="order-receiver-phone">
                 <label>
                     <span>收货人手机</span>
-                    <input type="number" name="phone" placeholder="手机" ng-model="order.receiverPhone">
+                    <span ng-model="order.receiverPhone" class="like-input">手机</span>
+                    <!-- <input type="number" name="phone" placeholder="手机" ng-model="order.receiverPhone" disabled> -->
                 </label>
             </div>
-            <div class="order-receiver-address">
+            <div class="order-receiver-address" ng-click="getAddress()">
                 <label>
-                    <span>收货地址</span><span class="fromWeChat fr" ng-click="getAddress()">从微信获取</span>
-                    <textarea ng-model="order.receiverAddress"></textarea>
+                    <span>收货地址</span><span class="fromWeChat fr" >从微信获取</span>
+                    <!-- <textarea ng-model="order.receiverAddress" disabled></textarea> -->
+                    <p class="like-textarea" ng-model="order.receiverAddress" >地址</p>
                 </label>
             </div>
         </section>
@@ -80,19 +83,18 @@
                         </ion-item>
                     </ion-list>
                 </div>
-                <!-- <img ng-src="http://lifeuxuan.com/backend/{{good.headPic}}" alt="">
-                <span class="name">{{good.goodName}}</span>
-                <div class="good-info-wrap">
-                    <p class="price">数量：{{good.buyNumber}}</p>
-                </div> -->
             </ion-item>
         </ion-list>
-        <section class="order-note">
+        <!-- <section class="order-note">
             <span>备注</span>
             <textarea ng-model="order.note"></textarea>
-        </section>
+        </section> -->
     </ion-content>
     <div class="bottom-bar confirm-order">
+        <label class="pick-all">
+            <input type="checkbox" name="" ng-model="isAllChecked" ng-click="pickAll()">
+            <span>全选</span>
+        </label>
         <div class="total-price">
             <span>总价</span>
             <span>￥{{carts.allGoodsTotalMoney/100}}</span>

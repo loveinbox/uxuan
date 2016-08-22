@@ -234,34 +234,54 @@ angular.module('starter.controllers', ['starter.services'])
         $scope.from = { bool: $stateParams.from > 0 };
 
         var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
+        var weight = 0;
 
         var date = new Date,
             startHour = date.getHours() > 8 ? date.getHours() : 8;
 
-        $scope.date = {
-            week: weekArray[date.getDay()]
+        if(startHour > 20){
+            weight = 1;
         }
 
-        for (var i = 0; i < 8; i++) {
+        $scope.date = {
+            week: weekArray[date.getDay() + weight]
+        }
+
+        for (var i = 0 + weight; i < 8; i++) {
             $scope.order.orderDate.push({
                 name: addDate(date, i),
                 value: i
             })
         }
-        $scope.order.preferTimeDay = 0;
+
+        $scope.order.preferTimeDay = weight;
 
         $scope.order.orderTime = [];
 
-        for (var i = 1; startHour + i < 21; i++) {
-            $scope.order.orderTime.push({
-                name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
-                value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
-            })
-            $scope.order.orderTime.push({
-                name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
-                value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
-            })
+        if(weight == 0){
+            for (var i = 1; startHour + i < 21; i++) {
+                $scope.order.orderTime.push({
+                    name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
+                    value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
+                })
+                $scope.order.orderTime.push({
+                    name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
+                    value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
+                })
+            }
+        }else{
+            for (var i = 8; i < 21; i++) {
+                $scope.order.orderTime.push({
+                    name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
+                    value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
+                })
+                $scope.order.orderTime.push({
+                    name: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00',
+                    value: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00'
+                })
+            }
         }
+        
         if ($scope.order.orderTime.length > 0) {
             $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
         }
@@ -329,6 +349,7 @@ angular.module('starter.controllers', ['starter.services'])
     });
 
     $scope.calculateMoney = function(event, cart) {
+        $scope.isAllChecked = false;
         $.each(cart.goodsList, function(index, value) {
             value.isChecked = cart.isChecked;
         });
@@ -338,6 +359,7 @@ angular.module('starter.controllers', ['starter.services'])
     $scope.calculateSingleMoney = function(event, cart) {
         event.stopPropagation();
         var isAllSelected = true;
+        $scope.isAllChecked = false;
         // is all goods selected
         $.each(cart.goodsList, function(index, value) {
             if (!value.isChecked) {
@@ -346,6 +368,12 @@ angular.module('starter.controllers', ['starter.services'])
         });
         cart.isChecked = isAllSelected;
         cartList();
+    }
+
+    $scope.pickAll = function () {
+        if($scope.isAllChecked){
+           cartListInit(); 
+       }        
     }
 
     cartListInit();
@@ -421,7 +449,7 @@ angular.module('starter.controllers', ['starter.services'])
         $.ajax(orderRequestObj)
             .done(function(e) {
                 console.log('empty cart');
-                $rootScope.goods = new Map;
+                cleanCart();
                 console.log(e);
                 var data = JSON.parse(e);
                 console.log(data.message);
@@ -438,30 +466,23 @@ angular.module('starter.controllers', ['starter.services'])
             .always(function() {
                 console.log("complete");
             });
-        // , function(e) {
-        //             $rootScope.message = 'success';
-        //             if (e.statusCode == 0) {
-        //                 ForwardPay();
-        //             }
-        //             // $state.go('orderStatus');
-        //         }, function() {
-        //             $rootScope.message = 'fail';
-        //             $state.go('orderStatus');
-        //         });
 
-        // var config = {
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-        //     }
-        // }
-
-        // $http.post(orderRequestObj.url, orderRequestObj.data, config)
-        //     .success(function(data, status, headers, config) {
-        //         $scope.data = data;
-        //     })
-        //     .error(function(data, status, headers, config) {
-        //         $scope.status = status;
-        //     });
+        function cleanCart() {
+            var carts = ShoppingCart.getCart();
+            $.each(carts, function(index, cart) {
+                if(cart){
+                    if (cart.isChecked) {
+                        carts.splice(index, 1);
+                    } else {
+                        $.each(cart.goodsList, function(index, good) {
+                            if (good && good.isChecked) {
+                                cart.goodsList.splice(index, 1);
+                            }
+                        })
+                    }
+                }                
+            });
+        }
 
         function ForwardPay() {
 
@@ -503,7 +524,11 @@ angular.module('starter.controllers', ['starter.services'])
                                     }
                                     alert('NO DATA');
                                 });
+                            },
+                            cancel: function (res) {
+                                $state.go('orderStatus');
                             }
+
                         });
                     });
 
