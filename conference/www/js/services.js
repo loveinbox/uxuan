@@ -98,6 +98,8 @@ angular.module('starter.services', ['ngResource'])
                                 for (var p in e) {
                                     console.log(p, e[p]);
                                 }
+                                console.log('$rootScope.latitude', $rootScope.latitude);
+                                console.log('$rootScope.longitude', $rootScope.longitude);
                                 // var res = JSON.parse(e);
                                 $rootScope.user = { name: e.nickname, img: e.headimgurl };
                                 UserRegister.get({
