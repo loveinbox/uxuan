@@ -85,7 +85,6 @@ angular.module('starter.services', ['ngResource'])
             wx.getLocation({
                 type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
                 success: function(res) {
-                    console.log('location success', s);
                     $rootScope.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                     $rootScope.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
                     $rootScope.speed = res.speed; // 速度，以米/每秒计
@@ -98,7 +97,7 @@ angular.module('starter.services', ['ngResource'])
                                 $rootScope.openid = e.openid;
                                 for (var p in e) {
                                     console.log(p, e[p]);
-                                }
+                                }                                
                                 console.log('$rootScope.latitude', $rootScope.latitude);
                                 console.log('$rootScope.longitude', $rootScope.longitude);
                                 // var res = JSON.parse(e);
@@ -125,12 +124,6 @@ angular.module('starter.services', ['ngResource'])
                                 deferred.reject(e);
                             })
                     })();
-                },
-                cancel: function (res) {
-                    console.log('location cancel', res);
-                },
-                error: function (res) {
-                    console.log('location error', res);
                 }
             });
         },
