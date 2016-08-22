@@ -9,7 +9,9 @@
             <li class="distance">{{seller.sendStartPrice}}元配送费</li>
         </ul>
         <div class="slogen">{{seller.sellerSlogen}}</div>
-        <i class="icon ion-ios-cart list-cart"></i>
-        <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
+        <div class="list-cart">
+            <i class="icon ion-ios-cart "></i>
+            <p class="cartNumber">{{seller.cartNumber}}</p>
+        </div>
     </ion-item>
 </ion-list>

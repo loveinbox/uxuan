@@ -1,15 +1,10 @@
 <ion-view class="create-order" view-title="U选到家">
-    <div class="index-header">
-        <div class="back-wrap" ng-click="myGoBack()">
-            <i class="ion-arrow-left-c"></i><span>返回</span>
-        </div>
+    <!-- <div class="index-header" ng-show="from.bool">
+        <div go-back></div>
     </div>
-    <ion-content class="e-content">
+    <ion-content ng-class="{'e-content':from.bool}"> -->
+    <ion-content class="singePage cart-page">
         <section class="order-address">
-            <span>收货地址</span><span ng-click="getAddress()">从微信获取</span>
-            <textarea ng-model="order.receiverAddress"></textarea>
-        </section>
-        <section class="order-receiver-info clearfix">
             <div class="order-receiver-name">
                 <label>
                     <span>收货人姓名</span>
@@ -22,64 +17,85 @@
                     <input type="number" name="phone" placeholder="手机" ng-model="order.receiverPhone">
                 </label>
             </div>
+            <div class="order-receiver-address">
+                <label>
+                    <span>收货地址</span><span class="fromWeChat fr" ng-click="getAddress()">从微信获取</span>
+                    <textarea ng-model="order.receiverAddress"></textarea>
+                </label>
+            </div>
         </section>
         <section class="order-time">
-            <select class="data-pick" ng-model="order.preferTimeDay" ng-options='option.value as option.name for option in order.orderDate' ng-change="changeDate()">
-            </select>
-            <select class="data-pick" ng-model="order.preferTimeTime" ng-options='option.value as option.name for option in order.orderTime'>
-            </select>
-            <!-- <div class="time-wrap">
+            <div class="order-receiver-date">
                 <label>
-                    <input type="radio" name="time" value="8" ng-model="order.preferTimeDate">
-                    <span>08:00-10:00</span>
+                    <span>收货时间</span>
+                    <select class="data-pick" ng-model="order.preferTimeDay" ng-options='option.value as option.name for option in order.orderDate' ng-change="changeDate($index)"></select>
                 </label>
+            </div>
+            <div class="order-receiver-time">
                 <label>
-                    <input type="radio" name="time" value="10" ng-model="order.preferTimeDate">
-                    <span>10:00-12:00</span>
+                    <span>周{{date.week}}</span>
+                    <select class="data-pick" ng-model="order.preferTimeTime" ng-options='option.value as option.name for option in order.orderTime'>
+                    </select>
                 </label>
-                <label>
-                    <input type="radio" name="time" value="12" ng-model="order.preferTimeDate">
-                    <span>12:00-14:00</span>
-                </label>
-                <label>
-                    <input type="radio" name="time" value="14" ng-model="order.preferTimeDate">
-                    <span>14:00-16:00</span>
-                </label>
-                <label>
-                    <input type="radio" name="time" value="16" ng-model="order.preferTimeDate">
-                    <span>16:00-18:00</span>
-                </label>
-                <label>
-                    <input type="radio" name="time" value="18" ng-model="order.preferTimeDate">
-                    <span>18:00-20:00</span>
-                </label>
-            </div> -->
+            </div>
         </section>
         <section class="order-server">
             <span>选择管家</span>
             <label ng-repeat="eG in eGuard">
-                <input type="radio" name="eGuard" ng-checked="$first" value={{eG.id}} ng-model="order.guard" >
+                <input type="radio" name="eGuard" ng-checked="$first" value={{eG.id}} ng-model="order.guard">
                 <span>{{eG.name}}</span>
             </label>
         </section>
+        <ion-list class="good-list-in-order">
+            <ion-item ng-repeat="cart in carts">
+                <div class="order-cart-seller clearfix">
+                    <label class="clearfix">
+                        <input type="checkbox" ng-model="cart.isChecked" ng-click="calculateMoney($event, cart)">
+                        <img class="cart-seller-img" ng-src="http://lifeuxuan.com/backend/{{cart.seller.sellerPicUrl}}" alt="">
+                        <span class="cart-seller-name">{{cart.seller.sellerName}}</span>
+                        <div class="calculate-money fr">
+                            <span class="totalMoney">￥{{cart.seller.totalMoney/100}}元</span>
+                            <span class="sendPrice">含运费{{cart.seller.sendPrice}}元</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="order-cart-goods clearfix">
+                    <ion-list class="clearfix">
+                        <ion-item ng-repeat="good in cart.goodsList">
+                            <input type="checkbox" ng-model="good.isChecked" ng-click="calculateSingleMoney($event, cart)">
+                            <img class="cart-seller-img" ng-src="http://lifeuxuan.com/backend/{{good.headPic}}" alt="">
+                            <div class="cart-goods-info-wrap">
+                                <p class="cart-goods-name">{{good.productName}}</p>
+                                <span class="cart-goods-info">￥{{good.price/100}}</span>
+                            </div>
+                            <div class="cart-goods-action-wrap clearfix fr">
+                                <div class="order-cart-action" ng-click="removeCart(good)">
+                                    <i class="icon ion-minus-round"></i>
+                                </div>
+                                <span class="cart-goods-quantity">{{good.quantity}}</span>
+                                <div class="order-cart-action order-cart-action-plus" ng-click="addCart($event, good)">
+                                    <i class="icon ion-plus-round"></i>
+                                </div>
+                            </div>
+                        </ion-item>
+                    </ion-list>
+                </div>
+                <!-- <img ng-src="http://lifeuxuan.com/backend/{{good.headPic}}" alt="">
+                <span class="name">{{good.goodName}}</span>
+                <div class="good-info-wrap">
+                    <p class="price">数量：{{good.buyNumber}}</p>
+                </div> -->
+            </ion-item>
+        </ion-list>
         <section class="order-note">
             <span>备注</span>
             <textarea ng-model="order.note"></textarea>
         </section>
-        <ion-list class="good-list-in-order">
-            <ion-item class="index-list-item" ng-repeat="good in goods">
-                <img ng-src="http://lifeuxuan.com/backend/{{good.headPic}}" alt="">
-                <span class="name">{{good.goodName}}</span>
-                <div class="good-info-wrap">
-                    <p class="price">数量：{{good.buyNumber}}</p>
-                </div>
-            </ion-item>
-        </ion-list>
     </ion-content>
     <div class="bottom-bar confirm-order">
         <div class="total-price">
             <span>总价</span>
-            <span>￥{{totalPrice}}</span>
+            <span>￥{{carts.allGoodsTotalMoney/100}}</span>
         </div>
         <!-- <a href=""> -->
         <div class="button button-assertive confirm-cart" ng-click="confirmOrder()">确认下单</div>

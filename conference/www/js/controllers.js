@@ -5,161 +5,67 @@ angular.module('starter.controllers', ['starter.services'])
 })
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope, $http) {
-    $rootScope.goods = new Map;
-    $rootScope.totalPrice = 0;
-
-    var config = {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-        }
-    }
-    $http.post("http://www.lifeuxuan.com/backend/api/test.php", 'asd', config)
-        .success(function(data, status, headers, config) {
-            $scope.data = data;
-        }).error(function(data, status, headers, config) {
-            $scope.status = status;
-        });
+    // var config = {
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+    //     }
+    // }
+    // $http.post("http://www.lifeuxuan.com/backend/api/test.php", 'asd', config)
+    //     .success(function(data, status, headers, config) {
+    //         $scope.data = data;
+    //     }).error(function(data, status, headers, config) {
+    //         $scope.status = status;
+    //     });
 })
 
-.controller('SessionsCtrl', function($scope, $rootScope, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location) {
-    $scope.options = {
-        // loop: false,
-        effect: 'fade',
-        // speed: 3500,
-    }
+.controller('SessionsCtrl', function($scope, $rootScope, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
+    // Location.then(function () {
+    console.log('get location');
 
-    $scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
-        // data.slider is the instance of Swiper
-        $scope.slider = data.slider;
+    MainPageHot.get({
+        'longitude': $rootScope.longitude || 121.483159,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.sessions = data.data;
+    }, function(data) {
+        alert('NO DATA');
     });
 
-    $scope.$on("$ionicSlides.slideChangeStart", function(event, data) {
-        console.log('Slide change is beginning');
+    FruitUxuanRank.get({
+        'longitude': $rootScope.longitude || 121.483159,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.goods = data.data;
+    }, function(data) {
+        alert('NO DATA');
     });
-
-    $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
-        // note: the indexes are 0-based
-        $scope.activeIndex = data.activeIndex;
-        $scope.previousIndex = data.previousIndex;
-    });
-
-    Location.then(function () {
-        console.log('get location');
-        NearByEguard.get({
-            'longitude': $rootScope.longitude || 121.444444,
-            'latitude': $rootScope.latitude || 31.1111,
-        }, function(data) {
-            $scope.eGuard = data.data[0];
-        }, function(data) {
-            alert('NO DATA');
-        });
-
-        MainPageHot.get({
-            'longitude': $rootScope.longitude || 121.444444,
-            'latitude': $rootScope.latitude || 31.2422,
-        }, function(data) {
-            $scope.sessions = data.data;
-        }, function(data) {
-            alert('NO DATA');
-        });
-
-        FruitUxuanRank.get({
-            'longitude': $rootScope.longitude || 121.470257,
-            'latitude': $rootScope.latitude || 31.3333,
-        }, function(data) {
-            $scope.goods = data.data;
-        }, function(data) {
-            alert('NO DATA');
-        });
-    })
-
-    // $scope.sessions = [{
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // },
-    // {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // },
-    // {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // },
-    // {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // }];
-
-    $scope.addCart = function($event) {
-        $event.stopPropagation();
-        $event.preventDefault();
-        var offset = $(".ion-ios-cart:visible").offset();
-
-        var flyer = $('<i class="u-flyer icon ion-ios-color-filter"><i/>');
-        flyer.fly({
-            start: {
-                left: event.pageX,
-                top: event.pageY
-            },
-            end: {
-                left: offset.left + 50,
-                top: offset.top + 20,
-                width: 0,
-                height: 0
-            },
-            onEnd: function() {
-                this.destory();
-            }
-        });
-        return false;
-    };
+    // })
 })
 
-.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $ionicHistory, $ionicModal, FruitDetail, FruitPicShow) {
-    $rootScope.goods = $rootScope.goods || new Map;
+.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $ionicHistory, $ionicModal, FruitDetail, FruitPicShow, ShoppingCart, $ionicModal) {
     $scope.isHideAddCart = false;
     $scope.singleNumber = 0;
-    $scope.allNumber = $rootScope.goods.size;
-    $rootScope.totalPrice = $rootScope.totalPrice || 0;
 
-    // $scope.session = {
-    //     'shopId':'1123',
-    //     '':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // }
+    var cartNumber = 0;
 
     FruitDetail.get({
-        'longitude': $rootScope.longitude || 121.470257,
+        'longitude': $rootScope.longitude || 121.483159,
         'latitude': $rootScope.latitude || 31.3234,
         'productId': $stateParams.sessionId
     }, function(data) {
         $scope.session = data.data;
+        cartNumber = ShoppingCart.get(data.data);
+        $scope.singleNumber = cartNumber;
+        $scope.cart = {
+            number: ShoppingCart.getSellerCartNumber(data.data.sellerId)
+        }
+        if (cartNumber == 0) {
+            $scope.isHideAddCart = false;
+        } else {
+            $scope.isHideAddCart = true;
+        }
         FruitPicShow.get({
-            'longitude': $rootScope.longitude || 121.470257,
+            'longitude': $rootScope.longitude || 121.483159,
             'latitude': $rootScope.latitude || 31.3234,
             'productId': $stateParams.sessionId
         }, function(data) {
@@ -171,65 +77,91 @@ angular.module('starter.controllers', ['starter.services'])
         alert('NO DATA');
     });
 
-    $scope.addCart = function(event) {
-        var offset = $(".icon-cart:visible").offset();
 
-        var flyer = $('<i class="u-flyer icon ion-ios-color-filter"><i/>');
-        flyer.fly({
-            start: {
-                left: event.pageX,
-                top: event.pageY
-            },
-            end: {
-                left: offset.left + 50,
-                top: offset.top + 20,
-                width: 0,
-                height: 0
-            },
-            onEnd: function() {
-                this.destory();
-            }
-        });
-        // $scope.session.timeId = Date.now();
-        if ($rootScope.goods.has($scope.session.productId)) {
-            $rootScope.goods.get($scope.session.productId).buyNumber++;
-        } else {
-            $scope.session.buyNumber = 1;
-            $rootScope.goods.set($scope.session.productId, $scope.session);
-        }
-        $scope.allNumber++;
-        // $scope.allNumber = $rootScope.goods.size;
-        $scope.singleNumber++;
+    $scope.addCart = function(event, good) {
+        event.stopPropagation();
+        cartNumber = ShoppingCart.add(event, good);
         $scope.isHideAddCart = true;
-        var tempPrice = 0;
-        $rootScope.goods.forEach(function(value, key) {
-            tempPrice += value.price * value.buyNumber;
-        })
-        $rootScope.totalPrice = tempPrice / 100;
+        $scope.singleNumber = cartNumber;
+        $scope.cart.number = ShoppingCart.getSellerCartNumber(good.sellerId);
+        $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
     };
 
-    $scope.removeCart = function(event) {
-        // var buyNumber = $rootScope.goods.get($scope.session.productId).buyNumber;
-        if ($scope.singleNumber <= 0) {
-            return;
+    $scope.removeCart = function(good) {
+        event.stopPropagation();
+        var cartNumber = ShoppingCart.remove(good);
+        if (cartNumber == 0) {
+            $scope.isHideAddCart = false;
         }
-        var num = $rootScope.goods.get($scope.session.productId).buyNumber--;
-        // $scope.allNumber--;
-        if (num === 0) {
-            $rootScope.goods.delete($scope.session.productId);
+        $scope.singleNumber = cartNumber;
+        $scope.cart.number = ShoppingCart.getSellerCartNumber(good.sellerId);
+        $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
+        if ($scope.cart.number == 0) {
+            $scope.modal.hide();
         }
-
-        $scope.allNumber--;
-        // $scope.allNumber = $rootScope.goods.size;
-        $scope.singleNumber--;
-        // $scope.isHideAddCart = true;
-        var tempPrice = 0;
-        $rootScope.goods.forEach(function(value, key) {
-            tempPrice += value.price * value.buyNumber;
-        })
-        $rootScope.totalPrice = tempPrice;
     };
 
+    $ionicModal.fromTemplateUrl('my-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
+    $scope.openModal = function(good) {
+        if ($scope.cart.number > 0) {
+            $scope.modal.show();
+            $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
+        }
+    };
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+    };
+})
+
+.controller('sellerListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank) {
+    NearByEguard.get({
+        'longitude': $rootScope.longitude || 121.483159,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.eGuard = data.data;
+    }, function(data) {
+        alert('NO DATA');
+    })
+
+    MainPageHot.get({
+        'longitude': $rootScope.longitude || 121.483159,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.sessions = data.data;
+    }, function(data) {
+        alert('NO DATA');
+    });
+
+    FruitUxuanRank.get({
+        'longitude': $rootScope.longitude || 121.483159,
+        'latitude': $rootScope.latitude || 31.3234,
+    }, function(data) {
+        $scope.goods = data.data;
+    }, function(data) {
+        alert('NO DATA');
+    });
+
+})
+
+.controller('sellerCtrl', function($scope, $rootScope, $stateParams, FruitsByShop, ShoppingCart, $ionicModal) {
+
+    $scope.cart = { number: 0 };
+    FruitsByShop.get({
+        'longitude': $rootScope.longitude || 121.483159,
+        'latitude': $rootScope.latitude || 31.3234,
+        'sellerId': $stateParams.sellerId
+    }, function(data) {
+        $scope.seller = data.data.shop;
+        $scope.goods = getGoodQuuantity(data.data.shop.sellerId, data.data.products);
+        $scope.cart.number = ShoppingCart.getSellerCartNumber(data.data.shop.sellerId);
+    }, function(data) {
+        alert('NO DATA');
+    });
 
     $ionicModal.fromTemplateUrl('my-modal.html', {
         scope: $scope,
@@ -239,257 +171,156 @@ angular.module('starter.controllers', ['starter.services'])
     });
     $scope.openModal = function() {
         $scope.modal.show();
-        var tempGoods = [];
-        $rootScope.goods.forEach(function(value, key) {
-            tempGoods.push(value);
-        })
-        $scope.goods = tempGoods;
+        $scope.cartGoods = ShoppingCart.getSellerProductList($scope.seller.sellerId);
     };
     $scope.closeModal = function() {
         $scope.modal.hide();
     };
-    // Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-        $scope.modal.remove();
+
+    $scope.addCart = function(event, good) {
+        event.stopPropagation();
+        cartNumber = ShoppingCart.add(event, good);
+        $scope.isHideAddCart = true;
+        $scope.singleNumber = cartNumber;
+        $scope.cart.number = ShoppingCart.getSellerCartNumber(good.sellerId);
+        $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
+    };
+
+    $scope.removeCart = function(good) {
+        event.stopPropagation();
+        var cartNumber = ShoppingCart.remove(good);
+        if (cartNumber == 0) {
+            $scope.isHideAddCart = false;
+        }
+        $scope.singleNumber = cartNumber;
+        $scope.cart.number = ShoppingCart.getSellerCartNumber(good.sellerId);
+        $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
+        if ($scope.cart.number == 0) {
+            $scope.modal.hide();
+        }
+    };
+
+    $ionicModal.fromTemplateUrl('my-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal;
     });
-    // Execute action on hide modal
-    $scope.$on('modal.hidden', function() {
-        // Execute action
-    });
-    // Execute action on remove modal
-    $scope.$on('modal.removed', function() {
-        // Execute action
-    });
-})
+    $scope.openModal = function(good) {
+        if ($scope.cart.number > 0) {
+            $scope.modal.show();
+            $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
+        }
+    };
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+    };
 
-.controller('sellerListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank) {
-    NearByEguard.get({
-        'longitude': $rootScope.longitude || 121.470257,
-        'latitude': $rootScope.latitude || 31.3234,
-    }, function(data) {
-        $scope.eGuard = data.data;
-    }, function(data) {
-        alert('NO DATA');
-    })
-
-    MainPageHot.get({
-        'longitude': $rootScope.longitude || 121.470257,
-        'latitude': $rootScope.latitude || 31.3234,
-    }, function(data) {
-        $scope.sessions = data.data;
-    }, function(data) {
-        alert('NO DATA');
-    });
-
-    FruitUxuanRank.get({
-        'longitude': $rootScope.longitude || 121.470257,
-        'latitude': $rootScope.latitude || 31.3234,
-    }, function(data) {
-        $scope.goods = data.data;
-    }, function(data) {
-        alert('NO DATA');
-    });
-
-    // $scope.sessions = [{
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // },
-    // {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // },
-    // {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // },
-    // {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // }];
-
-    $scope.addCart = function($event) {
-        $event.stopPropagation();
-        $event.preventDefault();
-        var offset = $(".ion-ios-cart:visible").offset();
-
-        var flyer = $('<i class="u-flyer icon ion-ios-color-filter"><i/>');
-        flyer.fly({
-            start: {
-                left: event.pageX,
-                top: event.pageY
-            },
-            end: {
-                left: offset.left + 50,
-                top: offset.top + 20,
-                width: 0,
-                height: 0
-            },
-            onEnd: function() {
-                this.destory();
-            }
-        });
-        return false;
+    function getGoodQuuantity(sellerId, good) {
+        $.each(good, function(index, value) {
+            value.quantity = ShoppingCart.getGoodsCartNumber(sellerId, value);
+        })
+        return good;
     }
 })
 
-.controller('sellerCtrl', function($scope, $rootScope, $stateParams, FruitsByShop) {
-
-    FruitsByShop.get({
-        'longitude': $rootScope.longitude || 121.470257,
-        'latitude': $rootScope.latitude || 31.3234,
-        'sellerId': $stateParams.sellerId
-    }, function(data) {
-        $scope.seller = data.data.shop;
-        $scope.goods = data.data.products;
-    }, function(data) {
-        alert('NO DATA');
-    })
-
-    // $scope.seller = {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // };
-
-    // $scope.sessions = [{
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // },
-    // {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // },
-    // {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // },
-    // {
-    //     'shopId':'1123',
-    //     'shopName':'苗先生',
-    //     'distance':'0.1km',
-    //     'productId':'3123123',
-    //     'goodName':'南汇 马陆品种葡萄（一盒）5斤以上',
-    //     'goodListPic':'src1',
-    //     'price':'12.5'
-    // }];
-
-    $scope.addCart = function($event) {
-        $event.stopPropagation();
-        $event.preventDefault();
-        var offset = $(".ion-ios-cart:visible").offset();
-
-        var flyer = $('<i class="u-flyer icon ion-ios-color-filter"><i/>');
-        flyer.fly({
-            start: {
-                left: event.pageX,
-                top: event.pageY
-            },
-            end: {
-                left: offset.left + 50,
-                top: offset.top + 20,
-                width: 0,
-                height: 0
-            },
-            onEnd: function() {
-                this.destory();
-            }
-        });
-        return false;
-    };
-})
-
-.controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, NearByEguard, FruitOrderInsert, PayConfirm, $http) {
+.controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, NearByEguard, FruitOrderInsert, PayConfirm, $http, ShoppingCart) {
     $rootScope.goods = $rootScope.goods || new Map;
     $rootScope.totalPrice = $rootScope.totalPrice || 0;
-    $scope.order = {};
+    $scope.order = { orderDate: [] };
     $scope.order.guard = 1;
 
-    var date = new Date,
-        today = date.getMonth() + 1 + '月' + date.getDate() + '日',
-        tomorrow = date.getMonth() + 1 + '月' + (date.getDate() + 1) + '日',
-        startHour = date.getHours() > 8 ? date.getHours() : 8;
+    (function dateFun() {
+        $scope.from = { bool: $stateParams.from > 0 };
 
-    $scope.order.orderDate = [
-        { name: '今日（' + today + '）', value: today },
-        { name: '明日（' + tomorrow + '）', value: tomorrow }
-    ];
-    $scope.order.preferTimeDay = today;
+        var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
 
-    $scope.order.orderTime = [];
+        var date = new Date,
+            startHour = date.getHours() > 8 ? date.getHours() : 8;
 
-    for (var i = 0; startHour + i < 21; i++) {
-        $scope.order.orderTime.push({
-            name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00',
-            value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00'
-        })
-    }
-    if ($scope.order.orderTime.length > 0) {
-        $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
-    }
+        $scope.date = {
+            week: weekArray[date.getDay()]
+        }
 
-    $scope.changeDate = function() {
-        if ($scope.order.preferTimeDay != today) {
-            $scope.order.orderTime = [];
-            for (var i = 8; i < 21; i++) {
-                $scope.order.orderTime.push({
-                    name: addZero(i) + ':00 -- ' + addZero(i + 1) + ':00',
-                    value: addZero(i) + ':00 -- ' + addZero(i + 1) + ':00'
-                })
-            }
+        for (var i = 0; i < 8; i++) {
+            $scope.order.orderDate.push({
+                name: addDate(date, i),
+                value: i
+            })
+        }
+        $scope.order.preferTimeDay = 0;
+
+        $scope.order.orderTime = [];
+
+        for (var i = 1; startHour + i < 21; i++) {
+            $scope.order.orderTime.push({
+                name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
+                value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
+            })
+            $scope.order.orderTime.push({
+                name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
+                value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
+            })
+        }
+        if ($scope.order.orderTime.length > 0) {
             $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
+        }
+
+        $scope.changeDate = function() {
+            if ($scope.order.preferTimeDay > 0) {
+                $scope.order.orderTime = [];
+                for (var i = 8; i < 21; i++) {
+                    $scope.order.orderTime.push({
+                        name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
+                        value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
+                    })
+                    $scope.order.orderTime.push({
+                        name: addZero(i) + ':00 -- ' + addZero(i + 1) + ':00',
+                        value: addZero(i) + ':00 -- ' + addZero(i + 1) + ':00'
+                    })
+                }
+                $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
+            } else {
+                $scope.order.orderTime = [];
+                for (var i = 1; startHour + i < 21; i++) {
+                    $scope.order.orderTime.push({
+                        name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
+                        value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
+                    })
+                    $scope.order.orderTime.push({
+                        name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
+                        value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
+                    })
+                }
+                $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
+            }
+            $scope.date = {
+                week: weekArray[(date.getDay() + $scope.order.preferTimeDay) % 7]
+            }
+        }
+    })();
+
+    function addDate(date, days) {
+        if (days === undefined || days === '') {
+            days = 1;
+        }
+        var date = new Date(date);
+        date.setDate(date.getDate() + days);
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        return addZero(month) + '-' + addZero(day);
+    }
+
+    function addZero(number) {
+        if (number >= 10) {
+            return number + '';
         } else {
-            $scope.order.orderTime = [];
-            for (var i = 0; startHour + i < 21; i++) {
-                $scope.order.orderTime.push({
-                    name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00',
-                    value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i + 1) + ':00'
-                })
-            }
-            $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
+            return '0' + '' + number;
         }
     }
 
     NearByEguard.get({
-        'longitude': $rootScope.longitude || 121.470257,
+        'longitude': $rootScope.longitude || 121.483159,
         'latitude': $rootScope.latitude || 31.3234,
     }, function(data) {
         $scope.eGuard = data.data;
@@ -497,40 +328,66 @@ angular.module('starter.controllers', ['starter.services'])
         alert('NO DATA');
     });
 
-    var tempGoods = [];
-    var tempPrice = 0;
-    var tempOrderGoodList = [];
-    $rootScope.goods.forEach(function(value, key) {
-        tempPrice += value.price * value.buyNumber;
-        tempGoods.push(value);
-        var index = _.findIndex(tempOrderGoodList, { 'sellerId': value.sellerId });
-        if (index < 0) {
-            tempOrderGoodList.push({
-                'sellerId': value.sellerId,
-                'totalMoney': value.price * value.buyNumber,
-                'goodsList': [{
-                    'id': value.productId,
-                    'price': value.price,
-                    'quantity': value.buyNumber
-                }]
-            })
-        } else {
-            tempOrderGoodList[index]['goodsList'].push({
-                'id': value.productId,
-                'price': value.price,
-                'quantity': value.buyNumber
-            })
-            tempOrderGoodList[index]['totalMoney'] += value.price * value.buyNumber;
-        }
-    })
-    $scope.goods = tempGoods;
-    $rootScope.totalPrice = tempPrice / 100;
+    $scope.calculateMoney = function(event, cart) {
+        $.each(cart.goodsList, function(index, value) {
+            value.isChecked = cart.isChecked;
+        });
+        cartList();
+    }
+
+    $scope.calculateSingleMoney = function(event, cart) {
+        event.stopPropagation();
+        var isAllSelected = true;
+        // is all goods selected
+        $.each(cart.goodsList, function(index, value) {
+            if (!value.isChecked) {
+                isAllSelected = false;
+            }
+        });
+        cart.isChecked = isAllSelected;
+        cartList();
+    }
+
+    cartListInit();
+
+    function cartListInit() {
+        var carts = ShoppingCart.getCart();
+        $scope.carts = carts;
+        $scope.carts.allGoodsTotalMoney = 0;
+
+        $.each(carts, function(index, cart) {
+            var tempTotalMoney = 0;
+            cart.isChecked = true;
+            $.each(cart.goodsList, function(index, value) {
+                value.isChecked = true;
+                tempTotalMoney += value.price * value.quantity;
+            });
+            $scope.carts.allGoodsTotalMoney += cart.seller.totalMoney = tempTotalMoney + cart.seller.sendPrice * 100;
+        });
+    };
+
+    function cartList() {
+        $scope.carts.allGoodsTotalMoney = 0;
+        $.each($scope.carts, function(index, cart) {
+            var tempTotalMoney = 0;
+            $.each(cart.goodsList, function(index, value) {
+                if (value.isChecked) {
+                    tempTotalMoney += value.price * value.quantity;
+                }
+            });
+            cart.seller.totalMoney = tempTotalMoney;
+            if (tempTotalMoney > 0) {
+                cart.seller.totalMoney += cart.seller.sendPrice * 100
+            }
+            $scope.carts.allGoodsTotalMoney += cart.seller.totalMoney;
+        });
+    };
 
     $scope.confirmOrder = function() {
 
         var date = new Date();
         // var moment = addZero(date.getFullYear()) + '-' + addZero(date.getMonth()) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
-        var pDate = addZero($scope.order.preferTimeDay.replace('日', '').split('月')[0]) + '-' + addZero($scope.order.preferTimeDay.replace('日', '').split('月')[1]);
+        var pDate = addDate(date, $scope.order.preferTimeDay);
         var userPreferTime = [
             date.getFullYear() + '-' + pDate + ' ' + $scope.order.preferTimeTime.split(' -- ')[0] + ':00',
             date.getFullYear() + '-' + pDate + ' ' + $scope.order.preferTimeTime.split(' -- ')[1] + ':00'
@@ -539,7 +396,7 @@ angular.module('starter.controllers', ['starter.services'])
         var orderRequestObj = {
             url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
             data: {
-                'longitude': $rootScope.longitude || 121.470257,
+                'longitude': $rootScope.longitude || 121.483159,
                 'latitude': $rootScope.latitude || 31.3234,
                 // 'orderTime': moment,
                 'userId': $rootScope.userid,
@@ -548,16 +405,16 @@ angular.module('starter.controllers', ['starter.services'])
                 'userPreferTime': userPreferTime,
                 'eguardId': $scope.order.guard + "",
                 'isPaid': true,
-                'totalMoney': tempPrice,
+                'totalMoney': $scope.carts.allGoodsTotalMoney,
                 'note': $scope.order.note || "无" + "",
-                'productList': tempOrderGoodList,
+                'productList': ShoppingCart.getCart(),
                 // 'username': $rootScope.user.name || ''
                 'username': ''
             }
         };
-        for (var p in orderRequestObj['data']) {
-            console.log(p, orderRequestObj['data'][p]);
-        }
+        // for (var p in orderRequestObj['data']) {
+        //     console.log(p, orderRequestObj['data'][p]);
+        // }
 
         var orderIds = null;
         // console.log('orderRequestObj', orderRequestObj);
@@ -631,7 +488,7 @@ angular.module('starter.controllers', ['starter.services'])
                                 console.log(orderIds);
                                 // alert('success');
                                 PayConfirm.get({
-                                    'longitude': $rootScope.longitude || 121.470257,
+                                    'longitude': $rootScope.longitude || 121.483159,
                                     'latitude': $rootScope.latitude || 31.3234,
                                     'orderId': orderIds
                                 }, function() {
@@ -674,13 +531,19 @@ angular.module('starter.controllers', ['starter.services'])
         });
     }
 
-    function addZero(number) {
-        if (number > 10) {
-            return number + '';
-        } else {
-            return '0' + '' + number;
-        }
-    }
+    $scope.addCart = function(event, good) {
+        event.stopPropagation();
+        event.preventDefault();
+        cartNumber = ShoppingCart.add(event, good);
+        cartList();
+    };
+
+    $scope.removeCart = function(good) {
+        event.stopPropagation();
+        event.preventDefault();
+        var cartNumber = ShoppingCart.remove(good);
+        cartList();
+    };
 
 })
 
@@ -701,95 +564,35 @@ angular.module('starter.controllers', ['starter.services'])
     $scope.user = $rootScope.user;
     console.log('user', $scope.user);
     console.log('user name', $scope.user.nickname);
-    // $.ajax({
-    //         url: 'http://www.lifeuxuan.com/backend/userinfo.php',
-    //         type: 'GET',
-    //         dataType: 'json',
-    //         data: {}
-    //     })
-    //     .done(function(e) {
-    //         // var res = JSON.parse(e);
-    //         alert(e.openid);
-    //         alert(e.nickname);
-    //         // for(var p in e){
-    //         //     alert(p);
-    //         //     alert(e[p])
-    //         // }
-    //         $scope.$apply(function() {
-    //             $rootScope.openid = e.openid;
-    //             $scope.user = { name: e.nickname };
-    //             $scope.user = { img: e.headimgurl };
-    //         })
-    //     })
-    //     .fail(function(e) {
-    //         alert(e);
-    //         alert(e.msg);
-    //         alert(JSON.parse(e));
-    //     });
-    // console.log('go');
 })
 
 .controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList) {
-        $scope.$on("$ionicView.enter", function(event, data) {
-            QueryOrderList.get({
-                'longitude': $rootScope.longitude || 121.470257,
-                'latitude': $rootScope.latitude || 31.3234,
-                'userId': $rootScope.userid || '1'
-            }, function(data) {
-                $scope.orders = data.data;
-            });
+    $scope.$on("$ionicView.enter", function(event, data) {
+        QueryOrderList.get({
+            'longitude': $rootScope.longitude || 121.483159,
+            'latitude': $rootScope.latitude || 31.3234,
+            'userId': $rootScope.userid || '1'
+        }, function(data) {
+            $scope.orders = data.data;
+        });
+    });
+
+
+    $scope.doRefresh = function() {
+
+        console.log('Refreshing!', $rootScope.userid);
+        QueryOrderList.get({
+            'longitude': $rootScope.longitude || 121.483159,
+            'latitude': $rootScope.latitude || 31.3234,
+            'userId': $rootScope.userid
+        }, function(data) {
+            $scope.orders = data.data;
         });
 
-
-        $scope.doRefresh = function() {
-
-            console.log('Refreshing!', $rootScope.userid);
-            QueryOrderList.get({
-                'longitude': $rootScope.longitude || 121.470257,
-                'latitude': $rootScope.latitude || 31.3234,
-                'userId': $rootScope.userid
-            }, function(data) {
-                $scope.orders = data.data;
-            });
-
-            //Stop the ion-refresher from spinning
-            $scope.$broadcast('scroll.refreshComplete');
-        }
-    })
-    // .controller('ListViewCtrl', function($scope, $rootScope, $ionicHistory, $location) {
-    //     $scope.myGoBack = function() {
-    //         $location.path('/app');
-    //     };
-    //     $scope.firstActive = function(param) {
-    //         $scope.isFirstActive = param;
-    //     }
-    // })
-
-// .controller('ListGoodsCtrl', function($scope, $rootScope, $stateParams, DataFetch) {
-//     var temp = '';
-//     // var data = DataFetch.get({
-//     //     funcid: 5
-//     // }, function(data) {
-//     //     $scope.categorys = data.classifys;
-//     // });
-// })
-
-// .controller('ListGoodsChangeCtrl', function($scope, $rootScope, $stateParams, DataFetch) {
-//     // DataFetch.query({
-//     //     funcid: '6',
-//     //     'classifyId': $stateParams.goodsId 
-//     // }, function (data) {
-//     //     $scope.fruits = data;
-//     // });
-// })
-
-// .controller('ListSellersCtrl', function($scope, $rootScope, DataFetch) {
-//     // DataFetch.query({
-//     //     funcid: '7'
-//     // }, function (data) {
-//     //     $scope.sellers = data;
-//     // });
-// })
+        //Stop the ion-refresher from spinning
+        $scope.$broadcast('scroll.refreshComplete');
+    }
+})
 
 
 

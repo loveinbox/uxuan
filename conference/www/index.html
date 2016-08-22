@@ -12,6 +12,7 @@
     <link href="css/user-info.css" rel="stylesheet">
     <link href="css/list.css" rel="stylesheet">
     <link href="css/seller-detail.css" rel="stylesheet">
+    <link href="css/order.css" rel="stylesheet">
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
@@ -41,12 +42,19 @@
     <ion-nav-view view-title="Index" animation="slide-left-right"></ion-nav-view>
     <script id="my-modal.html" type="text/ng-template">
         <ion-modal-view class="cart-modal" ng-click="closeModal()">
-            <ion-list class="cart-modal-list">
-                <ion-item class="index-list-item" ng-repeat="good in goods">
-                    <img ng-src="http://lifeuxuan.com/backend/{{good.goodListPic}}" alt="">
-                    <span class="name">{{good.goodName}}</span>
-                    <div class="good-info-wrap">
-                        <p class="price">数量：{{good.buyNumber}}</p>
+            <ion-list class="cart-modal-list" ng-click="$event.stopPropagation();">
+                <ion-item class="index-list-item cart-item" ng-repeat="good in cartGoods">
+                    <div class="cart-good-info">
+                        <span class="name">{{good.productName}}</span>
+                        <span class="name">{{good.description}}</span>
+                    </div>
+                    <div class="cart-price">
+                        <span>{{good.price}}</span>
+                    </div>
+                    <div class="cart-operate">
+                        <i class="icon ion-minus-round cart-icon" ng-click="removeCart(good)"></i>
+                        <span class="cart-quantity">{{good.quantity}}</span>
+                        <i class="icon ion-plus-round cart-icon" ng-click="addCart($event, good)"></i>
                     </div>
                 </ion-item>
             </ion-list>

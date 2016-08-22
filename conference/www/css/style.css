@@ -326,6 +326,19 @@ a {
     font-size: 28px;
 }
 
+p.cartNumber{
+    position: absolute;
+    top: -9px;
+    right: -10px;
+    background: red;
+    color: #fff;
+    width: 20px;
+    text-align: center;
+    height: 20px;
+    font-weight: bold;
+    line-height: 20px;
+    border-radius: 20px;
+}
 
 /*goood detail*/
 
@@ -486,84 +499,6 @@ a {
 }
 
 
-/*go-cart*/
-
-.create-order {
-    /*overflow: auto;*/
-}
-
-.create-order section {
-    border-bottom: 2px solid #eee;
-    padding: 15px;
-}
-
-.create-order textarea {
-    resize: none;
-    width: 100%;
-    border: 1px solid #eee;
-}
-
-.order-address textarea {
-    height: 60px;
-}
-
-.create-order input {
-    border: 1px solid #eee;
-}
-
-.create-order .order-receiver-info div {
-    float: left;
-}
-
-.order-receiver-name input {
-    width: 90px;
-    margin-right: 50px;
-}
-
-.time-wrap {
-    /* width: 230px;
-    margin: 0 auto;*/
-}
-
-.time-wrap label {
-    margin-right: 10px;
-    display: inline-block;
-    width: 110px;
-    white-space: nowrap;
-}
-
-.order-server label {
-    margin-left: 20px;
-}
-
-.confirm-order span {
-    font-size: 18px;
-    line-height: 60px;
-    padding-left: 30px;
-}
-
-.good-list-in-order .list {
-    /*overflow: auto;
-    height: 200px;*/
-}
-
-.total-price {
-    display: inline-block;
-    color: #fff;
-    font-size: 18px;
-    margin-left: 15px;
-    max-width: 40%;
-}
-
-.confirm-order .total-price {
-    color: #ef473a;
-}
-
-.data-pick{
-    border: 1px solid #eee;
-}
-
-
 /*cart modal*/
 
 .cart-modal {
@@ -579,8 +514,46 @@ a {
     bottom: 0;
     width: 100%;
     padding: 10px;
+    background: #fff;
 }
 
+.cart-good-info{
+    display: inline-block;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+}
+
+.cart-price{
+    display: inline-block;
+    font-size: 12px;
+}
+
+.cart-operate{
+    display: inline-block;
+    float: right;
+}
+
+.cart-item{
+    width: 100%;
+    padding: 5px 0;
+}
+
+.cart-icon{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    line-height: 23px;
+    text-align: center;
+    border: 2px solid;
+    border-radius: 25px;
+}
+
+.cart-quantity{
+    margin: 0 5px;
+    font-size: 16px
+}
 
 /*order status*/
 
