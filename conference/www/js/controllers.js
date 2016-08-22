@@ -457,6 +457,7 @@ angular.module('starter.controllers', ['starter.services'])
                     ForwardPay();
                     orderIds = data;
                     console.log('data', data);
+                    $state.go('orderStatus');
                 })
             })
             .fail(function(e) {
@@ -516,7 +517,6 @@ angular.module('starter.controllers', ['starter.services'])
                                 }, function() {
                                     console.log('paied success');
                                     $rootScope.message = 'success';
-                                    $state.go('orderStatus');
                                 }, function(data) {
                                     console.log(data);
                                     for (var p in data) {
@@ -526,7 +526,6 @@ angular.module('starter.controllers', ['starter.services'])
                                 });
                             },
                             cancel: function (res) {
-                                $state.go('orderStatus');
                             }
 
                         });
