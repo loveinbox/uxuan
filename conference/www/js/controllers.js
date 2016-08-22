@@ -471,7 +471,8 @@ angular.module('starter.controllers', ['starter.services'])
                     dataType: 'json',
                     data: {
                         //'openId': 'oDHyIvznjdxR2KFmyAjWMs2S0lyU',
-                        'payMoney': tempOrderGoodList.length + ''
+                        // 'payMoney': $scope.carts.allGoodsTotalMoney
+                        'payMoney': '1'
                     }
                 })
                 .done(function(e) {
