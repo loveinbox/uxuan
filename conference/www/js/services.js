@@ -101,8 +101,8 @@ angular.module('starter.services', ['ngResource'])
                                 // var res = JSON.parse(e);
                                 $rootScope.user = { name: e.nickname, img: e.headimgurl };
                                 UserRegister.get({
-                                    'latitude': $rootScope.latitude,
-                                    'longitude': $rootScope.longitude,
+                                    'latitude': $rootScope.latitude || 121.483159,
+                                    'longitude': $rootScope.longitude || 31.3234,
                                     'openId': e.openid,
                                     'username': e.nickname,
                                     'password': '',
@@ -122,6 +122,12 @@ angular.module('starter.services', ['ngResource'])
                                 deferred.reject(e);
                             })
                     })();
+                },
+                cancel: function (res) {
+                    console.log('location cancel', res);
+                },
+                error: function (res) {
+                    console.log('location error', res);
                 }
             });
         },
