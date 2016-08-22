@@ -456,7 +456,8 @@ angular.module('starter.controllers', ['starter.services'])
                 $scope.$apply(function() {
                     ForwardPay();
                     orderIds = data;
-                    console.log('data', data);
+                    console.log('data', data);                    
+                    $rootScope.message = 'success1';
                     $state.go('orderStatus');
                 })
             })
@@ -509,14 +510,13 @@ angular.module('starter.controllers', ['starter.services'])
                             paySign: e.paySign,
                             success: function(res) {
                                 console.log(orderIds);
-                                // alert('success');
+                                $rootScope.message = 'success2';
                                 PayConfirm.get({
                                     'longitude': $rootScope.longitude || 121.483159,
                                     'latitude': $rootScope.latitude || 31.3234,
                                     'orderId': orderIds
                                 }, function() {
                                     console.log('paied success');
-                                    $rootScope.message = 'success';
                                 }, function(data) {
                                     console.log(data);
                                     for (var p in data) {
@@ -577,11 +577,17 @@ angular.module('starter.controllers', ['starter.services'])
     // if ($rootScope.message == "failed") {
     //     $scope.status = "下单失败";
     // }
-    if ($rootScope.message == "success") {
+    if ($rootScope.message == "success1") {
         $scope.status = "下单成功";
-    } else {
-        $scope.status = $rootScope.message;
+        return;
+    } 
+    if ($rootScope.message == "success2") {
+        $scope.status = "支付成功";
+        return;
     }
+    // if ($rootScope.message == "failed") {
+        $scope.status = "下单失败";
+    // }
 })
 
 .controller('AccountCtrl', function($scope, userinfo, $rootScope) {
