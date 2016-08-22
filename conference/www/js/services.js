@@ -90,38 +90,40 @@ angular.module('starter.services', ['ngResource'])
                     $rootScope.speed = res.speed; // 速度，以米/每秒计
                     $rootScope.accuracy = res.accuracy; // 位置精度
                     // alert(res.latitude);
+                    (function() {
+                        userinfo.get({},
+                            function(e) {
+                                console.log('openid', e.openid);
+                                $rootScope.openid = e.openid;
+                                for (var p in e) {
+                                    console.log(p, e[p]);
+                                }
+                                // var res = JSON.parse(e);
+                                $rootScope.user = { name: e.nickname, img: e.headimgurl };
+                                UserRegister.get({
+                                    'latitude': $rootScope.latitude,
+                                    'longitude': $rootScope.longitude,
+                                    'openId': e.openid,
+                                    'username': e.nickname,
+                                    'password': '',
+                                    'headPicUrl': e.headimgurl
+                                }, function(e) {
+                                    console.log('user register e', e);
+                                    for (var p in e) {
+                                        console.log(p, e[p]);
+                                    }
+                                    console.log('userId', e.data.userId);
+                                    $rootScope.userid = e.data.userId;
+                                    deferred.resolve();
+                                })
+                            },
+                            function(e) {
+                                alert(e);
+                                deferred.reject(e);
+                            })
+                    })();
                 }
             });
-            userinfo.get({},
-                function(e) {
-                    console.log('openid', e.openid);
-                    $rootScope.openid = e.openid;
-                    for (var p in e) {
-                        console.log(p, e[p]);
-                    }
-                    // var res = JSON.parse(e);
-                    $rootScope.user = { name: e.nickname, img: e.headimgurl };
-                    UserRegister.get({
-                        'latitude': $rootScope.latitude,
-                        'longitude': $rootScope.longitude,
-                        'openId': e.openid,
-                        'username': e.nickname,
-                        'password': '',
-                        'headPicUrl': e.headimgurl
-                    }, function(e) {
-                        console.log('user register e', e);
-                        for (var p in e) {
-                            console.log(p, e[p]);
-                        }
-                        console.log('userId', e.data.userId);
-                        $rootScope.userid = e.data.userId;
-                        deferred.resolve();
-                    })
-                },
-                function(e) {
-                    alert(e);
-                    deferred.reject(e);
-                })
         },
         function(e) {
             alert(e);
@@ -140,7 +142,7 @@ angular.module('starter.services', ['ngResource'])
             'sellerId': good.sellerId,
             'seller': {
                 sellerName: good.sellerName,
-                sellerPicUrl : good.sellerPicUrl,
+                sellerPicUrl: good.sellerPicUrl,
                 sendPrice: good.sendPrice,
                 sendStartPrice: good.sendStartPrice
             },
@@ -174,7 +176,7 @@ angular.module('starter.services', ['ngResource'])
         var number = --cart[sellerIndex]['goodsList'][goodIndex]['quantity'];
         if (number == 0) {
             cart[sellerIndex]['goodsList'].splice([goodIndex], 1);
-            if(cart[sellerIndex]['goodsList'].length == 0){
+            if (cart[sellerIndex]['goodsList'].length == 0) {
                 cart.splice(sellerIndex, 1);
             }
             localStorage.setItem('cart', JSON.stringify(cart));
@@ -219,11 +221,11 @@ angular.module('starter.services', ['ngResource'])
 
     this.getSellerProductList = function(sellerId) {
         var sellerIndex = _.findIndex(cart, { 'sellerId': sellerId });
-        if(sellerIndex < 0){
+        if (sellerIndex < 0) {
             return [];
-        }else{
+        } else {
             return cart[sellerIndex]['goodsList'];
-        }        
+        }
     }
 
     this.getGoodsCartNumber = function(sellerId, good) {
@@ -243,7 +245,7 @@ angular.module('starter.services', ['ngResource'])
     }
 
     function cartFly() {
-        if($(".icon-cart:visible").length < 1){
+        if ($(".icon-cart:visible").length < 1) {
             return;
         }
         var offset = $(".icon-cart:visible").offset();
