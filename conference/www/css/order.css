@@ -168,7 +168,7 @@
 .cart-goods-info-wrap{
     position: relative;
     display: inline-block;
-    width: 40%;
+    width: 33%;
 }
 
 .cart-goods-quantity{
@@ -188,9 +188,9 @@
 
 .order-cart-action{
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    line-height: 17px;
+    width: 30px;
+    height: 30px;
+    line-height: 27px;
     text-align: center;
     border: 2px solid;
     border-radius: 25px;

@@ -110,6 +110,9 @@ angular.module('starter.services', ['ngResource'])
                         'headPicUrl': e.headimgurl
                     }, function(e) {
                         console.log('user register e', e);
+                        for (var p in e) {
+                            console.log(p, e[p]);
+                        }
                         console.log('userId', e.data.userId);
                         $rootScope.userid = e.data.userId;
                         deferred.resolve();
