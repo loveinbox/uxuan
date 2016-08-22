@@ -461,8 +461,8 @@ angular.module('starter.controllers', ['starter.services'])
                         $rootScope.message = 'success1';
                     }else{
                         $rootScope.message = 'failed';
+                        $state.go('orderStatus');
                     }                    
-                    $state.go('orderStatus');
                 })
             })
             .fail(function(e) {
@@ -514,12 +514,12 @@ angular.module('starter.controllers', ['starter.services'])
                             paySign: e.paySign,
                             success: function(res) {
                                 console.log(orderIds);
-                                $rootScope.message = 'success2';
                                 PayConfirm.get({
                                     'longitude': $rootScope.longitude || 121.483159,
                                     'latitude': $rootScope.latitude || 31.3234,
                                     'orderId': orderIds
                                 }, function() {
+                                    $rootScope.status = {message: 'success2'};
                                     console.log('paied success');
                                 }, function(data) {
                                     console.log(data);
@@ -530,6 +530,9 @@ angular.module('starter.controllers', ['starter.services'])
                                 });
                             },
                             cancel: function (res) {
+                            },
+                            complete: function (res) {                                
+                                $state.go('orderStatus');
                             }
 
                         });
