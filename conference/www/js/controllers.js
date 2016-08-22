@@ -454,10 +454,14 @@ angular.module('starter.controllers', ['starter.services'])
                 var data = JSON.parse(e);
                 console.log(data.message);
                 $scope.$apply(function() {
-                    ForwardPay();
-                    orderIds = data;
-                    console.log('data', data);                    
-                    $rootScope.message = 'success1';
+                    if(data.code != -1){
+                        ForwardPay();
+                        orderIds = data;
+                        console.log('data', data);                    
+                        $rootScope.message = 'success1';
+                    }else{
+                        $rootScope.message = 'failed';
+                    }                    
                     $state.go('orderStatus');
                 })
             })
