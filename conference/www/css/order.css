@@ -11,12 +11,12 @@
 
 .order-receiver-name{
     display: inline-block;
-    width: 30%;
+    width: 40%;
 }
 
 .order-receiver-phone{
     display: inline-block;
-    width: 40%;
+    width: 50%;
 }
 
 .order-receiver-phone input{
@@ -49,8 +49,7 @@
 
 .order-receiver-name .like-input, .order-receiver-phone .like-input {
     display: block;
-    width: 90px;
-    margin-right: 50px;
+    width: 120px;
     border: 1px solid #eee;
     color: #ddd;
     height: 25px;
