@@ -89,6 +89,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
 
     .state('orderStatus', {
         url: '/orderStatus',
+        cache: false,
         templateUrl: 'templates/orderStatus.html',
         controller: 'OrderStatusCtrl'
     })
@@ -96,12 +97,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
     .state('session', {
         url: '/sessions/:sessionId',
         cache: false,
-        // views: {
-        // 'tab-index': {
         templateUrl: 'templates/session.html',
         controller: 'SessionCtrl'
-            // }
-            // }
     })
 
     .state('search', {
