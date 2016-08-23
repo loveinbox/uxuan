@@ -412,6 +412,7 @@ angular.module('starter.controllers', ['starter.services'])
     };
 
     $scope.confirmOrder = function() {
+        cleanCart();
 
         var date = new Date();
         // var moment = addZero(date.getFullYear()) + '-' + addZero(date.getMonth()) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
@@ -470,19 +471,33 @@ angular.module('starter.controllers', ['starter.services'])
 
         function cleanCart() {
             var carts = ShoppingCart.getCart();
-            $.each(carts, function(index, cart) {
-                if(cart){
-                    if (cart.isChecked) {
-                        carts.splice(index, 1);
+            var tempCarts = JSON.parse(JSON.stringify(carts));
+            for (var i = carts.length - 1; i >= 0; i--) {
+                if(carts[i]){
+                    if (carts[i].isChecked) {
+                        carts.splice(i, 1);
                     } else {
-                        $.each(cart.goodsList, function(index, good) {
-                            if (good && good.isChecked) {
-                                cart.goodsList.splice(index, 1);
+                        for (var j = carts[i].goodsList.length - 1; j >= 0; j--) {                            
+                            if (carts[i].goodsList[j] && carts[i].goodsList[j].isChecked) {
+                                carts[i].goodsList.splice(j, 1);
                             }
-                        })
+                        }
                     }
-                }                
-            });
+                }
+            }
+            // $.each(carts, function(index, cart) {
+            //     if(cart){
+            //         if (cart.isChecked) {
+            //             carts.splice(index, 1);
+            //         } else {
+            //             $.each(cart.goodsList, function(index, good) {
+            //                 if (good && good.isChecked) {
+            //                     cart.goodsList.splice(index, 1);
+            //                 }
+            //             })
+            //         }
+            //     }                
+            // });
         }
 
         function ForwardPay() {
@@ -538,7 +553,9 @@ angular.module('starter.controllers', ['starter.services'])
 
                 })
                 .fail(function(e) {})
-                .always(function() {});
+                .always(function() {
+                    cleanCart();
+                });
         };
 
         // $state.go('orderStatus');
@@ -583,7 +600,7 @@ angular.module('starter.controllers', ['starter.services'])
     //     $scope.status = "下单失败";
     // }
     if ($rootScope.message == "success1") {
-        $scope.status = "下单成功";
+        $scope.status = "下单成功,未支付";
         return;
     } 
     if ($rootScope.message == "success2") {
