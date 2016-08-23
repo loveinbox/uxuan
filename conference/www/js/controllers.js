@@ -513,7 +513,7 @@ angular.module('starter.controllers', ['starter.services'])
                     }
                 })
                 .done(function(e) {
-                    cleanCart();
+                    // cleanCart();
                     // alert(e);
                     wx.ready(function() {
                         // alert(e);
