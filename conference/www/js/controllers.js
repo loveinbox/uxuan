@@ -470,7 +470,6 @@ angular.module('starter.controllers', ['starter.services'])
                         ForwardPay();
                         orderIds = data;
                         console.log('data', data);
-                        $rootScope.message = 'success1';
                     } else {
                         $rootScope.message = 'failed';
                         $state.go('orderStatus');
@@ -528,7 +527,8 @@ angular.module('starter.controllers', ['starter.services'])
                                     alert('NO DATA');
                                 });
                             },
-                            cancel: function(res) {                                
+                            cancel: function(res) { 
+                                $rootScope.message = 'success1';                               
                                 $state.go('orderStatus');
                             },
                             complete: function(res) {
