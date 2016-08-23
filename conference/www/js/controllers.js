@@ -522,7 +522,7 @@ angular.module('starter.controllers', ['starter.services'])
                                 });
                             },
                             cancel: function(res) { 
-                                $rootScope.status.message = 'success1';
+                                $rootScope.status{ message: 'success1' };
                                 console.log('$rootScope.status.message', $rootScope.status.message);                              
                                 $state.go('orderStatus');
                             },
