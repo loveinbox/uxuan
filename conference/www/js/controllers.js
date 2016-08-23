@@ -509,7 +509,6 @@ angular.module('starter.controllers', ['starter.services'])
                             signType: e.signType,
                             paySign: e.paySign,
                             success: function(res) {
-                                cleanCart();
                                 console.log(orderIds);
                                 PayConfirm.get({
                                     'longitude': $rootScope.longitude || 121.483159,
@@ -530,6 +529,7 @@ angular.module('starter.controllers', ['starter.services'])
                             },
                             cancel: function(res) {},
                             complete: function(res) {
+                                cleanCart();
                                 $state.go('orderStatus');
                             }
 
