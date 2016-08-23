@@ -440,16 +440,11 @@ angular.module('starter.controllers', ['starter.services'])
                 'username': ''
             }
         };
-        // for (var p in orderRequestObj['data']) {
-        //     console.log(p, orderRequestObj['data'][p]);
-        // }
 
         var orderIds = null;
-        // console.log('orderRequestObj', orderRequestObj);
         $.ajax(orderRequestObj)
             .done(function(e) {
                 console.log('empty cart');
-                cleanCart();
                 console.log(e);
                 var data = JSON.parse(e);
                 console.log(data.message);
@@ -503,6 +498,7 @@ angular.module('starter.controllers', ['starter.services'])
                     }
                 })
                 .done(function(e) {
+                    cleanCart();
                     // alert(e);
                     wx.ready(function() {
                         // alert(e);
@@ -519,8 +515,10 @@ angular.module('starter.controllers', ['starter.services'])
                                     'latitude': $rootScope.latitude || 31.3234,
                                     'orderId': orderIds
                                 }, function() {
-                                    $rootScope.status = {message: 'success2'};
-                                    console.log('paied success');
+                                    $scope.$apply(function () {
+                                        $rootScope.status = {message: 'success2'};
+                                        console.log('paied success');
+                                    })                                    
                                 }, function(data) {
                                     console.log(data);
                                     for (var p in data) {
