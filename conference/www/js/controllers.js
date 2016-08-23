@@ -509,17 +509,19 @@ angular.module('starter.controllers', ['starter.services'])
                             signType: e.signType,
                             paySign: e.paySign,
                             success: function(res) {
-                                console.log(orderIds);
+                                console.log('orderIds', orderIds);
                                 PayConfirm.get({
                                     'longitude': $rootScope.longitude || 121.483159,
                                     'latitude': $rootScope.latitude || 31.3234,
                                     'orderId': orderIds
-                                }, function() {
+                                }, function(data) {
+                                    console.log('orderIds success', data.statusCode);
                                     $scope.$apply(function() {
                                         $rootScope.status = { message: 'success2' };
                                         console.log('paied success');
                                     })
                                 }, function(data) {
+                                    console.log('orderIds fail', data.statusCode);
                                     console.log(data);
                                     for (var p in data) {
                                         console.log(p, data[p]);
