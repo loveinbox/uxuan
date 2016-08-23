@@ -444,7 +444,7 @@ angular.module('starter.controllers', ['starter.services'])
                 'longitude': $rootScope.longitude || 121.483159,
                 'latitude': $rootScope.latitude || 31.3234,
                 // 'orderTime': moment,
-                'userId': $rootScope.userid,
+                'userId': $rootScope.userid || '1',
                 'userPhoneNumber': $scope.order.receiverPhone + "",
                 'userAddress': $scope.order.receiverAddress + "",
                 'userPreferTime': userPreferTime,
@@ -461,8 +461,6 @@ angular.module('starter.controllers', ['starter.services'])
         var orderIds = null;
         $.ajax(orderRequestObj)
             .done(function(e) {
-                console.log('empty cart');
-                console.log(e);
                 var data = JSON.parse(e);
                 console.log(data.message);
                 $scope.$apply(function() {
@@ -588,14 +586,49 @@ angular.module('starter.controllers', ['starter.services'])
 })
 
 .controller('AccountCtrl', function($scope, userinfo, $rootScope) {
-
     $scope.user = $rootScope.user;
     console.log('user', $scope.user);
     console.log('user name', $scope.user.nickname);
 })
 
-.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList) {
+.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList, PayConfirm, OrderCancel) {
     $scope.$on("$ionicView.enter", function(event, data) {
+        getOrders();
+    });
+
+    $scope.doRefresh = function() {
+        console.log('Refreshing!', $rootScope.userid);
+        getOrders();
+
+        //Stop the ion-refresher from spinning
+        $scope.$broadcast('scroll.refreshComplete');
+    }
+
+    $scope.rePay = function (e, order) {
+        e.stopPropagation();
+        e.preventDefault();
+        PayConfirm.get({
+            'longitude': $rootScope.longitude || 121.483159,
+            'latitude': $rootScope.latitude || 31.3234,
+            'orderId': [order.orderId]
+        }, function(data) {
+            getOrders();
+        });
+    }
+
+    $scope.cancel = function (e, order) {
+        e.stopPropagation();
+        e.preventDefault();
+        OrderCancel.get({
+            'longitude': $rootScope.longitude || 121.483159,
+            'latitude': $rootScope.latitude || 31.3234,
+            'orderId': [order.orderId]
+        }, function(data) {
+            getOrders();
+        });
+    }
+
+    function getOrders() {
         QueryOrderList.get({
             'longitude': $rootScope.longitude || 121.483159,
             'latitude': $rootScope.latitude || 31.3234,
@@ -603,22 +636,31 @@ angular.module('starter.controllers', ['starter.services'])
         }, function(data) {
             $scope.orders = data.data;
         });
-    });
+    }
+})
 
-
-    $scope.doRefresh = function() {
-
-        console.log('Refreshing!', $rootScope.userid);
-        QueryOrderList.get({
+.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, QueryOrderDetail, PayConfirm) {
+    function getOrder(argument) {
+        QueryOrderDetail.get({
             'longitude': $rootScope.longitude || 121.483159,
             'latitude': $rootScope.latitude || 31.3234,
-            'userId': $rootScope.userid
+            'orderId': $stateParams.orderId
         }, function(data) {
-            $scope.orders = data.data;
+            $scope.order = data.data;
         });
+    }
+    getOrder();
 
-        //Stop the ion-refresher from spinning
-        $scope.$broadcast('scroll.refreshComplete');
+    $scope.rePay = function (e, order) {
+        e.stopPropagation();
+        e.preventDefault();
+        PayConfirm.get({
+            'longitude': $rootScope.longitude || 121.483159,
+            'latitude': $rootScope.latitude || 31.3234,
+            'orderId': [$scope.order.orderId]
+        }, function(data) {
+            getOrder();
+        });
     }
 })
 

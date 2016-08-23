@@ -102,27 +102,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
     })
 
     .state('search', {
-            url: '/search',
-            // views: {
-            //   'tab-index': {
-            templateUrl: 'templates/search.html'
-                // }
-                // }
-        })
-        .state('listView', {
-            url: '/listView',
-            // views: {
-            //   'tab-index': {
-            templateUrl: 'templates/listView.html'
-                // }
-                // }
-        });
+        url: '/search',
+        // views: {
+        //   'tab-index': {
+        templateUrl: 'templates/search.html'
+            // }
+            // }
+    })
 
-    //     .state('session', {
-    //       url: "/sessions/:sessionId",
-    //       templateUrl: "templates/session.html",
-    //       controller: 'SessionCtrl'
-    // });
+    .state('listView', {
+        url: '/listView',
+        // views: {
+        //   'tab-index': {
+        templateUrl: 'templates/listView.html'
+            // }
+            // }
+    })
+
+    .state('orderDetail', {
+        url: '/orderDetail/:orderId',
+        cache: false,
+        templateUrl: 'templates/orderDetail.html ',
+        controller: 'orderDetailCtrl'
+    });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/sessions');
 });

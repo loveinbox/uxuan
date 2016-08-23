@@ -48,6 +48,10 @@ angular.module('starter.services', ['ngResource'])
     return $resource('http://www.lifeuxuan.com/backend/api/PayConfirm.php');
 })
 
+.factory('OrderCancel', function($resource, $http) {
+    return $resource('http://www.lifeuxuan.com/backend/api/OrderCancel.php');
+})
+
 .factory('Location', function($rootScope, $resource, $q, userinfo, UserRegister) {
 
     console.log('start to get loction');
@@ -286,6 +290,10 @@ angular.module('starter.services', ['ngResource'])
     this.get = function () {
         return stauts;
     }
+})
+
+.service('QueryOrderDetail', function($rootScope, $resource, $q, userinfo, UserRegister) {
+    return $resource('http://www.lifeuxuan.com/backend/api/QueryOrderDetail.php');
 })
 
 ;
