@@ -514,16 +514,14 @@ angular.module('starter.controllers', ['starter.services'])
                                     'latitude': $rootScope.latitude || 31.3234,
                                     'orderId': orderIds
                                 }, function(data) {
-                                    console.log('orderIds success', data.statusCode);
                                     orderStatus.paied();
                                     console.log('paied success');
-                                    console.log('$rootScope.status.message', $rootScope.status.message);
                                     $state.go('orderStatus');
                                 });
                             },
                             cancel: function(res) { 
-                                orderStatus.ordered();
-                                console.log('$rootScope.status.message', $rootScope.status.message);                              
+                                orderStatus.ordered(); 
+                                console.log('ordered success');                            
                                 $state.go('orderStatus');
                             },
                             complete: function(res) {
