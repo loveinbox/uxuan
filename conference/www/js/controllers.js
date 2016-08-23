@@ -224,7 +224,7 @@ angular.module('starter.controllers', ['starter.services'])
     }
 })
 
-.controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, NearByEguard, FruitOrderInsert, PayConfirm, $http, ShoppingCart) {
+.controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, orderStatus, NearByEguard, FruitOrderInsert, PayConfirm, $http, ShoppingCart) {
     $rootScope.goods = $rootScope.goods || new Map;
     $rootScope.totalPrice = $rootScope.totalPrice || 0;
     $scope.order = { orderDate: [] };
@@ -471,7 +471,7 @@ angular.module('starter.controllers', ['starter.services'])
                         orderIds = data;
                         console.log('data', data);
                     } else {
-                        $rootScope.message = 'failed';
+                        orderStatus.failed();
                         $state.go('orderStatus');
                     }
                 })
@@ -515,14 +515,14 @@ angular.module('starter.controllers', ['starter.services'])
                                     'orderId': orderIds
                                 }, function(data) {
                                     console.log('orderIds success', data.statusCode);
-                                    $rootScope.status = { message: 'success2' };
+                                    orderStatus.paied();
                                     console.log('paied success');
                                     console.log('$rootScope.status.message', $rootScope.status.message);
                                     $state.go('orderStatus');
                                 });
                             },
                             cancel: function(res) { 
-                                $rootScope.status = { message: 'success1' };
+                                orderStatus.ordered();
                                 console.log('$rootScope.status.message', $rootScope.status.message);                              
                                 $state.go('orderStatus');
                             },
@@ -574,13 +574,14 @@ angular.module('starter.controllers', ['starter.services'])
 
 })
 
-.controller('OrderStatusCtrl', function($scope, $stateParams, $ionicHistory, $rootScope) {
-    console.log('111111111$rootScope.message', $rootScope.status.message);
-    if ($rootScope.status.message == "success1") {
+.controller('OrderStatusCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, orderStatus) {
+    var status = orderStatus.get();
+    console.log('111111111$rootScope.message', status);
+    if ($rootScope.status.message == "ordered") {
         $scope.status = "下单成功,未支付";
         return;
     }
-    if ($rootScope.status.message == "success2") {
+    if ($rootScope.status.message == "paied") {
         $scope.status = "支付成功";
         return;
     }

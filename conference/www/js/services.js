@@ -97,7 +97,7 @@ angular.module('starter.services', ['ngResource'])
                                 $rootScope.openid = e.openid;
                                 for (var p in e) {
                                     console.log(p, e[p]);
-                                }                                
+                                }
                                 console.log('$rootScope.latitude', $rootScope.latitude);
                                 console.log('$rootScope.longitude', $rootScope.longitude);
                                 // var res = JSON.parse(e);
@@ -270,6 +270,22 @@ angular.module('starter.services', ['ngResource'])
         });
     }
 
+})
+
+.service('orderStatus', function($rootScope, $resource, $q, userinfo, UserRegister) {
+    var status = '';
+    this.ordered = function () {
+        stauts = 'ordered';
+    }
+    this.paied = function () {
+        stauts = 'paied';
+    }
+    this.failed = function () {
+        stauts = 'failed';
+    }
+    this.get = function () {
+        return stauts;
+    }
 })
 
 ;
