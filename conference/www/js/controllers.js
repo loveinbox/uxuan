@@ -471,7 +471,6 @@ angular.module('starter.controllers', ['starter.services'])
 
         function cleanCart() {
             var carts = ShoppingCart.getCart();
-            var tempCarts = JSON.parse(JSON.stringify(carts));
             for (var i = carts.length - 1; i >= 0; i--) {
                 if (carts[i]) {
                     if (carts[i].isChecked) {
@@ -485,19 +484,7 @@ angular.module('starter.controllers', ['starter.services'])
                     }
                 }
             }
-            // $.each(carts, function(index, cart) {
-            //     if(cart){
-            //         if (cart.isChecked) {
-            //             carts.splice(index, 1);
-            //         } else {
-            //             $.each(cart.goodsList, function(index, good) {
-            //                 if (good && good.isChecked) {
-            //                     cart.goodsList.splice(index, 1);
-            //                 }
-            //             })
-            //         }
-            //     }                
-            // });
+            localStorage.setItem('cart', JSON.stringify(carts));
         }
 
         function ForwardPay() {
@@ -523,7 +510,8 @@ angular.module('starter.controllers', ['starter.services'])
                             package: e.package,
                             signType: e.signType,
                             paySign: e.paySign,
-                            success: function(res) {
+                            success: function(res) {                                
+                                cleanCart();
                                 console.log(orderIds);
                                 PayConfirm.get({
                                     'longitude': $rootScope.longitude || 121.483159,
@@ -544,7 +532,6 @@ angular.module('starter.controllers', ['starter.services'])
                             },
                             cancel: function(res) {},
                             complete: function(res) {
-                                cleanCart();
                                 $state.go('orderStatus');
                             }
 
