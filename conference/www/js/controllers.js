@@ -508,25 +508,20 @@ angular.module('starter.controllers', ['starter.services'])
                             signType: e.signType,
                             paySign: e.paySign,
                             success: function(res) {
+                                orderStatus.paied();
+                                console.log('paied success');
+                                $state.go('orderStatus');
                                 console.log('orderIds', orderIds);
                                 PayConfirm.get({
                                     'longitude': $rootScope.longitude || 121.483159,
                                     'latitude': $rootScope.latitude || 31.3234,
                                     'orderId': orderIds
-                                }, function(data) {
-                                    $scope.$apply(function () {
-                                        orderStatus.paied();
-                                        console.log('paied success');
-                                        $state.go('orderStatus');
-                                    })                                    
-                                });
+                                }, function(data) {});
                             },
                             cancel: function(res) {
-                                $scope.$apply(function () {
-                                    orderStatus.ordered(); 
-                                    console.log('ordered success');                            
-                                    $state.go('orderStatus');
-                                })
+                                orderStatus.ordered();
+                                console.log('ordered success');
+                                $state.go('orderStatus');
                             },
                             complete: function(res) {
                                 cleanCart();
