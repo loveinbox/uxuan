@@ -514,15 +514,19 @@ angular.module('starter.controllers', ['starter.services'])
                                     'latitude': $rootScope.latitude || 31.3234,
                                     'orderId': orderIds
                                 }, function(data) {
-                                    orderStatus.paied();
-                                    console.log('paied success');
-                                    $state.go('orderStatus');
+                                    $scope.$apply(function () {
+                                        orderStatus.paied();
+                                        console.log('paied success');
+                                        $state.go('orderStatus');
+                                    })                                    
                                 });
                             },
-                            cancel: function(res) { 
-                                orderStatus.ordered(); 
-                                console.log('ordered success');                            
-                                $state.go('orderStatus');
+                            cancel: function(res) {
+                                $scope.$apply(function () {
+                                    orderStatus.ordered(); 
+                                    console.log('ordered success');                            
+                                    $state.go('orderStatus');
+                                })
                             },
                             complete: function(res) {
                                 cleanCart();
