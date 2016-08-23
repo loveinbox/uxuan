@@ -517,18 +517,13 @@ angular.module('starter.controllers', ['starter.services'])
                                     console.log('orderIds success', data.statusCode);
                                     $rootScope.status = { message: 'success2' };
                                     console.log('paied success');
+                                    console.log('$rootScope.message', $rootScope.message);
                                     $state.go('orderStatus');
-                                }, function(data) {
-                                    console.log('orderIds fail', data.statusCode);
-                                    console.log(data);
-                                    for (var p in data) {
-                                        console.log(p, data[p]);
-                                    }
-                                    alert('NO DATA');
                                 });
                             },
                             cancel: function(res) { 
-                                $rootScope.message = 'success1';                               
+                                $rootScope.message = 'success1';
+                                console.log('$rootScope.message', $rootScope.message);                              
                                 $state.go('orderStatus');
                             },
                             complete: function(res) {
@@ -580,10 +575,7 @@ angular.module('starter.controllers', ['starter.services'])
 })
 
 .controller('OrderStatusCtrl', function($scope, $stateParams, $ionicHistory, $rootScope) {
-    // $scope.status = $rootScope.message;
-    // if ($rootScope.message == "failed") {
-    //     $scope.status = "下单失败";
-    // }
+    console.log('$rootScope.message', $rootScope.message);
     if ($rootScope.message == "success1") {
         $scope.status = "下单成功,未支付";
         return;
