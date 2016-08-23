@@ -411,9 +411,25 @@ angular.module('starter.controllers', ['starter.services'])
         });
     };
 
-    $scope.confirmOrder = function() {
-        cleanCart();
+    function cleanCart() {
+        var carts = ShoppingCart.getCart();
+        for (var i = carts.length - 1; i >= 0; i--) {
+            if (carts[i]) {
+                if (carts[i].isChecked) {
+                    carts.splice(i, 1);
+                } else {
+                    for (var j = carts[i].goodsList.length - 1; j >= 0; j--) {
+                        if (carts[i].goodsList[j] && carts[i].goodsList[j].isChecked) {
+                            carts[i].goodsList.splice(j, 1);
+                        }
+                    }
+                }
+            }
+        }
+        localStorage.setItem('cart', JSON.stringify(carts));
+    }
 
+    $scope.confirmOrder = function() {
         var date = new Date();
         // var moment = addZero(date.getFullYear()) + '-' + addZero(date.getMonth()) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
         var pDate = addDate(date, $scope.order.preferTimeDay);
@@ -469,24 +485,6 @@ angular.module('starter.controllers', ['starter.services'])
                 console.log("complete");
             });
 
-        function cleanCart() {
-            var carts = ShoppingCart.getCart();
-            for (var i = carts.length - 1; i >= 0; i--) {
-                if (carts[i]) {
-                    if (carts[i].isChecked) {
-                        carts.splice(i, 1);
-                    } else {
-                        for (var j = carts[i].goodsList.length - 1; j >= 0; j--) {
-                            if (carts[i].goodsList[j] && carts[i].goodsList[j].isChecked) {
-                                carts[i].goodsList.splice(j, 1);
-                            }
-                        }
-                    }
-                }
-            }
-            localStorage.setItem('cart', JSON.stringify(carts));
-        }
-
         function ForwardPay() {
 
             $.ajax({
@@ -510,7 +508,7 @@ angular.module('starter.controllers', ['starter.services'])
                             package: e.package,
                             signType: e.signType,
                             paySign: e.paySign,
-                            success: function(res) {                                
+                            success: function(res) {
                                 cleanCart();
                                 console.log(orderIds);
                                 PayConfirm.get({
