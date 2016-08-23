@@ -516,10 +516,9 @@ angular.module('starter.controllers', ['starter.services'])
                                     'orderId': orderIds
                                 }, function(data) {
                                     console.log('orderIds success', data.statusCode);
-                                    $scope.$apply(function() {
-                                        $rootScope.status = { message: 'success2' };
-                                        console.log('paied success');
-                                    })
+                                    $rootScope.status = { message: 'success2' };
+                                    console.log('paied success');
+                                    $state.go('orderStatus');
                                 }, function(data) {
                                     console.log('orderIds fail', data.statusCode);
                                     console.log(data);
@@ -529,10 +528,11 @@ angular.module('starter.controllers', ['starter.services'])
                                     alert('NO DATA');
                                 });
                             },
-                            cancel: function(res) {},
+                            cancel: function(res) {                                
+                                $state.go('orderStatus');
+                            },
                             complete: function(res) {
                                 cleanCart();
-                                $state.go('orderStatus');
                             }
 
                         });
