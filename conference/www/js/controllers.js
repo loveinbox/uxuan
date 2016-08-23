@@ -239,7 +239,7 @@ angular.module('starter.controllers', ['starter.services'])
         var date = new Date,
             startHour = date.getHours() > 8 ? date.getHours() : 8;
 
-        if(startHour > 20){
+        if (startHour > 20) {
             weight = 1;
         }
 
@@ -258,7 +258,7 @@ angular.module('starter.controllers', ['starter.services'])
 
         $scope.order.orderTime = [];
 
-        if(weight == 0){
+        if (weight == 0) {
             for (var i = 1; startHour + i < 21; i++) {
                 $scope.order.orderTime.push({
                     name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
@@ -269,7 +269,7 @@ angular.module('starter.controllers', ['starter.services'])
                     value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
                 })
             }
-        }else{
+        } else {
             for (var i = 8; i < 21; i++) {
                 $scope.order.orderTime.push({
                     name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
@@ -281,7 +281,7 @@ angular.module('starter.controllers', ['starter.services'])
                 })
             }
         }
-        
+
         if ($scope.order.orderTime.length > 0) {
             $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
         }
@@ -370,10 +370,10 @@ angular.module('starter.controllers', ['starter.services'])
         cartList();
     }
 
-    $scope.pickAll = function () {
-        if($scope.isAllChecked){
-           cartListInit(); 
-       }        
+    $scope.pickAll = function() {
+        if ($scope.isAllChecked) {
+            cartListInit();
+        }
     }
 
     cartListInit();
@@ -450,15 +450,15 @@ angular.module('starter.controllers', ['starter.services'])
                 var data = JSON.parse(e);
                 console.log(data.message);
                 $scope.$apply(function() {
-                    if(data.code != -1){
+                    if (data.code != -1) {
                         ForwardPay();
                         orderIds = data;
-                        console.log('data', data);                    
+                        console.log('data', data);
                         $rootScope.message = 'success1';
-                    }else{
+                    } else {
                         $rootScope.message = 'failed';
                         $state.go('orderStatus');
-                    }                    
+                    }
                 })
             })
             .fail(function(e) {
@@ -473,11 +473,11 @@ angular.module('starter.controllers', ['starter.services'])
             var carts = ShoppingCart.getCart();
             var tempCarts = JSON.parse(JSON.stringify(carts));
             for (var i = carts.length - 1; i >= 0; i--) {
-                if(carts[i]){
+                if (carts[i]) {
                     if (carts[i].isChecked) {
                         carts.splice(i, 1);
                     } else {
-                        for (var j = carts[i].goodsList.length - 1; j >= 0; j--) {                            
+                        for (var j = carts[i].goodsList.length - 1; j >= 0; j--) {
                             if (carts[i].goodsList[j] && carts[i].goodsList[j].isChecked) {
                                 carts[i].goodsList.splice(j, 1);
                             }
@@ -530,10 +530,10 @@ angular.module('starter.controllers', ['starter.services'])
                                     'latitude': $rootScope.latitude || 31.3234,
                                     'orderId': orderIds
                                 }, function() {
-                                    $scope.$apply(function () {
-                                        $rootScope.status = {message: 'success2'};
+                                    $scope.$apply(function() {
+                                        $rootScope.status = { message: 'success2' };
                                         console.log('paied success');
-                                    })                                    
+                                    })
                                 }, function(data) {
                                     console.log(data);
                                     for (var p in data) {
@@ -542,9 +542,9 @@ angular.module('starter.controllers', ['starter.services'])
                                     alert('NO DATA');
                                 });
                             },
-                            cancel: function (res) {
-                            },
-                            complete: function (res) {                                
+                            cancel: function(res) {},
+                            complete: function(res) {
+                                cleanCart();
                                 $state.go('orderStatus');
                             }
 
@@ -553,9 +553,7 @@ angular.module('starter.controllers', ['starter.services'])
 
                 })
                 .fail(function(e) {})
-                .always(function() {
-                    cleanCart();
-                });
+                .always(function() {});
         };
 
         // $state.go('orderStatus');
@@ -602,13 +600,13 @@ angular.module('starter.controllers', ['starter.services'])
     if ($rootScope.message == "success1") {
         $scope.status = "下单成功,未支付";
         return;
-    } 
+    }
     if ($rootScope.message == "success2") {
         $scope.status = "支付成功";
         return;
     }
     // if ($rootScope.message == "failed") {
-        $scope.status = "下单失败";
+    $scope.status = "下单失败";
     // }
 })
 
