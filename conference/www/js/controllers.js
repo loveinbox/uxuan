@@ -575,7 +575,7 @@ angular.module('starter.controllers', ['starter.services'])
 })
 
 .controller('OrderStatusCtrl', function($scope, $stateParams, $ionicHistory, $rootScope) {
-    console.log('$rootScope.message', $rootScope.status.message);
+    console.log('111111111$rootScope.message', $rootScope.status.message);
     if ($rootScope.status.message == "success1") {
         $scope.status = "下单成功,未支付";
         return;
