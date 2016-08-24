@@ -21,6 +21,21 @@ a {
     float: right;
 }
 
+.wide-as-needed {
+  overflow: auto;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.h-li{
+    display: inline-block;
+}
+
+.h-ul{
+    display: inline-block;
+}
+
 .bottom-bar {
     position: absolute;
     bottom: 0px;

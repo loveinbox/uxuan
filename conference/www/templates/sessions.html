@@ -1,5 +1,5 @@
 <ion-view view-title="U选到家">
-    <ion-content class="backE">
+    <ion-content class="backE" delegate-handle="mainScroll">
         <div class="index-header">
             <!-- <label class="item item-input item-select distract-select">
                 <select>
@@ -64,7 +64,7 @@
             </div>
         </nav> -->
         <div class="divider">U选爆款</div>
-        <ion-scroll direction="xy" scrollbar-x="false" class="marginM5">
+        <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" class="marginM5">
             <ion-list class="single goods index-list clearfix">
                 <ion-item class="index-list-item" ng-repeat="session in sessions" href="#/sessions/{{session.productId}}">
                     <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}" alt="">
