@@ -19,12 +19,12 @@ angular.module('starter.controllers', ['starter.services'])
 })
 
 .controller('SessionsCtrl', function($scope, $rootScope, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
-    Location.then(function() {
+    // Location.then(function() {
         console.log('get location');
 
         MainPageHot.get({
             'longitude': $rootScope.longitude || 121.483159,
-            'latitude': $rootScope.latitude || 31.3234,
+            'latitude': $rootScope.latitude || 31.3234
         }, function(data) {
             $scope.sessions = data.data;
         }, function(data) {
@@ -39,7 +39,7 @@ angular.module('starter.controllers', ['starter.services'])
         }, function(data) {
             alert('NO DATA');
         });
-    })
+    // })
 })
 
 .controller('SessionCtrl', function($rootScope, $scope, $stateParams, $ionicHistory, $ionicModal, FruitDetail, FruitPicShow, ShoppingCart, $ionicModal) {
