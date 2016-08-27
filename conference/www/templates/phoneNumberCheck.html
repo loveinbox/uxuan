@@ -1,0 +1,16 @@
+<ion-view view-title="U选到家">
+    <ion-content overflow-scroll="false" class="v-content">
+        <div class="v-center">
+            <p>请验证手机</p>
+            <input type="text" name="phoneNumber" class="check-phone-number" ng-model="check.phoneNumber" autofocus="">
+            <div class="check-action-wrap">
+                <input type="text" name="checkCode" class="check-code" ng-model="check.checkCode">
+                <div class="check-action button button-small button-balanced" ng-click="sendCode()" ng-class="{'not-reach': check.time > 0}">
+                    <span>发送</span>
+                    <span ng-show="check.time > 0">{{check.time}}</span>
+                </div>
+                <button class="button button-block button-small button-balanced" ng-click="checkCode()">验证</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
