@@ -305,6 +305,25 @@ angular.module('starter.controllers', ['starter.services'])
     };
 
     function judgeOrder() {
+        orderRequestObj = {
+            url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
+            data: {
+                'longitude': $rootScope.longitude || 121.483159,
+                'latitude': $rootScope.latitude || 31.3234,
+                // 'orderTime': moment,
+                'userId': $rootScope.userid || '1',
+                'userPhoneNumber': $scope.order.receiverPhone + "",
+                'userAddress': $scope.order.receiverAddress + "11",
+                'userPreferTime': $scope.userPreferTime,
+                'eguardId': $scope.order.guard + "",
+                'isPaid': true,
+                'totalMoney': $scope.carts.allGoodsTotalMoney,
+                'note': $scope.order.note || "无" + "",
+                'productList': ShoppingCart.getCart(),
+                // 'username': $rootScope.user.name || ''
+                'username': ''
+            }
+        };
         if ($scope.carts.allGoodsTotalMoney > 0 && $scope.order.receiverAddress) {
             $scope.orderButton.isDisabled = false;
             $.each(orderRequestObj.data.productList, function(index, cart) {
@@ -547,6 +566,25 @@ angular.module('starter.controllers', ['starter.services'])
         ];
 
         var orderIds = null;
+        orderRequestObj = {
+            url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
+            data: {
+                'longitude': $rootScope.longitude || 121.483159,
+                'latitude': $rootScope.latitude || 31.3234,
+                // 'orderTime': moment,
+                'userId': $rootScope.userid || '1',
+                'userPhoneNumber': $scope.order.receiverPhone + "",
+                'userAddress': $scope.order.receiverAddress + "11",
+                'userPreferTime': $scope.userPreferTime,
+                'eguardId': $scope.order.guard + "",
+                'isPaid': true,
+                'totalMoney': $scope.carts.allGoodsTotalMoney,
+                'note': $scope.order.note || "无" + "",
+                'productList': ShoppingCart.getCart(),
+                // 'username': $rootScope.user.name || ''
+                'username': ''
+            }
+        };
         $.ajax(orderRequestObj)
             .done(function(e) {
                 var data = JSON.parse(e);
@@ -678,8 +716,17 @@ angular.module('starter.controllers', ['starter.services'])
     // }
 })
 
-.controller('AccountCtrl', function($scope, userinfo, $rootScope) {
+.controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo) {
+    userinfo.get({},
+        function(e) {
+            $rootScope.openid = e.openid;
+            $rootScope.user = { name: e.nickname, img: e.headimgurl };
+        });
     $scope.user = $rootScope.user;
+    // $scope.user = {
+    //     name: '第三方',
+    //     img: 'http://lifeuxuan.com/backend/images/18/1.jpg'
+    // }
     console.log('user', $scope.user);
     console.log('user name', $scope.user.nickname);
 })
@@ -775,7 +822,7 @@ angular.module('starter.controllers', ['starter.services'])
     var timer = 0;
 
     $scope.sendCode = function(e, order) {
-        if($scope.check.time > 0){
+        if ($scope.check.time > 0) {
             return;
         }
         SendCheckCode.get({
@@ -783,7 +830,7 @@ angular.module('starter.controllers', ['starter.services'])
             'latitude': $rootScope.latitude || 31.3234,
             'userPhoneNumber': $scope.check.phoneNumber
         }, function(data) {
-            if(data.code == -1){
+            if (data.code == -1) {
                 return;
             }
             $scope.check.time = 15;
@@ -807,7 +854,7 @@ angular.module('starter.controllers', ['starter.services'])
         }, function(data) {
             console.log(' checkcoode data.code', data.code);
             console.log(' checkcoode data.msg', data.msg);
-            if(data.code == -1){
+            if (data.code == -1) {
                 alert('验证失败');
                 return;
             }

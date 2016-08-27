@@ -1,6 +1,14 @@
 <ion-view view-title="U选到家">
     <ion-content class="user-info">
-        <h1>{{user.name}}</h1>
-    	<img ng-src="{{user.img}}">
+    	<div class="user-basic">
+	    	<img ng-src="{{user.img}}">
+	        <h1>{{user.name}}</h1>
+    	</div>
+    	<ul class="user-info-list">
+    		<li><i class="icon ion-document-text"></i>我的订单<i class="icon ion-chevron-right fr"></i></li>
+    		<li><i class="icon ion-location"></i>地址管理<i class="icon ion-chevron-right fr"></i></li>
+    		<li><i class="icon ion-star"></i>关于我们<i class="icon ion-chevron-right fr"></i></li>
+    		<li><i class="icon ion-android-call"></i>客服电话</li>
+    	</ul>
     </ion-content>
 </ion-view>
