@@ -805,7 +805,7 @@ angular.module('starter.controllers', ['starter.services'])
             'userId': $rootScope.userInfo.userid
         }, function(data) {
             console.log(' checkcoode data.code', data.code);
-            console.log(' checkcoode data.message', data.message);
+            console.log(' checkcoode data.msg', data.msg);
             if(data.code == -1){
                 alert('验证失败');
                 return;
