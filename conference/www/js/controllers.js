@@ -804,7 +804,8 @@ angular.module('starter.controllers', ['starter.services'])
             'checkCode': $scope.check.checkCode,
             'userId': $rootScope.userInfo.userid
         }, function(data) {
-            console.log(' checkcoode data', data);
+            console.log(' checkcoode data.code', data.code);
+            console.log(' checkcoode data.message', data.message);
             if(data.code == -1){
                 alert('验证失败');
                 return;
