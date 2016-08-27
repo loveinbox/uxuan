@@ -759,16 +759,16 @@ angular.module('starter.controllers', ['starter.services'])
 
 .controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserRegister, SendCheckCode, CheckCheckCode, $ionicHistory) {
     var e = {};
-    UserRegister.get({
-        'latitude': $rootScope.latitude || 121.483159,
-        'longitude': $rootScope.longitude || 31.3234,
-        'openId': e.openid || '123',
-        'username': e.nickname || '123',
-        'password': '',
-        'headPicUrl': e.headimgurl || '123'
-    }, function(e) {
-        $rootScope.userInfo = {userid: e.data.userId};
-    })
+    // UserRegister.get({
+    //     'latitude': $rootScope.latitude || 121.483159,
+    //     'longitude': $rootScope.longitude || 31.3234,
+    //     'openId': e.openid || '123',
+    //     'username': e.nickname || '123',
+    //     'password': '',
+    //     'headPicUrl': e.headimgurl || '123'
+    // }, function(e) {
+    //     $rootScope.userInfo = {userid: e.data.userId};
+    // })
 
     $scope.check = {};
     $scope.check.time = 0;
