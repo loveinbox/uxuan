@@ -1,7 +1,41 @@
-.user-info h1{
-	text-align: center;
+.user-info h1 {
+    text-align: center;
 }
-.user-info img{
+
+.user-info img {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.v-content input {
+    border: 1px solid #ddd;
+}
+
+.v-center {
+    padding: 0 20%;
+    margin-top: -30%;
+}
+
+.check-phone-number {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.check-action-wrap {
+    position: relative;
+}
+
+.check-action {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 34px;
+    line-height: 34px;
+    width: 45%;
+    padding: 0;
+    font-weight: bold;
+}
+
+.check-code{
 	width: 50%;
-	margin:0 auto;
 }

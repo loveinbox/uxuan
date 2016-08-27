@@ -2,16 +2,25 @@ a {
     text-decoration: none;
 }
 
+.v-content.scroll-content {
+  display: table !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: #eee;
+}
+
+.v-content .scroll {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
 .marginM5 {
     margin-bottom: -7px;
 }
 
 .height100 {
     height: 100%;
-}
-
-.cart-bottom {
-    padding-bottom: 60px;
 }
 
 .fl{
@@ -40,10 +49,8 @@ a {
     position: absolute;
     bottom: 0px;
     width: 100%;
-    height: 65px;
     z-index: 100;
     background: #fff;
-    border-top: 1px solid #eee;
 }
 
 .u-flyer {
@@ -319,7 +326,7 @@ a {
 }
 
 .rank img {
-    margin: 10px 30px 10px 10px;
+    margin: 10px 20px 10px 10px;
 }
 
 .rank .name {
@@ -353,6 +360,18 @@ p.cartNumber{
     font-weight: bold;
     line-height: 20px;
     border-radius: 20px;
+}
+
+.goods-list-item{
+    width: 85%;
+}
+
+.goods-list-item .name  {
+    font-size: 14px;
+}
+
+.goods-list-item .description{
+    font-size: 12px;
 }
 
 /*goood detail*/
@@ -483,26 +502,32 @@ p.cartNumber{
 
 .shopping-cart-bar i {
     padding-left: 40px;
-    font-size: 45px;
-    line-height: 60px;
+    font-size: 25px;
+    line-height: 44px;
     color: #fff;
     vertical-align: middle;
 }
 
 .go-cart,
-.confirm-cart {
-    float: right;
+.order-cart .confirm-cart {
+    position: relative;
+    right: 0;
     height: 100%;
-    width: 140px;
-    line-height: 60px;
+    width: 40%;
     font-weight: bold;
     border-radius: 0;
+    line-height: 40px;
+}
+
+.shopping-cart-bar .go-cart{
+    line-height: 42px;
+    font-size: 18px;
 }
 
 .cart-number-tip {
     position: absolute;
-    top: 4px;
-    left: 65px;
+    top: 0;
+    left: 55px;
     width: 20px;
     height: 20px;
     background: #ef473a;

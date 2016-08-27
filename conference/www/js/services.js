@@ -119,7 +119,7 @@ angular.module('starter.services', ['ngResource'])
                                         console.log(p, e[p]);
                                     }
                                     console.log('userId', e.data.userId);
-                                    $rootScope.userid = e.data.userId;
+                                    $rootScope.userInfo = {userid: e.data.userId};
                                     deferred.resolve();
                                 })
                             },
@@ -295,5 +295,14 @@ angular.module('starter.services', ['ngResource'])
 .service('QueryOrderDetail', function($rootScope, $resource, $q, userinfo, UserRegister) {
     return $resource('http://www.lifeuxuan.com/backend/api/QueryOrderDetail.php');
 })
+
+.service('SendCheckCode', function($resource) {
+    return $resource('http://www.lifeuxuan.com/backend/api/SendCheckCode.php');
+})
+
+.service('CheckCheckCode', function($resource) {
+    return $resource('http://www.lifeuxuan.com/backend/api/CheckCheckCode.php');
+})
+
 
 ;

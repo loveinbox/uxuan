@@ -11,7 +11,7 @@
         <div class="slogen">{{seller.sellerSlogen}}</div>
         <div class="list-cart">
             <i class="icon ion-ios-cart "></i>
-            <p class="cartNumber">{{seller.cartNumber}}</p>
+            <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p>
         </div>
     </ion-item>
 </ion-list>

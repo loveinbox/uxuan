@@ -1,6 +1,7 @@
 angular.module('starter.controllers', ['starter.services'])
 
 .run(function run($rootScope, userinfo, UserRegister) {
+    $rootScope.userInfo = {};
 
 })
 
@@ -60,22 +61,22 @@ angular.module('starter.controllers', ['starter.services'])
 
         sv.touchStart = function(e) {
             e.preventDefault = function() {}
-            originaltouchStart.apply(sv, [e]);
+            originaltouchStart && originaltouchStart.apply(sv, [e]);
         }
 
         sv.touchMove = function(e) {
             e.preventDefault = function() {}
-            originaltouchMove.apply(sv, [e]);
+            originaltouchMove && originaltouchMove.apply(sv, [e]);
         }
 
         sv.mouseDown = function(e) {
             e.preventDefault = function() {}
-            originalmouseDown.apply(sv, [e]);
+            originalmouseDown && originalmouseDown.apply(sv, [e]);
         }
 
         sv.mouseMove = function(e) {
             e.preventDefault = function() {}
-            originalmouseMove.apply(sv, [e]);
+            originalmouseMove && originalmouseMove.apply(sv, [e]);
         }
 
         container.addEventListener("touchstart", sv.touchStart, false);
@@ -87,7 +88,7 @@ angular.module('starter.controllers', ['starter.services'])
 
 })
 
-.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $ionicHistory, $ionicModal, FruitDetail, FruitPicShow, ShoppingCart, $ionicModal) {
+.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, FruitDetail, FruitPicShow, ShoppingCart, $ionicModal) {
     $scope.isHideAddCart = false;
     $scope.singleNumber = 0;
 
@@ -124,6 +125,10 @@ angular.module('starter.controllers', ['starter.services'])
 
 
     $scope.addCart = function(event, good) {
+        if ($rootScope.userInfo.phoneNumber == undefined) {
+            $state.go('phoneNumberCheck');
+            return;
+        }
         event.stopPropagation();
         cartNumber = ShoppingCart.add(event, good);
         $scope.isHideAddCart = true;
@@ -274,6 +279,41 @@ angular.module('starter.controllers', ['starter.services'])
     $rootScope.totalPrice = $rootScope.totalPrice || 0;
     $scope.order = { orderDate: [] };
     $scope.order.guard = 1;
+    $scope.orderButton = { isDisabled: true };
+    $scope.carts = ShoppingCart.getCart();
+
+    $scope.order.receiverAddress = '123';
+
+    var orderRequestObj = {
+        url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
+        data: {
+            'longitude': $rootScope.longitude || 121.483159,
+            'latitude': $rootScope.latitude || 31.3234,
+            // 'orderTime': moment,
+            'userId': $rootScope.userid || '1',
+            'userPhoneNumber': $scope.order.receiverPhone + "",
+            'userAddress': $scope.order.receiverAddress + "11",
+            'userPreferTime': $scope.userPreferTime,
+            'eguardId': $scope.order.guard + "",
+            'isPaid': true,
+            'totalMoney': $scope.carts.allGoodsTotalMoney,
+            'note': $scope.order.note || "无" + "",
+            'productList': ShoppingCart.getCart(),
+            // 'username': $rootScope.user.name || ''
+            'username': ''
+        }
+    };
+
+    function judgeOrder() {
+        if ($scope.carts.allGoodsTotalMoney > 0 && $scope.order.receiverAddress) {
+            $scope.orderButton.isDisabled = false;
+            $.each(orderRequestObj.data.productList, function(index, cart) {
+                if (cart.seller.isReachStartPrice == false) {
+                    $scope.orderButton.isDisabled = true;
+                }
+            });
+        }
+    }
 
     (function dateFun() {
         $scope.from = { bool: $stateParams.from > 0 };
@@ -416,27 +456,38 @@ angular.module('starter.controllers', ['starter.services'])
     }
 
     $scope.pickAll = function() {
-        if ($scope.isAllChecked) {
-            cartListInit();
-        }
+        cartListInit($scope.order.isAllChecked);
     }
 
-    cartListInit();
+    cartListInit(true);
 
-    function cartListInit() {
+    function cartListInit(isCheck) {
         var carts = ShoppingCart.getCart();
         $scope.carts = carts;
         $scope.carts.allGoodsTotalMoney = 0;
+        $scope.order.isAllChecked = isCheck;
 
         $.each(carts, function(index, cart) {
             var tempTotalMoney = 0;
-            cart.isChecked = true;
+            if (cart.isChecked == undefined) {
+                cart.isChecked = isCheck;
+            }
             $.each(cart.goodsList, function(index, value) {
-                value.isChecked = true;
-                tempTotalMoney += value.price * value.quantity;
+                if (value.isChecked == undefined) {
+                    value.isChecked = isCheck;
+                }
+                if (value.isChecked) {
+                    tempTotalMoney += value.price * value.quantity;
+                }
             });
             $scope.carts.allGoodsTotalMoney += cart.seller.totalMoney = tempTotalMoney + cart.seller.sendPrice * 100;
+            if (cart.seller.totalMoney <= cart.seller.sendStartPrice * 100) {
+                cart.seller.isReachStartPrice = false;
+            } else {
+                cart.seller.isReachStartPrice = true;
+            }
         });
+        judgeOrder();
     };
 
     function cartList() {
@@ -449,11 +500,20 @@ angular.module('starter.controllers', ['starter.services'])
                 }
             });
             cart.seller.totalMoney = tempTotalMoney;
+            // 是否计算运费
             if (tempTotalMoney > 0) {
-                cart.seller.totalMoney += cart.seller.sendPrice * 100
+                cart.seller.totalMoney += cart.seller.sendPrice * 100;
+            }
+            // 是否达到起送价
+            if (cart.seller.totalMoney <= cart.seller.sendStartPrice * 100) {
+                cart.seller.isReachStartPrice = false;
+            } else {
+                cart.seller.isReachStartPrice = true;
             }
             $scope.carts.allGoodsTotalMoney += cart.seller.totalMoney;
         });
+        localStorage.setItem('cart', JSON.stringify($scope.carts));
+        judgeOrder();
     };
 
     function cleanCart() {
@@ -475,33 +535,16 @@ angular.module('starter.controllers', ['starter.services'])
     }
 
     $scope.confirmOrder = function() {
+        if ($scope.orderButton.isDisabled) {
+            return;
+        }
         var date = new Date();
         // var moment = addZero(date.getFullYear()) + '-' + addZero(date.getMonth()) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
         var pDate = addDate(date, $scope.order.preferTimeDay);
-        var userPreferTime = [
+        $scope.userPreferTime = [
             date.getFullYear() + '-' + pDate + ' ' + $scope.order.preferTimeTime.split(' -- ')[0] + ':00',
             date.getFullYear() + '-' + pDate + ' ' + $scope.order.preferTimeTime.split(' -- ')[1] + ':00'
         ];
-
-        var orderRequestObj = {
-            url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
-            data: {
-                'longitude': $rootScope.longitude || 121.483159,
-                'latitude': $rootScope.latitude || 31.3234,
-                // 'orderTime': moment,
-                'userId': $rootScope.userid || '1',
-                'userPhoneNumber': $scope.order.receiverPhone + "",
-                'userAddress': $scope.order.receiverAddress + "",
-                'userPreferTime': userPreferTime,
-                'eguardId': $scope.order.guard + "",
-                'isPaid': true,
-                'totalMoney': $scope.carts.allGoodsTotalMoney,
-                'note': $scope.order.note || "无" + "",
-                'productList': ShoppingCart.getCart(),
-                // 'username': $rootScope.user.name || ''
-                'username': ''
-            }
-        };
 
         var orderIds = null;
         $.ajax(orderRequestObj)
@@ -589,6 +632,11 @@ angular.module('starter.controllers', ['starter.services'])
                         $scope.order.receiverAddress = res.provinceName + res.cityName + res.countryName + res.detailInfo || '';
                         $scope.order.receiverName = res.userName;
                         $scope.order.receiverPhone = res.telNumber - 0;
+
+                        var carts = ShoppingCart.getCart();
+                        if ($scope.carts.allGoodsTotalMoney > 0) {
+                            $scope.orderButton.status = false;
+                        }
                     });
                 },
                 cancel: function() {
@@ -642,7 +690,7 @@ angular.module('starter.controllers', ['starter.services'])
     });
 
     $scope.doRefresh = function() {
-        console.log('Refreshing!', $rootScope.userid);
+        console.log('Refreshing!', $rootScope.userInfo.userid);
         getOrders();
 
         //Stop the ion-refresher from spinning
@@ -677,7 +725,7 @@ angular.module('starter.controllers', ['starter.services'])
         QueryOrderList.get({
             'longitude': $rootScope.longitude || 121.483159,
             'latitude': $rootScope.latitude || 31.3234,
-            'userId': $rootScope.userid || '1'
+            'userId': $rootScope.userInfo || '1'
         }, function(data) {
             $scope.orders = data.data;
         });
@@ -709,80 +757,62 @@ angular.module('starter.controllers', ['starter.services'])
     }
 })
 
+.controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserRegister, SendCheckCode, CheckCheckCode, $ionicHistory) {
+    var e = {};
+    // UserRegister.get({
+    //     'latitude': $rootScope.latitude || 121.483159,
+    //     'longitude': $rootScope.longitude || 31.3234,
+    //     'openId': e.openid || '123',
+    //     'username': e.nickname || '123',
+    //     'password': '',
+    //     'headPicUrl': e.headimgurl || '123'
+    // }, function(e) {
+    //     $rootScope.userInfo = {userid: e.data.userId};
+    // })
 
+    $scope.check = {};
+    $scope.check.time = 0;
+    var timer = 0;
 
-;
-
-(function() {
-  var HorizontalScrollFix = (function() {
-    function HorizontalScrollFix($timeout, $ionicScrollDelegate) {
-      return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-          var mainScrollID = attrs.horizontalScrollFix,
-              scrollID = attrs.delegateHandle;
-          
-          var getEventTouches = function(e) {
-            return e.touches && (e.touches.length ? e.touches : [
-              {
-                pageX: e.pageX,
-                pageY: e.pageY
-              }
-            ]);
-          };
-          
-          var fixHorizontalAndVerticalScroll = function() {
-            var mainScroll, scroll;
-            mainScroll = $ionicScrollDelegate.$getByHandle(mainScrollID).getScrollView();
-            scroll = $ionicScrollDelegate.$getByHandle(scrollID).getScrollView();
-            
-            // patch touchstart
-            scroll.__container.removeEventListener('touchstart', scroll.touchStart);
-            scroll.touchStart = function(e) {
-              var startY;
-              scroll.startCoordinates = ionic.tap.pointerCoord(e);
-              if (ionic.tap.ignoreScrollStart(e)) {
-                return;
-              }
-              scroll.__isDown = true;
-              if (ionic.tap.containsOrIsTextInput(e.target) || e.target.tagName === 'SELECT') {
-                scroll.__hasStarted = false;
-                return;
-              }
-              scroll.__isSelectable = true;
-              scroll.__enableScrollY = true;
-              scroll.__hasStarted = true;
-              scroll.doTouchStart(getEventTouches(e), e.timeStamp);
-              startY = mainScroll.__scrollTop;
-              
-              // below is our changes to this method
-              // e.preventDefault();
-             
-              // lock main scroll if scrolling horizontal
-              $timeout((function() {
-                var animate, yMovement;
-                yMovement = startY - mainScroll.__scrollTop;
-                if (scroll.__isDragging && yMovement < 2.0 && yMovement > -2.0) {
-                  mainScroll.__isTracking = false;
-                  mainScroll.doTouchEnd();
-                  animate = false;
-                  return mainScroll.scrollTo(0, startY, animate);
-                } else {
-                  return scroll.doTouchEnd();
-                }
-              }), 100);
-            };
-            scroll.__container.addEventListener('touchstart', scroll.touchStart);
-          };
-          $timeout(function() { fixHorizontalAndVerticalScroll(); });          
+    $scope.sendCode = function(e, order) {
+        if($scope.check.time > 0){
+            return;
         }
-      };
+        SendCheckCode.get({
+            'longitude': $rootScope.longitude || 121.483159,
+            'latitude': $rootScope.latitude || 31.3234,
+            'userPhoneNumber': $scope.check.phoneNumber
+        }, function(data) {
+            if(data.code == -1){
+                return;
+            }
+            $scope.check.time = 15;
+            timer = $interval(function() {
+                $scope.check.time--;
+                if ($scope.check.time < 0) {
+                    $interval.cancel(timer);
+                }
+            }, 1000);
+        })
     }
 
-    return HorizontalScrollFix;
+    $scope.checkCode = function(e, order) {
+        CheckCheckCode.get({
+            'longitude': $rootScope.longitude || 121.483159,
+            'latitude': $rootScope.latitude || 31.3234,
+            'userPhoneNumber': $scope.check.phoneNumber,
+            'checkCode': $scope.check.checkCode,
+            'userId': $rootScope.userInfo.userid
+        }, function(data) {
+            console.log(' checkcoode data', data);
+            if(data.code == -1){
+                alert('验证失败');
+                return;
+            }
+            $rootScope.userInfo.phoneNumber = $scope.check.phoneNumber;
+            $ionicHistory.backView().go();
+        });
+    }
+})
 
-  })();
-
-  angular.module('starter').directive('horizontalScrollFix', ['$timeout', '$ionicScrollDelegate', HorizontalScrollFix]);
-
-}).call(this);
+;

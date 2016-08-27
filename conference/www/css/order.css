@@ -1,4 +1,14 @@
 /*go-cart*/
+.bar{
+    padding: 0;
+}
+.disabledButton{
+    background: #eee !important;
+    color: #999 !important;
+}
+
+
+
 
 .singePage{
     bottom: 115px;
@@ -28,6 +38,10 @@
     width: 49%;
 }
 
+.order-receiver-time label{
+    white-space: nowrap;
+}
+
 .create-order section {
     border-bottom: 2px solid #eee;
     padding: 15px;
@@ -47,9 +61,12 @@
     float: left;
 }
 
+.create label{
+    white-space: nowrap;
+}
+
 .order-receiver-name .like-input, .order-receiver-phone .like-input {
     display: block;
-    width: 120px;
     border: 1px solid #eee;
     height: 25px;
 }
@@ -82,19 +99,21 @@
 
 .order-server label {
     margin-left: 20px;
+    white-space: nowrap;
 }
 
 .pick-all{
-    padding-left: 15px;
+    display: flex;
+    width: 20%;
+    justify-content: center;
+    align-items: center;
 }
 .pick-all input{
     transform: scale(1.5);
+    margin-right: 5px;
 }
 
 .total-price span {
-    font-size: 18px;
-    line-height: 60px;
-    padding-left: 10px;
 }
 
 .good-list-in-order input {
@@ -107,10 +126,12 @@
 }
 
 .total-price {
-    display: inline-block;
-    color: #fff;
-    font-size: 18px;
-    margin-left: 15px;
+    display: flex;
+    width: 40%;
+    align-items: center;
+    color: #F5A623;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .confirm-order .total-price {
@@ -127,8 +148,8 @@
 }
 
 .order-cart-seller{
-    height: 65px;
-    padding: 10px 0;
+    height: 60px;
+    padding: 5px;
 }
 
 .order-cart-seller .item{
@@ -185,14 +206,13 @@
 }
 
 .cart-goods-info-wrap{
-    position: relative;
     display: inline-block;
     width: 33%;
 }
 
 .cart-goods-quantity{
     display: inline-block;
-    width: 40px;
+    width: 25px;
     font-size: 18px;
     text-align: center;
 }
@@ -202,7 +222,7 @@
 }
 
 .cart-goods-action-wrap{
-    margin: 15px 15px 0 0;
+    margin-top: 12px;
 }
 
 .order-cart-action{
@@ -215,12 +235,8 @@
     border-radius: 25px;
 }
 
-.order-cart-action-plus{
-    right: 5px;
-}
-
-.calculate-money{
-    padding: 5px 10px 0 0;
+.calculate-money{    
+    width: 80px;
 }
 
 .calculate-money .totalMoney{
@@ -280,6 +296,17 @@
     margin: 0;
     line-height: 65px;
     padding-left: 30px;
+}
+
+.not-reach, .not-reach .item{
+    background: #ddd !important;
+}
+.not-reach .sendStartPrice{
+    font-weight: bold;
+    color: #ef473a;
+}
+.not-reach .totalMoney{
+    color: #666;
 }
 
 
