@@ -729,6 +729,28 @@ angular.module('starter.controllers', ['starter.services'])
     // }
     console.log('user', $scope.user);
     console.log('user name', $scope.user.nickname);
+
+    $scope.getAddress = function() {
+        wx.ready(function() {
+            wx.openAddress({
+                success: function(res) {
+                    $scope.$apply(function() {
+                        $scope.order.receiverAddress = res.provinceName + res.cityName + res.countryName + res.detailInfo || '';
+                        $scope.order.receiverName = res.userName;
+                        $scope.order.receiverPhone = res.telNumber - 0;
+
+                        var carts = ShoppingCart.getCart();
+                        if ($scope.carts.allGoodsTotalMoney > 0) {
+                            $scope.orderButton.status = false;
+                        }
+                    });
+                },
+                cancel: function() {
+                    alert("fa");
+                }
+            });
+        });
+    }
 })
 
 .controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList, PayConfirm, OrderCancel) {
