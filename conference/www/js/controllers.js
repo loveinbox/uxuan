@@ -605,7 +605,7 @@ angular.module('starter.controllers', ['starter.services'])
                 $scope.$apply(function() {
                     if (data.code != -1) {
                         ForwardPay();
-                        orderIds = data;
+                        orderIds = data.data;
                         console.log('data', data);
                     } else {
                         orderStatus.failed();
