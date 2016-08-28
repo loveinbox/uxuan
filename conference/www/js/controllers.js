@@ -233,12 +233,12 @@ angular.module('starter.controllers', ['starter.services'])
 
 })
 
-.controller('sellerCtrl', function($scope, $rootScope, $stateParams, FruitsByShop, ShoppingCart, $ionicModal) {
+.controller('sellerCtrl', function($scope, $rootScope, $stateParams, FruitsByShop, ShoppingCart, $ionicModal, UserInfo) {
 
     $scope.cart = { number: 0 };
     FruitsByShop.get({
-        'longitude': $rootScope.longitude,
-        'latitude': $rootScope.latitude,
+        'longitude': UserInfo.user.longitude,
+        'latitude': UserInfo.user.latitude,
         'sellerId': $stateParams.sellerId
     }, function(data) {
         $scope.seller = data.data.shop;
