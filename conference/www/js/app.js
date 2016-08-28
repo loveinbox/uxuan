@@ -113,15 +113,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
             // }
     })
 
-    .state('listView', {
-        url: '/listView',
-        // views: {
-        //   'tab-index': {
-        templateUrl: 'templates/listView.html'
-            // }
-            // }
-    })
-
     .state('orderDetail', {
         url: '/orderDetail/:orderId',
         cache: false,

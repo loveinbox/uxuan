@@ -33,19 +33,14 @@
                     <p class="description">{{good.description}}</p>
                     <p class="price">￥{{good.price/100 }}/{{good.unit}}</p>
                 </div>
-                <!-- <div class="list-cart">
-                    <i class="icon ion-ios-cart "></i>
-                    <p class="cartNumber" ng-show="good.quantity > 0">{{good.quantity}}</p>
-                </div> -->
                 <div single-cart></div>
-                <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
             </ion-item>
         </ion-list>
     </ion-scroll>
     <ion-footer-bar>
         <div class="bottom-bar shopping-cart-bar">
             <i class="icon ion-ios-cart icon-cart" ng-click="openModal(seller)"></i>
-            <div class="cart-number-tip" ng-show="cart.number > 0">{{cart.number}}</div>
+            <div class="cart-number-tip" ng-show="totalNumber > 0">{{totalNumber}}</div>
             <a href="#/app/cart/0">
                 <div class="button button-assertive go-cart fr">选好了</div>
             </a>

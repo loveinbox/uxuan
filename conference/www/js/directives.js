@@ -20,21 +20,23 @@ angular.module('starter.directives', ['starter.services'])
         restrict: 'A',
         // replace: true,
         templateUrl: 'templateDirectives/sellersListDirective.html',
-        controller: function($scope, $rootScope, NearByFruitShops, ShoppingCart) {
-            NearByFruitShops.get({
-                'longitude': $rootScope.longitude || 121.483159,
-                'latitude': $rootScope.latitude || 31.3333,
-            }, function(data) {
-                $scope.sellers = getCartNumber(data.data);
-            }, function(data) {
-                alert('NO DATA');
-            });
+        controller: function($scope, $rootScope, NearByFruitShops, ShoppingCart, UserInfo, Location) {
+            Location.then(function () {                
+                NearByFruitShops.get({
+                    'longitude': UserInfo.user.longitude,
+                    'latitude': UserInfo.user.latitude,
+                }, function(data) {
+                    $scope.sellers = getCartNumber(data.data);
+                }, function(data) {
+                    alert('NO DATA');
+                });
+            })
 
             $rootScope.$on('$stateChangeStart', function(event, toState) {
                 $scope.sellers = getCartNumber($scope.sellers);
             });
 
-            $scope.$on('cartChange', function () {
+            $scope.$on('cartChange', function() {
                 $scope.sellers = getCartNumber($scope.sellers);
             });
 
@@ -55,16 +57,16 @@ angular.module('starter.directives', ['starter.services'])
         template: '<p class="guard">管家{{eGuard.name}}为您服务</p>',
         controller: function($scope, $rootScope, NearByEguard, Location) {
             if ($rootScope.eGuard == undefined) {
-                // Location.then(function() {
-                NearByEguard.get({
-                    'longitude': $rootScope.longitude || 121.483159,
-                    'latitude': $rootScope.latitude || 31.3234,
-                }, function(data) {
-                    $rootScope.eGuard = $scope.eGuard = data.data[0];
-                }, function(data) {
-                    alert('NO DATA');
-                });
-                // })
+                Location.then(function() {
+                    NearByEguard.get({
+                        'longitude': UserInfo.user.longitude,
+                        'latitude': UserInfo.user.latitude,
+                    }, function(data) {
+                        $rootScope.eGuard = $scope.eGuard = data.data[0];
+                    }, function(data) {
+                        alert('NO DATA');
+                    });
+                })
             }
         }
     }
@@ -128,7 +130,7 @@ angular.module('starter.directives', ['starter.services'])
 
             cartNumber = ShoppingCart.get($scope.good);
             $scope.singleNumber = cartNumber;
-            if($scope.singleNumber > 0){
+            if ($scope.singleNumber > 0) {
                 $scope.isHideAddCart = true;
             }
             $scope.addCart = function(event, good) {
@@ -158,21 +160,4 @@ angular.module('starter.directives', ['starter.services'])
     }
 })
 
-// .directive('goodsList', function() {
-//     return {
-//         restrict: 'A',
-//         replace: true,
-//         templateUrl: 'templateDirectives/goodsListDirective.html',
-//         controller: function($scope, $rootScope, FruitsByShop) {
-//                 FruitsByShop.get({
-//                  'longitude': $rootScope.longitude || 121.470257,
-//                  'latitude': $rootScope.latitude || 31.3234,
-//              }, function(data) {
-//                  $scope.goods = data.data;
-//              }, function(data) {
-//                  alert('NO DATA');
-//              });
-//         }
-//     }
-// })
 ;

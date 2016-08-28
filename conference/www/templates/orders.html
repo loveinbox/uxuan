@@ -22,7 +22,7 @@
                 	<p class="fl">共{{order.goodsList.length}}件</p>
 	                <p class="list-order-time fr">{{order.orderTime}}</p>
                 </div>
-                <div ng-hide="order.isPaied" class="is-pay-order clearfix">
+                <div ng-hide="order.orderStatusId != '7007'" class="is-pay-order clearfix">
                     <div class="fr" ng-click="rePay($event, order)">支付订单</div>
                     <div class="fr" ng-click="cancel($event, order)">取消订单</div>
                 </div>

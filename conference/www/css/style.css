@@ -549,7 +549,7 @@ p.cartNumber{
 }
 
 .cart-modal.ng-enter-active {
-    transform: translateY(-65px);
+    transform: translateY(-45px);
 }
 
 .cart-modal-list {
