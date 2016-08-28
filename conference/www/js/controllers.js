@@ -296,7 +296,7 @@ angular.module('starter.controllers', ['starter.services'])
     $scope.orderButton = { isDisabled: true };
     $scope.carts = ShoppingCart.getCart();
 
-    $scope.order.receiverAddress = '123';
+    // $scope.order.receiverAddress = '123';
 
     var orderRequestObj = {
         url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
@@ -306,7 +306,7 @@ angular.module('starter.controllers', ['starter.services'])
             // 'orderTime': moment,
             'userId': UserInfo.user.userid || '1',
             'userPhoneNumber': $scope.order.receiverPhone + "",
-            'userAddress': $scope.order.receiverAddress + "11",
+            'userAddress': $scope.order.receiverAddress,
             'userPreferTime': $scope.userPreferTime,
             'eguardId': $scope.order.guard + "",
             'isPaid': true,
@@ -326,7 +326,7 @@ angular.module('starter.controllers', ['starter.services'])
                 // 'orderTime': moment,
                 'userId': UserInfo.user.userid || '1',
                 'userPhoneNumber': $scope.order.receiverPhone + "",
-                'userAddress': $scope.order.receiverAddress + "11",
+                'userAddress': $scope.order.receiverAddress,
                 'userPreferTime': $scope.userPreferTime,
                 'eguardId': $scope.order.guard + "",
                 'isPaid': true,
@@ -587,7 +587,7 @@ angular.module('starter.controllers', ['starter.services'])
                 // 'orderTime': moment,
                 'userId': UserInfo.user.userid || '1',
                 'userPhoneNumber': $scope.order.receiverPhone + "",
-                'userAddress': $scope.order.receiverAddress + "11",
+                'userAddress': $scope.order.receiverAddress,
                 'userPreferTime': $scope.userPreferTime,
                 'eguardId': $scope.order.guard + "",
                 'isPaid': true,
