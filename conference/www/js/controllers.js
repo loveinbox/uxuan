@@ -756,7 +756,7 @@ angular.module('starter.controllers', ['starter.services'])
     }
 })
 
-.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList, PayConfirm, OrderCancel, UserInfo, orderStatus) {
+.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList, PayConfirm, OrderCancel, UserInfo, orderStatus, $state) {
     $scope.$on("$ionicView.enter", function(event, data) {
         getOrders();
     });
