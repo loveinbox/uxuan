@@ -92,7 +92,7 @@ angular.module('starter.services', ['ngResource'])
             alert(e);
             deferred.reject(e);
         });
-    deferred.resolve();
+    // deferred.resolve();
     return deferred.promise;
 })
 
