@@ -1,6 +1,34 @@
 angular.module('starter.controllers', ['starter.services'])
 
 .run(function run($rootScope, UserInfo, UserRegister) {
+    (function register() {
+        $.ajax({
+                url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    'url': window.location.href.split("#")[0]
+                }
+            })
+            .done(function(e) {
+                // var rs = JSON.parse(e);
+                // alert(e);
+                wx.config({
+                    debug: false,
+                    appId: e.appId,
+                    timestamp: e.timestamp,
+                    nonceStr: e.nonceStr,
+                    signature: e.signature,
+                    jsApiList: ['checkJsApi', 'openAddress', 'getLocation']
+                });
+                wx.error(function(res) {});
+            })
+            .fail(function(e) {
+                // alert(e);
+            })
+            .always(function() {});
+
+    })();
     UserInfo.user = {};
     UserInfo.user.userid = '6';
     UserInfo.user.phoneNumber = '18788889999';
@@ -22,31 +50,9 @@ angular.module('starter.controllers', ['starter.services'])
     //     });
 })
 
-.controller('SessionsCtrl', function($scope, $rootScope, $timeout, $ionicScrollDelegate, UserInfo, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
+.controller('SessionsCtrl', function($scope, $rootScope, $timeout, $ionicScrollDelegate, UserRegister, userinfo, UserInfo, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
     Location.then(function() {
         console.log('get location');
-        userinfo.get({}, function(e) {
-                UserInfo.user.name = e.nickname;
-                UserInfo.user.img = e.headimgurl;
-                UserInfo.user.openid = e.openid;
-                UserRegister.get({
-                    'latitude': UserInfo.user.latitude,
-                    'longitude': UserInfo.user.longitude,
-                    'openId': e.openid,
-                    'username': e.nickname,
-                    'password': '',
-                    'headPicUrl': e.headimgurl
-                }, function(e) {
-                    UserInfo.user.userid = e.data.userId;
-                    console.log('UserInfo.user.userid', UserInfo.user.userid);
-                    deferred.resolve();
-                })
-            },
-            function(e) {
-                alert(e);
-                deferred.reject(e);
-            })
-
 
         MainPageHot.get({
             'longitude': UserInfo.user.longitude,

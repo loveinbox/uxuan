@@ -55,7 +55,7 @@ angular.module('starter.directives', ['starter.services'])
         restrict: 'A',
         // replace: true,
         template: '<p class="guard">管家{{eGuard.name}}为您服务</p>',
-        controller: function($scope, $rootScope, NearByEguard, Location) {
+        controller: function($scope, $rootScope, NearByEguard, Location, UserInfo) {
             if ($rootScope.eGuard == undefined) {
                 Location.then(function() {
                     NearByEguard.get({

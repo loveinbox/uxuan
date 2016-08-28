@@ -56,35 +56,6 @@ angular.module('starter.services', ['ngResource'])
 
     console.log('start to get loction');
     var deferred = $q.defer();
-
-    (function register() {
-        $.ajax({
-                url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
-                type: 'GET',
-                dataType: 'json',
-                data: {
-                    'url': window.location.href.split("#")[0]
-                }
-            })
-            .done(function(e) {
-                // var rs = JSON.parse(e);
-                // alert(e);
-                wx.config({
-                    debug: false,
-                    appId: e.appId,
-                    timestamp: e.timestamp,
-                    nonceStr: e.nonceStr,
-                    signature: e.signature,
-                    jsApiList: ['checkJsApi', 'openAddress', 'getLocation']
-                });
-                wx.error(function(res) {});
-            })
-            .fail(function(e) {
-                // alert(e);
-            })
-            .always(function() {});
-
-    })();
     wx.ready(function() {
             wx.getLocation({
                 type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
@@ -93,12 +64,35 @@ angular.module('starter.services', ['ngResource'])
                     UserInfo.user.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
                     UserInfo.user.speed = res.speed; // 速度，以米/每秒计
                     UserInfo.user.accuracy = res.accuracy; // 位置精度
+                    userinfo.get({}, function(e) {
+                            UserInfo.user.name = e.nickname;
+                            UserInfo.user.img = e.headimgurl;
+                            UserInfo.user.openid = e.openid;
+                            UserRegister.get({
+                                'latitude': UserInfo.user.latitude,
+                                'longitude': UserInfo.user.longitude,
+                                'openId': e.openid,
+                                'username': e.nickname,
+                                'password': '',
+                                'headPicUrl': e.headimgurl
+                            }, function(e) {
+                                UserInfo.user.userid = e.data.userId;
+                                console.log('UserInfo.user.userid', UserInfo.user.userid);
+                                deferred.resolve();
+                            })
+                        },
+                        function(e) {
+                            alert(e);
+                            deferred.reject(e);
+                        })
                 }
             });
         },
         function(e) {
             alert(e);
+            deferred.reject(e);
         });
+    // deferred.resolve();
     return deferred.promise;
 })
 
@@ -243,16 +237,16 @@ angular.module('starter.services', ['ngResource'])
 
 .service('orderStatus', function($rootScope, $resource, $q, userinfo, UserRegister) {
     var status = '';
-    this.ordered = function () {
+    this.ordered = function() {
         stauts = 'ordered';
     }
-    this.paied = function () {
+    this.paied = function() {
         stauts = 'paied';
     }
-    this.failed = function () {
+    this.failed = function() {
         stauts = 'failed';
     }
-    this.get = function () {
+    this.get = function() {
         return stauts;
     }
 })
@@ -271,14 +265,14 @@ angular.module('starter.services', ['ngResource'])
 
 .service('UserInfo', function($resource) {
     this.user = {
-        'userId':'',
-        'latitude':'',
-        'longitude':'',
+        'userId': '',
+        'latitude': '',
+        'longitude': '',
         'openId': '',
         'username': '',
         'password': '',
         'headPicUrl': '',
-        'phoneNumber':''
+        'phoneNumber': ''
     }
 })
 
