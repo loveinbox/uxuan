@@ -647,13 +647,15 @@ angular.module('starter.controllers', ['starter.services'])
                             success: function(res) {
                                 orderStatus.paied();
                                 console.log('paied success');
-                                $state.go('orderStatus');
-                                console.log('orderIds', orderIds);
+                                console.log('111 orderIds', orderIds);
                                 PayConfirm.get({
                                     'longitude': UserInfo.user.longitude,
                                     'latitude': UserInfo.user.latitude,
                                     'orderId': orderIds
-                                }, function(data) {});
+                                }, function(data) {                                    
+                                    console.log('pay PayConfirm');
+                                    $state.go('orderStatus');
+                                });
                             },
                             cancel: function(res) {
                                 orderStatus.ordered();
