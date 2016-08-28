@@ -690,6 +690,7 @@ angular.module('starter.controllers', ['starter.services'])
                         if ($scope.carts.allGoodsTotalMoney > 0) {
                             $scope.orderButton.status = false;
                         }
+                        judgeOrder();
                     });
                 },
                 cancel: function() {
