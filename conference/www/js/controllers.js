@@ -374,23 +374,15 @@ angular.module('starter.controllers')
                             signType: e.signType,
                             paySign: e.paySign,
                             success: function(res) {
-                                orderStatus.paied();
                                 console.log('paied success');
-                                $state.go('orderStatus');
                                 PayConfirm.get({
                                     'longitude': UserInfo.user.longitude,
                                     'latitude': UserInfo.user.latitude,
                                     'orderId': [order.orderId]
-                                }, function(data) {});
-                            },
-                            cancel: function(res) {
-                                orderStatus.ordered();
-                                console.log('ordered success');
-                                $state.go('orderStatus');
-                            },
-                            complete: function(res) {
+                                }, function(data) {
+                                    getOrders();
+                                });
                             }
-
                         });
                     });
 
