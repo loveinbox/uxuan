@@ -357,7 +357,7 @@ angular.module('starter.controllers')
                                 orderStatus.paied();
                                 console.log('paied success');
                                 console.log('111 orderIds', orderIds);
-                                console.log('111 orderIds is Array', isArray(orderIds));
+                                console.log('111 orderIds is Array', Array.isArray(orderIds));
                                 PayConfirm.get({
                                     'longitude': UserInfo.user.longitude,
                                     'latitude': UserInfo.user.latitude,
