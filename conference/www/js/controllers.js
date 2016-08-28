@@ -810,7 +810,6 @@ angular.module('starter.controllers', ['starter.services'])
                                 $state.go('orderStatus');
                             },
                             complete: function(res) {
-                                cleanCart();
                             }
 
                         });
