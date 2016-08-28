@@ -798,7 +798,6 @@ angular.module('starter.controllers', ['starter.services'])
                                 orderStatus.paied();
                                 console.log('paied success');
                                 $state.go('orderStatus');
-                                console.log('orderIds', orderIds);
                                 PayConfirm.get({
                                     'longitude': UserInfo.user.longitude,
                                     'latitude': UserInfo.user.latitude,
