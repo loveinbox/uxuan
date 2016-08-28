@@ -826,7 +826,7 @@ angular.module('starter.controllers', ['starter.services'])
     }
 })
 
-.controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserRegister, SendCheckCode, CheckCheckCode, $ionicHistory) {
+.controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserInfo, UserRegister, SendCheckCode, CheckCheckCode, $ionicHistory) {
     var e = {};
     // UserRegister.get({
     //     'latitude': UserInfo.user.latitude || 121.483159,
