@@ -321,8 +321,6 @@ angular.module('starter.controllers')
     //     name: '第三方',
     //     img: 'http://lifeuxuan.com/backend/images/18/1.jpg'
     // }
-    console.log('user', $scope.user);
-    console.log('user name', $scope.user.nickname);
     $scope.user = UserInfo.user;
 
     $scope.getAddress = function() {
