@@ -1,7 +1,6 @@
 angular.module('starter.controllers', ['starter.services'])
 
 .run(function run($rootScope, userinfo, UserRegister) {
-    $rootScope.userInfo = {};
 
 })
 
@@ -19,13 +18,13 @@ angular.module('starter.controllers', ['starter.services'])
     //     });
 })
 
-.controller('SessionsCtrl', function($scope, $rootScope, $timeout, $ionicScrollDelegate, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
+.controller('SessionsCtrl', function($scope, $rootScope, $timeout, $ionicScrollDelegate, UserInfo, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
     // Location.then(function() {
     console.log('get location');
 
     MainPageHot.get({
-        'longitude': $rootScope.longitude || 121.483159,
-        'latitude': $rootScope.latitude || 31.3234
+        'longitude': UserInfo.user.longitude || 121.483159,
+        'latitude': UserInfo.user.latitude || 31.3234
     }, function(data) {
         $scope.sessions = data.data;
     }, function(data) {
@@ -33,8 +32,8 @@ angular.module('starter.controllers', ['starter.services'])
     });
 
     FruitUxuanRank.get({
-        'longitude': $rootScope.longitude || 121.483159,
-        'latitude': $rootScope.latitude || 31.3234,
+        'longitude': UserInfo.user.longitude || 121.483159,
+        'latitude': UserInfo.user.latitude || 31.3234,
     }, function(data) {
         $scope.goods = data.data;
     }, function(data) {
@@ -88,15 +87,15 @@ angular.module('starter.controllers', ['starter.services'])
 
 })
 
-.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, FruitDetail, FruitPicShow, ShoppingCart, $ionicModal) {
+.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, $ionicModal) {
     $scope.isHideAddCart = false;
     $scope.singleNumber = 0;
 
     var cartNumber = 0;
 
     FruitDetail.get({
-        'longitude': $rootScope.longitude || 121.483159,
-        'latitude': $rootScope.latitude || 31.3234,
+        'longitude': UserInfo.user.longitude || 121.483159,
+        'latitude': UserInfo.user.latitude || 31.3234,
         'productId': $stateParams.sessionId
     }, function(data) {
         $scope.session = data.data;
@@ -111,8 +110,8 @@ angular.module('starter.controllers', ['starter.services'])
             $scope.isHideAddCart = true;
         }
         FruitPicShow.get({
-            'longitude': $rootScope.longitude || 121.483159,
-            'latitude': $rootScope.latitude || 31.3234,
+            'longitude': UserInfo.user.longitude || 121.483159,
+            'latitude': UserInfo.user.latitude || 31.3234,
             'productId': $stateParams.sessionId
         }, function(data) {
             $scope.imgs = data.data;
@@ -123,9 +122,13 @@ angular.module('starter.controllers', ['starter.services'])
         alert('NO DATA');
     });
 
+    $scope.$on('cartChange', function () {
+        $scope.singleNumber = ShoppingCart.get(data.data);
+    });
+
 
     $scope.addCart = function(event, good) {
-        if ($rootScope.userInfo.phoneNumber == undefined) {
+        if (!UserInfo.user.phoneNumber) {
             $state.go('phoneNumberCheck');
             return;
         }
@@ -274,9 +277,7 @@ angular.module('starter.controllers', ['starter.services'])
     }
 })
 
-.controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, orderStatus, NearByEguard, FruitOrderInsert, PayConfirm, $http, ShoppingCart) {
-    $rootScope.goods = $rootScope.goods || new Map;
-    $rootScope.totalPrice = $rootScope.totalPrice || 0;
+.controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, UserInfo, orderStatus, NearByEguard, FruitOrderInsert, PayConfirm, $http, ShoppingCart) {
     $scope.order = { orderDate: [] };
     $scope.order.guard = 1;
     $scope.orderButton = { isDisabled: true };
@@ -287,10 +288,10 @@ angular.module('starter.controllers', ['starter.services'])
     var orderRequestObj = {
         url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
         data: {
-            'longitude': $rootScope.longitude || 121.483159,
-            'latitude': $rootScope.latitude || 31.3234,
+            'longitude': UserInfo.user.longitude || 121.483159,
+            'latitude': UserInfo.user.latitude || 31.3234,
             // 'orderTime': moment,
-            'userId': $rootScope.userid || '1',
+            'userId': UserInfo.user.userid || '1',
             'userPhoneNumber': $scope.order.receiverPhone + "",
             'userAddress': $scope.order.receiverAddress + "11",
             'userPreferTime': $scope.userPreferTime,
@@ -299,7 +300,6 @@ angular.module('starter.controllers', ['starter.services'])
             'totalMoney': $scope.carts.allGoodsTotalMoney,
             'note': $scope.order.note || "无" + "",
             'productList': ShoppingCart.getCart(),
-            // 'username': $rootScope.user.name || ''
             'username': ''
         }
     };
@@ -308,10 +308,10 @@ angular.module('starter.controllers', ['starter.services'])
         orderRequestObj = {
             url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
             data: {
-                'longitude': $rootScope.longitude || 121.483159,
-                'latitude': $rootScope.latitude || 31.3234,
+                'longitude': UserInfo.user.longitude || 121.483159,
+                'latitude': UserInfo.user.latitude || 31.3234,
                 // 'orderTime': moment,
-                'userId': $rootScope.userid || '1',
+                'userId': UserInfo.user.userid || '1',
                 'userPhoneNumber': $scope.order.receiverPhone + "",
                 'userAddress': $scope.order.receiverAddress + "11",
                 'userPreferTime': $scope.userPreferTime,
@@ -320,7 +320,7 @@ angular.module('starter.controllers', ['starter.services'])
                 'totalMoney': $scope.carts.allGoodsTotalMoney,
                 'note': $scope.order.note || "无" + "",
                 'productList': ShoppingCart.getCart(),
-                // 'username': $rootScope.user.name || ''
+                // 'username': UserInfo.user.user.name || ''
                 'username': ''
             }
         };
@@ -569,10 +569,10 @@ angular.module('starter.controllers', ['starter.services'])
         orderRequestObj = {
             url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
             data: {
-                'longitude': $rootScope.longitude || 121.483159,
-                'latitude': $rootScope.latitude || 31.3234,
+                'longitude': UserInfo.user.longitude || 121.483159,
+                'latitude': UserInfo.user.latitude || 31.3234,
                 // 'orderTime': moment,
-                'userId': $rootScope.userid || '1',
+                'userId': UserInfo.user.userid || '1',
                 'userPhoneNumber': $scope.order.receiverPhone + "",
                 'userAddress': $scope.order.receiverAddress + "11",
                 'userPreferTime': $scope.userPreferTime,
@@ -581,7 +581,7 @@ angular.module('starter.controllers', ['starter.services'])
                 'totalMoney': $scope.carts.allGoodsTotalMoney,
                 'note': $scope.order.note || "无" + "",
                 'productList': ShoppingCart.getCart(),
-                // 'username': $rootScope.user.name || ''
+                // 'username': UserInfo.user.user.name || ''
                 'username': ''
             }
         };
@@ -716,13 +716,13 @@ angular.module('starter.controllers', ['starter.services'])
     // }
 })
 
-.controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo) {
-    userinfo.get({},
-        function(e) {
-            $rootScope.openid = e.openid;
-            $rootScope.user = { name: e.nickname, img: e.headimgurl };
-        });
-    $scope.user = $rootScope.user;
+.controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo, UserInfo) {
+    // userinfo.get({},
+    //     function(e) {
+    //         $rootScope.openid = e.openid;
+    //         $rootScope.user = { name: e.nickname, img: e.headimgurl };
+    //     });
+    // $scope.user = $rootScope.user;
     // $scope.user = {
     //     name: '第三方',
     //     img: 'http://lifeuxuan.com/backend/images/18/1.jpg'
@@ -804,8 +804,8 @@ angular.module('starter.controllers', ['starter.services'])
 .controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, QueryOrderDetail, PayConfirm) {
     function getOrder(argument) {
         QueryOrderDetail.get({
-            'longitude': $rootScope.longitude || 121.483159,
-            'latitude': $rootScope.latitude || 31.3234,
+            'longitude': UserInfo.user.longitude || 121.483159,
+            'latitude': UserInfo.user.latitude || 31.3234,
             'orderId': $stateParams.orderId
         }, function(data) {
             $scope.order = data.data;
@@ -817,8 +817,8 @@ angular.module('starter.controllers', ['starter.services'])
         e.stopPropagation();
         e.preventDefault();
         PayConfirm.get({
-            'longitude': $rootScope.longitude || 121.483159,
-            'latitude': $rootScope.latitude || 31.3234,
+            'longitude': UserInfo.user.longitude || 121.483159,
+            'latitude': UserInfo.user.latitude || 31.3234,
             'orderId': [$scope.order.orderId]
         }, function(data) {
             getOrder();
@@ -829,14 +829,14 @@ angular.module('starter.controllers', ['starter.services'])
 .controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserRegister, SendCheckCode, CheckCheckCode, $ionicHistory) {
     var e = {};
     // UserRegister.get({
-    //     'latitude': $rootScope.latitude || 121.483159,
-    //     'longitude': $rootScope.longitude || 31.3234,
+    //     'latitude': UserInfo.user.latitude || 121.483159,
+    //     'longitude': UserInfo.user.longitude || 31.3234,
     //     'openId': e.openid || '123',
     //     'username': e.nickname || '123',
     //     'password': '',
     //     'headPicUrl': e.headimgurl || '123'
     // }, function(e) {
-    //     $rootScope.userInfo = {userid: e.data.userId};
+    //     UserInfo.user.userInfo = {userid: e.data.userId};
     // })
 
     $scope.check = {};
@@ -848,8 +848,8 @@ angular.module('starter.controllers', ['starter.services'])
             return;
         }
         SendCheckCode.get({
-            'longitude': $rootScope.longitude || 121.483159,
-            'latitude': $rootScope.latitude || 31.3234,
+            'longitude': UserInfo.user.longitude || 121.483159,
+            'latitude': UserInfo.user.latitude || 31.3234,
             'userPhoneNumber': $scope.check.phoneNumber
         }, function(data) {
             if (data.code == -1) {
@@ -866,12 +866,13 @@ angular.module('starter.controllers', ['starter.services'])
     }
 
     $scope.checkCode = function(e, order) {
+        var phoneNumber = $scope.check.phoneNumber;
         CheckCheckCode.get({
-            'longitude': $rootScope.longitude || 121.483159,
-            'latitude': $rootScope.latitude || 31.3234,
-            'userPhoneNumber': $scope.check.phoneNumber,
+            'longitude': UserInfo.user.longitude || 121.483159,
+            'latitude': UserInfo.user.latitude || 31.3234,
+            'userPhoneNumber': phoneNumber,
             'checkCode': $scope.check.checkCode,
-            'userId': $rootScope.userInfo.userid,
+            'userId': UserInfo.user.userid,
             'XDEBUG_SESSION_START': '657409A8'
         }, function(data) {
             console.log(' checkcoode data.code', data.code);
@@ -880,7 +881,8 @@ angular.module('starter.controllers', ['starter.services'])
                 alert('验证失败');
                 return;
             }
-            $rootScope.userInfo.phoneNumber = $scope.check.phoneNumber;
+            console.log('$scope.check.phoneNumber', phoneNumber);
+            UserInfo.user.phoneNumber = phoneNumber;
             $ionicHistory.backView().go();
         });
     }

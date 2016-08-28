@@ -52,7 +52,7 @@ angular.module('starter.services', ['ngResource'])
     return $resource('http://www.lifeuxuan.com/backend/api/OrderCancel.php');
 })
 
-.factory('Location', function($rootScope, $resource, $q, userinfo, UserRegister) {
+.factory('Location', function($rootScope, $resource, $q, userinfo, UserRegister, UserInfo) {
 
     console.log('start to get loction');
     var deferred = $q.defer();
@@ -119,7 +119,7 @@ angular.module('starter.services', ['ngResource'])
                                         console.log(p, e[p]);
                                     }
                                     console.log('userId', e.data.userId);
-                                    $rootScope.userInfo = {userid: e.data.userId};
+                                    UserInfo.user.userid = e.data.userId;
                                     deferred.resolve();
                                 })
                             },
@@ -292,16 +292,29 @@ angular.module('starter.services', ['ngResource'])
     }
 })
 
-.service('QueryOrderDetail', function($rootScope, $resource, $q, userinfo, UserRegister) {
+.factory('QueryOrderDetail', function($rootScope, $resource, $q, userinfo, UserRegister) {
     return $resource('http://www.lifeuxuan.com/backend/api/QueryOrderDetail.php');
 })
 
-.service('SendCheckCode', function($resource) {
+.factory('SendCheckCode', function($resource) {
     return $resource('http://www.lifeuxuan.com/backend/api/SendCheckCode.php');
 })
 
-.service('CheckCheckCode', function($resource) {
+.factory('CheckCheckCode', function($resource) {
     return $resource('http://www.lifeuxuan.com/backend/api/CheckCheckCode.php');
+})
+
+.service('UserInfo', function($resource) {
+    this.user = {
+        'userId':'',
+        'latitude':'',
+        'longitude':'',
+        'openId': '',
+        'username': '',
+        'password': '',
+        'headPicUrl': '',
+        'phoneNumber':''
+    }
 })
 
 

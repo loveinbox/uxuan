@@ -34,6 +34,10 @@ angular.module('starter.directives', ['starter.services'])
                 $scope.sellers = getCartNumber($scope.sellers);
             });
 
+            $scope.$on('cartChange', function () {
+                $scope.sellers = getCartNumber($scope.sellers);
+            });
+
             function getCartNumber(sellerList) {
                 $.each(sellerList, function(index, value) {
                     value.cartNumber = ShoppingCart.getSellerCartNumber(value.sellerId);
@@ -71,7 +75,7 @@ angular.module('starter.directives', ['starter.services'])
         restrict: 'A',
         // replace: true,
         templateUrl: 'templateDirectives/myModal.html',
-        controller: function($scope, $rootScope, $ionicModal) {
+        controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
             $scope.addCart = function(event, good) {
                 event.stopPropagation();
                 cartNumber = ShoppingCart.add(event, good);
@@ -110,6 +114,45 @@ angular.module('starter.directives', ['starter.services'])
             };
             $scope.closeModal = function() {
                 $scope.modal.hide();
+            };
+        }
+    }
+})
+
+.directive('singleCart', function() {
+    return {
+        restrict: 'A',
+        // replace: true,
+        templateUrl: 'templateDirectives/singleCart.html',
+        controller: function($scope, $rootScope, $ionicModal, $state, ShoppingCart, UserInfo) {
+
+            cartNumber = ShoppingCart.get($scope.good);
+            $scope.singleNumber = cartNumber;
+            if($scope.singleNumber > 0){
+                $scope.isHideAddCart = true;
+            }
+            $scope.addCart = function(event, good) {
+                event.stopPropagation();
+                event.preventDefault();
+                if (!UserInfo.user.phoneNumber) {
+                    $state.go('phoneNumberCheck');
+                    return;
+                }
+                cartNumber = ShoppingCart.add(event, good);
+                $scope.isHideAddCart = true;
+                $scope.singleNumber = cartNumber;
+                $rootScope.$broadcast('cartChange');
+            };
+
+            $scope.removeCart = function(good) {
+                event.stopPropagation();
+                event.preventDefault();
+                var cartNumber = ShoppingCart.remove(good);
+                if (cartNumber == 0) {
+                    $scope.isHideAddCart = false;
+                }
+                $scope.singleNumber = cartNumber;
+                $rootScope.$broadcast('cartChange');
             };
         }
     }

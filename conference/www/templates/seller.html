@@ -33,10 +33,11 @@
                     <p class="description">{{good.description}}</p>
                     <p class="price">￥{{good.price/100 }}/{{good.unit}}</p>
                 </div>
-                <div class="list-cart">
+                <!-- <div class="list-cart">
                     <i class="icon ion-ios-cart "></i>
                     <p class="cartNumber" ng-show="good.quantity > 0">{{good.quantity}}</p>
-                </div>
+                </div> -->
+                <div single-cart></div>
                 <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
             </ion-item>
         </ion-list>

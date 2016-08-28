@@ -67,7 +67,7 @@
                     <ion-list class="clearfix">
                         <ion-item ng-repeat="good in cart.goodsList">
                             <input type="checkbox" ng-model="good.isChecked" ng-click="calculateSingleMoney($event, cart)">
-                            <img class="cart-seller-img" ng-src="http://lifeuxuan.com/backend/{{good.headPic}}" alt="">
+                            <img class="cart-seller-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
                             <div class="cart-goods-info-wrap">
                                 <p class="cart-goods-name">{{good.productName}}</p>
                                 <span class="cart-goods-info">￥{{good.price/100}}</span>
