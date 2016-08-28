@@ -836,17 +836,18 @@ angular.module('starter.controllers', ['starter.services'])
     }
 
     function getOrders() {
+        console.log('getOrders','UserInfo.user.userInfo',UserInfo.user.userInfo);
         QueryOrderList.get({
             'longitude': UserInfo.user.longitude,
             'latitude': UserInfo.user.latitude,
-            'userId': UserInfo.user.userInfo || '6'
+            'userId': UserInfo.user.userid || '6'
         }, function(data) {
             $scope.orders = data.data;
         });
     }
 })
 
-.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, QueryOrderDetail, PayConfirm) {
+.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, QueryOrderDetail, PayConfirm, UserInfo) {
     function getOrder(argument) {
         QueryOrderDetail.get({
             'longitude': UserInfo.user.longitude,
