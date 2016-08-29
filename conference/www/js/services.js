@@ -52,7 +52,7 @@ angular.module('starter.services', ['ngResource'])
     return $resource('http://www.lifeuxuan.com/backend/api/OrderCancel.php');
 })
 
-.factory('Location', function($rootScope, $resource, $q, userinfo, UserRegister, UserInfo) {
+.factory('Location', function($rootScope, $resource, $q, $timeout, userinfo, UserRegister, UserInfo) {
 
     console.log('start to get loction');
     var deferred = $q.defer();
@@ -92,7 +92,9 @@ angular.module('starter.services', ['ngResource'])
             alert(e);
             deferred.reject(e);
         });
-    // deferred.resolve();
+    $timeout(function(){
+        deferred.resolve()
+    }, 2000);
     return deferred.promise;
 })
 

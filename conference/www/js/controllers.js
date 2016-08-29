@@ -390,6 +390,14 @@ angular.module('starter.controllers')
                 .fail(function(e) {})
                 .always(function() {});
         })();
+        // PayConfirm.get({
+        //     'longitude': UserInfo.user.longitude,
+        //     'latitude': UserInfo.user.latitude,
+        //     'orderId': ['2016082823450561', '2016082823450560']
+        // }, function(data) {
+        //     getOrder();
+        // });
+            
     }
 
     $scope.cancel = function(e, order) {
