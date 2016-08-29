@@ -361,7 +361,7 @@ angular.module('starter.controllers')
                                 PayConfirm.get({
                                     'longitude': UserInfo.user.longitude,
                                     'latitude': UserInfo.user.latitude,
-                                    'orderId': orderIds
+                                    'orderId\[\]': orderIds
                                 }, function(data) {                                    
                                     console.log('pay PayConfirm');
                                     $state.go('orderStatus');
