@@ -65,7 +65,7 @@ angular.module('starter.controllers')
         var date = new Date,
             startHour = date.getHours() > 8 ? date.getHours() : 8;
 
-        if (startHour > 20) {
+        if (startHour >= 20) {
             weight = 1;
         }
 
@@ -304,7 +304,7 @@ angular.module('starter.controllers')
                 'note': $scope.order.note || "无" + "",
                 'productList': ShoppingCart.getCart(),
                 // 'username': UserInfo.user.user.name || ''
-                'username': ''
+                'username': UserInfo.user.name
             }
         };
         $.ajax(orderRequestObj)
