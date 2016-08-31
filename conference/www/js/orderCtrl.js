@@ -318,7 +318,7 @@ angular.module('starter.controllers')
                         console.log('data', data);
                     } else {
                         orderStatus.failed();
-                        $state.go('orderStatus');
+                        $state.go('app.orders');
                     }
                 })
             })
@@ -364,13 +364,13 @@ angular.module('starter.controllers')
                                     'orderId\[\]': orderIds
                                 }, function(data) {                                    
                                     console.log('pay PayConfirm');
-                                    $state.go('orderStatus');
+                                    $state.go('app.orders');
                                 });
                             },
                             cancel: function(res) {
                                 orderStatus.ordered();
                                 console.log('ordered success');
-                                $state.go('orderStatus');
+                                $state.go('app.orders');
                             },
                             complete: function(res) {
                                 cleanCart();
@@ -384,7 +384,7 @@ angular.module('starter.controllers')
                 .always(function() {});
         };
 
-        // $state.go('orderStatus');
+        // $state.go('app.orders');
     }
 
     $scope.getAddress = function() {
