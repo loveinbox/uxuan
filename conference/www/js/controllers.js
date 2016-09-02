@@ -54,7 +54,7 @@ angular.module('starter.controllers')
     //     });
 })
 
-.controller('SessionsCtrl', function($scope, $rootScope, $timeout, $ionicScrollDelegate, UserRegister, userinfo, UserInfo, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
+.controller('SessionsCtrl', function($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicModal, UserRegister, userinfo, UserInfo, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
     Location.then(function() {
         console.log('get location');
 
@@ -119,6 +119,95 @@ angular.module('starter.controllers')
         document.addEventListener("touchmove", sv.touchMove, false);
         document.addEventListener("mousemove", sv.mouseMove, false);
     });
+
+    $ionicModal.fromTemplateUrl('my-map.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
+    $scope.openModal = function(good) {
+        $scope.modal.show();
+        (function() {
+            function G(id) {
+                return document.getElementById(id);
+            }
+
+            //地图初始化
+            var map = new BMap.Map("l-map");
+            map.centerAndZoom("上海", 12);
+
+            var ac = new BMap.Autocomplete({
+                "input": "suggestId",
+                "location": map
+            });
+
+            //根据经纬度在地图上标记位置
+            function SetPlace(lat, lng) {
+                point = new BMap.Point(lng, lat);
+                map.clearOverlays();
+                map.centerAndZoom(point, 18);
+                map.addOverlay(new BMap.Marker(point));
+            }
+
+            //当鼠标点击下拉列表中某项时触发此函数
+            ac.addEventListener("onconfirm", function(e) {
+                var _value = e.item.value;
+                var myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+                G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+
+                SearchPlace(myValue);
+                // SetPlace(point.lat, point.lng);
+                $(".mapsearch").val("确定");
+            });
+
+            //根据下拉选择搜索位置
+            function SearchPlace(myValue) {
+                function myFun() {
+                    var pp = local.getResults().getPoi(0).point;
+                    SetPlace(pp.lat, pp.lng);
+                }
+                var local = new BMap.LocalSearch(map, {
+                    onSearchComplete: myFun
+                });
+                local.search(myValue);
+            }
+
+
+            //根据地址获取经纬度
+            function GetPoint(address) {
+                var gc = new BMap.Geocoder();
+                gc.getPoint(address, function(point) {
+                    alert(point.lng + " " + point.lat);
+                    SetPlace(point.lat, point.lng);
+                });
+            }
+
+            //根据经纬度获取地址
+            function GetAddress(lat, lng) {
+                point = new BMap.Point(lng, lat);
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function(rs) {
+                    var addComp = rs.addressComponents;
+                    var address = addComp.province + "," + addComp.city + "," + addComp.district + "," + addComp.street + "," + addComp.streetNumber;
+                    alert(address);
+                });
+            }
+
+            $(".mapsearch").click(function() {
+                var value = $("#suggestId").val();
+                // alert(value);
+                GetPoint(value);
+                //setPlace(value);
+                //GetAddress(31.29874, 121.444444);
+                // GetPoint('上海市浦东新区芳华路916弄');
+            });
+        })();
+    };
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+    };
+
 
 
 })
@@ -397,7 +486,7 @@ angular.module('starter.controllers')
         // }, function(data) {
         //     getOrder();
         // });
-            
+
     }
 
     $scope.cancel = function(e, order) {
@@ -413,7 +502,7 @@ angular.module('starter.controllers')
     }
 
     function getOrders() {
-        console.log('getOrders','UserInfo.user.userInfo',UserInfo.user.userInfo);
+        console.log('getOrders', 'UserInfo.user.userInfo', UserInfo.user.userInfo);
         QueryOrderList.get({
             'longitude': UserInfo.user.longitude,
             'latitude': UserInfo.user.latitude,

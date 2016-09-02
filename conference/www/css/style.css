@@ -132,16 +132,21 @@ a {
     width: 100px;
 }
 
-.header-search {
+.header-icon {
     position: absolute;
     top: 0;
     right: 15px;
     line-height: 40px;
 }
 
-.header-search i {
+.header-icon i {
     color: #fff;
     font-size: 24px;
+}
+
+.header-icon.header-location{
+    left: 15px;
+    right: auto;
 }
 
 .index-slide {
@@ -268,10 +273,15 @@ a {
 
 .index-list-item .distance {}
 
+.good-info-wrap{
+    width: 85%;
+}
+
 .seller .good-info-wrap li {
     float: left;
-    width: 24%;
     font-size: 12px;
+    width: 25%;
+    padding-right: 8%;
     /*margin: 10px 30px 0 15px;*/
 }
 
@@ -313,6 +323,7 @@ a {
     width: 115px;
     margin: 0;
     border: none;
+    text-align: center;
 }
 
 .single img {
