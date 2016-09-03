@@ -50,7 +50,7 @@ angular.module('starter.controllers')
 
 .controller('SessionsCtrl', function($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicModal, UserRegister, userinfo, UserInfo, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
     Location.then(function() {
-        console.log('get location');
+        console.log('get location', UserInfo.user.longitude, UserInfo.user.latitude);
 
         MainPageHot.get({
             'longitude': UserInfo.user.longitude,
