@@ -114,22 +114,6 @@ angular.module('starter.controllers')
         document.addEventListener("mousemove", sv.mouseMove, false);
     });
 
-    $ionicModal.fromTemplateUrl('templates/modal-map.html', {
-    // $ionicModal.fromTemplateUrl('my-map.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.modal = modal;
-    });
-    $scope.openModal = function(good) {
-        $scope.modal.show();
-    };
-    $scope.closeModal = function() {
-        $scope.modal.hide();
-    };
-
-
-
 })
 
 .controller('SessionCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, $ionicModal) {
