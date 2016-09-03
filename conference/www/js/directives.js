@@ -21,7 +21,8 @@ angular.module('starter.directives', ['starter.services'])
         // replace: true,
         templateUrl: 'templateDirectives/sellersListDirective.html',
         controller: function($scope, $rootScope, NearByFruitShops, ShoppingCart, UserInfo, Location) {
-            Location.then(function () {                
+            Location.then(function () {
+                console.log('get location goods', UserInfo.user.longitude, UserInfo.user.latitude);                
                 NearByFruitShops.get({
                     'longitude': UserInfo.user.longitude,
                     'latitude': UserInfo.user.latitude,
