@@ -166,8 +166,8 @@ angular.module('starter.controllers')
     }
 
     NearByEguard.get({
-        'longitude': $rootScope.longitude,
-        'latitude': $rootScope.latitude,
+        'longitude': UserInfo.user.longitude,
+        'latitude': UserInfo.user.latitude,
     }, function(data) {
         $scope.eGuard = data.data;
     }, function(data) {

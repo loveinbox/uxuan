@@ -1,4 +1,7 @@
 <ion-view view-title="Search">
+    <ion-header-bar class="index-header">
+        <div go-back></div>
+    </ion-header-bar>
     <ion-content>
         <div class="list">
             <div class="item item-input-inset">
@@ -35,7 +38,7 @@
                 <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
                 <!-- <img src="img/single.jpg"> -->
                 <span class="name">{{good.productName}}</span>
-                <span class="name">{{good.description}}</span>
+                <span class="description">{{good.description}}</span>
                 <p class="price">￥{{good.price/100}}/{{good.unit}}</p>
                 <div single-cart></div>
                 <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->

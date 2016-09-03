@@ -347,6 +347,10 @@ a {
     font-weight: bold;
 }
 
+.rank .description{
+    display: block;
+    font-size: 14px;
+}
 .rank .price {
     margin-top: 4px;
     font-size: 18px;
