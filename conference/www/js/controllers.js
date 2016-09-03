@@ -32,12 +32,6 @@ angular.module('starter.controllers')
 
     })();
 
-    if (UserInfo.user.userid == undefined) {
-        UserInfo.user.userid = '6';
-        UserInfo.user.phoneNumber = '18788889999';
-        UserInfo.user.longitude = 121.483159;
-        UserInfo.user.latitude = 31.3234;
-    }
 })
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope, $http) {
@@ -120,7 +114,8 @@ angular.module('starter.controllers')
         document.addEventListener("mousemove", sv.mouseMove, false);
     });
 
-    $ionicModal.fromTemplateUrl('my-map.html', {
+    $ionicModal.fromTemplateUrl('templates/modal-map.html', {
+    // $ionicModal.fromTemplateUrl('my-map.html', {
         scope: $scope,
         animation: 'slide-in-up'
     }).then(function(modal) {

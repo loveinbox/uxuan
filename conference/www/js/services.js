@@ -56,45 +56,79 @@ angular.module('starter.services', ['ngResource'])
 
     console.log('start to get loction');
     var deferred = $q.defer();
-    wx.ready(function() {
-            wx.getLocation({
-                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                success: function(res) {
-                    UserInfo.user.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                    UserInfo.user.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                    UserInfo.user.speed = res.speed; // 速度，以米/每秒计
-                    UserInfo.user.accuracy = res.accuracy; // 位置精度
-                    userinfo.get({}, function(e) {
-                            UserInfo.user.name = e.nickname;
-                            UserInfo.user.img = e.headimgurl;
-                            UserInfo.user.openid = e.openid;
-                            UserRegister.get({
-                                'latitude': UserInfo.user.latitude,
-                                'longitude': UserInfo.user.longitude,
-                                'openId': e.openid,
-                                'username': e.nickname,
-                                'password': '',
-                                'headPicUrl': e.headimgurl
-                            }, function(e) {
-                                UserInfo.user.userid = e.data.userId;
-                                console.log('UserInfo.user.userid', UserInfo.user.userid);
-                                deferred.resolve();
+    var userInfo = JSON.parse(localStorage.getItem('userinfo'));
+    if (userInfo.user.latitude && userInfo.user.longitude) {
+        UserInfo.user.latitude = userInfo.user.latitude; 
+        UserInfo.user.longitude = userInfo.user.longitude; 
+        userinfo.get({}, function(e) {
+                UserInfo.user.name = e.nickname;
+                UserInfo.user.img = e.headimgurl;
+                UserInfo.user.openid = e.openid;
+                UserRegister.get({
+                    'latitude': UserInfo.user.latitude,
+                    'longitude': UserInfo.user.longitude,
+                    'openId': e.openid,
+                    'username': e.nickname,
+                    'password': '',
+                    'headPicUrl': e.headimgurl
+                }, function(e) {
+                    UserInfo.user.userid = e.data.userId;
+                    console.log('UserInfo.user.userid', UserInfo.user.userid);
+                    deferred.resolve();
+                })
+            },
+            function(e) {
+                alert(e);
+                deferred.reject(e);
+            })
+    } else {
+        wx.ready(function() {
+                wx.getLocation({
+                    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                    success: function(res) {
+                        UserInfo.user.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                        UserInfo.user.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                        UserInfo.user.speed = res.speed; // 速度，以米/每秒计
+                        UserInfo.user.accuracy = res.accuracy; // 位置精度
+                        localStorage.setItem('userinfo', JSON.stringify(UserInfo));
+                        userinfo.get({}, function(e) {
+                                UserInfo.user.name = e.nickname;
+                                UserInfo.user.img = e.headimgurl;
+                                UserInfo.user.openid = e.openid;
+                                UserRegister.get({
+                                    'latitude': UserInfo.user.latitude,
+                                    'longitude': UserInfo.user.longitude,
+                                    'openId': e.openid,
+                                    'username': e.nickname,
+                                    'password': '',
+                                    'headPicUrl': e.headimgurl
+                                }, function(e) {
+                                    UserInfo.user.userid = e.data.userId;
+                                    console.log('UserInfo.user.userid', UserInfo.user.userid);
+                                    deferred.resolve();
+                                })
+                            },
+                            function(e) {
+                                alert(e);
+                                deferred.reject(e);
                             })
-                        },
-                        function(e) {
-                            alert(e);
-                            deferred.reject(e);
-                        })
-                }
+                    }
+                });
+            },
+            function(e) {
+                alert(e);
+                deferred.reject(e);
             });
-        },
-        function(e) {
-            alert(e);
-            deferred.reject(e);
-        });
-    $timeout(function(){
-        deferred.resolve()
-    }, 2000);
+    }
+
+    $timeout(function() {
+        UserInfo.user.userid = '6';
+        UserInfo.user.phoneNumber = '18788889999';
+        UserInfo.user.longitude = 121.483159;
+        UserInfo.user.latitude = 31.3234;
+        localStorage.setItem('userinfo', JSON.stringify(UserInfo));
+        deferred.resolve();
+    }, 1000);
     return deferred.promise;
 })
 
