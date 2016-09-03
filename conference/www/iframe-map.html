@@ -83,7 +83,7 @@ $(document).ready(function() {
                 var mk = new BMap.Marker(r.point);
                 map.addOverlay(mk);
                 map.panTo(r.point);
-                alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+                // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
                 userInfo.user.latitude = r.point.lat;
                 userInfo.user.longitude = r.point.lng;
                 console.log('current', userInfo.user.latitude, userInfo.user.longitude)
