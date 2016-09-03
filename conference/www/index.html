@@ -63,33 +63,8 @@
         </ion-modal-view>
     </script>
     <script id="my-map.html" type="text/ng-template">
-        <ion-modal-view>
-            <div id="localCurrent">
-                <table>
-                    <tr>
-                        <td><img src="http://www.lifeuxuan.com/backend/images/comm/local.jpg" style="width:30px;height:30px" /></td>
-                        <td align="left">
-                            <label style="color: #0066CC">定位当前位置</label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <hr style="height: 1px; border: none; border-top: 1px dashed #555555;" />
-            <div id="r-result">
-                <table>
-                    <tr>
-                        <td><img src="http://www.lifeuxuan.com/backend/images/comm/search.jpg" style="width:30px;height:30px" /></td>
-                        <td align="left" width="100%">
-                            <input type="text" id="suggestId" size="20" value="" style="width:90%;border-color:#0066cc" />
-                        </td>
-                        <td width="50px" align="center">
-                            <input type="button" class="mapsearch" value="搜索" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="searchResultPanel" style="border:1px solid #c0c0c0;width:150px;height:auto;display:none;"></div>
-            <div id="l-map"></div>
+        <ion-modal-view style="height:100%;">
+            <iframe src="templates/iframe-map.html"  style="height:100%;width:100%;"></iframe>
         </ion-modal-view>
     </script>
 </body>
