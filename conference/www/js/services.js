@@ -57,7 +57,7 @@ angular.module('starter.services', ['ngResource'])
     console.log('start to get loction');
     var deferred = $q.defer();
     var userInfo = JSON.parse(localStorage.getItem('userinfo'));
-    if (userInfo && userInfo.user.latitude && userInfo.user.longitude) {
+    if (userInfo && userInfo.user.isSearchGeo && userInfo.user.latitude && userInfo.user.longitude) {
         UserInfo.user.latitude = userInfo.user.latitude;
         UserInfo.user.longitude = userInfo.user.longitude;
         wx.ready(function() {
@@ -92,6 +92,7 @@ angular.module('starter.services', ['ngResource'])
                         UserInfo.user.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
                         UserInfo.user.speed = res.speed; // 速度，以米/每秒计
                         UserInfo.user.accuracy = res.accuracy; // 位置精度
+                        UserInfo.user.isSearchGeo = false;
                         localStorage.setItem('userinfo', JSON.stringify(UserInfo));
                         userinfo.get({}, function(e) {
                                 UserInfo.user.name = e.nickname;

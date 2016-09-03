@@ -76,6 +76,7 @@ $(document).ready(function() {
 
     $('#localCurrent').click(function(event) {
         $(".mapsearch").text("确定");
+        userInfo.user.isSearchGeo = false;
         console.log('current', userInfo.user.latitude, userInfo.user.longitude)
         SetPlace(userInfo.user.latitude, userInfo.user.longitude);
     });
@@ -107,6 +108,7 @@ $(document).ready(function() {
         map.addOverlay(new BMap.Marker(point));
         userInfo.user.latitude = point.lat;
         userInfo.user.longitude = point.lng;
+        userInfo.user.timeStamp = Date.now();
         localStorage.setItem('userinfo', JSON.stringify(userInfo));
     }
 
@@ -116,6 +118,7 @@ $(document).ready(function() {
         var myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
 
         SearchPlace(myValue);
+        userInfo.user.isSearchGeo = true;
         // SetPlace(point.lat, point.lng);
         $(".mapsearch").text("确定");
     });
@@ -158,6 +161,7 @@ $(document).ready(function() {
         var value = $("#suggestId").val();
         // alert(value);
         GetPoint(value);
+        userInfo.user.isSearchGeo = true;
         $(".mapsearch").text("确定");
         // setPlace(value);
         // GetAddress(31.29874, 121.444444);
