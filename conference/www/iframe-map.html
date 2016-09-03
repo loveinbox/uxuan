@@ -75,6 +75,7 @@ $(document).ready(function() {
     var userInfo = JSON.parse(localStorage.getItem('userinfo'));
 
     $('#localCurrent').click(function(event) {
+        $(".mapsearch").text("确定");
         SetPlace(userInfo.user.latitude, userInfo.user.longitude);
     });
 
