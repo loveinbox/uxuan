@@ -53,13 +53,12 @@
             <tr>
                 <td ><img src="http://www.lifeuxuan.com/backend/images/comm/search.jpg" style="width:30px;height:30px" /></td>
                 <td align="left" width="100%"><input type="text" id="suggestId" size="20" value="" style="width:90%;border-color:#0066cc"/></td>
-                <!-- <td width="50px" align="center"><input type="button" class="mapsearch" value="搜索" /></td> -->
             </tr>
         </table>  
     </div>
     <div id="searchResultPanel" style="border:1px solid #c0c0c0;width:150px;height:auto;display:none;"></div>
     <div id="l-map"></div>
-    <button id="ok">确定</button>
+    <input id="ok" type="button" class="mapsearch" value="搜索" />
 </body>
 </html>
 <script type="text/javascript">
@@ -106,7 +105,7 @@
 
             SearchPlace(myValue);
             // SetPlace(point.lat, point.lng);
-            // $(".mapsearch").val("确定");
+            $(".mapsearch").val("确定");
         });
 
         //根据下拉选择搜索位置
