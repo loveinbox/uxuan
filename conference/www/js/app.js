@@ -108,11 +108,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
 
     .state('search', {
         url: '/search',
-        // views: {
-        //   'tab-index': {
-        templateUrl: 'templates/search.html'
-            // }
-            // }
+        templateUrl: 'templates/search.html',
+        controller: 'SearchCtrl'
     })
 
     .state('orderDetail', {

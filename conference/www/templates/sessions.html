@@ -11,9 +11,11 @@
             </a>
             <!-- <a href="iframe-map.html"><i class="icon ion-location placeholder-icon"></i></a>  -->
             <p e-guard></p>
-            <label class="header-icon">
-                <i class="icon ion-ios-search placeholder-icon"></i>
-            </label>
+            <a href="#/search">
+                <label class="header-icon">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                </label>
+            </a>
         </div>
         <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true" auto-play="true">
             <ion-slide>
@@ -90,11 +92,11 @@
                 <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
             </ion-item>
         </ion-list>
-    <!--     <div class="divider">U选洗衣</div>
+        <!--     <div class="divider">U选洗衣</div>
         <ion-list class="seller index-list clearfix">
             <ion-item class="index-list-item" ng-repeat="session in sessions" href="#/sessions/{{session.goodId}}"> -->
-                <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}" alt=""> -->
-                <!-- <img src="img/single.jpg">
+        <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}" alt=""> -->
+        <!-- <img src="img/single.jpg">
                 <span class="name">{{session.goodName}}</span>
                 <ul class="good-info-wrap clearfix">
                     <li class="distance">月售{{session.distance}}单</li>
@@ -104,8 +106,8 @@
                 </ul>
                 <div class="slogen">{{session.goodName}}</div>
                 <i class="icon ion-ios-cart list-cart"></i> -->
-                <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
-         <!--    </ion-item>
+        <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
+        <!--    </ion-item>
         </ion-list> -->
     </ion-content>
 </ion-view>

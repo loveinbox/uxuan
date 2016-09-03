@@ -504,4 +504,20 @@ angular.module('starter.controllers')
     }
 })
 
+.controller('SearchCtrl', function($scope, UserInfo, Search) {
+
+    $scope.search = {};
+    $scope.searchGo = function(e, order) {
+        Search.get({
+            'latitude': UserInfo.user.latitude,
+            'longitude': UserInfo.user.longitude,
+            'keywords': $scope.search.keyword
+        }, function(e) {
+            $scope.search.goods = e.data.fruitProducts;
+            $scope.search.sellers = e.data.fruitSellers;
+        })
+    }
+
+})
+
 ;

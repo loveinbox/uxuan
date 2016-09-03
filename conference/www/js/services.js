@@ -58,29 +58,31 @@ angular.module('starter.services', ['ngResource'])
     var deferred = $q.defer();
     var userInfo = JSON.parse(localStorage.getItem('userinfo'));
     if (userInfo && userInfo.user.latitude && userInfo.user.longitude) {
-        UserInfo.user.latitude = userInfo.user.latitude; 
-        UserInfo.user.longitude = userInfo.user.longitude; 
-        userinfo.get({}, function(e) {
-                UserInfo.user.name = e.nickname;
-                UserInfo.user.img = e.headimgurl;
-                UserInfo.user.openid = e.openid;
-                UserRegister.get({
-                    'latitude': UserInfo.user.latitude,
-                    'longitude': UserInfo.user.longitude,
-                    'openId': e.openid,
-                    'username': e.nickname,
-                    'password': '',
-                    'headPicUrl': e.headimgurl
-                }, function(e) {
-                    UserInfo.user.userid = e.data.userId;
-                    console.log('UserInfo.user.userid', UserInfo.user.userid);
-                    deferred.resolve();
+        UserInfo.user.latitude = userInfo.user.latitude;
+        UserInfo.user.longitude = userInfo.user.longitude;
+        wx.ready(function() {
+            userinfo.get({}, function(e) {
+                    UserInfo.user.name = e.nickname;
+                    UserInfo.user.img = e.headimgurl;
+                    UserInfo.user.openid = e.openid;
+                    UserRegister.get({
+                        'latitude': UserInfo.user.latitude,
+                        'longitude': UserInfo.user.longitude,
+                        'openId': e.openid,
+                        'username': e.nickname,
+                        'password': '',
+                        'headPicUrl': e.headimgurl
+                    }, function(e) {
+                        UserInfo.user.userid = e.data.userId;
+                        console.log('UserInfo.user.userid', UserInfo.user.userid);
+                        deferred.resolve();
+                    })
+                },
+                function(e) {
+                    alert(e);
+                    deferred.reject(e);
                 })
-            },
-            function(e) {
-                alert(e);
-                deferred.reject(e);
-            })
+        })
     } else {
         wx.ready(function() {
                 wx.getLocation({
@@ -297,6 +299,10 @@ angular.module('starter.services', ['ngResource'])
 
 .factory('CheckCheckCode', function($resource) {
     return $resource('http://www.lifeuxuan.com/backend/api/CheckCheckCode.php');
+})
+
+.factory('Search', function($resource) {
+    return $resource('http://www.lifeuxuan.com/backend/api/Search.php');
 })
 
 .service('UserInfo', function($resource) {
