@@ -53,7 +53,7 @@
             <tr>
                 <td ><img src="http://www.lifeuxuan.com/backend/images/comm/search.jpg" style="width:30px;height:30px" /></td>
                 <td align="left" width="100%"><input type="text" id="suggestId" size="20" value="" style="width:90%;border-color:#0066cc"/></td>
-                <td width="50px" align="center"><input type="button" class="mapsearch" value="搜索" /></td>
+                <!-- <td width="50px" align="center"><input type="button" class="mapsearch" value="搜索" /></td> -->
             </tr>
         </table>  
     </div>
@@ -127,7 +127,7 @@
         {
             var gc = new BMap.Geocoder();
             gc.getPoint(address, function (point) {
-                alert(point.lng + " " + point.lat);
+                // alert(point.lng + " " + point.lat);
                 console.log(point.lng + " " + point.lat);
                 SetPlace(point.lat, point.lng);
             });
@@ -144,13 +144,13 @@
             });
         }
 
-        // $(".mapsearch").click(function () {
-        //     var value = $("#suggestId").val();
+        $(".mapsearch").click(function () {
+            var value = $("#suggestId").val();
             // alert(value);
-            // GetPoint(value);
-            //setPlace(value);
-            //GetAddress(31.29874, 121.444444);
+            GetPoint(value);
+            // setPlace(value);
+            // GetAddress(31.29874, 121.444444);
             // GetPoint('上海市浦东新区芳华路916弄');
-        // });
+        });
     });
 </script>
