@@ -76,6 +76,7 @@ $(document).ready(function() {
 
     $('#localCurrent').click(function(event) {
         $(".mapsearch").text("确定");
+        console.log('current', userInfo.user.latitude, userInfo.user.longitude)
         SetPlace(userInfo.user.latitude, userInfo.user.longitude);
     });
 
