@@ -131,7 +131,7 @@ angular.module('starter.services', ['ngResource'])
         UserInfo.user.latitude = 31.3333;
         localStorage.setItem('userinfo', JSON.stringify(UserInfo));
         deferred.resolve();
-    }, 1000);
+    }, 3000);
     return deferred.promise;
 })
 
