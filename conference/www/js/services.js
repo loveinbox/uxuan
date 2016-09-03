@@ -57,7 +57,7 @@ angular.module('starter.services', ['ngResource'])
     console.log('start to get loction');
     var deferred = $q.defer();
     var userInfo = JSON.parse(localStorage.getItem('userinfo'));
-    if (userInfo.user.latitude && userInfo.user.longitude) {
+    if (userInfo && userInfo.user.latitude && userInfo.user.longitude) {
         UserInfo.user.latitude = userInfo.user.latitude; 
         UserInfo.user.longitude = userInfo.user.longitude; 
         userinfo.get({}, function(e) {
