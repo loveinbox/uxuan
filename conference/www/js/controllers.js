@@ -58,7 +58,7 @@ angular.module('starter.controllers')
         }, function(data) {
             $scope.sessions = data.data;
         }, function(data) {
-            alert('NO DATA');
+            alert('NO DATA MainPageHot');
         });
 
         FruitUxuanRank.get({
@@ -67,7 +67,7 @@ angular.module('starter.controllers')
         }, function(data) {
             $scope.goods = data.data;
         }, function(data) {
-            alert('NO DATA');
+            alert('NO DATA FruitUxuanRank');
         });
     })
 

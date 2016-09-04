@@ -127,8 +127,10 @@ angular.module('starter.services', ['ngResource'])
     $timeout(function() {
         UserInfo.user.userid = '6';
         UserInfo.user.phoneNumber = '18788889999';
-        UserInfo.user.longitude = 121.4444;
-        UserInfo.user.latitude = 31.3333;
+        // UserInfo.user.longitude = 121.4444;
+        // UserInfo.user.latitude = 31.3333;
+        UserInfo.user.longitude = 121.446322;
+        UserInfo.user.latitude =  31.199345
         localStorage.setItem('userinfo', JSON.stringify(UserInfo));
         deferred.resolve();
     }, 3000);

@@ -29,7 +29,7 @@ angular.module('starter.directives', ['starter.services'])
                 }, function(data) {
                     $scope.sellers = getCartNumber(data.data);
                 }, function(data) {
-                    alert('NO DATA');
+                    alert('NO DATA NearByFruitShops');
                 });
             })
 

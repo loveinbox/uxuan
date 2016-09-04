@@ -46,10 +46,11 @@ angular.module('starter.controllers')
                 'username': ''
             }
         };
-        if ($scope.carts.allGoodsTotalMoney > 0 && $scope.order.receiverAddress) {
+
+        if ($scope.carts.allGoodsTotalMoney > 0 ) {
             $scope.orderButton.isDisabled = false;
             $.each(orderRequestObj.data.productList, function(index, cart) {
-                if (cart.seller.isReachStartPrice == false) {
+                if (cart.isChecked && cart.seller.isReachStartPrice == false) {
                     $scope.orderButton.isDisabled = true;
                 }
             });
@@ -180,6 +181,7 @@ angular.module('starter.controllers')
             value.isChecked = cart.isChecked;
         });
         cartList();
+        judgeOrder();
     }
 
     $scope.calculateSingleMoney = function(event, cart) {
@@ -194,6 +196,7 @@ angular.module('starter.controllers')
         });
         cart.isChecked = isAllSelected;
         cartList();
+        judgeOrder();
     }
 
     $scope.pickAll = function() {
@@ -277,6 +280,10 @@ angular.module('starter.controllers')
 
     $scope.confirmOrder = function() {
         if ($scope.orderButton.isDisabled) {
+            return;
+        }
+        if($scope.order.receiverAddress ===undefined || $scope.order.receiverAddress === ''){
+            alert('请输入收货地址');
             return;
         }
         var date = new Date();
