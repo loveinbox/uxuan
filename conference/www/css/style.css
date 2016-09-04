@@ -505,7 +505,7 @@ p.cartNumber{
 }
 
 .good-more-info {
-    /*padding: 20px;*/
+    min-height: 500px;
 }
 
 .good-more-info img {

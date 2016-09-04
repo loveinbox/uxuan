@@ -37,6 +37,3 @@
     margin: 0 auto 10px;
     border: 1px solid #ddd;
 }
-.seller-detail .item-content:first-child, .rank .item-content:first-child{
-    margin-top: 10px;
-}
