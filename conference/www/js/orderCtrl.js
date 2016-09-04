@@ -299,6 +299,23 @@ angular.module('starter.controllers')
         ];
 
         var orderIds = null;
+        var cleanedCarts = ShoppingCart.getCart();
+        (function cleanUnckeck() {
+            for (var i = cleanedCarts.length - 1; i >= 0; i--) {
+                if (cleanedCarts[i]) {
+                    if (!cleanedCarts[i].isChecked) {
+                        cleanedCarts.splice(i, 1);
+                    } else {
+                        for (var j = cleanedCarts[i].goodsList.length - 1; j >= 0; j--) {
+                            if (cleanedCarts[i].goodsList[j] && !cleanedCarts[i].goodsList[j].isChecked) {
+                                cleanedCarts[i].goodsList.splice(j, 1);
+                            }
+                        }
+                    }
+                }
+            }
+        })();
+
         orderRequestObj = {
             url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
             data: {
@@ -313,7 +330,7 @@ angular.module('starter.controllers')
                 'isPaid': true,
                 'totalMoney': $scope.carts.allGoodsTotalMoney,
                 'note': $scope.order.note || "无" + "",
-                'productList': ShoppingCart.getCart(),
+                'productList': cleanedCarts,
                 // 'username': UserInfo.user.user.name || ''
                 'username': UserInfo.user.name
             }
