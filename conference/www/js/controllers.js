@@ -116,7 +116,7 @@ angular.module('starter.controllers')
 
 })
 
-.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, $ionicModal) {
+.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, Location) {
     $scope.isHideAddCart = false;
     $scope.singleNumber = 0;
 
