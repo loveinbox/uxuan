@@ -65,6 +65,7 @@ angular.module('starter.services', ['ngResource'])
         // UserInfo.user.latitude = 31.3333;
         UserInfo.user.longitude = 121.446322;
         UserInfo.user.latitude = 31.199345
+        UserInfo.user.verify = 1;
         localStorage.setItem('userinfo', JSON.stringify(UserInfo));
         deferred.resolve();
     }, 3000);
