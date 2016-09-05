@@ -122,33 +122,35 @@ angular.module('starter.controllers')
 
     var cartNumber = 0;
 
-    FruitDetail.get({
-        'longitude': UserInfo.user.longitude,
-        'latitude': UserInfo.user.latitude,
-        'productId': $stateParams.sessionId
-    }, function(data) {
-        $scope.session = data.data;
-        cartNumber = ShoppingCart.get(data.data);
-        $scope.singleNumber = cartNumber;
-        $scope.cart = {
-            number: ShoppingCart.getSellerCartNumber(data.data.sellerId)
-        }
-        if (cartNumber == 0) {
-            $scope.isHideAddCart = false;
-        } else {
-            $scope.isHideAddCart = true;
-        }
-        FruitPicShow.get({
+    Location.then(function() {
+        FruitDetail.get({
             'longitude': UserInfo.user.longitude,
             'latitude': UserInfo.user.latitude,
             'productId': $stateParams.sessionId
         }, function(data) {
-            $scope.imgs = data.data;
+            $scope.session = data.data;
+            cartNumber = ShoppingCart.get(data.data);
+            $scope.singleNumber = cartNumber;
+            $scope.cart = {
+                number: ShoppingCart.getSellerCartNumber(data.data.sellerId)
+            }
+            if (cartNumber == 0) {
+                $scope.isHideAddCart = false;
+            } else {
+                $scope.isHideAddCart = true;
+            }
+            FruitPicShow.get({
+                'longitude': UserInfo.user.longitude,
+                'latitude': UserInfo.user.latitude,
+                'productId': $stateParams.sessionId
+            }, function(data) {
+                $scope.imgs = data.data;
+            }, function(data) {
+                alert('NO DATA');
+            });
         }, function(data) {
             alert('NO DATA');
         });
-    }, function(data) {
-        alert('NO DATA');
     });
 
     $scope.$on('cartChange', function() {
@@ -201,48 +203,52 @@ angular.module('starter.controllers')
 })
 
 .controller('sellerListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank) {
-    NearByEguard.get({
-        'longitude': $rootScope.longitude,
-        'latitude': $rootScope.latitude,
-    }, function(data) {
-        $scope.eGuard = data.data;
-    }, function(data) {
-        alert('NO DATA');
-    })
+    Location.then(function() {
+        NearByEguard.get({
+            'longitude': $rootScope.longitude,
+            'latitude': $rootScope.latitude,
+        }, function(data) {
+            $scope.eGuard = data.data;
+        }, function(data) {
+            alert('NO DATA');
+        })
 
-    MainPageHot.get({
-        'longitude': $rootScope.longitude,
-        'latitude': $rootScope.latitude,
-    }, function(data) {
-        $scope.sessions = data.data;
-    }, function(data) {
-        alert('NO DATA');
-    });
+        MainPageHot.get({
+            'longitude': $rootScope.longitude,
+            'latitude': $rootScope.latitude,
+        }, function(data) {
+            $scope.sessions = data.data;
+        }, function(data) {
+            alert('NO DATA');
+        });
 
-    FruitUxuanRank.get({
-        'longitude': $rootScope.longitude,
-        'latitude': $rootScope.latitude,
-    }, function(data) {
-        $scope.goods = data.data;
-    }, function(data) {
-        alert('NO DATA');
+        FruitUxuanRank.get({
+            'longitude': $rootScope.longitude,
+            'latitude': $rootScope.latitude,
+        }, function(data) {
+            $scope.goods = data.data;
+        }, function(data) {
+            alert('NO DATA');
+        });
     });
 
 })
 
-.controller('sellerCtrl', function($scope, $rootScope, $stateParams, FruitsByShop, ShoppingCart, $ionicModal, UserInfo) {
+.controller('sellerCtrl', function($scope, $rootScope, $stateParams, FruitsByShop, ShoppingCart, $ionicModal, UserInfo, Location) {
 
     $scope.cart = { number: 0 };
-    FruitsByShop.get({
-        'longitude': UserInfo.user.longitude,
-        'latitude': UserInfo.user.latitude,
-        'sellerId': $stateParams.sellerId
-    }, function(data) {
-        $scope.seller = data.data.shop;
-        $scope.goods = getGoodQuuantity(data.data.shop.sellerId, data.data.products);
-        $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.seller.sellerId);
-    }, function(data) {
-        alert('NO DATA');
+    Location.then(function() {
+        FruitsByShop.get({
+            'longitude': UserInfo.user.longitude,
+            'latitude': UserInfo.user.latitude,
+            'sellerId': $stateParams.sellerId
+        }, function(data) {
+            $scope.seller = data.data.shop;
+            $scope.goods = getGoodQuuantity(data.data.shop.sellerId, data.data.products);
+            $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.seller.sellerId);
+        }, function(data) {
+            alert('NO DATA');
+        });
     });
 
     $ionicModal.fromTemplateUrl('my-modal.html', {

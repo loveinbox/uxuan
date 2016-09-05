@@ -57,6 +57,18 @@ angular.module('starter.services', ['ngResource'])
     console.log('start to get loction');
     var deferred = $q.defer();
     var userInfo = JSON.parse(localStorage.getItem('userinfo'));
+
+    var timer = $timeout(function() {
+        UserInfo.user.userid = '6';
+        UserInfo.user.phoneNumber = '18788889999';
+        // UserInfo.user.longitude = 121.4444;
+        // UserInfo.user.latitude = 31.3333;
+        UserInfo.user.longitude = 121.446322;
+        UserInfo.user.latitude = 31.199345
+        localStorage.setItem('userinfo', JSON.stringify(UserInfo));
+        deferred.resolve();
+    }, 3000);
+
     if (userInfo && userInfo.user.isSearchGeo && userInfo.user.latitude && userInfo.user.longitude) {
         UserInfo.user.latitude = userInfo.user.latitude;
         UserInfo.user.longitude = userInfo.user.longitude;
@@ -75,6 +87,7 @@ angular.module('starter.services', ['ngResource'])
                     }, function(e) {
                         UserInfo.user.userid = e.data.userId;
                         console.log('UserInfo.user.userid', UserInfo.user.userid);
+                        $timeout.cancel(timer);
                         deferred.resolve();
                     })
                 },
@@ -108,6 +121,7 @@ angular.module('starter.services', ['ngResource'])
                                 }, function(e) {
                                     UserInfo.user.userid = e.data.userId;
                                     console.log('UserInfo.user.userid', UserInfo.user.userid);
+                                    $timeout.cancel(timer);
                                     deferred.resolve();
                                 })
                             },
@@ -124,16 +138,6 @@ angular.module('starter.services', ['ngResource'])
             });
     }
 
-    $timeout(function() {
-        UserInfo.user.userid = '6';
-        UserInfo.user.phoneNumber = '18788889999';
-        // UserInfo.user.longitude = 121.4444;
-        // UserInfo.user.latitude = 31.3333;
-        UserInfo.user.longitude = 121.446322;
-        UserInfo.user.latitude =  31.199345
-        localStorage.setItem('userinfo', JSON.stringify(UserInfo));
-        deferred.resolve();
-    }, 3000);
     return deferred.promise;
 })
 
