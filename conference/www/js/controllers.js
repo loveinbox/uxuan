@@ -159,6 +159,8 @@ angular.module('starter.controllers')
 
 
     $scope.addCart = function(event, good) {
+        
+        console.log('phone check', UserInfo.user.verify);
         if (!UserInfo.user.verify) {
             $state.go('phoneNumberCheck');
             return;
