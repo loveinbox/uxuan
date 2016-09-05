@@ -137,7 +137,7 @@ angular.module('starter.directives', ['starter.services'])
             $scope.addCart = function(event, good) {
                 event.stopPropagation();
                 event.preventDefault();
-                if (!UserInfo.user.phoneNumber) {
+                if (!UserInfo.user.verify) {
                     $state.go('phoneNumberCheck');
                     return;
                 }

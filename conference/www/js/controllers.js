@@ -159,7 +159,7 @@ angular.module('starter.controllers')
 
 
     $scope.addCart = function(event, good) {
-        if (!UserInfo.user.phoneNumber) {
+        if (!UserInfo.user.verify) {
             $state.go('phoneNumberCheck');
             return;
         }

@@ -77,13 +77,16 @@ angular.module('starter.services', ['ngResource'])
                     UserInfo.user.name = e.nickname;
                     UserInfo.user.img = e.headimgurl;
                     UserInfo.user.openid = e.openid;
+                    UserInfo.user.verify = e.verify;
+                    console.log('e.verify;', e.verify);
                     UserRegister.get({
                         'latitude': UserInfo.user.latitude,
                         'longitude': UserInfo.user.longitude,
                         'openId': e.openid,
                         'username': e.nickname,
                         'password': '',
-                        'headPicUrl': e.headimgurl
+                        'headPicUrl': e.headimgurl,
+                        'verify': e.verify
                     }, function(e) {
                         UserInfo.user.userid = e.data.userId;
                         console.log('UserInfo.user.userid', UserInfo.user.userid);
