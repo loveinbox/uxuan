@@ -508,6 +508,7 @@ angular.module('starter.controllers')
             }
             console.log('$scope.check.phoneNumber', phoneNumber);
             UserInfo.user.phoneNumber = phoneNumber;
+            UserInfo.user.verify = '1';
             $ionicHistory.backView().go();
         });
     }
