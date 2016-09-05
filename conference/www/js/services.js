@@ -87,7 +87,7 @@ angular.module('starter.services', ['ngResource'])
                     }, function(e) {
                         UserInfo.user.userid = e.data.userId;
                         UserInfo.user.verify = e.data.verify;
-                        console.log('e.data.verify;', e.verify);
+                        console.log('e.data.verify;', e.data.verify);
                         console.log('UserInfo.user.userid', UserInfo.user.userid);
                         $timeout.cancel(timer);
                         deferred.resolve();
@@ -123,7 +123,7 @@ angular.module('starter.services', ['ngResource'])
                                 }, function(e) {
                                     UserInfo.user.userid = e.data.userId;
                                     UserInfo.user.verify = e.data.verify;
-                                    console.log('e.data.verify;', e.verify);
+                                    console.log('e.data.verify;', e.data.verify);
                                     console.log('UserInfo.user.userid', UserInfo.user.userid);
                                     $timeout.cancel(timer);
                                     deferred.resolve();
