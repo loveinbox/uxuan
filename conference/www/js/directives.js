@@ -3,7 +3,6 @@ angular.module('starter.directives', ['starter.services'])
 .directive('goBack', function() {
     return {
         restrict: 'A',
-        // replace: true,
         template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
         controller: function($scope, $location, $ionicHistory) {
             $scope.myGoBack = function() {
@@ -18,11 +17,10 @@ angular.module('starter.directives', ['starter.services'])
 .directive('sellerList', function() {
     return {
         restrict: 'A',
-        // replace: true,
         templateUrl: 'templateDirectives/sellersListDirective.html',
         controller: function($scope, $rootScope, NearByFruitShops, ShoppingCart, UserInfo, Location) {
-            Location.then(function () {
-                console.log('get location goods', UserInfo.user.longitude, UserInfo.user.latitude);                
+            Location.then(function() {
+                console.log('get location goods', UserInfo.user.longitude, UserInfo.user.latitude);
                 NearByFruitShops.get({
                     'longitude': UserInfo.user.longitude,
                     'latitude': UserInfo.user.latitude,
@@ -54,21 +52,18 @@ angular.module('starter.directives', ['starter.services'])
 .directive('eGuard', function() {
     return {
         restrict: 'A',
-        // replace: true,
         template: '<p class="guard">管家{{eGuard.name}}为您服务</p>',
         controller: function($scope, $rootScope, NearByEguard, Location, UserInfo) {
-            if ($rootScope.eGuard == undefined) {
-                Location.then(function() {
-                    NearByEguard.get({
-                        'longitude': UserInfo.user.longitude,
-                        'latitude': UserInfo.user.latitude,
-                    }, function(data) {
-                        $rootScope.eGuard = $scope.eGuard = data.data[0];
-                    }, function(data) {
-                        alert('NO DATA');
-                    });
-                })
-            }
+            Location.then(function() {
+                NearByEguard.get({
+                    'longitude': UserInfo.user.longitude,
+                    'latitude': UserInfo.user.latitude,
+                }, function(data) {
+                    $rootScope.eGuard = $scope.eGuard = data.data[0];
+                }, function(data) {
+                    alert('NO DATA');
+                });
+            })
         }
     }
 })
@@ -76,7 +71,6 @@ angular.module('starter.directives', ['starter.services'])
 .directive('cart', function() {
     return {
         restrict: 'A',
-        // replace: true,
         templateUrl: 'templateDirectives/myModal.html',
         controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
             $scope.addCart = function(event, good) {
@@ -125,7 +119,6 @@ angular.module('starter.directives', ['starter.services'])
 .directive('singleCart', function() {
     return {
         restrict: 'A',
-        // replace: true,
         templateUrl: 'templateDirectives/singleCart.html',
         controller: function($scope, $rootScope, $ionicModal, $state, ShoppingCart, UserInfo) {
 

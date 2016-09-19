@@ -58,17 +58,12 @@ angular.module('starter.services', ['ngResource'])
     var deferred = $q.defer();
     var userInfo = JSON.parse(localStorage.getItem('userinfo'));
 
-    // var timer = $timeout(function() {
-        UserInfo.user.userid = '6';
-        UserInfo.user.phoneNumber = '18788889999';
-        // UserInfo.user.longitude = 121.4444;
-        // UserInfo.user.latitude = 31.3333;
-        UserInfo.user.longitude = 121.446322;
-        UserInfo.user.latitude = 31.199345
-        UserInfo.user.verify = 1;
-        localStorage.setItem('userinfo', JSON.stringify(UserInfo));
-    //     deferred.resolve();
-    // }, 3000);
+    // user default value
+    UserInfo.user.userid = '6';
+    UserInfo.user.phoneNumber = '18788889999';
+    UserInfo.user.longitude = 121.446322;
+    UserInfo.user.latitude = 31.199345
+    UserInfo.user.verify = 1;
 
     if (userInfo && userInfo.user.isSearchGeo && userInfo.user.latitude && userInfo.user.longitude) {
         UserInfo.user.latitude = userInfo.user.latitude;

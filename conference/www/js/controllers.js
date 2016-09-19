@@ -2,7 +2,7 @@ angular.module('starter.controllers', []);
 
 angular.module('starter.controllers')
 
-.run(function run($rootScope, UserInfo, UserRegister) {
+.run(function run($rootScope, UserInfo, UserRegister, userinfo, Location) {
     (function register() {
         $.ajax({
                 url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
@@ -13,8 +13,6 @@ angular.module('starter.controllers')
                 }
             })
             .done(function(e) {
-                // var rs = JSON.parse(e);
-                // alert(e);
                 wx.config({
                     debug: false,
                     appId: e.appId,
@@ -31,6 +29,27 @@ angular.module('starter.controllers')
             .always(function() {});
 
     })();
+
+    Location.then(function() {
+        userinfo.get({}, function(e) {
+            UserInfo.user.name = e.nickname;
+            UserInfo.user.img = e.headimgurl;
+            UserInfo.user.openid = e.openid;
+            UserRegister.get({
+                'latitude': UserInfo.user.latitude,
+                'longitude': UserInfo.user.longitude,
+                'openId': e.openid,
+                'username': e.nickname,
+                'password': '',
+                'headPicUrl': e.headimgurl
+            }, function(e) {
+                if(e.data){
+                    UserInfo.user.userid = e.data.userId;
+                    UserInfo.user.verify = e.data.verify;
+                }
+            })
+        });
+    });
 
 })
 
