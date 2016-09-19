@@ -127,6 +127,16 @@ angular.module('starter.directives', ['starter.services'])
             if ($scope.singleNumber > 0) {
                 $scope.isHideAddCart = true;
             }
+
+            $scope.$on('cartChange', function(event, data) {
+                cartNumber = ShoppingCart.get($scope.good);
+                $scope.singleNumber = cartNumber;
+                if ($scope.singleNumber > 0) {
+                    $scope.isHideAddCart = true;
+                }else{
+                    $scope.isHideAddCart = false;
+                }
+            });
             $scope.addCart = function(event, good) {
                 event.stopPropagation();
                 event.preventDefault();

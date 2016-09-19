@@ -310,24 +310,22 @@ angular.module('starter.controllers')
     $scope.addCart = function(event, good) {
         event.stopPropagation();
         cartNumber = ShoppingCart.add(event, good);
-        $scope.isHideAddCart = true;
         $scope.singleNumber = cartNumber;
         $scope.totalNumber = ShoppingCart.getSellerCartNumber(good.sellerId);
         $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
+        $rootScope.$broadcast('cartChange');
     };
 
     $scope.removeCart = function(good) {
         event.stopPropagation();
         var cartNumber = ShoppingCart.remove(good);
-        if (cartNumber == 0) {
-            $scope.isHideAddCart = false;
-        }
         $scope.singleNumber = cartNumber;
         $scope.totalNumber = ShoppingCart.getSellerCartNumber(good.sellerId);
         $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
         if ($scope.totalNumber == 0) {
             $scope.modal.hide();
         }
+        $rootScope.$broadcast('cartChange');
     };
 
     function getGoodQuuantity(sellerId, good) {
