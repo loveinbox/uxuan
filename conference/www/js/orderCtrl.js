@@ -450,7 +450,7 @@ angular.module('starter.controllers')
                 + (UserInfo.user.latitude - point.lat) * (UserInfo.user.latitude - point.lat);
             
             // if(distance < 6000)
-            alert(distance);
+            alert(distance * 6370996.81);
         });
     }
 
