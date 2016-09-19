@@ -443,7 +443,7 @@ angular.module('starter.controllers')
         });
     }
 
-    function isTooFar(){
+    function isTooFar(address){
         var gc = new BMap.Geocoder();
         gc.getPoint(address, function(point) {
             var distance = (UserInfo.user.longitude - point.lng) * (UserInfo.user.longitude - point.lng)
