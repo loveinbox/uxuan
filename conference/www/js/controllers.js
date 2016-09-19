@@ -43,7 +43,7 @@ angular.module('starter.controllers')
                 'password': '',
                 'headPicUrl': e.headimgurl
             }, function(e) {
-                if(e.data){
+                if (e.data) {
                     UserInfo.user.userid = e.data.userId;
                     UserInfo.user.verify = e.data.verify;
                 }
@@ -298,13 +298,36 @@ angular.module('starter.controllers')
         $scope.modal = modal;
     });
     $scope.openModal = function(good) {
-        if ($scope.cart.number > 0) {
+        if ($scope.totalNumber > 0) {
             $scope.modal.show();
             $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
         }
     };
     $scope.closeModal = function() {
         $scope.modal.hide();
+    };
+
+    $scope.addCart = function(event, good) {
+        event.stopPropagation();
+        cartNumber = ShoppingCart.add(event, good);
+        $scope.isHideAddCart = true;
+        $scope.singleNumber = cartNumber;
+        $scope.totalNumber = ShoppingCart.getSellerCartNumber(good.sellerId);
+        $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
+    };
+
+    $scope.removeCart = function(good) {
+        event.stopPropagation();
+        var cartNumber = ShoppingCart.remove(good);
+        if (cartNumber == 0) {
+            $scope.isHideAddCart = false;
+        }
+        $scope.singleNumber = cartNumber;
+        $scope.totalNumber = ShoppingCart.getSellerCartNumber(good.sellerId);
+        $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
+        if ($scope.totalNumber == 0) {
+            $scope.modal.hide();
+        }
     };
 
     function getGoodQuuantity(sellerId, good) {
