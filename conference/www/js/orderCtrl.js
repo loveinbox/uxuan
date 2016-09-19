@@ -419,8 +419,13 @@ angular.module('starter.controllers')
         wx.ready(function() {
             wx.openAddress({
                 success: function(res) {
+                    var addressGot = res.provinceName + res.cityName + res.countryName + res.detailInfo;
                     $scope.$apply(function() {
-                        $scope.order.receiverAddress = res.provinceName + res.cityName + res.countryName + res.detailInfo || '';
+                        if(isTooFar(addressGot)){
+                            alert('输入的地址超出配送范围，请重新选择');
+                            return;
+                        }
+                        $scope.order.receiverAddress = addressGot || '';
                         $scope.order.receiverName = res.userName;
                         $scope.order.receiverPhone = res.telNumber - 0;
 
@@ -435,6 +440,17 @@ angular.module('starter.controllers')
                     alert("fa");
                 }
             });
+        });
+    }
+
+    function isTooFar(){
+        var gc = new BMap.Geocoder();
+        gc.getPoint(address, function(point) {
+            var distance = (UserInfo.user.longitude - point.lng) * (UserInfo.user.longitude - point.lng)
+                + (UserInfo.user.latitude - point.lat) * (UserInfo.user.latitude - point.lat);
+            
+            // if(distance < 6000)
+            alert(distance);
         });
     }
 
