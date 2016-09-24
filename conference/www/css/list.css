@@ -51,11 +51,14 @@
 .seller-list .seller-info-wrap{
 	position: relative;
     margin-left: 15px;
+    font-size: 12px;
     color: #808080;
 }
 
 .seller-list .seller-info-wrap .name{
-	font-size: 20px;
+    display: inline-block;
+    width: 100%;
+	font-size: 17px;
 	color: #333;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -68,10 +71,6 @@
 .seller-list .seller-info-wrap .send-divide{
 	padding:0 8px;
 	color: #e6e6e6;
-}
-
-.seller-list .seller-info-wrap .seller-info2{
-	margin: 6px 0 2px 0;
 }
 
 .seller-list .seller-info-wrap .single-good-img{
@@ -102,10 +101,12 @@
 }
 
 .seller-list .seller-info-wrap .seller-info1{
-    width: 80%;
+    width: 70%;
 }
 
-
+.seller-list .seller-info-wrap .good-name{
+    width: 50%;
+}
 
 
 

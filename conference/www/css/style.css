@@ -118,6 +118,7 @@ a {
     text-align: center;
     line-height: 40px;
     color: #fff;
+    font-size: 14px;
 }
 
 .item-select:after {
@@ -189,7 +190,7 @@ a {
 
 .index-nav p {
     padding-top: 5px;
-    font-size: 16px;
+    font-size: 13px;
 }
 
 .index-nav a {
@@ -207,7 +208,7 @@ a {
 .divider {
     padding-bottom: 25px;
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     background: #fff;
 }
 
@@ -243,7 +244,7 @@ a {
 }
 
 .index-list-item .name {
-    font-size: 12px;
+    font-size: 14px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -316,7 +317,7 @@ a {
 }
 
 .single .price {
-    text-align: center;
+    font-size: 13px;
 }
 
 .rank img {
