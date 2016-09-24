@@ -15,8 +15,9 @@
     text-align: center;
 }
 
-.location-icon {
-    font-size: 30px;
+.location-icon{
+    width: 20px;
+    padding-top: 8px;
 }
 
 .current-location-text {
