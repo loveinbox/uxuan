@@ -455,8 +455,8 @@ angular.module('starter.controllers')
                 console.log('distacne', distacne);
                 console.log('distacne > 6000', distacne > 6000);
                 if(distacne > 6000){
-                    return true;
                     alert('收货地址可能超出配送范围');
+                    return true;
                 }else{
                     return false;
                 }
