@@ -1,17 +1,33 @@
-<ion-list class="seller index-list clearfix">
-    <ion-item class="index-list-item" ng-repeat="seller in sellers" href="#/seller/{{seller.sellerId}}">
-        <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
-        <span class="name">{{seller.sellerName}}</span>
-        <ul class="good-info-wrap clearfix">
-            <li class="distance">月售{{seller.soldNumber}}单</li>
-            <li class="distance">{{seller.distance}}米</li>
-            <li class="distance">{{seller.sendStartPrice}}元起送</li>
-            <li class="distance">{{seller.sendPrice}}元配送费</li>
-        </ul>
-        <div class="slogen">{{seller.sellerSlogen}}</div>
-        <div class="list-cart">
-            <i class="icon ion-ios-cart "></i>
+<ion-list class="seller-list clearfix">
+    <ion-item ng-repeat="seller in sellers" href="#/seller/{{seller.sellerId}}">
+        <div class="seller-img clearfix">
+            <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
             <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p>
+        </div>        
+        <div class="seller-info-wrap">
+            <div class="seller-info1">
+                <span class="name">{{seller.sellerName}}</span>
+            </div>
+            <div class="seller-info2">
+                <span>月售{{seller.soldNumber}}单</span>
+                <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{seller.distance}}米</span>
+            </div>
+            <div class="seller-info3">
+                <span>起送￥{{seller.sendStartPrice}}</span>
+                <span class="send-divide">|</span>
+                <span>配送￥{{seller.sendPrice}}</span>
+            </div>
+            <!-- <ul class="good-info-wrap clearfix">
+                <li class="distance"></li>
+                <li class="distance"></li>
+                
+                <li class="distance"></li>
+            </ul>
+            <div class="slogen">{{seller.sellerSlogen}}</div>
+            <div class="list-cart">
+                <i class="icon ion-ios-cart "></i>
+                
+            </div> -->
         </div>
     </ion-item>
 </ion-list>

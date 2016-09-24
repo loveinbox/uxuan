@@ -65,10 +65,29 @@ angular.module('starter.services', ['ngResource'])
     UserInfo.user.latitude = 31.199345
     UserInfo.user.verify = 1;
 
+    function GetAddress(lat, lng) {
+        point = new BMap.Point(lng, lat);
+        var gc = new BMap.Geocoder();
+        gc.getLocation(point, function (rs) {
+            var addComp = rs.addressComponents;
+            UserInfo.user.province = addComp.province;
+            UserInfo.user.city = addComp.city;
+            UserInfo.user.district = addComp.district;
+            UserInfo.user.street = addComp.street;
+            UserInfo.user.streetNumber = addComp.streetNumber;
+            if(addComp.city != '上海市'){
+                UserInfo.user.isOut = true;
+            }else{
+                UserInfo.user.isOut = false;
+            }
+            deferred.resolve();
+        });
+    }
+
     if (userInfo && userInfo.user.isSearchGeo && userInfo.user.latitude && userInfo.user.longitude) {
         UserInfo.user.latitude = userInfo.user.latitude;
         UserInfo.user.longitude = userInfo.user.longitude;
-        deferred.resolve();
+        GetAddress(UserInfo.user.latitude, UserInfo.user.longitude);
         // userinfo.get({}, function(e) {
         //     UserInfo.user.name = e.nickname;
         //     UserInfo.user.img = e.headimgurl;
@@ -98,7 +117,7 @@ angular.module('starter.services', ['ngResource'])
                     UserInfo.user.longitude = r.point.lng;
                     UserInfo.user.isSearchGeo = false;
                     localStorage.setItem('userinfo', JSON.stringify(UserInfo));
-                    deferred.resolve();
+                    GetAddress(UserInfo.user.latitude, UserInfo.user.longitude);
                     // userinfo.get({}, function(e) {
                     //         UserInfo.user.name = e.nickname;
                     //         UserInfo.user.img = e.headimgurl;
@@ -170,6 +189,8 @@ angular.module('starter.services', ['ngResource'])
             //         deferred.reject(e);
             //     });
     }
+
+
 
     return deferred.promise;
 })

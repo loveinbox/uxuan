@@ -68,9 +68,16 @@ angular.module('starter.controllers')
 })
 
 .controller('SessionsCtrl', function($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicModal, UserRegister, userinfo, UserInfo, NearByEguard, MainPageHot, NearByFruitShops, FruitUxuanRank, Location, ShoppingCart) {
+    $scope.location = {
+        isGet: false,
+        isOut: false,
+        text: '定位中...'
+    };
     Location.then(function() {
         console.log('get location', UserInfo.user.longitude, UserInfo.user.latitude);
-
+        $scope.location.isGet = true;
+        $scope.location.isOut = UserInfo.user.isOut;
+        $scope.location.text = UserInfo.user.street + UserInfo.user.streetNumber;
         MainPageHot.get({
             'longitude': UserInfo.user.longitude,
             'latitude': UserInfo.user.latitude
