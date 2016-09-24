@@ -450,7 +450,13 @@ angular.module('starter.controllers')
                 var map = new BMap.Map("allmap");
                 var pointA = new BMap.Point(UserInfo.user.longitude, UserInfo.user.latitude); // 创建点坐标A
                 var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
-                alert('两点的距离是：' + (map.getDistance(pointA, pointB)).toFixed(2) + ' 米。'); //获取两点距离,保留小数点后两位
+                // alert('两点的距离是：' + (map.getDistance(pointA, pointB)).toFixed(2) + ' 米。'); //获取两点距离,保留小数点后两位
+                var distacne = map.getDistance(pointA, pointB)).toFixed(2);
+                if(distacne > 6000){
+                    return true;
+                }else{
+                    return false;
+                }
             });
         }
 
