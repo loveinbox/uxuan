@@ -1,6 +1,7 @@
 .header-wrap {
     position: relative;
     overflow: hidden;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 .current-location {
@@ -13,6 +14,7 @@
     border-radius: 100px;
     background: #fff;
     text-align: center;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 .location-icon{
