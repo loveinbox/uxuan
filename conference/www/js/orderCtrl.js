@@ -454,6 +454,7 @@ angular.module('starter.controllers')
                 var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
                 if(distacne > 6000){
                     return true;
+                    alert('收货地址可能超出配送范围');
                 }else{
                     return false;
                 }
