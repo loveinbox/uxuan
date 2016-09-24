@@ -452,6 +452,8 @@ angular.module('starter.controllers')
                 var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
                 // alert('两点的距离是：' + (map.getDistance(pointA, pointB)).toFixed(2) + ' 米。'); //获取两点距离,保留小数点后两位
                 var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
+                console.log('distacne', distacne);
+                console.log('distacne > 6000', distacne > 6000);
                 if(distacne > 6000){
                     return true;
                     alert('收货地址可能超出配送范围');
