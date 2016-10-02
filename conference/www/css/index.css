@@ -23,7 +23,7 @@
 
 .current-location-text {
     text-align: center;
-    padding: 20px 0;
+    padding: 9px 0 12px 0;
     font-size: 16px;
     background: #fff
 }
@@ -36,7 +36,7 @@
 }
 
 .list-top {
-    margin-top: 15px;
+    margin-top: 10px;
     padding: 25px 0;
     background: #fff;
 }

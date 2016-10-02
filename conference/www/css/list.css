@@ -36,6 +36,11 @@
 .seller-list .seller-img img{
 	width: 100%;
 	height: 100%;
+	border-radius: 100px;
+}
+
+.seller-list .seller-img .single-good-img{
+	border-radius: 15px;
 }
 
 .seller-list .item{
