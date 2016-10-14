@@ -112,7 +112,7 @@ angular.module('starter.services', ['ngResource'])
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function(r) {
                 if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                    alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+                    // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
                     UserInfo.user.latitude = r.point.lat;
                     UserInfo.user.longitude = r.point.lng;
                     UserInfo.user.isSearchGeo = false;
