@@ -240,8 +240,10 @@ a {
 
 .index-list-item img {
     float: left;
-    max-width: 120px;
-    max-height: 90px;
+   /* max-width: 120px;
+    max-height: 90px;*/
+    width: 120px;
+    height: 90px;
 }
 
 .index-list-item .name {
@@ -414,8 +416,8 @@ p.cartNumber{
 .good-main-info .add-cart,
 .good-main-info .add-cart-plus-minus {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 5px;
+    bottom: 5px;
     width: 110px;
     height: 47px;
 }
@@ -464,6 +466,10 @@ p.cartNumber{
     margin: 0;
 }
 
+.good-seller .shop-address {
+    padding-top: 6px;
+}
+
 .good-seller i {
     font-size: 30px;
 }
@@ -476,7 +482,11 @@ p.cartNumber{
 }
 
 .good-seller .shop-name {
-    line-height: 30px;
+    line-height: 30px;    
+    padding-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;    
+    text-overflow: ellipsis;
 }
 
 .good-seller .shop-icon {

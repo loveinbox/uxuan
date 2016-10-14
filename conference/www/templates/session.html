@@ -22,17 +22,19 @@
                 </div>
             </div>
         </div>
-        <div class="good-seller">
-            <div class="shop-icon"><i class="icon ion-ios-home"></i></div>
-            <div class="shop-name">{{session.sellerName}}</div>
-            <div class="shop-time">
-                <p>营业时间</p>
-                <p>{{session.openTime}}-{{session.closeTime}}</p>
+        <a href="#/seller/{{session.sellerId}}">
+            <div class="good-seller">
+                <div class="shop-icon"><i class="icon ion-ios-home"></i></div>
+                <div class="shop-name">{{session.sellerName}}</div>
+                <div class="shop-time">
+                    <p>营业时间</p>
+                    <p>{{session.openTime}}-{{session.closeTime}}</p>
+                </div>
+                <p class="shop-address">
+                    地址：{{session.sellerAddress}}
+                </p>
             </div>
-            <p>
-                地址：{{session.sellerAddress}}
-            </p>
-        </div>
+        </a>
         <div class="good-more-info">
             <ion-list class="index-list">
                 <ion-item class="index-list-item" ng-repeat="img in imgs">
