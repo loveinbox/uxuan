@@ -240,8 +240,8 @@ a {
 
 .index-list-item img {
     float: left;
-    width: 120px;
-    height: 90px;
+    max-width: 120px;
+    max-height: 90px;
 }
 
 .index-list-item .name {
@@ -293,6 +293,7 @@ a {
 
 .seller .item-content,
 .rank .item-content {
+    padding: 0;
     width: 95%;
     margin: 0 auto 10px;
     border-bottom: 1px solid #ddd;
@@ -308,7 +309,6 @@ a {
     float: none;
     margin: 0;
     border: none;
-    text-align: center;
 }
 
 .single img {
