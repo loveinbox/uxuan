@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <a href="#/seller/{{session.sellerId}}">
+        <a href="/seller/{{session.sellerId}}">
             <div class="good-seller">
                 <div class="shop-icon"><i class="icon ion-ios-home"></i></div>
                 <div class="shop-name">{{session.sellerName}}</div>
@@ -46,7 +46,7 @@
     <div class="bottom-bar shopping-cart-bar">
         <i class="icon ion-ios-cart icon-cart" ng-click="openModal(session)"></i>
         <div class="cart-number-tip" ng-show="cart.number > 0">{{cart.number}}</div>
-        <a href="#/app/cart/0">
+        <a href="/app/cart/0">
             <div class="button button-assertive go-cart fr">选好了</div>
         </a>
     </div>

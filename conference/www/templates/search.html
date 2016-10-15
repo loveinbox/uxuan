@@ -16,7 +16,7 @@
         </div>
         <div class="divider">U选商家</div>
         <ion-list class="seller index-list clearfix">
-            <ion-item class="index-list-item" ng-repeat="seller in search.sellers" href="#/seller/{{seller.sellerId}}">
+            <ion-item class="index-list-item" ng-repeat="seller in search.sellers" href="/seller/{{seller.sellerId}}">
                 <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
                 <span class="name">{{seller.sellerName}}</span>
                 <ul class="good-info-wrap clearfix">
@@ -34,7 +34,7 @@
         </ion-list>
         <div class="divider">U选生鲜水果</div>
         <ion-list class="rank index-list clearfix">
-            <ion-item class="index-list-item" ng-repeat="good in search.goods" href="#/sessions/{{good.productId}}">
+            <ion-item class="index-list-item" ng-repeat="good in search.goods" href="/sessions/{{good.productId}}">
                 <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
                 <!-- <img src="img/single.jpg"> -->
                 <span class="name">{{good.productName}}</span>

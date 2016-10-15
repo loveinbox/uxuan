@@ -3,7 +3,7 @@
         <section class="header-wrap">
             <div class="index-header">
                 <p e-guard></p>
-                <a href="#/search">
+                <a href="/search">
                     <label class="header-icon">
                         <i class="icon ion-ios-search placeholder-icon"></i>
                     </label>
@@ -85,7 +85,7 @@
             <div class="divider">U选爆款</div>
             <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
                 <ion-list class="single goods index-list clearfix">
-                    <ion-item class="index-list-item" ng-repeat="session in sessions" href="#/sessions/{{session.productId}}">
+                    <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.productId}}">
                         <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}" alt="">
                         <!-- <img src="img/single.jpg"> -->
                         <span class="name">{{session.productName}}</span>
@@ -101,7 +101,7 @@
         <div class="index-fruit-list list-top" ng-show="location.isGet && !location.isOut && goods.length > 0">
             <div class="divider">U选排行榜</div>
             <ion-list class="seller-list clearfix">
-                <ion-item ng-repeat="good in goods" href="#/sessions/{{good.productId}}">
+                <ion-item ng-repeat="good in goods" href="/sessions/{{good.productId}}">
                     <div class="seller-img clearfix">
                         <img class="single-good-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
                         <!-- <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p> -->
@@ -124,7 +124,7 @@
                 </ion-item>
             </ion-list>
             <!-- <ion-list class="rank index-list clearfix">
-                <ion-item class="index-list-item" ng-repeat="good in goods" href="#/sessions/{{good.productId}}">
+                <ion-item class="index-list-item" ng-repeat="good in goods" href="/sessions/{{good.productId}}">
                     <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
                     <span class="name">{{good.productName}}</span>
                     <span class="description">{{good.description}}</span>
@@ -135,7 +135,7 @@
         </div>
         <!--     <div class="divider">U选洗衣</div>
         <ion-list class="seller index-list clearfix">
-            <ion-item class="index-list-item" ng-repeat="session in sessions" href="#/sessions/{{session.goodId}}"> -->
+            <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.goodId}}"> -->
         <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}" alt=""> -->
         <!-- <img src="img/single.jpg">
                 <span class="name">{{session.goodName}}</span>

@@ -22,9 +22,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
 
-  $ionicConfigProvider.tabs.position('bottom');
+    $ionicConfigProvider.tabs.position('bottom');
     $stateProvider
 
         .state('app', {

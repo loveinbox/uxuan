@@ -2,7 +2,7 @@
     <ion-content>
         <ion-refresher on-refresh="doRefresh()"></ion-refresher>
         <ion-list class="">
-            <ion-item class="list-order-list" ng-repeat="order in orders" href="#/orderDetail/{{order.orderId}}">
+            <ion-item class="list-order-list" ng-repeat="order in orders" href="/orderDetail/{{order.orderId}}">
                 <div class="clearfix">
                 	<p class="list-order-id fl">订单号:{{order.orderId}}</p>
                 	<p class="list-order-status fr">{{order.orderStatus}}</p>
