@@ -1,68 +1,198 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <base href="/">
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>U选到家</title>
-    <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
-    <!-- <link href="http://cdn.bootcss.com/ionic/1.3.1/css/ionic.min.css" rel="stylesheet"> -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/index.css" rel="stylesheet">
-    <link href="css/user-info.css" rel="stylesheet">
-    <link href="css/list.css" rel="stylesheet">
-    <link href="css/seller-detail.css" rel="stylesheet">
-    <link href="css/order.css" rel="stylesheet">
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
-    <!-- ionic/angularjs js -->
-    <script src="http://cdn.bootcss.com/ionic/1.3.1/js/ionic.bundle.min.js"></script>
-    <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
-    <script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
-    <script src="lib/jquery.fly.min.js"></script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
-    <script src="lib/requestAnimationFrame.js"></script>
-    <script src="//cdn.bootcss.com/underscore.js/1.8.3/underscore-min.js"></script>
-    <script src="http://api.map.baidu.com/api?v=2.08&ak=GmTMxfwhUXAjvt2RvxHYTIayFOSUtPRv"></script>
-    <!-- cordova script (this will be a 404 during development) -->
-    <!-- <script src="cordova.js"></script> -->
-    <!-- your app's js -->
-    <!-- <script src="js/mockup.json"></script> -->
-    <script src="js/app.js"></script>
-    <script src="js/directives.js"></script>
-    <script src="js/services.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/orderCtrl.js"></script>
-</head>
+    <meta charset="UTF-8">
+    <title>Address</title>
+    <style type="text/css">
+        .btn{
+            width:500px;
+            height:120px;
+            font-size:50px;
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+    <script type="text/javascript">
+        function register()
+        {
+            $.ajax({
+                url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
+                type: 'GET',
+                dataType: 'json',
+                data:{
+                    'url': window.location.href
+                }
+            })
+            .done(function(e)
+            {   
+                var rs = JSON.parse(e);
+                wx.config({
+                    debug:false,
+                    appId:rs.appId,
+                    timestamp:rs.timestamp,
+                    nonceStr:rs.nonceStr,
+                    signature:rs.signature,
+                    jsApiList:['checkJsApi','openAddress']
+                });
+                wx.error(function(res)
+                {
+                });
+            })
+            .fail(function(e)
+            {
+            })
+            .always(function()
+            {
+            });
 
-<body ng-app="starter">
-    <!--     <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-    </ion-nav-bar> -->
-    <ion-nav-view view-title="Index" animation="slide-left-right"></ion-nav-view>
-    <script id="my-modal.html" type="text/ng-template">
-        <ion-modal-view class="cart-modal" ng-click="closeModal()">
-            <ion-list class="cart-modal-list" ng-click="$event.stopPropagation();">
-                <ion-item class="index-list-item cart-item" ng-repeat="good in cartGoods">
-                    <div class="cart-good-info">
-                        <span class="name">{{good.productName}}</span>
-                        <span class="name">{{good.description}}</span>
-                    </div>
-                    <div class="cart-price">
-                        <span>{{good.price}}</span>
-                    </div>
-                    <div class="cart-operate">
-                        <i class="icon ion-minus-round cart-icon" ng-click="removeCart(good)"></i>
-                        <span class="cart-quantity">{{good.quantity}}</span>
-                        <i class="icon ion-plus-round cart-icon" ng-click="addCart($event, good)"></i>
-                    </div>
-                </ion-item>
-            </ion-list>
-        </ion-modal-view>
+        }
+
+        function ForwardAddress()
+        {
+            wx.ready(function(){
+                wx.openAddress({
+                    success:function(res)
+                    {
+                        var addr = '';
+                        for(var x in res)
+                        {
+                            addr += x + "=" + res[x];
+                        }
+                        alert(addr);
+                    },
+                    cancel:function(){
+                        alert("fa");
+                    }
+                });
+            });
+        }
+
+        function ForwardPay()
+        {
+            
+            $.ajax({
+                url: 'http://www.lifeuxuan.com/backend/wxpay/pay/WxPayCtrl.php',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    //'openId': 'oDHyIvznjdxR2KFmyAjWMs2S0lyU',
+                    'payMoney': '1'
+                }
+            })
+            .done(function(e)
+            {
+                var res = JSON.parse(e);
+                wx.ready(function(){
+                    wx.chooseWXPay(
+                    {
+                        timestamp: res.timeStamp,
+                        nonceStr: res.nonceStr,
+                        package: res.package,
+                        signType: res.signType,
+                        paySign: res.paySign,
+                        success:function(res)
+                        {
+                            alert('pay success');
+                        }
+                    });
+                });
+            
+            })
+            .fail(function(e)
+            {
+            })
+            .always(function()
+            {
+            });
+        }
+
+        function ForwardUserInfo()
+        {
+            $.ajax({
+                url: 'http://www.lifeuxuan.com/backend/userinfo.php?XDEBUG_SESSION_START=657409A8',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                }
+            })
+            .done(function(e)
+            {
+                //alert(e);
+                var res = JSON.parse(e);
+                for(var x in res)
+                {
+                    alert(x + "=" + res[x]);
+                }
+                
+            })
+            .fail(function(e)
+            {
+                alert(e);
+            });
+        }
+
+        function SendCheckCode()
+        {
+            $.ajax({
+                url: 'http://www.lifeuxuan.com/backend/api/SendCheckCode.php?XDEBUG_SESSION_START=657409A8',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    'longitude': 121.444444,
+                    'latitude': 31.29874,
+                    'userPhoneNumber': '15921308675'
+                }
+            })
+            .done(function (e) {
+                //alert(e);
+                //var res = JSON.parse(e);
+                //for (var x in res) {
+                    //alert(x + "=" + res[x]);
+                //}
+                alert(e['msg']);
+                window.check_code = e['msg'];
+
+            })
+            .fail(function (e) {
+                alert(e);
+            });
+        }
+
+        function CheckCheckCode()
+        {
+            code = $('#code').val();
+            alert(code);
+            $.ajax({
+                url: 'http://www.lifeuxuan.com/backend/api/CheckCheckCode.php?XDEBUG_SESSION_START=657409A8',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    'longitude': 121.444444,
+                    'latitude': 31.29874,
+                    'userPhoneNumber': '15921308675',
+                    'checkCode':code
+                }
+            })
+            .done(function (e) {
+                alert(e['msg']);
+            })
+            .fail(function (e) {
+                alert(e);
+            });
+        }
+
+        register();
     </script>
-</body>
+</head>
+<body>
+    <div align="center">
+        <button name="Pay" class="btn" onclick="ForwardPay()">前往支付</button><br/><br/><br/>
+        <button name="Address" class="btn" onclick="ForwardAddress()">前往地址</button><br/><br/><br/>
+        <button name="UserInfo" class="btn" onclick="ForwardUserInfo()">获取用户信息</button><br/><br/><br/>
+        <button name="SendCode" class="btn" onclick="SendCheckCode()">发送验证码</button><br /><br /><br />
+        <button name="CheckCode" class="btn" onclick="CheckCheckCode()">验证验证码</button><br /><br /><br />
+        <input type="text" id="code" class="btn" /><br /><br /><br />
+    </div>
 
+</body>
 </html>
