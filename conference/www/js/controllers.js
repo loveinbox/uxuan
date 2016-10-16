@@ -14,7 +14,7 @@ angular.module('starter.controllers')
             })
             .done(function(e) {
                 wx.config({
-                    debug: true,
+                    debug: false,
                     appId: e.appId,
                     timestamp: e.timestamp,
                     nonceStr: e.nonceStr,
