@@ -26,6 +26,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
     $locationProvider.html5Mode(true);
 
     $ionicConfigProvider.tabs.position('bottom');
+
     $stateProvider
 
         .state('app', {
@@ -125,6 +126,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
         cache: false,
         templateUrl: 'templates/phoneNumberCheck.html ',
         controller: 'phoneNumberCheckCtrl'
+    })
+
+    .state('location', {
+        url: '/location',
+        templateUrl: 'location.html',
     })
 
     ;
