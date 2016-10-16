@@ -128,11 +128,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives']
         controller: 'phoneNumberCheckCtrl'
     })
 
-    .state('location', {
-        url: '/location',
-        templateUrl: 'location.html',
-    })
-
     ;
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/sessions');
