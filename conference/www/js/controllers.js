@@ -374,9 +374,7 @@ angular.module('starter.controllers')
                     });
                 });
             }
-        }
-
-    })
+        })
 })
 
 .controller('OrdersCtrl', function($scope, $rootScope, Location, QueryOrderList, PayConfirm, OrderCancel, UserInfo, orderStatus, $state) {
