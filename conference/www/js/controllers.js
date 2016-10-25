@@ -367,9 +367,11 @@ angular.module('starter.controllers')
             userinfo.get({}, function(e) {
                 UserInfo.user.name = e.nickname;
                 UserInfo.user.img = e.headimgurl;
+                $scope.user = UserInfo.user;
             });
+        }else{
+            $scope.user = UserInfo.user;
         }
-        $scope.user = UserInfo.user;
         
         $scope.getAddress = function() {
             wx.ready(function() {
