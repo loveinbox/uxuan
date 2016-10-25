@@ -3,6 +3,7 @@ angular.module('starter.controllers', []);
 angular.module('starter.controllers')
 
 .run(function run($rootScope, UserInfo, UserRegister, userinfo, Location) {
+    // console.log(123);
     (function register() {
         $.ajax({
                 url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
@@ -359,32 +360,31 @@ angular.module('starter.controllers')
     // }
 })
 
-.controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo, UserInfo) {
-    // userinfo.get({},
-    //     function(e) {
-    //         $rootScope.openid = e.openid;
-    //         $rootScope.user = { name: e.nickname, img: e.headimgurl };
-    //     });
-    // $scope.user = $rootScope.user;
-    // $scope.user = {
-    //     name: '第三方',
-    //     img: 'http://lifeuxuan.com/backend/images/18/1.jpg'
-    // }
-    $scope.user = UserInfo.user;
+.controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo, UserInfo, Location) {
+    Location.then(function() {
+            $scope.user = UserInfo.user;
 
-    $scope.getAddress = function() {
-        wx.ready(function() {
-            wx.openAddress({
-                success: function(res) {},
-                cancel: function() {
-                    alert("fa");
-                }
-            });
-        });
-    }
+            $scope.getAddress = function() {
+                wx.ready(function() {
+                    wx.openAddress({
+                        success: function(res) {},
+                        cancel: function() {
+                            alert("fa");
+                        }
+                    });
+                });
+            }
+        }
+
+    })
 })
 
-.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList, PayConfirm, OrderCancel, UserInfo, orderStatus, $state) {
+.controller('OrdersCtrl', function($scope, $rootScope, Location, QueryOrderList, PayConfirm, OrderCancel, UserInfo, orderStatus, $state) {
+    
+    Location.then(function () {
+        getOrders();
+    })
+
     $scope.$on("$ionicView.enter", function(event, data) {
         getOrders();
     });
