@@ -362,15 +362,15 @@ angular.module('starter.controllers')
 
 .controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo, UserInfo, Location, UserRegister) {
     Location.then(function() {
-        alert(!!UserInfo.user.userId);
-        if (!!UserInfo.user.userId) {
-            $scope.user = UserInfo.user;
-        } else {
+        alert(!UserInfo.user.userId);
+        if (!UserInfo.user.userId) {
             userinfo.get({}, function(e) {
                 UserInfo.user.name = e.nickname;
                 UserInfo.user.img = e.headimgurl;
             });
         }
+        $scope.user = UserInfo.user;
+        
         $scope.getAddress = function() {
             wx.ready(function() {
                 wx.openAddress({
