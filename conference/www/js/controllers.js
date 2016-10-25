@@ -362,24 +362,44 @@ angular.module('starter.controllers')
 
 .controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo, UserInfo, Location) {
     Location.then(function() {
+        if (UserInfo.user.userId !== '') {
             $scope.user = UserInfo.user;
-
-            $scope.getAddress = function() {
-                wx.ready(function() {
-                    wx.openAddress({
-                        success: function(res) {},
-                        cancel: function() {
-                            alert("fa");
-                        }
-                    });
+        } else {
+            userinfo.get({}, function(e) {
+                UserInfo.user.name = e.nickname;
+                UserInfo.user.img = e.headimgurl;
+                UserInfo.user.openid = e.openid;
+                UserRegister.get({
+                    'latitude': UserInfo.user.latitude,
+                    'longitude': UserInfo.user.longitude,
+                    'openId': e.openid,
+                    'username': e.nickname,
+                    'password': '',
+                    'headPicUrl': e.headimgurl
+                }, function(e) {
+                    if (e.data) {
+                        UserInfo.user.userid = e.data.userId;
+                        UserInfo.user.verify = e.data.verify;
+                    }
+                })
+            });
+        }
+        $scope.getAddress = function() {
+            wx.ready(function() {
+                wx.openAddress({
+                    success: function(res) {},
+                    cancel: function() {
+                        alert("fa");
+                    }
                 });
-            }
-        })
+            });
+        }
+    })
 })
 
 .controller('OrdersCtrl', function($scope, $rootScope, Location, QueryOrderList, PayConfirm, OrderCancel, UserInfo, orderStatus, $state) {
-    
-    Location.then(function () {
+
+    Location.then(function() {
         getOrders();
     })
 
