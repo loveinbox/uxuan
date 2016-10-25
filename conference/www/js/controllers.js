@@ -360,7 +360,7 @@ angular.module('starter.controllers')
     // }
 })
 
-.controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo, UserInfo, Location) {
+.controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo, UserInfo, Location, UserRegister) {
     Location.then(function() {
         if (UserInfo.user.userId !== '') {
             $scope.user = UserInfo.user;
