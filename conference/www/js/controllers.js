@@ -362,26 +362,13 @@ angular.module('starter.controllers')
 
 .controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo, UserInfo, Location, UserRegister) {
     Location.then(function() {
+        alert(UserInfo.user.userId);
         if (UserInfo.user.userId !== '') {
             $scope.user = UserInfo.user;
         } else {
             userinfo.get({}, function(e) {
                 UserInfo.user.name = e.nickname;
                 UserInfo.user.img = e.headimgurl;
-                UserInfo.user.openid = e.openid;
-                UserRegister.get({
-                    'latitude': UserInfo.user.latitude,
-                    'longitude': UserInfo.user.longitude,
-                    'openId': e.openid,
-                    'username': e.nickname,
-                    'password': '',
-                    'headPicUrl': e.headimgurl
-                }, function(e) {
-                    if (e.data) {
-                        UserInfo.user.userid = e.data.userId;
-                        UserInfo.user.verify = e.data.verify;
-                    }
-                })
             });
         }
         $scope.getAddress = function() {
