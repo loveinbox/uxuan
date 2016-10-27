@@ -1,4 +1,4 @@
-angular.module('starter.directives', ['starter.services'])
+angular.module('starter.directives',[])
 
 .directive('goBack', function() {
     return {

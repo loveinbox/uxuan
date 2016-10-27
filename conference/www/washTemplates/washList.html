@@ -1,0 +1,29 @@
+<ion-view view-title="洗衣商家">
+  <div class="index-header">
+    <div go-back></div>
+  </div>
+  <ion-scroll direction="y" overflow-scroll="true" class="height100 padding-top55">
+    <ion-list class="seller-list clearfix">
+      <ion-item ng-repeat="seller in sellers" href="/seller/{{seller.sellerId}}">
+        <div class="seller-img clearfix">
+          <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
+          <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p>
+        </div>
+        <div class="seller-info-wrap">
+          <div class="seller-info1">
+            <span class="name">{{seller.sellerName}}</span>
+          </div>
+          <div class="seller-info2">
+            <span>月售{{seller.soldNumber}}单</span>
+            <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{seller.distance}}米</span>
+          </div>
+          <div class="seller-info3">
+            <span>起送￥{{seller.sendStartPrice}}</span>
+            <span class="send-divide">|</span>
+            <span>配送￥{{seller.sendPrice}}</span>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-scroll>
+</ion-view>

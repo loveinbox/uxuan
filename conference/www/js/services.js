@@ -80,7 +80,7 @@ angular.module('starter.services', ['ngResource'])
             }else{
                 UserInfo.user.isOut = false;
             }
-            deferred.resolve();
+            deferred.resolve(UserInfo.user);
         });
     }
 
@@ -88,26 +88,6 @@ angular.module('starter.services', ['ngResource'])
         UserInfo.user.latitude = userInfo.user.latitude;
         UserInfo.user.longitude = userInfo.user.longitude;
         GetAddress(UserInfo.user.latitude, UserInfo.user.longitude);
-        // userinfo.get({}, function(e) {
-        //     UserInfo.user.name = e.nickname;
-        //     UserInfo.user.img = e.headimgurl;
-        //     UserInfo.user.openid = e.openid;
-        //     UserRegister.get({
-        //         'latitude': UserInfo.user.latitude,
-        //         'longitude': UserInfo.user.longitude,
-        //         'openId': e.openid,
-        //         'username': e.nickname,
-        //         'password': '',
-        //         'headPicUrl': e.headimgurl
-        //     }, function(e) {
-        //         UserInfo.user.userid = e.data.userId;
-        //         UserInfo.user.verify = e.data.verify;
-        //         console.log('e.data.verify;', e.data.verify);
-        //         console.log('UserInfo.user.userid', UserInfo.user.userid);
-        //         $timeout.cancel(timer);
-        //         deferred.resolve();
-        //     })
-        // });
     } else {
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function(r) {
@@ -118,80 +98,15 @@ angular.module('starter.services', ['ngResource'])
                     UserInfo.user.isSearchGeo = false;
                     localStorage.setItem('userinfo', JSON.stringify(UserInfo));
                     GetAddress(UserInfo.user.latitude, UserInfo.user.longitude);
-                    // userinfo.get({}, function(e) {
-                    //         UserInfo.user.name = e.nickname;
-                    //         UserInfo.user.img = e.headimgurl;
-                    //         UserInfo.user.openid = e.openid;
-                    //         UserRegister.get({
-                    //             'latitude': UserInfo.user.latitude,
-                    //             'longitude': UserInfo.user.longitude,
-                    //             'openId': e.openid,
-                    //             'username': e.nickname,
-                    //             'password': '',
-                    //             'headPicUrl': e.headimgurl
-                    //         }, function(e) {
-                    //             UserInfo.user.userid = e.data.userId;
-                    //             UserInfo.user.verify = e.data.verify;
-                    //             console.log('e.data.verify;', e.data.verify);
-                    //             console.log('UserInfo.user.userid', UserInfo.user.userid);
-                    //             $timeout.cancel(timer);
-                    //             deferred.resolve();
-                    //         })
-                    //     },
-                    //     function(e) {
-                    //         alert(e);
-                    //         deferred.reject(e);
-                    //     })
                 } else {
                     alert('failed' + this.getStatus());
                 }
             }, {
                 enableHighAccuracy: true
             })
-            // wx.ready(function() {
-            //         wx.getLocation({
-            //             type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-            //             success: function(res) {
-            //                 UserInfo.user.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-            //                 UserInfo.user.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-            //                 UserInfo.user.speed = res.speed; // 速度，以米/每秒计
-            //                 UserInfo.user.accuracy = res.accuracy; // 位置精度
-            //                 localStorage.setItem('userinfo', JSON.stringify(UserInfo));
-            //                 userinfo.get({}, function(e) {
-            //                         UserInfo.user.name = e.nickname;
-            //                         UserInfo.user.img = e.headimgurl;
-            //                         UserInfo.user.openid = e.openid;
-            //                         UserRegister.get({
-            //                             'latitude': UserInfo.user.latitude,
-            //                             'longitude': UserInfo.user.longitude,
-            //                             'openId': e.openid,
-            //                             'username': e.nickname,
-            //                             'password': '',
-            //                             'headPicUrl': e.headimgurl
-            //                         }, function(e) {
-            //                             UserInfo.user.userid = e.data.userId;
-            //                             UserInfo.user.verify = e.data.verify;
-            //                             console.log('e.data.verify;', e.data.verify);
-            //                             console.log('UserInfo.user.userid', UserInfo.user.userid);
-            //                             $timeout.cancel(timer);
-            //                             deferred.resolve();
-            //                         })
-            //                     },
-            //                     function(e) {
-            //                         alert(e);
-            //                         deferred.reject(e);
-            //                     })
-            //             }
-            //         });
-            //     },
-            //     function(e) {
-            //         alert(e);
-            //         deferred.reject(e);
-            //     });
     }
-
-
-
+    
+    deferred.resolve(UserInfo.user);
     return deferred.promise;
 })
 

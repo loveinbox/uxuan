@@ -8,7 +8,7 @@
     </div>
     <ion-scroll direction="y" overflow-scroll="true" class="height100">
         <div class="seller-detail">
-            <img class="single-shop" ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
+            <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
             <p class="name">{{seller.sellerName}}</p>
             <ul class="good-info-wrap clearfix">
                 <li class="distance">月售{{seller.soldNumber}}单</li>
@@ -32,10 +32,8 @@
     </ion-scroll>
     <ion-footer-bar>
         <div class="bottom-bar shopping-cart-bar">
-            <i class="icon ion-ios-cart icon-cart" ng-click="openModal(seller)"></i>
-            <div class="cart-number-tip" ng-show="totalNumber > 0">{{totalNumber}}</div>
             <a href="/app/cart">
-                <div class="button button-assertive go-cart fr">选好了</div>
+                <div class="button button-assertive go-wash-cart">选好了</div>
             </a>
         </div>
     </ion-footer-bar>

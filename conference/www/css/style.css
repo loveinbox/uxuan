@@ -3,6 +3,10 @@ a {
     color: #000;
 }
 
+.padding-top55{
+    padding-top: 55px;
+}
+
 .v-content.scroll-content {
   display: table !important;
   width: 100% !important;
@@ -644,4 +648,14 @@ p.cartNumber{
     width: 115px;
     margin: 0;
     border: none;
+}
+
+
+img.single-shop{
+    width:150px;
+    height: 80px;
+}
+
+.go-wash-cart{
+    width:100%;
 }
