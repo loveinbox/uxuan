@@ -15,7 +15,7 @@ angular.module('starter.controllers')
             })
             .done(function(e) {
                 wx.config({
-                    debug: true,
+                    debug: false,
                     appId: e.appId,
                     timestamp: e.timestamp,
                     nonceStr: e.nonceStr,
@@ -362,7 +362,6 @@ angular.module('starter.controllers')
 
 .controller('AccountCtrl', function($scope, userinfo, $rootScope, userinfo, UserInfo, Location, UserRegister) {
     Location.then(function() {
-        alert(!UserInfo.user.userId);
         if (!UserInfo.user.userId) {
             userinfo.get({}, function(e) {
                 UserInfo.user.name = e.nickname;
