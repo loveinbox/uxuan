@@ -4,7 +4,7 @@
   </div>
   <ion-scroll direction="y" overflow-scroll="true" class="height100 padding-top55">
     <ion-list class="seller-list clearfix">
-      <ion-item ng-repeat="seller in sellers" href="/seller/{{seller.sellerId}}">
+      <ion-item ng-repeat="seller in sellers" href="/washSingle/{{seller.sellerId}}">
         <div class="seller-img clearfix">
           <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
           <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p>

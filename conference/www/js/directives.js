@@ -19,11 +19,11 @@ angular.module('starter.directives',[])
         restrict: 'A',
         templateUrl: 'templateDirectives/sellersListDirective.html',
         controller: function($scope, $rootScope, NearByFruitShops, ShoppingCart, UserInfo, Location) {
-            Location.then(function() {
-                console.log('get location goods', UserInfo.user.longitude, UserInfo.user.latitude);
+            UserInfo.then(function(user) {
+                console.log('get location goods', user.longitude, user.latitude);
                 NearByFruitShops.get({
-                    'longitude': UserInfo.user.longitude,
-                    'latitude': UserInfo.user.latitude,
+                    'longitude': user.longitude,
+                    'latitude': user.latitude,
                 }, function(data) {
                     $scope.sellers = getCartNumber(data.data);
                 }, function(data) {
@@ -54,10 +54,10 @@ angular.module('starter.directives',[])
         restrict: 'A',
         template: '<p class="guard">管家{{eGuard.name}}为您服务</p>',
         controller: function($scope, $rootScope, NearByEguard, Location, UserInfo) {
-            Location.then(function() {
+            UserInfo.then(function(user) {
                 NearByEguard.get({
-                    'longitude': UserInfo.user.longitude,
-                    'latitude': UserInfo.user.latitude,
+                    'longitude': user.longitude,
+                    'latitude': user.latitude,
                 }, function(data) {
                     $rootScope.eGuard = $scope.eGuard = data.data[0];
                 }, function(data) {
@@ -121,8 +121,8 @@ angular.module('starter.directives',[])
         restrict: 'A',
         templateUrl: 'templateDirectives/singleCart.html',
         controller: function($scope, $rootScope, $ionicModal, $state, ShoppingCart, UserInfo) {
-
-            cartNumber = ShoppingCart.get($scope.good);
+            UserInfo.then(function (user) {
+                cartNumber = ShoppingCart.get($scope.good);
             $scope.singleNumber = cartNumber;
             if ($scope.singleNumber > 0) {
                 $scope.isHideAddCart = true;
@@ -140,7 +140,7 @@ angular.module('starter.directives',[])
             $scope.addCart = function(event, good) {
                 event.stopPropagation();
                 event.preventDefault();
-                if (!(UserInfo.user.verify - 0)) {
+                if (!(user.verify - 0)) {
                     $state.go('phoneNumberCheck');
                     return;
                 }
@@ -160,6 +160,9 @@ angular.module('starter.directives',[])
                 $scope.singleNumber = cartNumber;
                 $rootScope.$broadcast('cartChange');
             };
+            })
+
+            
         }
     }
 })

@@ -73,11 +73,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-    var userInfo = JSON.parse(localStorage.getItem('userinfo'));
+    var userLocation = JSON.parse(localStorage.getItem('userLocation'));
 
     $('#localCurrent').click(function(event) {
         $(".mapsearch").text("确定");
-        userInfo.user.isSearchGeo = true;
+        userLocation.isSearchGeo = true;
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function(r) {
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {
@@ -85,10 +85,10 @@ $(document).ready(function() {
                 map.addOverlay(mk);
                 map.panTo(r.point);
                 // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
-                userInfo.user.latitude = r.point.lat;
-                userInfo.user.longitude = r.point.lng;
-                console.log('current', userInfo.user.latitude, userInfo.user.longitude)
-                SetPlace(userInfo.user.latitude, userInfo.user.longitude);
+                userLocation.latitude = r.point.lat;
+                userLocation.longitude = r.point.lng;
+                console.log('current', userLocation.latitude, userLocation.longitude)
+                SetPlace(userLocation.latitude, userLocation.longitude);
             } else {
                 alert('failed' + this.getStatus());
             }
@@ -122,9 +122,9 @@ $(document).ready(function() {
         map.clearOverlays();
         map.centerAndZoom(point, 18);
         map.addOverlay(new BMap.Marker(point));
-        userInfo.user.latitude = point.lat;
-        userInfo.user.longitude = point.lng;
-        userInfo.user.timeStamp = Date.now();
+        userLocation.latitude = point.lat;
+        userLocation.longitude = point.lng;
+        userLocation.timeStamp = Date.now();
         localStorage.setItem('userinfo', JSON.stringify(userInfo));
     }
 
@@ -134,7 +134,7 @@ $(document).ready(function() {
         var myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
 
         SearchPlace(myValue);
-        userInfo.user.isSearchGeo = true;
+        userLocation.isSearchGeo = true;
         // SetPlace(point.lat, point.lng);
         $(".mapsearch").text("确定");
     });
@@ -177,7 +177,7 @@ $(document).ready(function() {
         var value = $("#suggestId").val();
         // alert(value);
         GetPoint(value);
-        userInfo.user.isSearchGeo = true;
+        userLocation.isSearchGeo = true;
         $(".mapsearch").text("确定");
         // setPlace(value);
         // GetAddress(31.29874, 121.444444);

@@ -8,7 +8,7 @@
     </div>
     <ion-scroll direction="y" overflow-scroll="true" class="height100">
         <div class="seller-detail">
-            <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
+            <img class="single-shop" ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
             <p class="name">{{seller.sellerName}}</p>
             <ul class="good-info-wrap clearfix">
                 <li class="distance">月售{{seller.soldNumber}}单</li>
@@ -31,9 +31,9 @@
         </ion-list>
     </ion-scroll>
     <ion-footer-bar>
-        <div class="bottom-bar shopping-cart-bar">
-            <a href="/app/cart">
-                <div class="button button-assertive go-wash-cart">选好了</div>
+        <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash">
+            <a href="/washCart/{{seller.sellerId}}">
+                <div class="button button-assertive button-full go-wash-cart">预约洗衣</div>
             </a>
         </div>
     </ion-footer-bar>

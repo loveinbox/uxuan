@@ -78,7 +78,7 @@
                 </li>
             </ul>
         </div>
-        <div class="index-hot-list list-top" ng-show="location.isGet && (location.isOut || sellers.length < 1)">
+        <div class="index-hot-list list-top" ng-show="location.isGet && location.isOut">
             <div class="divider">不在服务区域内</div>
         </div>
         <div class="index-hot-list list-top" ng-show="location.isGet && !location.isOut && sessions.length > 0">

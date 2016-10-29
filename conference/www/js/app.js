@@ -7,151 +7,164 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives', 'starter.services', 'starter.washControllers', 'starter.washServices', 'starter.controllers'])
 
 .run(function($ionicPlatform) {
-    $ionicPlatform.ready(function() {
-        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-        // for form inputs)
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-            cordova.plugins.Keyboard.disableScroll(true);
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if (window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
 
-        }
-        if (window.StatusBar) {
-            // org.apache.cordova.statusbar required
-            StatusBar.styleDefault();
-        }
-    });
+    }
+    if (window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
+    }
+  });
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $locationProvider) {
-    $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(true);
 
-    $ionicConfigProvider.tabs.position('bottom');
+  $ionicConfigProvider.tabs.position('bottom');
 
-    $stateProvider
+  $stateProvider
 
-        .state('app', {
-        url: '/app',
-        abstract: true,
-        templateUrl: 'templates/menu.html',
-        controller: 'AppCtrl'
-    })
+    .state('app', {
+    url: '/app',
+    abstract: true,
+    templateUrl: 'templates/menu.html',
+    controller: 'AppCtrl'
+  })
 
-    .state('app.index', {
-        url: '/sessions',
-        cache: false,
-        views: {
-            'tab-index': {
-                templateUrl: 'templates/sessions.html',
-                controller: 'SessionsCtrl'
-            }
-        }
-    })
+  .state('app.index', {
+    url: '/sessions',
+    cache: false,
+    views: {
+      'tab-index': {
+        templateUrl: 'templates/sessions.html',
+        controller: 'SessionsCtrl'
+      }
+    }
+  })
 
-    .state('app.account', {
-        url: '/account',
-        cache: false,
-        views: {
-            'tab-account': {
-                templateUrl: 'templates/account.html',
-                controller: 'AccountCtrl'
-            }
-        }
-    })
+  .state('app.account', {
+    url: '/account',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/account.html',
+        controller: 'AccountCtrl'
+      }
+    }
+  })
 
-    .state('app.orders', {
-        url: '/orders',
-        cache: false,
-        views: {
-            'tab-orders': {
-                templateUrl: 'templates/orders.html',
-                controller: 'OrdersCtrl'
-            }
-        }
-    })
+  .state('app.orders', {
+    url: '/orders',
+    cache: false,
+    views: {
+      'tab-orders': {
+        templateUrl: 'templates/orders.html',
+        controller: 'OrdersCtrl'
+      }
+    }
+  })
 
-    .state('app.cart', {
-        url: '/cart',
-        cache: false,
-        views: {
-            'tab-cart': {
-                templateUrl: 'templates/order.html',
-                controller: 'OrderCtrl'
-            }
-        }
-    })
+  .state('app.cart', {
+    url: '/cart',
+    cache: false,
+    views: {
+      'tab-cart': {
+        templateUrl: 'templates/order.html',
+        controller: 'OrderCtrl'
+      }
+    }
+  })
 
-    .state('seller-list', {
-        url: '/sellerList/:sellerId',
-        cache: false,
-        templateUrl: 'templates/sellerList.html',
-        controller: 'sellerListCtrl'
-    })
+  .state('seller-list', {
+    url: '/sellerList/:sellerId',
+    cache: false,
+    templateUrl: 'templates/sellerList.html',
+    controller: 'sellerListCtrl'
+  })
 
-    .state('seller', {
-        url: '/seller/:sellerId',
-        cache: false,
-        templateUrl: 'templates/seller.html',
-        controller: 'sellerCtrl'
-    })
+  .state('seller', {
+    url: '/seller/:sellerId',
+    cache: false,
+    templateUrl: 'templates/seller.html',
+    controller: 'sellerCtrl'
+  })
 
-    .state('orderStatus', {
-        url: '/orderStatus',
-        cache: false,
-        templateUrl: 'templates/orderStatus.html',
-        controller: 'OrderStatusCtrl'
-    })
+  .state('orderStatus', {
+    url: '/orderStatus',
+    cache: false,
+    templateUrl: 'templates/orderStatus.html',
+    controller: 'OrderStatusCtrl'
+  })
 
-    .state('session', {
-        url: '/sessions/:sessionId',
-        cache: false,
-        templateUrl: 'templates/session.html',
-        controller: 'SessionCtrl'
-    })
+  .state('session', {
+    url: '/sessions/:sessionId',
+    cache: false,
+    templateUrl: 'templates/session.html',
+    controller: 'SessionCtrl'
+  })
 
-    .state('search', {
-        url: '/search',
-        templateUrl: 'templates/search.html',
-        controller: 'SearchCtrl'
-    })
+  .state('search', {
+    url: '/search',
+    templateUrl: 'templates/search.html',
+    controller: 'SearchCtrl'
+  })
 
-    .state('orderDetail', {
-        url: '/orderDetail/:orderId',
-        cache: false,
-        templateUrl: 'templates/orderDetail.html ',
-        controller: 'orderDetailCtrl'
-    })
+  .state('orderDetail', {
+    url: '/orderDetail/:orderId',
+    cache: false,
+    templateUrl: 'templates/orderDetail.html ',
+    controller: 'orderDetailCtrl'
+  })
 
-    .state('phoneNumberCheck', {
-        url: '/phoneNumberCheck',
-        cache: false,
-        templateUrl: 'templates/phoneNumberCheck.html ',
-        controller: 'phoneNumberCheckCtrl'
-    })
+  .state('phoneNumberCheck', {
+    url: '/phoneNumberCheck',
+    cache: false,
+    templateUrl: 'templates/phoneNumberCheck.html ',
+    controller: 'phoneNumberCheckCtrl'
+  })
 
-    .state('location', {
-        url: '/location',
-        template : "<div></div>",
-        controller: function () {
-            window.location.replace('/location.html');
-        }
-    })
+  .state('location', {
+    url: '/location',
+    template: "<div></div>",
+    controller: function() {
+      window.location.replace('/location.html');
+    }
+  })
 
-    .state('washList', {
-        url: '/washList',
-        cache: false,
-        templateUrl: 'washTemplates/washList.html ',
-        controller: 'washListCtrl'
-    })
+  .state('washList', {
+    url: '/washList',
+    cache: false,
+    templateUrl: 'templates/washTemplates/washList.html ',
+    controller: 'washListCtrl'
+  })
 
-    .state('washSingle', {
-        url: '/washSingle/:washId',
-        cache: false,
-        templateUrl: 'washTemplates/washSingle.html ',
-        controller: 'washSingleCtrl'
-    })
+  .state('washSingle', {
+    url: '/washSingle/:washId',
+    cache: false,
+    templateUrl: 'templates/washTemplates/washSingle.html ',
+    controller: 'washSingleCtrl'
+  })
+  
+  .state('washCart', {
+    url: '/washCart/:shopId',
+    cache: false,
+    templateUrl: 'templates/washTemplates/washCart.html ',
+    controller: 'washCartController'
+  })
 
-    ;
-    // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/sessions');
+  .state('guardOrderList', {
+    url: '/guardOrderList',
+    cache: false,
+    templateUrl: 'templates/guardTemplates/guardOrdersTemplate.html ',
+    controller: 'guardOrdersController'
+  })
+
+
+  ;
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/app/sessions');
 });
-
