@@ -4,4 +4,16 @@
 
 .shopping-cart-bar-wash .button{
 	font-size: 20px;
+    margin: 0;
+    height: 44px;
+    line-height: 44px;
+}
+
+.wash-class{
+	width: 20%;
+}
+
+.wash-single{
+	width: 80%;
+    height: 73%;
 }

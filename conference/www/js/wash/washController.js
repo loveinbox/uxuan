@@ -18,8 +18,11 @@ angular.module('starter.washControllers')
 
 })
 
-.controller('washSingleCtrl', function($scope, $stateParams, UserInfo, MainPageHot, getWashShop) {
+.controller('washSingleCtrl', function($scope, $stateParams, $ionicScrollDelegate, UserInfo, MainPageHot, getWashShop) {
+  var scrollArray = [];
   $scope.location = {};
+  var count = 0, lastId = -1;
+
   UserInfo.then(function(user) {
     getWashShop.get({
       'longitude': user.longitude,
@@ -27,11 +30,31 @@ angular.module('starter.washControllers')
       'sellerId': $stateParams.washId
     }, function(res) {
       $scope.seller = res.data.shop;
-      $scope.goods = res.data.firstData;
+      $scope.goods = Array.prototype.slice.call(res.data.productsList)
+        .sort(function (a, b) {
+            return a.classifyId - b.classifyId;
+        });
+      $scope.classes = Array.prototype.slice.call(res.data.classify)
+        .sort(function (a, b) {
+            return a.classifyId - b.classifyId;
+        });
+      $scope.goods
+        .forEach(function(el, index) {
+            if(el.classifyId != lastId){
+                lastId = el.classifyId;
+                scrollArray[el.classifyId] = count;
+            }
+            count++;
+          });
+      
     }, function(data) {
       alert('NO DATA MainPageHot');
     });
-  })
+  });
+
+  $scope.washScrollTo = function(classifyId) {
+    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollArray[classifyId] * 109, true);
+  }
 
 })
 
@@ -245,10 +268,10 @@ angular.module('starter.washControllers')
           'eguardId': $scope.order.guard + "",
           'isPaid': true,
           'totalMoney': 1,
-          'note': $scope.order.note || "无" + "",    
+          'note': $scope.order.note || "无" + "",
           'username': user.username,
           'sellerId': $stateParams.shopId,
-          'orderTime':'2016-07-04 19:00:40'
+          'orderTime': '2016-07-04 19:00:40'
         }
       };
       $.ajax(orderRequestObj)
