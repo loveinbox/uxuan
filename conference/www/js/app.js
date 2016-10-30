@@ -135,36 +135,46 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
     }
   })
 
-  .state('washList', {
-    url: '/washList',
-    cache: false,
-    templateUrl: 'templates/washTemplates/washList.html ',
-    controller: 'washListCtrl'
-  })
-
-  .state('washSingle', {
-    url: '/washSingle/:washId',
-    cache: false,
-    templateUrl: 'templates/washTemplates/washSingle.html ',
-    controller: 'washSingleCtrl'
-  })
-  
-  .state('washCart', {
-    url: '/washCart/:shopId',
-    cache: false,
-    templateUrl: 'templates/washTemplates/washCart.html ',
-    controller: 'washCartController'
-  })
-
-  .state('guardOrderList', {
-    url: '/guardOrderList',
-    cache: false,
-    templateUrl: 'templates/guardTemplates/guardOrdersTemplate.html ',
-    controller: 'guardOrdersController'
-  })
-
-
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/sessions');
 });
+
+angular.module('starter')
+  .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
+
+    $stateProvider
+      .state('washList', {
+        url: '/washList',
+        cache: false,
+        templateUrl: 'templates/washTemplates/washList.html ',
+        controller: 'washListCtrl'
+      })
+
+    .state('washSingle', {
+      url: '/washSingle/:washId',
+      cache: false,
+      templateUrl: 'templates/washTemplates/washSingle.html ',
+      controller: 'washSingleCtrl'
+    })
+
+    .state('washCart', {
+      url: '/washCart/:shopId',
+      cache: false,
+      templateUrl: 'templates/washTemplates/washCart.html ',
+      controller: 'washCartController'
+    })
+
+    .state('guardOrderList', {
+      url: '/guardOrderList',
+      cache: false,
+      templateUrl: 'templates/backTemplates/guardOrdersTemplate.html ',
+      controller: 'guardOrdersController'
+    })
+
+
+    ;
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('/app/sessions');
+  });

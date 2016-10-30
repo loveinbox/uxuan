@@ -73,7 +73,7 @@ angular.module('starter.services')
   var deferred = $q.defer();
   var user = {
     'name': 'test',
-    'userId': '6',
+    'userId': '22',
     'latitude': 31.199345,
     'longitude': 121.446322,
     'openId': '',
@@ -87,7 +87,7 @@ angular.module('starter.services')
     // user default value
     var user = {
       'name': 'test',
-      'userId': '6',
+      'userId': '22',
       'latitude': userLocation.latitude,
       'longitude': userLocation.longitude,
       'openId': '',
