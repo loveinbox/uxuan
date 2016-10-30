@@ -1,3 +1,7 @@
+.has-detail-header{
+	top:130px;
+}
+
 .shopping-cart-bar-wash{
 	background-color: #ef473a;
 }
@@ -15,5 +19,8 @@
 
 .wash-single{
 	width: 80%;
-    height: 73%;
+}
+
+.wash-tag{
+	padding: 5px 0;
 }

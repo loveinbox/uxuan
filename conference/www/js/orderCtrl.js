@@ -2,9 +2,9 @@ angular.module('starter.controllers')
   .controller('OrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, UserInfo, orderStatus, NearByEguard, FruitOrderInsert, PayConfirm, $http, ShoppingCart) {
     UserInfo.then(function(user) {
       $scope.order = {
-        receiverName: '收货人姓名',
-        receiverPhone: '收货人手机',
-        receiverAddress: '收货地址',
+        receiverName: user.addressInfo.username || '收货人姓名',
+        receiverPhone: user.addressInfo.tel || '收货人手机',
+        receiverAddress: user.addressInfo.address || '收货地址',
         orderDate: []
       };
       $scope.order.guard = 1;

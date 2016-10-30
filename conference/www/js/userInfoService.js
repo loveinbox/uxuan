@@ -18,51 +18,52 @@ angular.module('starter.services')
     'isOut': false,
     'isGet': true
   };
-  // var userLocation = JSON.parse(localStorage.getItem('userLocation')) || {
-  //   'latitude': 121.446322,
-  //   'longitude': 31.199345,
-  //   'isOut': false,
-  //   'isGet': true
-  // };
 
-  // if (userLocation.isSearchGeo) {
-  //   GetAddress(userLocation.latitude, userLocation.longitude);
-  // } else {
-  //   var geolocation = new BMap.Geolocation();
-  //   geolocation.getCurrentPosition(function(r) {
-  //     if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-  //       // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
-  //       userLocation.latitude = r.point.lat;
-  //       userLocation.longitude = r.point.lng;
-  //       userLocation.isSearchGeo = false;
-  //       localStorage.setItem('userLocation', JSON.stringify(userLocation));
-  //       GetAddress(userLocation.latitude, userLocation.longitude);
-  //     } else {
-  //       alert('failed' + this.getStatus());
-  //     }
-  //   }, {
-  //     enableHighAccuracy: true
-  //   })
-  // }
+  var userLocation = JSON.parse(localStorage.getItem('userLocation')) || {
+    'latitude': 121.446322,
+    'longitude': 31.199345,
+    'isOut': false,
+    'isGet': true
+  };
 
-  // function GetAddress(lat, lng) {
-  //   point = new BMap.Point(lng, lat);
-  //   var gc = new BMap.Geocoder();
-  //   gc.getLocation(point, function(rs) {
-  //     var addComp = rs.addressComponents;
-  //     userLocation.province = addComp.province;
-  //     userLocation.city = addComp.city;
-  //     userLocation.district = addComp.district;
-  //     userLocation.street = addComp.street;
-  //     userLocation.streetNumber = addComp.streetNumber;
-  //     if (addComp.city != '上海市') {
-  //       userLocation.isOut = true;
-  //     } else {
-  //       userLocation.isOut = false;
-  //     }
-  //     deferred.resolve(userLocation);
-  //   });
-  // }
+  if (userLocation.isSearchGeo) {
+    GetAddress(userLocation.latitude, userLocation.longitude);
+  } else {
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r) {
+      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+        // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+        userLocation.latitude = r.point.lat;
+        userLocation.longitude = r.point.lng;
+        GetAddress(userLocation.latitude, userLocation.longitude);
+      } else {
+        alert('failed' + this.getStatus());
+      }
+    }, {
+      enableHighAccuracy: true
+    })
+  }
+
+  function GetAddress(lat, lng) {
+    point = new BMap.Point(lng, lat);
+    var gc = new BMap.Geocoder();
+    gc.getLocation(point, function(rs) {
+      var addComp = rs.addressComponents;
+      userLocation.province = addComp.province;
+      userLocation.city = addComp.city;
+      userLocation.district = addComp.district;
+      userLocation.street = addComp.street;
+      userLocation.streetNumber = addComp.streetNumber;
+      if (addComp.city != '上海市') {
+        userLocation.isOut = true;
+      } else {
+        userLocation.isOut = false;
+      }
+      userLocation.isSearchGeo = false;
+      localStorage.setItem('userLocation', JSON.stringify(userLocation));
+      deferred.resolve(userLocation);
+    });
+  }
 
   deferred.resolve(userLocation);
   return deferred.promise;
@@ -100,7 +101,7 @@ angular.module('starter.services')
 
     // ------------for test-----------------
     // $timeout(function (){
-      deferred.resolve(user)
+    deferred.resolve(user)
     // }) ;
     // ------------for test-----------------
 
@@ -123,7 +124,8 @@ angular.module('starter.services')
         if (e.data) {
           user.userId = e.data.userId;
           user.verify = e.data.verify;
-      console.log('user userRegister');
+          user.addressInfo = e.data.addressInfo;
+          console.log('user userRegister');
           deferred.resolve(user);
         }
       })

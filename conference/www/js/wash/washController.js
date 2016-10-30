@@ -21,7 +21,8 @@ angular.module('starter.washControllers')
 .controller('washSingleCtrl', function($scope, $stateParams, $ionicScrollDelegate, UserInfo, MainPageHot, getWashShop) {
   var scrollArray = [];
   $scope.location = {};
-  var count = 0, lastId = -1;
+  var count = 0,
+    lastId = -1;
 
   UserInfo.then(function(user) {
     getWashShop.get({
@@ -31,22 +32,22 @@ angular.module('starter.washControllers')
     }, function(res) {
       $scope.seller = res.data.shop;
       $scope.goods = Array.prototype.slice.call(res.data.productsList)
-        .sort(function (a, b) {
-            return a.classifyId - b.classifyId;
+        .sort(function(a, b) {
+          return a.classifyId - b.classifyId;
         });
       $scope.classes = Array.prototype.slice.call(res.data.classify)
-        .sort(function (a, b) {
-            return a.classifyId - b.classifyId;
+        .sort(function(a, b) {
+          return a.classifyId - b.classifyId;
         });
       $scope.goods
         .forEach(function(el, index) {
-            if(el.classifyId != lastId){
-                lastId = el.classifyId;
-                scrollArray[el.classifyId] = count;
-            }
-            count++;
-          });
-      
+          if (el.classifyId != lastId) {
+            lastId = el.classifyId;
+            scrollArray[el.classifyId] = count;
+          }
+          count++;
+        });
+
     }, function(data) {
       alert('NO DATA MainPageHot');
     });
@@ -61,9 +62,9 @@ angular.module('starter.washControllers')
 .controller('washCartController', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, UserInfo, orderStatus, NearByEguard, FruitOrderInsert, PayConfirm, $http, ShoppingCart) {
   UserInfo.then(function(user) {
     $scope.order = {
-      receiverName: '收货人姓名',
-      receiverPhone: '收货人手机',
-      receiverAddress: '收货地址',
+      receiverName: user.addressInfo.username || '收货人姓名',
+      receiverPhone: user.addressInfo.tel || '收货人手机',
+      receiverAddress: user.addressInfo.address || '收货地址',
       orderDate: []
     };
     $scope.order.guard = 1;
@@ -269,7 +270,7 @@ angular.module('starter.washControllers')
           'isPaid': true,
           'totalMoney': 1,
           'note': $scope.order.note || "无" + "",
-          'username': user.username,
+          'username': $scope.order.receiverName,
           'sellerId': $stateParams.shopId,
           'orderTime': '2016-07-04 19:00:40'
         }

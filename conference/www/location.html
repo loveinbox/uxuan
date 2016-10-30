@@ -73,7 +73,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-    var userLocation = JSON.parse(localStorage.getItem('userLocation'));
+    var userLocation = JSON.parse(localStorage.getItem('userLocation')) || {};
 
     $('#localCurrent').click(function(event) {
         $(".mapsearch").text("确定");
@@ -125,7 +125,7 @@ $(document).ready(function() {
         userLocation.latitude = point.lat;
         userLocation.longitude = point.lng;
         userLocation.timeStamp = Date.now();
-        localStorage.setItem('userinfo', JSON.stringify(userInfo));
+        localStorage.setItem('userLocation', JSON.stringify(userLocation));
     }
 
     //当鼠标点击下拉列表中某项时触发此函数

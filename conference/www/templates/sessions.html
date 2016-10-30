@@ -78,10 +78,10 @@
                 </li>
             </ul>
         </div>
-        <div class="index-hot-list list-top" ng-show="location.isGet && location.isOut">
+        <div class="index-hot-list list-top" ng-show="location.isOut || sessions.length <= 0">
             <div class="divider">不在服务区域内</div>
         </div>
-        <div class="index-hot-list list-top" ng-show="location.isGet && !location.isOut && sessions.length > 0">
+        <div class="index-hot-list list-top" ng-show="!location.isOut && sessions.length > 0">
             <div class="divider">U选爆款</div>
             <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
                 <ion-list class="single goods index-list clearfix">
@@ -94,11 +94,11 @@
                 </ion-list>
             </ion-scroll>
         </div>
-        <div class="index-shop-list list-top" ng-show="location.isGet && !location.isOut && sellers.length > 0">
+        <div class="index-shop-list list-top" ng-show="!location.isOut && sellers.length > 0">
             <div class="divider">附近商家</div>
             <div seller-list></div>
         </div>
-        <div class="index-fruit-list list-top" ng-show="location.isGet && !location.isOut && goods.length > 0">
+        <div class="index-fruit-list list-top" ng-show="!location.isOut && goods.length > 0">
             <div class="divider">U选排行榜</div>
             <ion-list class="seller-list clearfix">
                 <ion-item ng-repeat="good in goods" href="/sessions/{{good.productId}}">
