@@ -1,0 +1,84 @@
+<ion-view class="create-order" view-title="U选到家">
+  <!-- <div class="index-header" ng-show="from.bool">
+        <div go-back></div>
+    </div>
+    <ion-content ng-class="{'e-content':from.bool}"> -->
+  <ion-content class="singePage cart-page">
+    <section class="order-address" ng-click="getAddress()">
+      <div class="order-receiver-name">
+        <label>
+          <span class="like-input">{{order.receiverName}}</span>
+        </label>
+      </div>
+      <div class="order-receiver-phone">
+        <label>
+          <span class="like-input">{{order.receiverPhone}}</span>
+        </label>
+      </div>
+      <div class="order-receiver-address">
+        <span class="fromWeChat fr">从微信获取</span>
+        <label>
+          <p class="like-textarea">{{order.receiverAddress}}</p>
+        </label>
+      </div>
+    </section>
+    <section uxuan-time user-prefer-time="userPreferTime"></section>
+    <section class="order-server">
+      <span>选择管家</span>
+      <label ng-repeat="eG in eGuard">
+        <input type="radio" name="eGuard" ng-checked="$first" value={{eG.id}} ng-model="order.guard">
+        <span>{{eG.name}}</span>
+      </label>
+    </section>
+    <ion-list class="good-list-in-order">
+      <ion-item ng-repeat="cart in carts" ng-class="{'not-reach': !cart.seller.isReachStartPrice}">
+        <div class="order-cart-seller clearfix">
+          <label class="clearfix">
+            <input type="checkbox" ng-model="cart.isChecked" ng-click="calculateMoney($event, cart)">
+            <img class="cart-seller-img" ng-src="http://lifeuxuan.com/backend/{{cart.seller.sellerPicUrl}}" alt="">
+            <span class="cart-seller-name">{{cart.seller.sellerName}}</span>
+            <div class="calculate-money fr">
+              <span class="totalMoney">￥{{cart.seller.totalMoney/100}}元</span>
+              <p class="sendPrice">含运费{{cart.seller.sendPrice}}元</p>
+              <p class="sendPrice sendStartPrice">起送价{{cart.seller.sendStartPrice}}元</p>
+            </div>
+          </label>
+        </div>
+        <div class="order-cart-goods clearfix">
+          <ion-list class="clearfix">
+            <ion-item ng-repeat="good in cart.goodsList">
+              <input type="checkbox" ng-model="good.isChecked" ng-click="calculateSingleMoney($event, cart)">
+              <img class="cart-seller-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
+              <div class="cart-goods-info-wrap">
+                <p class="cart-goods-name">{{good.productName}}</p>
+                <span class="cart-goods-info">￥{{good.price/100}}</span>
+              </div>
+              <div class="cart-goods-action-wrap clearfix fr">
+                <div class="order-cart-action" ng-click="removeCart(good)">
+                  <i class="icon ion-minus-round"></i>
+                </div>
+                <span class="cart-goods-quantity">{{good.quantity}}</span>
+                <div class="order-cart-action" ng-click="addCart($event, good)">
+                  <i class="icon ion-plus-round"></i>
+                </div>
+              </div>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  <ion-footer-bar class="order-cart">
+    <label class="pick-all">
+      <input type="checkbox" name="" ng-model="order.isAllChecked" ng-click="pickAll()">
+      <span>全选</span>
+    </label>
+    <div class="total-price">
+      <span>总价</span>
+      <span>￥{{carts.allGoodsTotalMoney/100}}</span>
+    </div>
+    <!-- <a href=""> -->
+    <div class="button button-assertive confirm-cart" ng-click="confirmOrder()" ng-class="{disabledButton: orderButton.isDisabled}">微信支付</div>
+    <!-- </a> -->
+  </ion-footer-bar>
+</ion-view>

@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives', 'starter.services', 'starter.washControllers', 'starter.washServices', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives','starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -136,8 +136,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
   })
 
   ;
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/sessions');
 });
 
 angular.module('starter')
@@ -166,13 +164,31 @@ angular.module('starter')
       controller: 'washCartController'
     })
 
-    .state('guardOrderList', {
-      url: '/guardOrderList',
+    .state('washSingleOrder', {
+      url: '/washSingleOrder/:washId',
       cache: false,
+      templateUrl: 'templates/washTemplates/washSingle-order.html ',
+      controller: 'washSingleOrderCtrl'
+    })
+
+    .state('washCartOrder', {
+      url: '/washCartOrder/:shopId',
+      cache: false,
+      templateUrl: 'templates/washTemplates/washCart-order.html ',
+      controller: 'washCartOrderController'
+    })
+
+    .state('guard', {
+      url: '/guard',
       templateUrl: 'templates/backTemplates/guardOrdersTemplate.html ',
       controller: 'guardOrdersController'
     })
 
+    .state('vendor', {
+      url: '/vendor',
+      templateUrl: 'templates/backTemplates/vendorOrdersTemplate.html ',
+      controller: 'vendorOrdersController'
+    })
 
     ;
     // if none of the above states are matched, use this as the fallback

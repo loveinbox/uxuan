@@ -24,3 +24,13 @@
 .wash-tag{
 	padding: 5px 0;
 }
+
+.guard-order-button{
+	text-align: center;
+}
+
+.guard-order-button button{
+	width: 30%;
+	float: right;
+	margin-left: 15px; 
+}

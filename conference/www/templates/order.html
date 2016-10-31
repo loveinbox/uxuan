@@ -27,21 +27,7 @@
                 </label>
             </div>
         </section>
-        <section class="order-time">
-            <div class="order-receiver-date">
-                <label>
-                    <span>收货时间</span>
-                    <select class="data-pick" ng-model="order.preferTimeDay" ng-options='option.value as option.name for option in order.orderDate' ng-change="changeDate($index)"></select>
-                </label>
-            </div>
-            <div class="order-receiver-time">
-                <label>
-                    <span>周{{date.week}}</span>
-                    <select class="data-pick" ng-model="order.preferTimeTime" ng-options='option.value as option.name for option in order.orderTime'>
-                    </select>
-                </label>
-            </div>
-        </section>
+        <section uxuan-time user-prefer-time="userPreferTime" ></section>
         <section class="order-server">
             <span>选择管家</span>
             <label ng-repeat="eG in eGuard">

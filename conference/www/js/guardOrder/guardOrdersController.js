@@ -64,6 +64,8 @@ angular.module('starter.controllers')
       })
     }
 
+    // sendClothesService
+
     // $scope.rejectOrder = function() {
     //   acceptOrderService.get({
     //     'userId': '22'

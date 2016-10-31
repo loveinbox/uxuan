@@ -575,10 +575,10 @@ p.cartNumber{
 
 .cart-good-info{
     display: inline-block;
-    max-width: 60%;
-    overflow: hidden;
+    /*max-width: 60%;*/
+    /*overflow: hidden;
     text-overflow: ellipsis;
-    vertical-align: bottom;
+    vertical-align: bottom;*/
 }
 
 .cart-price{

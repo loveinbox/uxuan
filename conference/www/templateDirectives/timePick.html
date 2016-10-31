@@ -1,0 +1,15 @@
+<section class="order-time">
+  <div class="order-receiver-date">
+    <label>
+      <span>收货时间</span>
+      <select class="data-pick" ng-model="tp.preferDate" ng-options='option.value as option.name for option in tp.dates' ng-change="changeDate($index)"></select>
+    </label>
+  </div>
+  <div class="order-receiver-time">
+    <label>
+      <span>周{{tp.week}}</span>
+      <select class="data-pick" ng-model="tp.preferTime" ng-options='option.value as option.name for option in tp.times' ng-change="changeTime($index)">
+      </select>
+    </label>
+  </div>
+</section>

@@ -81,23 +81,14 @@ angular.module('starter.services')
     'password': '',
     'headPicUrl': '',
     'phoneNumber': '18788889999',
-    'verify': 1
+    'verify': 1,
+    'addressInfo': {}
   }
   Location.then(function(userLocation) {
     // user default value
-    var user = {
-      'name': 'test',
-      'userId': '22',
-      'latitude': userLocation.latitude,
-      'longitude': userLocation.longitude,
-      'openId': '',
-      'username': '',
-      'password': '',
-      'headPicUrl': '',
-      'phoneNumber': '18788889999',
-      'verify': 1,
-      'userLocation': userLocation
-    }
+    user.latitude = userLocation.latitude;
+    user.longitude = userLocation.longitude;
+    user.userLocation = userLocation;
 
     // ------------for test-----------------
     // $timeout(function (){

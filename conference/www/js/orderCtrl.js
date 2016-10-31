@@ -4,15 +4,15 @@ angular.module('starter.controllers')
       $scope.order = {
         receiverName: user.addressInfo.username || '收货人姓名',
         receiverPhone: user.addressInfo.tel || '收货人手机',
-        receiverAddress: user.addressInfo.address || '收货地址',
-        orderDate: []
+        receiverAddress: user.addressInfo.address || '收货地址'
       };
       $scope.order.guard = 1;
       $scope.orderButton = { isDisabled: true };
       $scope.carts = ShoppingCart.getCart();
-
-      // $scope.order.receiverAddress = '123';
-
+      console.log($scope.userPreferTime);
+      $scope.userPreferTime = {
+        value: 1
+      };
       var orderRequestObj = {
         url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
         data: {
@@ -22,7 +22,7 @@ angular.module('starter.controllers')
           'userId': user.userId || '1',
           'userPhoneNumber': $scope.order.receiverPhone + "",
           'userAddress': $scope.order.receiverAddress,
-          'userPreferTime': $scope.userPreferTime,
+          'userPreferTime': $scope.userPreferTime.value,
           'eguardId': $scope.order.guard + "",
           'isPaid': true,
           'totalMoney': $scope.carts.allGoodsTotalMoney,
@@ -42,7 +42,7 @@ angular.module('starter.controllers')
             'userId': user.userId || '1',
             'userPhoneNumber': $scope.order.receiverPhone + "",
             'userAddress': $scope.order.receiverAddress,
-            'userPreferTime': $scope.userPreferTime,
+            'userPreferTime': $scope.userPreferTime.value,
             'eguardId': $scope.order.guard + "",
             'isPaid': true,
             'totalMoney': $scope.carts.allGoodsTotalMoney,
@@ -59,115 +59,6 @@ angular.module('starter.controllers')
               $scope.orderButton.isDisabled = true;
             }
           });
-        }
-      }
-
-      (function dateFun() {
-        $scope.from = { bool: $stateParams.from > 0 };
-
-        var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
-        var weight = 0;
-
-        var date = new Date,
-          startHour = date.getHours() > 8 ? date.getHours() : 8;
-
-        if (startHour >= 20) {
-          weight = 1;
-        }
-
-        $scope.date = {
-          week: weekArray[date.getDay() + weight]
-        }
-
-        for (var i = 0 + weight; i < 8; i++) {
-          $scope.order.orderDate.push({
-            name: addDate(date, i),
-            value: i
-          })
-        }
-
-        $scope.order.preferTimeDay = weight;
-
-        $scope.order.orderTime = [];
-
-        if (weight == 0) {
-          for (var i = 1; startHour + i < 21; i++) {
-            $scope.order.orderTime.push({
-              name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
-              value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
-            })
-            $scope.order.orderTime.push({
-              name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
-              value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
-            })
-          }
-        } else {
-          for (var i = 8; i < 21; i++) {
-            $scope.order.orderTime.push({
-              name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
-              value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
-            })
-            $scope.order.orderTime.push({
-              name: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00',
-              value: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00'
-            })
-          }
-        }
-
-        if ($scope.order.orderTime.length > 0) {
-          $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
-        }
-
-        $scope.changeDate = function() {
-          if ($scope.order.preferTimeDay > 0) {
-            $scope.order.orderTime = [];
-            for (var i = 8; i < 21; i++) {
-              $scope.order.orderTime.push({
-                name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
-                value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
-              })
-              $scope.order.orderTime.push({
-                name: addZero(i) + ':00 -- ' + addZero(i + 1) + ':00',
-                value: addZero(i) + ':00 -- ' + addZero(i + 1) + ':00'
-              })
-            }
-            $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
-          } else {
-            $scope.order.orderTime = [];
-            for (var i = 1; startHour + i < 21; i++) {
-              $scope.order.orderTime.push({
-                name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
-                value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
-              })
-              $scope.order.orderTime.push({
-                name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
-                value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
-              })
-            }
-            $scope.order.preferTimeTime = $scope.order.orderTime[0].value;
-          }
-          $scope.date = {
-            week: weekArray[(date.getDay() + $scope.order.preferTimeDay) % 7]
-          }
-        }
-      })();
-
-      function addDate(date, days) {
-        if (days === undefined || days === '') {
-          days = 1;
-        }
-        var date = new Date(date);
-        date.setDate(date.getDate() + days);
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        return addZero(month) + '-' + addZero(day);
-      }
-
-      function addZero(number) {
-        if (number >= 10) {
-          return number + '';
-        } else {
-          return '0' + '' + number;
         }
       }
 
@@ -292,13 +183,6 @@ angular.module('starter.controllers')
           alert('请输入收货地址');
           return;
         }
-        var date = new Date();
-        // var moment = addZero(date.getFullYear()) + '-' + addZero(date.getMonth()) + '-' + addZero(date.getDate()) + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes()) + ':' + addZero(date.getSeconds());
-        var pDate = addDate(date, $scope.order.preferTimeDay);
-        $scope.userPreferTime = [
-          date.getFullYear() + '-' + pDate + ' ' + $scope.order.preferTimeTime.split(' -- ')[0] + ':00',
-          date.getFullYear() + '-' + pDate + ' ' + $scope.order.preferTimeTime.split(' -- ')[1] + ':00'
-        ];
 
         var orderIds = null;
         var cleanedCarts = ShoppingCart.getCart();
@@ -327,7 +211,7 @@ angular.module('starter.controllers')
             'userId': user.userId || '1',
             'userPhoneNumber': $scope.order.receiverPhone + "",
             'userAddress': $scope.order.receiverAddress,
-            'userPreferTime': $scope.userPreferTime,
+            'userPreferTime': $scope.userPreferTime.value,
             'eguardId': $scope.order.guard + "",
             'isPaid': true,
             'totalMoney': $scope.carts.allGoodsTotalMoney,

@@ -16,7 +16,14 @@ angular.module('starter.services')
 
 // 取衣
 .factory('fetchClothesService', function($resource) {
-    return $resource('http://www.lifeuxuan.com/backend/api/EguardFetchClothesConfirm.php');
+    return $resource('http://www.lifeuxuan.com/backend/api/EguardArriveCustomer.php');
 })
+
+// 送衣服
+.factory('sendClothesService', function($resource) {
+    return $resource('http://www.lifeuxuan.com/backend/api/EguardForwardShop.php.php');
+})
+
+
 
 

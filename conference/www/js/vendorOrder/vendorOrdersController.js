@@ -1,6 +1,6 @@
-angular.module('starter.controllers')
+angular.module('starter.services')
 
-.controller('guardOrdersController', function($scope, UserInfo, EguardNewOrderList, acceptOrderService, fetchClothesService) {
+.controller('vendorOrdersController', function($scope, UserInfo, verndorList) {
   $scope.orderTypeObj = {
     10001: '水果',
     10002: '洗衣',
@@ -73,7 +73,7 @@ angular.module('starter.controllers')
     // }
 
     function getOrders(user) {
-      EguardNewOrderList.get({
+      verndorList.get({
         'userId': user.userId
       }, function(data) {
         $scope.orders = data.data;

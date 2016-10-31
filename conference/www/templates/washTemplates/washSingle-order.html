@@ -1,0 +1,56 @@
+<ion-view view-title="U选到家">
+  <div class="index-header">
+    <div go-back></div>
+    <p e-guard></p>
+    <label class="header-search">
+      <i class="icon ion-ios-search placeholder-icon"></i>
+    </label>
+  </div>
+  <div class="seller-detail">
+    <img class="single-shop" ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
+    <p class="name">{{seller.sellerName}}</p>
+    <ul class="good-info-wrap clearfix">
+      <li class="distance">月售{{seller.soldNumber}}单</li>
+      <li class="distance">{{seller.distance}}米</li>
+      <li class="distance">{{seller.sendPrice}}元起送</li>
+      <li class="distance">{{seller.sendStartPrice}}元配送费</li>
+    </ul>
+    <div class="slogen">{{seller.sellerSlogen}}</div>
+  </div>
+  <ion-content class="has-header has-detail-header" scroll="false">
+    <ion-scroll direction="y" overflow-scroll="true" class="height100 wash-class fl">
+      <ion-list class="rank index-list clearfix">
+        <ion-item class="index-list-item" ng-repeat="class in classes">
+          <p class="name wash-tag" ng-click="washScrollTo(class.classifyId)" style="text-align: center;">{{class.classifyName}}</p>
+        </ion-item>
+      </ion-list>
+    </ion-scroll>
+    <ion-scroll direction="y" overflow-scroll="true" delegate-handle="wash-scroll" class="height100 wash-single fl">
+      <ion-list class="rank index-list clearfix">
+        <ion-item class="index-list-item" ng-repeat="good in goods" ng-class="good.classifyId">
+          <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
+          <div class="goods-list-item">
+            <p class="name">{{good.productName}}</p>
+            <p class="description">{{good.description}}</p>
+            <p class="price">￥{{good.price/100 }}/{{good.unit}}</p>
+          </div>
+          <div wash-single-cart></div>
+        </ion-item>
+      </ion-list>
+    </ion-scroll>
+  </ion-content>
+  <ion-footer-bar>
+    <!-- <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash">
+      <a href="/washCart/{{seller.sellerId}}">
+        <div class="button button-assertive button-full go-wash-cart">预约洗衣</div>
+      </a>
+    </div> -->
+    <div class="bottom-bar shopping-cart-bar">
+      <i class="icon ion-ios-cart icon-cart" ng-click="openModal(seller)"></i>
+      <div class="cart-number-tip" ng-show="totalNumber > 0">{{totalNumber}}</div>
+      <a ng-href="/washCartOrder/{{seller.sellerId}}">
+        <div class="button button-assertive go-cart fr">选好了</div>
+      </a>
+    </div>
+  </ion-footer-bar>
+</ion-view>

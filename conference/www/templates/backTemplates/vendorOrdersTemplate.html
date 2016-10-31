@@ -19,14 +19,20 @@
           <p class="fr">电话:{{order.userPhoneNumber}}</p>
         </div>
         <p>预约时间:{{order.userAddress}}</p>
-        <div ng-show="order.orderStatusId == '7008'" class="is-pay-order clearfix">
-          <div class="button-bar">
-            <button class="fr button button-positive button-small" ng-click="acceptOrder(order)">接单</button>
-            <button class="fr button button-positive button-small" ng-click="rejectOrder(order)">拒收</button>
-          </div>
+        <div class="guard-order-button" ng-show="order.orderStatusId == '7008'" class="is-pay-order clearfix">
+          <!-- <div class="button-bar"> -->
+            <button class="button button-calm button-small button-right" ng-click="acceptOrder(order)">接单</button>
+            <button class="button button-assertive button-small button-right" ng-click="rejectOrder(order)">拒收</button>
+          <!-- </div> -->
         </div>
-        <div ng-show="order.orderStatusId == '7009'" class="is-pay-order clearfix">
-          <button class="fr button button-positive button-small" ng-click="fetchClothes(order)">开始计价</button>
+        <div class="guard-order-button" ng-show="order.orderStatusId == '7009'" class="is-pay-order clearfix">
+          <button class="button button-calm button-small button-right" ng-click="fetchClothes(order)">开始计价</button>
+        </div>
+        <div class="guard-order-button" ng-show="order.orderStatusId == '7006'" class="is-pay-order clearfix">
+          <button class="button button-calm button-small button-right" ng-click="fetchClothes(order)">衣服已收到</button>
+        </div>
+        <div class="guard-order-button" ng-show="order.orderStatusId == '7007' || order.orderStatusId == '7010'" class="is-pay-order clearfix">
+          <button class="button button-stable button-small button-right" disabled>进行中...</button>
         </div>
       </ion-item>
     </ion-list>
