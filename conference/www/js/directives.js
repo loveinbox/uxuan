@@ -68,69 +68,49 @@ angular.module('starter.directives', [])
   }
 })
 
-.directive('cart', function() {
-  return {
-    restrict: 'A',
-    templateUrl: 'templateDirectives/myModal.html',
-    controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
-      $scope.addCart = function(event, good) {
-        event.stopPropagation();
-        cartNumber = ShoppingCart.add(event, good);
-        $scope.isHideAddCart = true;
-        $scope.singleNumber = cartNumber;
-        $scope.cart.number = ShoppingCart.getSellerCartNumber(good.sellerId);
-        $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
-      };
+// .directive('cartModal', function() {
+//   return {
+//     restrict: 'A',
+//     replace: true,
+//     scope: {
+//       gParamId: '@'
+//     },
+//     template: '<i class="icon ion-ios-cart icon-cart" ng-click="openModal"></i>',
+//     controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
+//       // $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
+//       //   scope: $scope,
+//       //   animation: 'slide-in-up'
+//       // }).then(function(modal) {
+//       //   $scope.modal = modal;
+//       //   $scope.modal.hide();
+//       // });
+//       // $scope.openModal = function() {
+//       //   if ($scope.cart.number > 0) {
+//       //     $scope.modal.show();
+//       //     $scope.cartGoods = ShoppingCart.getSellerProductList(gParamId);
+//       //   }
+//       // };
+//       // $scope.closeModal = function() {
+//       //   $scope.modal.hide();
+//       // };
 
-      $scope.removeCart = function(good) {
-        event.stopPropagation();
-        var cartNumber = ShoppingCart.remove(good);
-        if (cartNumber == 0) {
-          $scope.isHideAddCart = false;
-        }
-        $scope.singleNumber = cartNumber;
-        $scope.cart.number = ShoppingCart.getSellerCartNumber(good.sellerId);
-        $scope.cartGoods = ShoppingCart.getSellerProductList(good.sellerId);
-        if ($scope.cart.number == 0) {
-          $scope.modal.hide();
-        }
-      };
-
-      $ionicModal.fromTemplateUrl('templateDirectives/myModal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        $scope.modal = modal;
-        $scope.modal.hide();
-      });
-      $scope.openModal = function() {
-        if ($scope.cart.number > 0) {
-          $scope.modal.show();
-          $scope.cartGoods = ShoppingCart.getSellerProductList($scope.session.sellerId);
-        }
-      };
-      $scope.closeModal = function() {
-        $scope.modal.hide();
-      };
-    }
-  }
-})
+//     }
+//   }
+// })
 
 .directive('singleCart', function() {
   return {
     restrict: 'A',
     templateUrl: 'templateDirectives/singleCart.html',
-    controller: function($scope, $rootScope, $ionicModal, $state, ShoppingCart, UserInfo) {
+    controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
       UserInfo.then(function(user) {
-        cartNumber = ShoppingCart.get($scope.good);
-        $scope.singleNumber = cartNumber;
+        $scope.singleNumber = ShoppingCart.get($scope.good);
         if ($scope.singleNumber > 0) {
           $scope.isHideAddCart = true;
         }
 
         $scope.$on('cartChange', function(event, data) {
-          cartNumber = ShoppingCart.get($scope.good);
-          $scope.singleNumber = cartNumber;
+          $scope.singleNumber = ShoppingCart.get($scope.good);
           if ($scope.singleNumber > 0) {
             $scope.isHideAddCart = true;
           } else {
@@ -139,84 +119,20 @@ angular.module('starter.directives', [])
         });
         $scope.addCart = function(event, good) {
           event.stopPropagation();
-          event.preventDefault();
           if (!(user.verify - 0)) {
             $state.go('phoneNumberCheck');
             return;
           }
-          cartNumber = ShoppingCart.add(event, good);
-          $scope.isHideAddCart = true;
-          $scope.singleNumber = cartNumber;
+          ShoppingCart.add(event, good);
           $rootScope.$broadcast('cartChange');
         };
 
         $scope.removeCart = function(good) {
           event.stopPropagation();
-          event.preventDefault();
-          var cartNumber = ShoppingCart.remove(good);
-          if (cartNumber == 0) {
-            $scope.isHideAddCart = false;
-          }
-          $scope.singleNumber = cartNumber;
+          ShoppingCart.remove(good);
           $rootScope.$broadcast('cartChange');
         };
       })
-
-
-    }
-  }
-})
-
-.directive('washSingleCart', function() {
-  return {
-    restrict: 'A',
-    templateUrl: 'templateDirectives/singleCart.html',
-    controller: function($scope, $rootScope, $ionicModal, $state, WashShoppingCart, UserInfo) {
-      UserInfo.then(function(user) {
-        cartNumber = WashShoppingCart.get($scope.good);
-        $scope.singleNumber = cartNumber;
-        if ($scope.singleNumber > 0) {
-          $scope.isHideAddCart = true;
-        }
-
-        $scope.$on('cartChange', function(event, data) {
-          cartNumber = WashShoppingCart.get($scope.good);
-          $scope.singleNumber = cartNumber;
-          $scope.totalNumber = WashShoppingCart.getSellerCartNumber($scope.good.sellerId);
-          if ($scope.singleNumber > 0) {
-            $scope.isHideAddCart = true;
-          } else {
-            $scope.isHideAddCart = false;
-          }
-        });
-        $scope.addCart = function(event, good) {
-          event.stopPropagation();
-          event.preventDefault();
-          if (!(user.verify - 0)) {
-            $state.go('phoneNumberCheck');
-            return;
-          }
-          cartNumber = WashShoppingCart.add(event, good);
-          $scope.totalNumber = WashShoppingCart.getSellerCartNumber(good.sellerId);
-          $scope.isHideAddCart = true;
-          $scope.singleNumber = cartNumber;
-          $rootScope.$broadcast('cartChange');
-        };
-
-        $scope.removeCart = function(good) {
-          event.stopPropagation();
-          event.preventDefault();
-          var cartNumber = WashShoppingCart.remove(good);
-          $scope.totalNumber = WashShoppingCart.getSellerCartNumber(good.sellerId);
-          if (cartNumber == 0) {
-            $scope.isHideAddCart = false;
-          }
-          $scope.singleNumber = cartNumber;
-          $rootScope.$broadcast('cartChange');
-        };
-      })
-
-
     }
   }
 })

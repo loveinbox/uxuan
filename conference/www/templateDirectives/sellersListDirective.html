@@ -2,7 +2,6 @@
     <ion-item ng-repeat="seller in sellers" href="/seller/{{seller.sellerId}}">
         <div class="seller-img clearfix">
             <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
-            <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p>
         </div>        
         <div class="seller-info-wrap">
             <div class="seller-info1">

@@ -34,19 +34,14 @@
             <p class="description">{{good.description}}</p>
             <p class="price">￥{{good.price/100 }}/{{good.unit}}</p>
           </div>
-          <div wash-single-cart></div>
+          <div single-cart></div>
         </ion-item>
       </ion-list>
     </ion-scroll>
   </ion-content>
   <ion-footer-bar>
-    <!-- <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash">
-      <a href="/washCart/{{seller.sellerId}}">
-        <div class="button button-assertive button-full go-wash-cart">预约洗衣</div>
-      </a>
-    </div> -->
     <div class="bottom-bar shopping-cart-bar">
-      <i class="icon ion-ios-cart icon-cart" ng-click="openModal(seller)"></i>
+      <div cart-modal></div>
       <div class="cart-number-tip" ng-show="totalNumber > 0">{{totalNumber}}</div>
       <a ng-href="/washCartOrder/{{seller.sellerId}}">
         <div class="button button-assertive go-cart fr">选好了</div>

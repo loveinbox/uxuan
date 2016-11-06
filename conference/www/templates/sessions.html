@@ -1,129 +1,129 @@
 <ion-view view-title="U选到家">
-    <ion-content class="backE" delegate-handle="mainScroll">
-        <section class="header-wrap">
-            <div class="index-header">
-                <p e-guard></p>
-                <a href="/search">
-                    <label class="header-icon">
-                        <i class="icon ion-ios-search placeholder-icon"></i>
-                    </label>
-                </a>
+  <ion-content class="backE" delegate-handle="mainScroll">
+    <section class="header-wrap">
+      <div class="index-header">
+        <p e-guard></p>
+        <a href="/search">
+          <label class="header-icon">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+          </label>
+        </a>
+      </div>
+      <div class="lunbo">
+        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true" auto-play="true" show-pager="false">
+          <ion-slide>
+            <div class="box blue">
+              <!-- <h1>水果推荐1</h1> -->
+              <img src="img/1.jpg">
             </div>
-            <div class="lunbo">
-                <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true" auto-play="true" show-pager="false">
-                    <ion-slide>
-                        <div class="box blue">
-                            <!-- <h1>水果推荐1</h1> -->
-                            <img src="img/1.jpg">
-                        </div>
-                    </ion-slide>
-                    <ion-slide>
-                        <div class="box yellow">
-                            <!-- <h1>水果推荐2</h1> -->
-                            <img src="img/2.jpg">
-                        </div>
-                    </ion-slide>
-                    <ion-slide>
-                        <div class="box pink">
-                            <!-- <h1>洗衣推荐</h1> -->
-                            <img src="img/3.jpg">
-                        </div>
-                    </ion-slide>
-                    <ion-slide>
-                        <div class="box pink">
-                            <!-- <h1>洗衣推荐</h1> -->
-                            <img src="img/4.jpg">
-                        </div>
-                    </ion-slide>
-                    <ion-slide>
-                        <div class="box pink">
-                            <!-- <h1>洗衣推荐</h1> -->
-                            <img src="img/5.jpg">
-                        </div>
-                    </ion-slide>
-                </ion-slide-box>
+          </ion-slide>
+          <ion-slide>
+            <div class="box yellow">
+              <!-- <h1>水果推荐2</h1> -->
+              <img src="img/2.jpg">
             </div>
-            <div class="current-location">
-                <a href="/location">
-                    <img class="location-icon" src="img/location.svg" alt="">
-                </a>
+          </ion-slide>
+          <ion-slide>
+            <div class="box pink">
+              <!-- <h1>洗衣推荐</h1> -->
+              <img src="img/3.jpg">
             </div>
-        </section>
-        <div class="current-location-text">
-            <a href="/location">
-                <span class="location-text">{{location.text}}</span>
-            </a>
-        </div>
-        <div class="index-nav">
-            <ul class="clearfix">
-                <li>
-                    <a href=""><img src="img/fruit.svg" alt="">
-                        <p>生鲜水果</p>
-                    </a>
-                </li>
-                <li>
-                    <a href=""><img src="img/help-bug.svg" alt="">
-                        <p>代买</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="/washList"><img src="img/wash.svg" alt="">
-                        <p>洗衣</p>
-                    </a>
-                </li>
-                <li>
-                    <a href=""><img src="img/flower.svg" alt="">
-                        <p>鲜花</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="index-hot-list list-top" ng-show="location.isOut || sessions.length <= 0">
-            <div class="divider">不在服务区域内</div>
-        </div>
-        <div class="index-hot-list list-top" ng-show="!location.isOut && sessions.length > 0">
-            <div class="divider">U选爆款</div>
-            <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
-                <ion-list class="single goods index-list clearfix">
-                    <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.productId}}">
-                        <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}" alt="">
-                        <!-- <img src="img/single.jpg"> -->
-                        <span class="name">{{session.productName}}</span>
-                        <p class="price">￥{{session.price/100}}/{{session.unit}}</p>
-                    </ion-item>
-                </ion-list>
-            </ion-scroll>
-        </div>
-        <div class="index-shop-list list-top" ng-show="!location.isOut && sellers.length > 0">
-            <div class="divider">附近商家</div>
-            <div seller-list></div>
-        </div>
-        <div class="index-fruit-list list-top" ng-show="!location.isOut && goods.length > 0">
-            <div class="divider">U选排行榜</div>
-            <ion-list class="seller-list clearfix">
-                <ion-item ng-repeat="good in goods" href="/sessions/{{good.productId}}">
-                    <div class="seller-img clearfix">
-                        <img class="single-good-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
-                        <!-- <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p> -->
-                    </div>
-                    <div class="seller-info-wrap">
-                        <div class="seller-info1 good-name">
-                            <span class="name">{{good.productName}}</span>
-                        </div>
-                        <div class="seller-info2">
-                            <span>{{good.description}}</span>
-                        </div>
-                        <div class="seller-info3">
-                            <span class="single-good-price">￥{{good.price/100}}/{{good.unit}}</span>
-                        </div>
-                        <div class="single-good-top">
-                            <div class="single-good-top-header">top</div>
-                            <div class="single-good-top-body">{{$index + 1}}</div>                        
-                        </div>
-                    </div>
-                </ion-item>
-            </ion-list>
-            <!-- <ion-list class="rank index-list clearfix">
+          </ion-slide>
+          <ion-slide>
+            <div class="box pink">
+              <!-- <h1>洗衣推荐</h1> -->
+              <img src="img/4.jpg">
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <div class="box pink">
+              <!-- <h1>洗衣推荐</h1> -->
+              <img src="img/5.jpg">
+            </div>
+          </ion-slide>
+        </ion-slide-box>
+      </div>
+      <div class="current-location">
+        <a href="/location">
+          <img class="location-icon" src="img/location.svg" alt="">
+        </a>
+      </div>
+    </section>
+    <div class="current-location-text">
+      <a href="/location">
+        <span class="location-text">{{location.text}}</span>
+      </a>
+    </div>
+    <div class="index-nav">
+      <ul class="clearfix">
+        <li>
+          <a href=""><img src="img/fruit.svg" alt="">
+            <p>生鲜水果</p>
+          </a>
+        </li>
+        <li>
+          <a href=""><img src="img/help-bug.svg" alt="">
+            <p>代买</p>
+          </a>
+        </li>
+        <li>
+          <a href="/washList"><img src="img/wash.svg" alt="">
+            <p>洗衣</p>
+          </a>
+        </li>
+        <li>
+          <a href=""><img src="img/flower.svg" alt="">
+            <p>鲜花</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="index-hot-list list-top" ng-show="location.isOut || sessions.length <= 0">
+      <div class="divider">不在服务区域内</div>
+    </div>
+    <div class="index-hot-list list-top" ng-show="!location.isOut && sessions.length > 0">
+      <div class="divider">U选爆款</div>
+      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
+        <ion-list class="single goods index-list clearfix">
+          <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.productId}}">
+            <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}" alt="">
+            <!-- <img src="img/single.jpg"> -->
+            <span class="name">{{session.productName}}</span>
+            <p class="price">￥{{session.price/100}}/{{session.unit}}</p>
+          </ion-item>
+        </ion-list>
+      </ion-scroll>
+    </div>
+    <div class="index-shop-list list-top" ng-show="!location.isOut && sellers.length > 0">
+      <div class="divider">附近商家</div>
+      <div seller-list></div>
+    </div>
+    <div class="index-fruit-list list-top" ng-show="!location.isOut && goods.length > 0">
+      <div class="divider">U选排行榜</div>
+      <ion-list class="seller-list clearfix">
+        <ion-item ng-repeat="good in goods" href="/sessions/{{good.productId}}">
+          <div class="seller-img clearfix">
+            <img class="single-good-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
+            <!-- <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p> -->
+          </div>
+          <div class="seller-info-wrap good-info">
+            <div class="seller-info1 good-name">
+              <span class="name">{{good.productName}}</span>
+            </div>
+            <div class="seller-info2">
+              <span>{{good.description}}</span>
+            </div>
+            <div class="seller-info3">
+              <span class="single-good-price">￥{{good.price/100}}/{{good.unit}}</span>
+            </div>
+          </div>
+          <div class="single-good-top">
+            <div class="single-good-top-header">top</div>
+            <div class="single-good-top-body">{{$index + 1}}</div>
+          </div>
+        </ion-item>
+      </ion-list>
+      <!-- <ion-list class="rank index-list clearfix">
                 <ion-item class="index-list-item" ng-repeat="good in goods" href="/sessions/{{good.productId}}">
                     <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
                     <span class="name">{{good.productName}}</span>
@@ -132,12 +132,12 @@
                     <div single-cart></div>
                 </ion-item>
             </ion-list> -->
-        </div>
-        <!--     <div class="divider">U选洗衣</div>
+    </div>
+    <!--     <div class="divider">U选洗衣</div>
         <ion-list class="seller index-list clearfix">
             <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.goodId}}"> -->
-        <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}" alt=""> -->
-        <!-- <img src="img/single.jpg">
+    <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}" alt=""> -->
+    <!-- <img src="img/single.jpg">
                 <span class="name">{{session.goodName}}</span>
                 <ul class="good-info-wrap clearfix">
                     <li class="distance">月售{{session.distance}}单</li>
@@ -147,8 +147,8 @@
                 </ul>
                 <div class="slogen">{{session.goodName}}</div>
                 <i class="icon ion-ios-cart list-cart"></i> -->
-        <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
-        <!--    </ion-item>
+    <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
+    <!--    </ion-item>
         </ion-list> -->
-    </ion-content>
+  </ion-content>
 </ion-view>

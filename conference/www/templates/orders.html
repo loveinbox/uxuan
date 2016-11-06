@@ -26,6 +26,9 @@
                     <div class="fr" ng-click="rePay($event, order)">支付订单</div>
                     <div class="fr" ng-click="cancel($event, order)">取消订单</div>
                 </div>
+                <div ng-hide="order.type == '1002'" class="is-pay-order clearfix">
+                    <a ng-href="/washSingleOrder/{{order.sellerId}}">开始计价</a>
+                </div>
             </ion-item>
         </ion-list>
     </ion-content>

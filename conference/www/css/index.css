@@ -37,7 +37,7 @@
 
 .list-top {
     margin-top: 10px;
-    padding: 25px 0;
+    padding: 20px 0;
     background: #fff;
 }
 
@@ -61,5 +61,10 @@
 }
 
 .index-hot-list .item-content:first-child{
-	padding: 0 15px;
+	padding: 0 12px;
+}
+
+.item-content.activated{
+    background-color: #fff !important;
+    border-color: #fff !important;
 }

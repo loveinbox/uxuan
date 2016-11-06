@@ -17,17 +17,15 @@ angular.module('starter.controllers')
 })
 
 .controller('washSingleCtrl', function($scope, $stateParams, $ionicScrollDelegate, UserInfo, MainPageHot, getWashShop) {
-  var scrollArray = [];
-  $scope.location = {};
-  var count = 0,
-    lastId = -1;
-
   UserInfo.then(function(user) {
     getWashShop.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
       'sellerId': $stateParams.washId
     }, function(res) {
+      var scrollArray = [];
+      var count = 0;
+      var lastId = -1;
       $scope.seller = res.data.shop;
       $scope.goods = Array.prototype.slice.call(res.data.productsList)
         .sort(function(a, b) {
@@ -57,20 +55,8 @@ angular.module('starter.controllers')
 
 })
 
-.controller('washCartController', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, UserInfo, orderStatus, NearByEguard, FruitOrderInsert, PayConfirm, $http, WashShoppingCart) {
+.controller('washCartController', function($scope, $state, UserInfo, orderStatus, NearByEguard, WxLocation) {
   UserInfo.then(function(user) {
-    $scope.order = {
-      receiverName: user.addressInfo.username || '收货人姓名',
-      receiverPhone: user.addressInfo.tel || '收货人手机',
-      receiverAddress: user.addressInfo.address || '收货地址',
-      orderDate: []
-    };
-    $scope.orderButton = { isDisabled: true };
-    $scope.carts = WashShoppingCart.getCart();
-    $scope.userPreferTime = {
-      value: 1
-    };
-
     NearByEguard.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
@@ -80,6 +66,18 @@ angular.module('starter.controllers')
     }, function(data) {
       alert('NO DATA');
     });
+
+    $scope.order = {
+      receiverName: user.addressInfo.username || '收货人姓名',
+      receiverPhone: user.addressInfo.tel || '收货人手机',
+      receiverAddress: user.addressInfo.address || '收货地址',
+      orderDate: []
+    };
+    $scope.orderButton = { isDisabled: true };
+    $scope.carts = ShoppingCart.getCart();
+    $scope.userPreferTime = {
+      value: 1
+    };
 
     $scope.confirmOrder = function() {
       // if ($scope.order.receiverAddress === undefined || $scope.order.receiverAddress === '' || $scope.order.receiverAddress === '收货地址') {
@@ -123,83 +121,31 @@ angular.module('starter.controllers')
           })
         })
         .fail(function(e) {
-          console.log(e);
-          console.log("error");
-        })
-        .always(function() {
-          console.log("complete");
+          console.log("error", e);
         });
     }
 
     $scope.getAddress = function() {
-      wx.ready(function() {
-        wx.openAddress({
-          success: function(res) {
-            var addressGot = res.provinceName + res.cityName + res.countryName + res.detailInfo;
-            $scope.$apply(function() {
-              if (isTooFar(addressGot)) {
-                alert('输入的地址超出配送范围，请重新选择');
-                return;
-              }
-              $scope.order.receiverAddress = addressGot || '';
-              $scope.order.receiverName = res.userName;
-              $scope.order.receiverPhone = res.telNumber - 0;
-
-              var carts = WashShoppingCart.getCart();
-              if ($scope.carts.allGoodsTotalMoney > 0) {
-                $scope.orderButton.status = false;
-              }
-              judgeOrder();
-            });
-          },
-          cancel: function() {
-            alert("fa");
-          }
-        });
-      });
+      WxLocation.getAddress()
+        .then(function() {
+          orderRequestObj.receiverAddress = addressGot;
+          orderRequestObj.receiverName = res.userName;
+          orderRequestObj.receiverPhone = res.telNumber;
+        })
     }
-
-    function isTooFar(address) {
-      var gc = new BMap.Geocoder();
-      gc.getPoint(address, function(point) {
-        var map = new BMap.Map("allmap");
-        var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
-        var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
-        // alert('两点的距离是：' + (map.getDistance(pointA, pointB)).toFixed(2) + ' 米。'); //获取两点距离,保留小数点后两位
-        var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
-        console.log('distacne', distacne);
-        console.log('distacne > 6000', distacne > 6000);
-        if (distacne > 6000) {
-          alert('收货地址可能超出配送范围');
-          return true;
-        } else {
-          return false;
-        }
-      });
-    }
-
   })
 })
 
-.controller('washSingleOrderCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, UserInfo, getWashShop, WashShoppingCart) {
-  $scope.isHideAddCart = false;
-  $scope.singleNumber = {
-    value: 0
-  };
-
-  var cartNumber = 0;
-
-  var scrollArray = [];
-  $scope.location = {};
-  var count = 0,
-    lastId = -1;
-
+.controller('washSingleOrderCtrl', function($scope, $stateParams, $ionicScrollDelegate, $ionicModal, UserInfo, getWashShop, ShoppingCart) {
   UserInfo.then(function(user) {
     getWashShop.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
       'sellerId': $stateParams.washId
     }, function(res) {
+      var count = 0;
+      var lastId = -1;
+      var scrollArray = [];
       $scope.seller = res.data.shop;
       $scope.goods = Array.prototype.slice.call(res.data.productsList)
         .sort(function(a, b) {
@@ -217,71 +163,25 @@ angular.module('starter.controllers')
           }
           count++;
         });
-      cartNumber = WashShoppingCart.get(res.data.shop);
-      $scope.singleNumber = cartNumber;
-      $scope.cart = {
-        number: WashShoppingCart.getSellerCartNumber(res.data.shop.sellerId)
-      }
-      if (cartNumber == 0) {
-        $scope.isHideAddCart = false;
-      } else {
-        $scope.isHideAddCart = true;
-      }
 
+      // 显示购物车数量  
+      $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.seller.sellerId);
     }, function(data) {
       alert('NO DATA MainPageHot');
     });
   });
 
-  $scope.addCart = function(event, good) {
-    if (!(user.verify - 0)) {
-      $state.go('phoneNumberCheck');
-      return;
-    }
-    event.stopPropagation();
-    cartNumber = WashShoppingCart.add(event, good);
-    $scope.isHideAddCart = true;
-    $scope.singleNumber = cartNumber;
-    $scope.cart.number = WashShoppingCart.getSellerCartNumber(good.sellerId);
-    $scope.cartGoods = WashShoppingCart.getSellerProductList(good.sellerId);
-  };
-
-  $scope.removeCart = function(good) {
-    event.stopPropagation();
-    var cartNumber = WashShoppingCart.remove(good);
-    if (cartNumber == 0) {
-      $scope.isHideAddCart = false;
-    }
-    $scope.singleNumber = cartNumber;
-    $scope.cart.number = WashShoppingCart.getSellerCartNumber(good.sellerId);
-    $scope.cartGoods = WashShoppingCart.getSellerProductList(good.sellerId);
-    if ($scope.cart.number == 0) {
-      $scope.modal.hide();
-    }
-  };
-
-  $ionicModal.fromTemplateUrl('my-modal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
+  $scope.$on('cartChange', function(event, data) {
+    // 更新购物车数量  
+    $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.seller.sellerId);
   });
-  $scope.openModal = function(good) {
-    if ($scope.cart.number > 0) {
-      $scope.modal.show();
-      $scope.cartGoods = WashShoppingCart.getSellerProductList(good.sellerId);
-    }
-  };
-  $scope.closeModal = function() {
-    $scope.modal.hide();
-  };
 
   $scope.washScrollTo = function(classifyId) {
     $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollArray[classifyId] * 109, true);
   }
 })
 
-.controller('washCartOrderController', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, UserInfo, orderStatus, NearByEguard, FruitOrderInsert, PayConfirm, $http, WashShoppingCart) {
+.controller('washCartOrderController', function($scope, $stateParams, $ionicHistory, $rootScope, $location, $state, UserInfo, orderStatus, NearByEguard, FruitOrderInsert, PayConfirm, $http, ShoppingCart) {
   UserInfo.then(function(user) {
     $scope.order = {
       receiverName: user.addressInfo.username || '收货人姓名',
@@ -290,59 +190,29 @@ angular.module('starter.controllers')
     };
     $scope.order.guard = 1;
     $scope.orderButton = { isDisabled: true };
-    $scope.carts = WashShoppingCart.getCart();
-    console.log($scope.userPreferTime);
+    $scope.carts = ShoppingCart.getCart();
     $scope.userPreferTime = {
       value: 1
     };
+
     var orderRequestObj = {
       url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
       data: {
         'longitude': user.longitude,
         'latitude': user.latitude,
         // 'orderTime': moment,
-        'userId': user.userId || '1',
+        'userId': user.userId,
         'userPhoneNumber': $scope.order.receiverPhone + "",
         'userAddress': $scope.order.receiverAddress,
         'userPreferTime': $scope.userPreferTime.value,
         'eguardId': $scope.order.guard + "",
         'isPaid': true,
         'totalMoney': $scope.carts.allGoodsTotalMoney,
-        'note': $scope.order.note || "无" + "",
-        'productList': WashShoppingCart.getCart(),
+        // 'note': $scope.order.note || "无",
+        'productList': $scope.carts,
         'username': ''
       }
     };
-
-    function judgeOrder() {
-      orderRequestObj = {
-        url: 'http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php',
-        data: {
-          'longitude': user.longitude,
-          'latitude': user.latitude,
-          // 'orderTime': moment,
-          'userId': user.userId || '1',
-          'userPhoneNumber': $scope.order.receiverPhone + "",
-          'userAddress': $scope.order.receiverAddress,
-          'userPreferTime': $scope.userPreferTime.value,
-          'eguardId': $scope.order.guard + "",
-          'isPaid': true,
-          'totalMoney': $scope.carts.allGoodsTotalMoney,
-          'note': $scope.order.note || "无" + "",
-          'productList': WashShoppingCart.getCart(),
-          'username': ''
-        }
-      };
-
-      if ($scope.carts.allGoodsTotalMoney > 0) {
-        $scope.orderButton.isDisabled = false;
-        $.each(orderRequestObj.data.productList, function(index, cart) {
-          if (cart.isChecked && cart.seller.isReachStartPrice == false) {
-            $scope.orderButton.isDisabled = true;
-          }
-        });
-      }
-    }
 
     NearByEguard.get({
       'longitude': user.longitude,
@@ -353,6 +223,17 @@ angular.module('starter.controllers')
     }, function(data) {
       alert('NO DATA');
     });
+
+    function judgeOrder() {
+      if ($scope.carts.allGoodsTotalMoney > 0) {
+        $scope.orderButton.isDisabled = false;
+        $.each($scope.carts, function(index, cart) {
+          if (cart.isChecked && cart.seller.isReachStartPrice == false) {
+            $scope.orderButton.isDisabled = true;
+          }
+        });
+      }
+    }
 
     $scope.calculateMoney = function(event, cart) {
       $scope.isAllChecked = false;
@@ -385,7 +266,7 @@ angular.module('starter.controllers')
     cartListInit(true);
 
     function cartListInit(isCheck) {
-      var carts = WashShoppingCart.getCart();
+      var carts = ShoppingCart.getCart();
       $scope.carts = carts;
       $scope.carts.allGoodsTotalMoney = 0;
       $scope.order.isAllChecked = isCheck;
@@ -440,7 +321,7 @@ angular.module('starter.controllers')
     };
 
     function cleanCart() {
-      var carts = WashShoppingCart.getCart();
+      var carts = ShoppingCart.getCart();
       for (var i = carts.length - 1; i >= 0; i--) {
         if (carts[i]) {
           if (carts[i].isChecked) {
@@ -467,7 +348,7 @@ angular.module('starter.controllers')
       }
 
       var orderIds = null;
-      var cleanedCarts = WashShoppingCart.getCart();
+      var cleanedCarts = ShoppingCart.getCart();
       (function cleanUnckeck() {
         for (var i = cleanedCarts.length - 1; i >= 0; i--) {
           if (cleanedCarts[i]) {
@@ -484,25 +365,6 @@ angular.module('starter.controllers')
         }
       })();
 
-      orderRequestObj = {
-        url: 'http://www.lifeuxuan.com/backend/api/WashOrderInsert.php',
-        data: {
-          'longitude': user.longitude,
-          'latitude': user.latitude,
-          // 'orderTime': moment,
-          'userId': user.userId || '1',
-          'userPhoneNumber': $scope.order.receiverPhone + "",
-          'userAddress': $scope.order.receiverAddress,
-          'userPreferTime': $scope.userPreferTime.value,
-          'eguardId': $scope.order.guard + "",
-          'isPaid': true,
-          'totalMoney': $scope.carts.allGoodsTotalMoney,
-          'note': $scope.order.note || "无" + "",
-          'productList': cleanedCarts,
-          // 'username': user.user.name || ''
-          'username': user.name
-        }
-      };
       $.ajax(orderRequestObj)
         .done(function(e) {
           var data = JSON.parse(e);
@@ -597,7 +459,7 @@ angular.module('starter.controllers')
               $scope.order.receiverName = res.userName;
               $scope.order.receiverPhone = res.telNumber - 0;
 
-              var carts = WashShoppingCart.getCart();
+              var carts = ShoppingCart.getCart();
               if ($scope.carts.allGoodsTotalMoney > 0) {
                 $scope.orderButton.status = false;
               }
@@ -630,19 +492,9 @@ angular.module('starter.controllers')
       });
     }
 
-    // $scope.addCart = function(event, good) {
-    //   event.stopPropagation();
-    //   event.preventDefault();
-    //   cartNumber = WashShoppingCart.add(event, good);
-    //   cartList();
-    // };
-
-    // $scope.removeCart = function(good) {
-    //   event.stopPropagation();
-    //   event.preventDefault();
-    //   var cartNumber = WashShoppingCart.remove(good);
-    //   cartList();
-    // };
+    $scope.$on('cartChange', function(event, data) {
+      cartList();
+    });
   })
 
 

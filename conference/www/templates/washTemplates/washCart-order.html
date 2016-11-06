@@ -7,18 +7,18 @@
     <section class="order-address" ng-click="getAddress()">
       <div class="order-receiver-name">
         <label>
-          <span class="like-input">{{order.receiverName}}</span>
+          <span>{{order.receiverName}}</span>
         </label>
       </div>
       <div class="order-receiver-phone">
         <label>
-          <span class="like-input">{{order.receiverPhone}}</span>
+          <span>{{order.receiverPhone}}</span>
         </label>
       </div>
       <div class="order-receiver-address">
         <span class="fromWeChat fr">从微信获取</span>
         <label>
-          <p class="like-textarea">{{order.receiverAddress}}</p>
+          <p>{{order.receiverAddress}}</p>
         </label>
       </div>
     </section>
@@ -53,15 +53,7 @@
                 <p class="cart-goods-name">{{good.productName}}</p>
                 <span class="cart-goods-info">￥{{good.price/100}}</span>
               </div>
-              <div class="cart-goods-action-wrap clearfix fr">
-                <div class="order-cart-action" ng-click="removeCart(good)">
-                  <i class="icon ion-minus-round"></i>
-                </div>
-                <span class="cart-goods-quantity">{{good.quantity}}</span>
-                <div class="order-cart-action" ng-click="addCart($event, good)">
-                  <i class="icon ion-plus-round"></i>
-                </div>
-              </div>
+              <div single-cart></div>
             </ion-item>
           </ion-list>
         </div>

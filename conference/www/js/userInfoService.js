@@ -93,8 +93,8 @@ angular.module('starter.services')
     // ------------for test-----------------
     // $timeout(function (){
     deferred.resolve(user)
-    // }) ;
-    // ------------for test-----------------
+      // }) ;
+      // ------------for test-----------------
 
     userWechatInfo.get({}, function(e) {
       user.name = e.nickname;
@@ -122,6 +122,53 @@ angular.module('starter.services')
       })
     });
   })
+
+  return deferred.promise;
+})
+
+.factory('WxLocation', function($q) {
+  var deferred = $q.defer();
+  var userWxLocation = {};
+
+  function getAddress() {
+    wx.ready(function() {
+      wx.openAddress({
+        success: function(res) {
+          var addressGot = res.provinceName + res.cityName + res.countryName + res.detailInfo;
+          $scope.$apply(function() {
+            if (isTooFar(addressGot)) {
+              alert('输入的地址超出配送范围，请重新选择');
+            }
+            userWxLocation.receiverAddress = addressGot || '';
+            userWxLocation.receiverName = res.userName;
+            userWxLocation.receiverPhone = res.telNumber - 0;
+            $rootScope.$broadcast('cartChange');
+            deferred.resolve(userWxLocation);
+          });
+        },
+        cancel: function() {
+          alert("用户取消微信地址");
+        }
+      });
+    });
+  }
+
+  function isTooFar(address) {
+    var gc = new BMap.Geocoder();
+    gc.getPoint(address, function(point) {
+      var map = new BMap.Map("allmap");
+      var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
+      var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
+      // alert('两点的距离是：' + (map.getDistance(pointA, pointB)).toFixed(2) + ' 米。'); //获取两点距离,保留小数点后两位
+      var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
+      console.log('distacne', distacne);
+      if (distacne > 6000) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
 
   return deferred.promise;
 })

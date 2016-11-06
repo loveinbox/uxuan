@@ -5,22 +5,12 @@
     <ion-scroll direction="y" overflow-scroll="true" class="height100">
         <div class="good-img">
             <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}">
-            <!-- <img src="img/single.jpg"> -->
         </div>
         <div class="good-main-info">
             <div class="good-name">{{session.productName}}</div>
             <div class="good-descirbe">{{session.description}}</div>
             <div class="good-price">￥{{session.price/100}}</div>
             <div class="button button-assertive add-cart" ng-click="addCart($event, session)" ng-hide="isHideAddCart">加入购物车</div>
-            <div class="plus-wrap add-cart-plus-minus" ng-show="isHideAddCart">
-                <div class="button-assertive add-cart-plus cart-action" ng-click="removeCart(session)">
-                    <i class="icon ion-minus-round"></i>
-                </div>
-                <div class="cart-number">{{singleNumber}}</div>
-                <div class="button-assertive add-cart-plus cart-action" ng-click="addCart($event, session)">
-                    <i class="icon ion-plus-round"></i>
-                </div>
-            </div>
         </div>
         <a href="/seller/{{session.sellerId}}">
             <div class="good-seller">
@@ -44,10 +34,6 @@
         </div>
     </ion-scroll>
     <div class="bottom-bar shopping-cart-bar">
-        <i class="icon ion-ios-cart icon-cart" ng-click="openModal(session)"></i>
-        <div class="cart-number-tip" ng-show="cart.number > 0">{{cart.number}}</div>
-        <a href="/app/cart">
-            <div class="button button-assertive go-cart fr">选好了</div>
-        </a>
+        
     </div>
 </ion-view>
