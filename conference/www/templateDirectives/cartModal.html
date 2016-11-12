@@ -1,14 +1,9 @@
 <ion-modal-view class="cart-modal" ng-click="closeModal()">
-    <ion-list class="cart-modal-list">
-        <ion-item class="index-list-item cart-item" ng-repeat="good in cartGoods">
-            <div class="cart-good-info">
-                <span class="name">{{good.productName}}</span>
-                <span class="name">{{good.description}}</span>
-            </div>
-            <div class="cart-price">
-                <span>{{good.price/100}}</span>
-            </div>
-            <div single-cart></div>
-        </ion-item>
-    </ion-list>
+  <ion-list class="cart-modal-list">
+    <ion-item class="cart-item" ng-repeat="good in cartGoods">
+      <span class="cart-good-name"><strong>{{good.productName}}</strong></span>
+      <span class="cart-good-price">￥{{good.price/100}}</span>
+      <div single-cart class="fr"></div>
+    </ion-item>
+  </ion-list>
 </ion-modal-view>

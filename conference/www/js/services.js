@@ -100,7 +100,7 @@ angular.module('starter.services', ['ngResource'])
     }
   }
 
-  this.getCart = function(good) {
+  this.getCart = function() {
     return cart;
   }
 

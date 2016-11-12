@@ -1,16 +1,15 @@
 .button-cart-wrap {
   position: absolute;
-  bottom: 5px;
+  bottom: 20px;
   right: 10px;
 }
-.button-cart-wrap .button-cart {
+.button-cart {
   color: #fff;
   background: #619de5;
 }
 .button-cart-action-wrap {
   width: 100px;
   line-height: 30px;
-  padding-bottom: 10px;
 }
 .button-cart-number,
 .cart-action {
@@ -41,4 +40,10 @@
   font-weight: bold;
   text-align: center;
   overflow: hidden;
+}
+.cart-item {
+  line-height: 25px;
+  width: 100%;
+  padding: 0;
+  border: none;
 }

@@ -57,7 +57,7 @@
     <div class="index-nav">
       <ul class="clearfix">
         <li>
-          <a href=""><img src="img/fruit.svg" alt="">
+          <a href="/sellerList"><img src="img/fruit.svg" alt="">
             <p>生鲜水果</p>
           </a>
         </li>
@@ -95,7 +95,27 @@
     </div>
     <div class="index-shop-list list-top" ng-show="!location.isOut && sellers.length > 0">
       <div class="divider">附近商家</div>
-      <div seller-list></div>
+      <ion-list class="seller-list clearfix">
+        <ion-item ng-repeat="seller in sellers" href="/seller/{{seller.sellerId}}">
+          <div class="seller-img clearfix">
+            <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
+          </div>
+          <div class="seller-info-wrap">
+            <div class="seller-info1">
+              <span class="name">{{seller.sellerName}}</span>
+            </div>
+            <div class="seller-info2">
+              <span>月售{{seller.soldNumber}}单</span>
+              <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{seller.distance}}米</span>
+            </div>
+            <div class="seller-info3">
+              <span>起送￥{{seller.sendStartPrice}}</span>
+              <span class="send-divide">|</span>
+              <span>配送￥{{seller.sendPrice}}</span>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
     </div>
     <div class="index-fruit-list list-top" ng-show="!location.isOut && goods.length > 0">
       <div class="divider">U选排行榜</div>

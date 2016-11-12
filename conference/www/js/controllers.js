@@ -46,7 +46,7 @@ angular.module('starter.controllers')
   //     });
 })
 
-.controller('SessionsCtrl', function($scope, $rootScope, $timeout, MainPageHot, FruitUxuanRank, UserInfo, $ionicScrollDelegate) {
+.controller('SessionsCtrl', function($scope, $rootScope, $timeout, MainPageHot, FruitUxuanRank, UserInfo, $ionicScrollDelegate, NearByFruitShops) {
   $scope.location = {
     isGet: false,
     isOut: false,
@@ -71,6 +71,15 @@ angular.module('starter.controllers')
       $scope.goods = data.data;
     }, function(data) {
       alert('NO DATA FruitUxuanRank');
+    });
+
+    NearByFruitShops.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+    }, function(data) {
+      $scope.sellers = data.data;
+    }, function(data) {
+      alert('NO DATA NearByFruitShops');
     });
   })
 
@@ -129,7 +138,7 @@ angular.module('starter.controllers')
       'latitude': user.latitude,
       'productId': $stateParams.sessionId
     }, function(data) {
-      $scope.session = data.data;
+      $scope.good = data.data;
       $rootScope.$broadcast('cartChange');
       FruitPicShow.get({
         'longitude': user.longitude,
@@ -144,10 +153,19 @@ angular.module('starter.controllers')
       alert('NO DATA');
     });
 
+    $scope.$on('cartChange', function(event, data) {
+      $scope.singleNumber = ShoppingCart.get($scope.good);
+      if ($scope.singleNumber > 0) {
+        $scope.isHideAddCart = true;
+      } else {
+        $scope.isHideAddCart = false;
+      }
+    });
+
   })
 })
 
-.controller('sellerListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank) {
+.controller('sellerListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank, UserInfo) {
   UserInfo.then(function(user) {
     NearByEguard.get({
       'longitude': user.longitude,
@@ -171,7 +189,7 @@ angular.module('starter.controllers')
       'longitude': user.longitude,
       'latitude': user.latitude,
     }, function(data) {
-      $scope.goods = data.data;
+      $scope.sellers = data.data;
     }, function(data) {
       alert('NO DATA');
     });
@@ -180,8 +198,6 @@ angular.module('starter.controllers')
 })
 
 .controller('sellerCtrl', function($scope, $stateParams, FruitsByShop, ShoppingCart, $ionicModal, UserInfo) {
-
-  $scope.cart = { number: 0 };
   UserInfo.then(function(user) {
     FruitsByShop.get({
       'longitude': user.longitude,
@@ -189,6 +205,7 @@ angular.module('starter.controllers')
       'sellerId': $stateParams.sellerId
     }, function(data) {
       $scope.seller = data.data.shop;
+      $scope.goods = data.data.products;
     }, function(data) {
       alert('NO DATA');
     });

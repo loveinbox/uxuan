@@ -1,5 +1,5 @@
 .has-detail-header {
-  top: 130px;
+  top: 150px;
 }
 .shopping-cart-bar-wash {
   background-color: #ef473a;
@@ -9,9 +9,11 @@
   margin: 0;
   height: 44px;
   line-height: 44px;
+  background: #619de5;
 }
 .wash-class {
   width: 20%;
+  background: #eee;
 }
 .wash-single {
   width: 80%;

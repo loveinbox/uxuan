@@ -12,20 +12,31 @@ angular.module('starter.controllers')
     }, function(data) {
       alert('NO DATA MainPageHot');
     });
+    MainPageHot.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude
+    }, function(data) {
+      $scope.sessions = data.data;
+    }, function(data) {
+      alert('NO DATA MainPageHot');
+    });
   })
 
 })
 
-.controller('washSingleCtrl', function($scope, $stateParams, $ionicScrollDelegate, UserInfo, MainPageHot, getWashShop) {
+.controller('washSingleCtrl', function($scope, $stateParams, $timeout, $ionicScrollDelegate, UserInfo, MainPageHot, getWashShop) {
+  var scrollObj = {};
+  var indexArray = [];
+  $scope.currentIndex = 0;
   UserInfo.then(function(user) {
     getWashShop.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
       'sellerId': $stateParams.washId
     }, function(res) {
-      var scrollArray = [];
       var count = 0;
       var lastId = -1;
+      var indexCount = 0;
       $scope.seller = res.data.shop;
       $scope.goods = Array.prototype.slice.call(res.data.productsList)
         .sort(function(a, b) {
@@ -39,7 +50,8 @@ angular.module('starter.controllers')
         .forEach(function(el, index) {
           if (el.classifyId != lastId) {
             lastId = el.classifyId;
-            scrollArray[el.classifyId] = count;
+            scrollObj[el.classifyId] = count;
+            indexArray[count] = indexCount++;
           }
           count++;
         });
@@ -48,9 +60,40 @@ angular.module('starter.controllers')
       alert('NO DATA MainPageHot');
     });
   });
+  // var i = 0;
+  //   $interval(function () {
 
-  $scope.washScrollTo = function(classifyId) {
-    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollArray[classifyId] * 109, true);
+  //     $scope.currentIndex = ++i %5;
+  //     console.log($scope.currentIndex);
+  //   },1000)
+
+  $scope.washScrollTo = function(classifyId, index) {
+    $scope.currentIndex = index;
+    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
+    $scope.getScrollPosition = null;
+    $timeout(function() {
+      $scope.getScrollPosition = getP;
+    }, 500);
+  }
+  $scope.getScrollPosition = getP;
+
+  function getP() {
+    var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
+    var getIndex = 0;
+    for (var p in scrollObj) {
+      if (scrollObj[p] * 80 < currentScroll) {
+        getIndex = scrollObj[p];
+        continue;
+      }
+    }
+        console.log(getIndex);
+    if ($scope.currentIndex !== indexArray[getIndex]) {
+      $scope.currentIndex = indexArray[getIndex];
+      $scope.getScrollPosition = null;
+      $timeout(function() {
+        $scope.getScrollPosition = getP;
+      }, 100);
+    }
   }
 
 })
@@ -177,7 +220,7 @@ angular.module('starter.controllers')
   });
 
   $scope.washScrollTo = function(classifyId) {
-    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollArray[classifyId] * 109, true);
+    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollArray[classifyId] * 80, true);
   }
 })
 

@@ -59,6 +59,9 @@ a {
 .backE {
   background: #f2f7fa;
 }
+.pane {
+  background-color: #f2f7fa;
+}
 .index-header .item {
   float: left;
   padding: 0;
@@ -135,7 +138,6 @@ a {
   color: #efdeff;
 }
 .divider {
-  padding-bottom: 15px;
   text-align: center;
   font-size: 18px;
   background: #fff;
@@ -202,6 +204,7 @@ a {
   display: inline-block;
   float: none;
   margin: 0;
+  padding-top: 15px;
   border: none;
 }
 .single img {
@@ -251,7 +254,7 @@ p.cartNumber {
   border-radius: 20px;
 }
 .goods-list-item {
-  width: 85%;
+  margin-left: 90px;
 }
 .goods-list-item .name {
   font-size: 14px;
@@ -272,7 +275,6 @@ p.cartNumber {
 .good-main-info {
   position: relative;
   padding: 5px;
-  border: 2px solid #eee;
   background: #fff;
 }
 .good-main-info .good-name {
@@ -290,12 +292,13 @@ p.cartNumber {
   color: #619de5;
 }
 .good-seller {
-  margin: 5px 0;
+  margin: 8px 0;
   padding: 5px;
   background: #fff;
 }
 .good-seller .shop-part {
   width: 50%;
+  height: 40px;
   float: left;
 }
 .good-seller .shop-address {
@@ -307,9 +310,14 @@ p.cartNumber {
   left: 15px;
   font-size: 30px;
   color: #619de5;
+  line-height: 40px;
 }
 .good-seller .shop-name {
-  margin-left: 35px;
+  display: table-cell;
+  vertical-align: middle;
+  height: 40px;
+  width: 155px;
+  padding-left: 35px;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -359,10 +367,10 @@ p.cartNumber {
 }
 /*cart modal*/
 .cart-modal {
-  background: rgba(0,0,0,0.7);
+  background: rgba(66,66,66,0.4);
 }
 .cart-modal.ng-enter-active {
-  transform: translateY(-45px);
+  transform: translateY(-44px);
 }
 .cart-modal-list {
   position: absolute;
@@ -373,10 +381,9 @@ p.cartNumber {
 }
 .cart-good-info {
   display: inline-block;
-/*max-width: 60%;*/
-/*overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: bottom;*/
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .cart-price {
   display: inline-block;
@@ -385,10 +392,6 @@ p.cartNumber {
 .cart-operate {
   display: inline-block;
   float: right;
-}
-.cart-item {
-  width: 100%;
-  padding: 5px 0;
 }
 .cart-icon {
   display: inline-block;

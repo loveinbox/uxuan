@@ -1,31 +1,31 @@
-<ion-view view-title="Session" class="backE" animation="slide-left-right">
+<ion-view view-title="good" class="backE" animation="slide-left-right">
   <div class="index-header">
     <div go-back></div>
   </div>
   <ion-content>
     <div class="good-img">
-      <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}">
+      <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}">
     </div>
     <div class="good-main-info">
-      <div class="good-name">{{session.productName}}</div>
-      <div class="good-descirbe">{{session.description}}</div>
-      <div class="good-price">￥{{session.price/100}}</div>
+      <div class="good-name">{{good.productName}}</div>
+      <div class="good-descirbe">{{good.description}}</div>
+      <div class="good-price">￥{{good.price/100}}</div>
       <div add-cart></div>
     </div>
-    <a href="/seller/{{session.sellerId}}">
+    <a href="/seller/{{good.sellerId}}">
       <div class="good-seller">
         <div class="shop-part">
           <i class="icon ion-ios-home"></i>
-          <p class="shop-name">{{session.sellerName}}</p>
+          <p class="shop-name">{{good.sellerName}}</p>
         </div>
         <div class="shop-part shop-yingye">
           <div class="shop-time">
             <p>营业时间</p>
-            <p>{{session.openTime}}-{{session.closeTime}}</p>
+            <p>{{good.openTime}}-{{good.closeTime}}</p>
           </div>
         </div>
         <div class="shop-address">
-          地址：{{session.sellerAddress}}
+          地址：{{good.sellerAddress}}
         </div>
       </div>
     </a>

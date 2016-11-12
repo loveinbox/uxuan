@@ -35,41 +35,6 @@ angular.module('starter.directives', [])
   }
 })
 
-.directive('sellerList', function() {
-  return {
-    restrict: 'A',
-    templateUrl: 'templateDirectives/sellersListDirective.html',
-    controller: function($scope, $rootScope, NearByFruitShops, ShoppingCart, UserInfo, Location) {
-      UserInfo.then(function(user) {
-        console.log('get location goods', user.longitude, user.latitude);
-        NearByFruitShops.get({
-          'longitude': user.longitude,
-          'latitude': user.latitude,
-        }, function(data) {
-          $scope.sellers = getCartNumber(data.data);
-        }, function(data) {
-          alert('NO DATA NearByFruitShops');
-        });
-      })
-
-      $rootScope.$on('$stateChangeStart', function(event, toState) {
-        $scope.sellers = getCartNumber($scope.sellers);
-      });
-
-      $scope.$on('cartChange', function() {
-        $scope.sellers = getCartNumber($scope.sellers);
-      });
-
-      function getCartNumber(sellerList) {
-        $.each(sellerList, function(index, value) {
-          value.cartNumber = ShoppingCart.getSellerCartNumber(value.sellerId);
-        })
-        return sellerList;
-      }
-    }
-  }
-})
-
 .directive('addCart', function() {
   return {
     restrict: 'A',
@@ -80,7 +45,7 @@ angular.module('starter.directives', [])
     templateUrl: 'templateDirectives/addCart.html',
     controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
       $scope.$on('cartChange', function(event, data) {
-        $scope.singleNumber = ShoppingCart.get($scope.session);
+        $scope.singleNumber = ShoppingCart.get($scope.good);
         if ($scope.singleNumber > 0) {
           $scope.isHideAddCart = true;
         } else {
@@ -117,25 +82,24 @@ angular.module('starter.directives', [])
     templateUrl: 'templateDirectives/cartModalIcon.html',
     controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
       $scope.$on('cartChange', function(event, data) {
-        $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.session.sellerId);
+        $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.good.sellerId);
       });
-      // $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
-      //   scope: $scope,
-      //   animation: 'slide-in-up'
-      // }).then(function(modal) {
-      //   $scope.modal = modal;
-      //   $scope.modal.hide();
-      // });
-      // $scope.openModal = function() {
-      //   if ($scope.cart.number > 0) {
-      //     $scope.modal.show();
-      //     $scope.cartGoods = ShoppingCart.getSellerProductList(gParamId);
-      //   }
-      // };
-      // $scope.closeModal = function() {
-      //   $scope.modal.hide();
-      // };
-
+      $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.modal = modal;
+        $scope.modal.hide();
+      });
+      $scope.openModal = function() {
+        if ($scope.totalNumber > 0) {
+          $scope.modal.show();
+          $scope.cartGoods = ShoppingCart.getSellerProductList($scope.good.sellerId);
+        }
+      };
+      $scope.closeModal = function() {
+        $scope.modal.hide();
+      };
     }
   }
 })
@@ -146,19 +110,6 @@ angular.module('starter.directives', [])
     templateUrl: 'templateDirectives/singleCart.html',
     controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
       UserInfo.then(function(user) {
-        $scope.singleNumber = ShoppingCart.get($scope.good);
-        if ($scope.singleNumber > 0) {
-          $scope.isHideAddCart = true;
-        }
-
-        $scope.$on('cartChange', function(event, data) {
-          $scope.singleNumber = ShoppingCart.get($scope.good);
-          if ($scope.singleNumber > 0) {
-            $scope.isHideAddCart = true;
-          } else {
-            $scope.isHideAddCart = false;
-          }
-        });
         $scope.addCart = function(event, good) {
           event.stopPropagation();
           if (!(user.verify - 0)) {

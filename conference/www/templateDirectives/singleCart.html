@@ -1,10 +1,9 @@
-<i class="icon ion-ios-cart list-cart" ng-click="addCart($event, good)" ng-hide="isHideAddCart"></i>
-<div class="plus-wrap add-cart-plus-minus fr" ng-show="isHideAddCart">
-    <div class="button-assertive add-cart-plus cart-action" ng-click="removeCart(good)">
-        <i class="icon ion-minus-round"></i>
-    </div>
-    <div class="cart-number">{{singleNumber}}</div>
-    <div class="button-assertive add-cart-plus cart-action" ng-click="addCart($event, good)">
-        <i class="icon ion-plus-round"></i>
-    </div>
+<div class="button-cart-action-wrap" ng-show="isHideAddCart" style="">
+  <div class="button-cart cart-action" ng-click="removeCart(good)">
+    <i class="icon ion-minus-round"></i>
+  </div>
+  <div class="button-cart-number ng-binding">{{singleNumber}}</div>
+  <div class="button-cart cart-action" ng-click="addCart($event, good)">
+    <i class="icon ion-plus-round"></i>
+  </div>
 </div>

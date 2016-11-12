@@ -1,34 +1,37 @@
 .seller-detail {
-  padding-top: 55px;
+  height: 150px;
+  padding: 55px 25px 5px;
+  border-bottom: solid #eee 10px;
 }
-.seller-detail img {
-  float: left;
-  padding: 10px 30px;
-}
-.seller-detail .good-info-wrap li {
-  float: left;
-  width: 19%;
-  font-size: 12px;
-/*margin: 10px 30px 0 15px;*/
-}
-.seller-detail .good-info-wrap li:nth-child(3) {
-  border-right: 1px solid;
-}
-.seller-detail .good-info-wrap li:nth-child(even) {
-  padding-left: 4%;
-  width: 30%;
-}
-.seller-detail .slogen {
-  font-size: 12px;
-  color: #888;
-  margin: 0 10px;
+.seller-detail .seller-img {
+  margin: 10px 0;
 }
 .seller-detail .name {
-  font-size: 14px;
+  font-size: 16px;
 }
 .seller-detail .item-content,
 .rank .item-content {
-  width: 95%;
   margin: 0 auto 10px;
   border: 1px solid #ddd;
+}
+.detail-info-wrap {
+  margin-left: 75px;
+  font-size: 12px;
+}
+.detail-list-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-top: none;
+}
+.detail-list-item img {
+  width: 75px;
+  height: 60px;
+  border-radius: 20px;
+}
+.detail-class-item {
+  padding: 6px 10px;
+  background: #f2f7fa;
+}
+.detail-class-item.show {
+  background: #fff;
 }

@@ -38,7 +38,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.index', {
     url: '/sessions',
-    cache: false,
     views: {
       'tab-index': {
         templateUrl: 'templates/sessions.html',
@@ -59,7 +58,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.orders', {
     url: '/orders',
-    cache: false,
     views: {
       'tab-orders': {
         templateUrl: 'templates/orders.html',
@@ -70,7 +68,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.cart', {
     url: '/cart',
-    cache: false,
     views: {
       'tab-cart': {
         templateUrl: 'templates/order.html',
@@ -80,29 +77,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
   })
 
   .state('seller-list', {
-    url: '/sellerList/:sellerId',
-    cache: false,
+    url: '/sellerList',
     templateUrl: 'templates/sellerList.html',
     controller: 'sellerListCtrl'
   })
 
   .state('seller', {
     url: '/seller/:sellerId',
-    cache: false,
     templateUrl: 'templates/seller.html',
     controller: 'sellerCtrl'
   })
 
   .state('orderStatus', {
     url: '/orderStatus',
-    cache: false,
     templateUrl: 'templates/orderStatus.html',
     controller: 'OrderStatusCtrl'
   })
 
   .state('session', {
     url: '/sessions/:sessionId',
-    cache: false,
     templateUrl: 'templates/session.html',
     controller: 'SessionCtrl'
   })
@@ -115,14 +108,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('orderDetail', {
     url: '/orderDetail/:orderId',
-    cache: false,
     templateUrl: 'templates/orderDetail.html ',
     controller: 'orderDetailCtrl'
   })
 
   .state('phoneNumberCheck', {
     url: '/phoneNumberCheck',
-    cache: false,
     templateUrl: 'templates/phoneNumberCheck.html ',
     controller: 'phoneNumberCheckCtrl'
   })
