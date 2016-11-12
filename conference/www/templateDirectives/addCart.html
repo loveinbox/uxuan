@@ -1,0 +1,13 @@
+<div class="button-cart-wrap">
+  <div class="button button-cart" ng-click="addCart($event, session)" ng-hide="isHideAddCart"><span>加入购物车</span>
+  </div>
+  <div class="button-cart-action-wrap" ng-show="isHideAddCart" style="">
+    <div class="button-cart cart-action" ng-click="removeCart(session)">
+      <i class="icon ion-minus-round"></i>
+    </div>
+    <div class="button-cart-number ng-binding">{{singleNumber}}</div>
+    <div class="button-cart cart-action" ng-click="addCart($event, session)">
+      <i class="icon ion-plus-round"></i>
+    </div>
+  </div>
+</div>

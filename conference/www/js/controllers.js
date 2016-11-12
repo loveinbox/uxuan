@@ -123,8 +123,6 @@ angular.module('starter.controllers')
   $scope.isHideAddCart = false;
   $scope.singleNumber = 0;
 
-  var cartNumber = 0;
-
   UserInfo.then(function(user) {
     FruitDetail.get({
       'longitude': user.longitude,
@@ -132,16 +130,7 @@ angular.module('starter.controllers')
       'productId': $stateParams.sessionId
     }, function(data) {
       $scope.session = data.data;
-      cartNumber = ShoppingCart.get(data.data);
-      $scope.singleNumber = cartNumber;
-      $scope.cart = {
-        number: ShoppingCart.getSellerCartNumber(data.data.sellerId)
-      }
-      if (cartNumber == 0) {
-        $scope.isHideAddCart = false;
-      } else {
-        $scope.isHideAddCart = true;
-      }
+      $rootScope.$broadcast('cartChange');
       FruitPicShow.get({
         'longitude': user.longitude,
         'latitude': user.latitude,
@@ -155,6 +144,7 @@ angular.module('starter.controllers')
       alert('NO DATA');
     });
 
+  })
 })
 
 .controller('sellerListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank) {
@@ -199,8 +189,6 @@ angular.module('starter.controllers')
       'sellerId': $stateParams.sellerId
     }, function(data) {
       $scope.seller = data.data.shop;
-      $scope.goods = getGoodQuuantity(data.data.shop.sellerId, data.data.products);
-      $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.seller.sellerId);
     }, function(data) {
       alert('NO DATA');
     });

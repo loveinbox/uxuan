@@ -1,36 +1,29 @@
-.has-detail-header{
-	top:130px;
+.has-detail-header {
+  top: 130px;
 }
-
-.shopping-cart-bar-wash{
-	background-color: #ef473a;
+.shopping-cart-bar-wash {
+  background-color: #ef473a;
 }
-
-.shopping-cart-bar-wash .button{
-	font-size: 20px;
-    margin: 0;
-    height: 44px;
-    line-height: 44px;
+.shopping-cart-bar-wash .button {
+  font-size: 20px;
+  margin: 0;
+  height: 44px;
+  line-height: 44px;
 }
-
-.wash-class{
-	width: 20%;
+.wash-class {
+  width: 20%;
 }
-
-.wash-single{
-	width: 80%;
+.wash-single {
+  width: 80%;
 }
-
-.wash-tag{
-	padding: 5px 0;
+.wash-tag {
+  padding: 5px 0;
 }
-
-.guard-order-button{
-	text-align: center;
+.guard-order-button {
+  text-align: center;
 }
-
-.guard-order-button button{
-	width: 30%;
-	float: right;
-	margin-left: 15px; 
+.guard-order-button button {
+  width: 30%;
+  float: right;
+  margin-left: 15px;
 }

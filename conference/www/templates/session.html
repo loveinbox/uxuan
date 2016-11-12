@@ -1,39 +1,48 @@
 <ion-view view-title="Session" class="backE" animation="slide-left-right">
-    <div class="index-header">
-        <div go-back></div>
+  <div class="index-header">
+    <div go-back></div>
+  </div>
+  <ion-content>
+    <div class="good-img">
+      <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}">
     </div>
-    <ion-scroll direction="y" overflow-scroll="true" class="height100">
-        <div class="good-img">
-            <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}">
+    <div class="good-main-info">
+      <div class="good-name">{{session.productName}}</div>
+      <div class="good-descirbe">{{session.description}}</div>
+      <div class="good-price">￥{{session.price/100}}</div>
+      <div add-cart></div>
+    </div>
+    <a href="/seller/{{session.sellerId}}">
+      <div class="good-seller">
+        <div class="shop-part">
+          <i class="icon ion-ios-home"></i>
+          <p class="shop-name">{{session.sellerName}}</p>
         </div>
-        <div class="good-main-info">
-            <div class="good-name">{{session.productName}}</div>
-            <div class="good-descirbe">{{session.description}}</div>
-            <div class="good-price">￥{{session.price/100}}</div>
-            <div class="button button-assertive add-cart" ng-click="addCart($event, session)" ng-hide="isHideAddCart">加入购物车</div>
+        <div class="shop-part shop-yingye">
+          <div class="shop-time">
+            <p>营业时间</p>
+            <p>{{session.openTime}}-{{session.closeTime}}</p>
+          </div>
         </div>
-        <a href="/seller/{{session.sellerId}}">
-            <div class="good-seller">
-                <div class="shop-icon"><i class="icon ion-ios-home"></i></div>
-                <div class="shop-name">{{session.sellerName}}</div>
-                <div class="shop-time">
-                    <p>营业时间</p>
-                    <p>{{session.openTime}}-{{session.closeTime}}</p>
-                </div>
-                <p class="shop-address">
-                    地址：{{session.sellerAddress}}
-                </p>
-            </div>
-        </a>
-        <div class="good-more-info">
-            <ion-list class="index-list">
-                <ion-item class="index-list-item" ng-repeat="img in imgs">
-                    <img ng-src="http://lifeuxuan.com/backend/{{img}}" alt="">
-                </ion-item>
-            </ion-list>
+        <div class="shop-address">
+          地址：{{session.sellerAddress}}
         </div>
-    </ion-scroll>
+      </div>
+    </a>
+    <div class="good-more-info">
+      <ion-list class="index-list">
+        <ion-item class="index-list-item" ng-repeat="img in imgs">
+          <img ng-src="http://lifeuxuan.com/backend/{{img}}" alt="">
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-content>
+  <ion-footer-bar class="bar bar-footer">
     <div class="bottom-bar shopping-cart-bar">
-        
+      <div cart-modal-icon></div>
+      <a href="/app/cart">
+        <div class="button go-cart fr">选好了</div>
+      </a>
     </div>
+  </ion-footer-bar>
 </ion-view>

@@ -3,6 +3,7 @@ angular.module('starter.directives', [])
 .directive('goBack', function() {
   return {
     restrict: 'A',
+    replace: true,
     template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
     controller: function($scope, $location, $ionicHistory) {
       $scope.myGoBack = function() {
@@ -10,6 +11,26 @@ angular.module('starter.directives', [])
         $backView.go();
         console.log('back');
       };
+    }
+  }
+})
+
+.directive('eGuard', function() {
+  return {
+    restrict: 'A',
+    replace: true,
+    template: '<p class="guard">管家<strong>{{eGuard.name}}</strong>为您服务</p>',
+    controller: function($scope, $rootScope, NearByEguard, Location, UserInfo) {
+      UserInfo.then(function(user) {
+        NearByEguard.get({
+          'longitude': user.longitude,
+          'latitude': user.latitude,
+        }, function(data) {
+          $rootScope.eGuard = $scope.eGuard = data.data[0];
+        }, function(data) {
+          alert('NO DATA');
+        });
+      })
     }
   }
 })
@@ -49,54 +70,75 @@ angular.module('starter.directives', [])
   }
 })
 
-.directive('eGuard', function() {
+.directive('addCart', function() {
   return {
     restrict: 'A',
-    template: '<p class="guard">管家{{eGuard.name}}为您服务</p>',
-    controller: function($scope, $rootScope, NearByEguard, Location, UserInfo) {
+    replace: true,
+    // scope: {
+    //   gParamId: '@'
+    // },
+    templateUrl: 'templateDirectives/addCart.html',
+    controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
+      $scope.$on('cartChange', function(event, data) {
+        $scope.singleNumber = ShoppingCart.get($scope.session);
+        if ($scope.singleNumber > 0) {
+          $scope.isHideAddCart = true;
+        } else {
+          $scope.isHideAddCart = false;
+        }
+      });
       UserInfo.then(function(user) {
-        NearByEguard.get({
-          'longitude': user.longitude,
-          'latitude': user.latitude,
-        }, function(data) {
-          $rootScope.eGuard = $scope.eGuard = data.data[0];
-        }, function(data) {
-          alert('NO DATA');
-        });
+        if ($scope.singleNumber > 0) {
+          $scope.isHideAddCart = true;
+        }
+        $scope.addCart = function(event, good) {
+          event.stopPropagation();
+          if (!(user.verify - 0)) {
+            $state.go('phoneNumberCheck');
+            return;
+          }
+          ShoppingCart.add(event, good);
+          $rootScope.$broadcast('cartChange');
+        };
+        $scope.removeCart = function(good) {
+          event.stopPropagation();
+          ShoppingCart.remove(good);
+          $rootScope.$broadcast('cartChange');
+        };
       })
     }
   }
 })
 
-// .directive('cartModal', function() {
-//   return {
-//     restrict: 'A',
-//     replace: true,
-//     scope: {
-//       gParamId: '@'
-//     },
-//     template: '<i class="icon ion-ios-cart icon-cart" ng-click="openModal"></i>',
-//     controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
-//       // $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
-//       //   scope: $scope,
-//       //   animation: 'slide-in-up'
-//       // }).then(function(modal) {
-//       //   $scope.modal = modal;
-//       //   $scope.modal.hide();
-//       // });
-//       // $scope.openModal = function() {
-//       //   if ($scope.cart.number > 0) {
-//       //     $scope.modal.show();
-//       //     $scope.cartGoods = ShoppingCart.getSellerProductList(gParamId);
-//       //   }
-//       // };
-//       // $scope.closeModal = function() {
-//       //   $scope.modal.hide();
-//       // };
+.directive('cartModalIcon', function() {
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'templateDirectives/cartModalIcon.html',
+    controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
+      $scope.$on('cartChange', function(event, data) {
+        $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.session.sellerId);
+      });
+      // $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
+      //   scope: $scope,
+      //   animation: 'slide-in-up'
+      // }).then(function(modal) {
+      //   $scope.modal = modal;
+      //   $scope.modal.hide();
+      // });
+      // $scope.openModal = function() {
+      //   if ($scope.cart.number > 0) {
+      //     $scope.modal.show();
+      //     $scope.cartGoods = ShoppingCart.getSellerProductList(gParamId);
+      //   }
+      // };
+      // $scope.closeModal = function() {
+      //   $scope.modal.hide();
+      // };
 
-//     }
-//   }
-// })
+    }
+  }
+})
 
 .directive('singleCart', function() {
   return {
