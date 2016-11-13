@@ -6,23 +6,12 @@
   background: #eee !important;
   color: #999 !important;
 }
-.singePage {
-  bottom: 115px;
+.create-order section {
+  background: #fff;
 }
-.cart-page .item {
-  border: 1px solid;
-  padding: 0;
-}
-.order-receiver-name {
-  display: inline-block;
-  width: 40%;
-}
-.order-receiver-phone {
-  display: inline-block;
-  width: 50%;
-}
-.order-receiver-phone input {
-  width: 100%;
+.add-address {
+  text-align: center;
+  color: #619de5;
 }
 .order-receiver-date,
 .order-receiver-time {
@@ -33,40 +22,18 @@
   white-space: nowrap;
 }
 .create-order section {
-  border-bottom: 2px solid #eee;
+  margin-bottom: 10px;
   padding: 15px;
 }
-.create-order textarea {
-  resize: none;
-  width: 100%;
-  border: 1px solid #eee;
+.current-address div {
+  display: inline-block;
 }
-.create-order input {
-  border: 1px solid #eee;
-}
-.create-order .order-receiver-info div {
-  float: left;
-}
-.create label {
-  white-space: nowrap;
-}
-.order-receiver-name .like-input,
-.order-receiver-phone .like-input {
-  display: block;
-  border: 1px solid #eee;
-  height: 25px;
-}
-.order-receiver-address {
-  margin-top: 5px;
-}
-.order-address .like-textarea {
-  height: 40px;
-  border: 1px solid #eee;
-  clear: both;
+.current-address p {
+  margin: 0;
 }
 .fromWeChat {
-  color: #f5a623;
-  font-weight: bold;
+  float: right;
+  color: #619de5;
 }
 .time-wrap label {
   margin-right: 10px;
@@ -75,7 +42,7 @@
   white-space: nowrap;
 }
 .order-server label {
-  margin-left: 20px;
+  margin-left: 15px;
   white-space: nowrap;
 }
 .pick-all {
@@ -85,22 +52,13 @@
   align-items: center;
 }
 .pick-all input {
-  transform: scale(1.5);
   margin-right: 5px;
-}
-.good-list-in-order input {
-  position: relative;
-  display: inline-block;
-  width: 30px;
-  left: 7px;
-  top: -14px;
-  transform: scale(1.5);
 }
 .total-price {
   display: flex;
   width: 40%;
   align-items: center;
-  color: #f5a623;
+  color: #619de5;
   font-size: 16px;
   font-weight: bold;
 }
@@ -115,61 +73,67 @@
   bottom: 49px;
 }
 .order-cart-seller {
-  padding: 5px;
+  position: relative;
+}
+.order-cart-seller label>div {
+  height: 60px;
+  margin-left: 3px;
 }
 .order-cart-seller .item {
-  height: 100%;
-  padding: 10px;
+  padding: 15px;
   border: none;
 }
 .order-cart-seller>.item-checkbox {
   border-bottom: solid 1px #ddd;
 }
-.cart-seller-img {
-  width: 60px;
-  height: 45px;
+.cart-detail-img {
+  width: 35px;
+  height: 30px;
+  border-radius: 10px;
 }
 .cart-seller-name {
-  display: inline-block;
-  max-width: 50%;
-  line-height: 45px;
+  position: absolute;
+  right: 80px;
+  left: 80px;
+  line-height: 60px;
   overflow: hidden;
   text-overflow: ellipsis;
-  vertical-align: top;
+}
+.order-cart-seller .check-good {
+  line-height: 60px;
 }
 .order-cart-seller .item-content {
   height: 100%;
   padding-left: 40px;
 }
+/*---------------------------------------
+cart-detail*/
 .order-cart-goods {
-  padding-left: 5px;
+  padding: 5px 0 0 5px;
 }
 .order-cart-goods .item {
-  margin: 5px;
+  position: relative;
+  padding: 5px;
   border: none;
-  vertical-align: top;
+}
+.order-cart-goods label>div {
+  margin-left: 5px;
 }
 .order-cart-goods .item-content {
   padding-left: 60px;
 }
-.order-cart-goods label {
-  display: inline-block;
-  width: 130px;
+.order-cart-goods .check-good {
+  line-height: 35px;
 }
 .cart-goods-info {
-  display: inline-block;
+  position: absolute;
+  right: 80px;
+  left: 70px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.cart-goods-info-wrap {
-  display: inline-block;
-  width: 33%;
-}
-.cart-goods-quantity {
-  display: inline-block;
-  width: 25px;
-  font-size: 18px;
-  text-align: center;
+.cart-goods-info p {
+  font-size: 12px;
 }
 .cart-goods-name {
   font-weight: bold;
@@ -178,29 +142,22 @@
   margin-top: 12px;
 }
 .order-cart-action {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  line-height: 27px;
-  text-align: center;
-  border: 2px solid;
-  border-radius: 25px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
-.calculate-money {
-  width: 80px;
+.order-cart-seller .calculate-money {
+  position: absolute;
+  right: 0;
 }
 .calculate-money .totalMoney {
   display: block;
   font-size: 16px;
-  color: #f5a623;
+  color: #619de5;
   font-weight: bold;
 }
 .calculate-money .sendPrice {
   font-size: 12px;
-}
-/*orders-list*/
-.h-list .list {
-  overflow-x: auto;
 }
 .is-pay-order div {
   padding: 3px 10px;
@@ -249,4 +206,25 @@
 }
 .not-reach .totalMoney {
   color: #666;
+}
+.go-cart,
+.order-cart .confirm-cart {
+  position: relative;
+  right: 0;
+  height: 100%;
+  width: 40%;
+  font-weight: bold;
+  border-radius: 0;
+  line-height: 40px;
+  background: #619de5;
+  color: #fff;
+}
+.shopping-cart-bar .go-cart {
+  line-height: 42px;
+  font-size: 18px;
+  color: #fff;
+  background: #619de5;
+}
+.disable-pay {
+  background: #f2f7fa !important;
 }

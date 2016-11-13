@@ -1,5 +1,5 @@
 <div class="button-cart-wrap">
   <div class="button button-cart" ng-click="addCart($event, good)" ng-hide="isHideAddCart"><span>加入购物车</span>
   </div>
-  <div single-cart></div>
+  <div single-cart ng-hide="!isHideAddCart"></div>
 </div>

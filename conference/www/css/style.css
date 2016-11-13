@@ -349,22 +349,6 @@ p.cartNumber {
 .shopping-cart-bar {
   background: #f2f7fa;
 }
-.go-cart,
-.order-cart .confirm-cart {
-  position: relative;
-  right: 0;
-  height: 100%;
-  width: 40%;
-  font-weight: bold;
-  border-radius: 0;
-  line-height: 40px;
-}
-.shopping-cart-bar .go-cart {
-  line-height: 42px;
-  font-size: 18px;
-  color: #fff;
-  background: #619de5;
-}
 /*cart modal*/
 .cart-modal {
   background: rgba(66,66,66,0.4);
