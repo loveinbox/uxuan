@@ -152,9 +152,6 @@ angular.module('starter.directives', [])
       var weight = startHour >= 20 ? 1 : 0;
       $scope.tp = {};
 
-      console.log($scope.userPreferTime);
-      // console.log($scope.userPreferTime());
-
       initDate();
       $scope.changeDate = changeDateFunction;
       $scope.changeTime = changeTimeFunction;
@@ -218,15 +215,13 @@ angular.module('starter.directives', [])
 
       function setOrderDate(dayOff) {
         var pDate = addDate(date, dayOff);
-        $scope.userPreferTime.value = [
-          date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[0] + ':00',
-          date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[1] + ':00'
-        ];
+        if ($scope.order) {
+          $scope.order.sendTime = [
+            date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[0] + ':00',
+            date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[1] + ':00'
+          ];
+        }
       }
-
-      // $scope.$watch('userPreferTime.value',function () {
-      //   console.log($scope.userPreferTime.value);
-      // })
 
       function addDate(date, days) {
         if (days === undefined || days === '') {

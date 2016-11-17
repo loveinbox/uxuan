@@ -1,59 +1,74 @@
 /*go-cart*/
+
 .bar {
   padding: 0;
 }
+
 .disabledButton {
   background: #eee !important;
   color: #999 !important;
 }
+
 .create-order section {
   background: #fff;
 }
+
 .add-address {
   text-align: center;
   color: #619de5;
 }
+
 .order-receiver-date,
 .order-receiver-time {
   display: inline-block;
   width: 49%;
 }
+
 .order-receiver-time label {
   white-space: nowrap;
 }
+
 .create-order section {
   margin-bottom: 10px;
   padding: 15px;
 }
+
 .current-address div {
   display: inline-block;
 }
+
 .current-address p {
   margin: 0;
 }
+
 .fromWeChat {
   float: right;
   color: #619de5;
 }
+
 .time-wrap label {
   margin-right: 10px;
   display: inline-block;
   width: 110px;
   white-space: nowrap;
 }
+
 .order-server label {
-  margin-left: 15px;
+  margin-left: 10px;
   white-space: nowrap;
 }
+
 .pick-all {
   display: flex;
   width: 20%;
   justify-content: center;
   align-items: center;
 }
+
 .pick-all input {
   margin-right: 5px;
 }
+
 .total-price {
   display: flex;
   width: 40%;
@@ -62,35 +77,44 @@
   font-size: 16px;
   font-weight: bold;
 }
+
 .confirm-order .total-price {
   color: #ef473a;
   padding-left: 20px;
 }
+
 .data-pick {
   border: 1px solid #eee;
 }
+
 .confirm-order {
   bottom: 49px;
 }
+
 .order-cart-seller {
   position: relative;
 }
+
 .order-cart-seller label>div {
   height: 60px;
   margin-left: 3px;
 }
+
 .order-cart-seller .item {
   padding: 15px;
   border: none;
 }
+
 .order-cart-seller>.item-checkbox {
   border-bottom: solid 1px #ddd;
 }
+
 .cart-detail-img {
   width: 35px;
   height: 30px;
   border-radius: 10px;
 }
+
 .cart-seller-name {
   position: absolute;
   right: 80px;
@@ -99,32 +123,42 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .order-cart-seller .check-good {
   line-height: 60px;
 }
+
 .order-cart-seller .item-content {
   height: 100%;
   padding-left: 40px;
 }
+
+
 /*---------------------------------------
 cart-detail*/
+
 .order-cart-goods {
   padding: 5px 0 0 5px;
 }
+
 .order-cart-goods .item {
   position: relative;
   padding: 5px;
   border: none;
 }
+
 .order-cart-goods label>div {
   margin-left: 5px;
 }
+
 .order-cart-goods .item-content {
   padding-left: 60px;
 }
+
 .order-cart-goods .check-good {
   line-height: 35px;
 }
+
 .cart-goods-info {
   position: absolute;
   right: 80px;
@@ -132,63 +166,80 @@ cart-detail*/
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .cart-goods-info p {
   font-size: 12px;
 }
+
 .cart-goods-name {
   font-weight: bold;
 }
+
 .cart-goods-action-wrap {
   margin-top: 12px;
 }
+
 .order-cart-action {
   position: absolute;
   top: 0;
   right: 0;
 }
+
 .order-cart-seller .calculate-money {
   position: absolute;
   right: 0;
 }
+
 .calculate-money .totalMoney {
   display: block;
   font-size: 16px;
   color: #619de5;
   font-weight: bold;
 }
+
 .calculate-money .sendPrice {
   font-size: 12px;
 }
+
 .is-pay-order div {
   padding: 3px 10px;
-/*height: 30px;*/
+  /*height: 30px;*/
   border: 2px solid #eee;
   border-radius: 10px;
   font-size: 12px;
   margin: 10px 0 0 10px;
 }
+
+
 /*order-detail*/
+
 .order-detail-table {
   width: 90%;
   margin: 15px;
 }
+
 .order-detail-table tr {
   margin: 5px 0;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
+
 .order-detail-name {
   padding: 2px 10px;
 }
+
 .order-detail-list-name {
   padding: 0 15px;
 }
+
 .order-detail-list .list {
   padding: 0 20px;
 }
+
 .order-detail-list img {
   margin: 0 20px 10px 0;
 }
+
 .order-total p {
   font-size: 18px;
   color: #fff;
@@ -196,17 +247,21 @@ cart-detail*/
   line-height: 65px;
   padding-left: 30px;
 }
+
 .not-reach,
 .not-reach .item {
   background: #ddd !important;
 }
+
 .not-reach .sendStartPrice {
   font-weight: bold;
   color: #ef473a;
 }
+
 .not-reach .totalMoney {
   color: #666;
 }
+
 .go-cart,
 .order-cart .confirm-cart {
   position: relative;
@@ -219,12 +274,14 @@ cart-detail*/
   background: #619de5;
   color: #fff;
 }
+
 .shopping-cart-bar .go-cart {
   line-height: 42px;
   font-size: 18px;
   color: #fff;
   background: #619de5;
 }
+
 .disable-pay {
   background: #f2f7fa !important;
 }

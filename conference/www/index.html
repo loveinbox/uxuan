@@ -2,56 +2,57 @@
 <html>
 
 <head>
-    <base href="/">
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>U选到家</title>
-    <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
-    <!-- <link href="http://cdn.bootcss.com/ionic/1.3.1/css/ionic.min.css" rel="stylesheet"> -->
-    <link href="css/base.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/index.css" rel="stylesheet">
-    <link href="css/user-info.css" rel="stylesheet">
-    <link href="css/list.css" rel="stylesheet">
-    <link href="css/seller-detail.css" rel="stylesheet">
-    <link href="css/order.css" rel="stylesheet">
-    <link href="css/wash.css" rel="stylesheet">
-    <link href="css/cart.css" rel="stylesheet">
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+  <base href="/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title>U选到家</title>
+  <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
+  <!-- <link href="http://cdn.bootcss.com/ionic/1.3.1/css/ionic.min.css" rel="stylesheet"> -->
+  <link href="css/base.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/index.css" rel="stylesheet">
+  <link href="css/user-info.css" rel="stylesheet">
+  <link href="css/list.css" rel="stylesheet">
+  <link href="css/seller-detail.css" rel="stylesheet">
+  <link href="css/order.css" rel="stylesheet">
+  <link href="css/wash.css" rel="stylesheet">
+  <link href="css/cart.css" rel="stylesheet">
+  <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-    <!-- ionic/angularjs js -->
-    <script src="http://cdn.bootcss.com/ionic/1.3.1/js/ionic.bundle.min.js"></script>
-    <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
-    <script src="lib/jquery.min.js"></script>
-    <script src="lib/jquery.fly.min.js"></script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
-    <script src="lib/requestAnimationFrame.js"></script>
-    <script src="lib/underscore.min.js"></script>
-    <script src="http://api.map.baidu.com/api?v=2.08&ak=GmTMxfwhUXAjvt2RvxHYTIayFOSUtPRv"></script>
-    <!-- cordova script (this will be a 404 during development) -->
-    <!-- <script src="cordova.js"></script> -->
-    <!-- your app's js -->
-    <!-- <script src="js/mockup.json"></script> -->
-    <script src="js/app.js"></script>
-    <script src="js/directives.js"></script>
-    <script src="js/screenlog.js"></script>
-    <script src="js/scrollBar.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/services.js"></script>
-    <script src="js/orderCtrl.js"></script>
-    <script src="js/screenlog.js"></script>
-    <script src="js/wash/washController.js"></script>
-    <script src="js/wash/getWashServices.js"></script>
-    <script src="js/guardOrder/guardOrdersController.js"></script>
-    <script src="js/guardOrder/guardOrdersService.js"></script>
-    <script src="js/vendorOrder/vendorOrdersController.js"></script>
-    <script src="js/vendorOrder/vendorOrdersService.js"></script>
-    <script src="js/userInfoService.js"></script>
+  <!-- ionic/angularjs js -->
+  <script src="http://cdn.bootcss.com/ionic/1.3.1/js/ionic.bundle.min.js"></script>
+  <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/jquery.fly.min.js"></script>
+  <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+  <script src="lib/requestAnimationFrame.js"></script>
+  <script src="lib/underscore.min.js"></script>
+  <script src="http://api.map.baidu.com/api?v=2.08&ak=GmTMxfwhUXAjvt2RvxHYTIayFOSUtPRv"></script>
+  <!-- cordova script (this will be a 404 during development) -->
+  <!-- <script src="cordova.js"></script> -->
+  <!-- your app's js -->
+  <!-- <script src="js/mockup.json"></script> -->
+  <script src="js/app.js"></script>
+  <script src="js/directives.js"></script>
+  <script src="js/screenlog.js"></script>
+  <script src="js/scrollBar.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/orderCtrl.js"></script>
+  <script src="js/screenlog.js"></script>
+  <script src="js/wash/washController.js"></script>
+  <script src="js/wash/getWashServices.js"></script>
+  <script src="js/guardOrder/guardOrdersController.js"></script>
+  <script src="js/guardOrder/guardOrdersService.js"></script>
+  <script src="js/vendorOrder/vendorOrdersController.js"></script>
+  <script src="js/vendorOrder/vendorOrdersService.js"></script>
+  <script src="js/userInfoService.js"></script>
+  <script src="js/shoppingCartService.js"></script>
 </head>
 
 <body ng-app="starter">
-    <ion-nav-view view-title="Index" animation="slide-left-right"></ion-nav-view>
+  <ion-nav-view view-title="Index" animation="slide-left-right"></ion-nav-view>
 </body>
 
 </html>

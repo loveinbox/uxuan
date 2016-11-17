@@ -1,38 +1,39 @@
 <ion-view class="create-order" view-title="U选到家">
   <ion-content class="singePage cart-page">
     <section class="order-address" ng-click="getAddress()">
-      <div class="add-address" ng-hide="order.hasAddress">
+      <div class="add-address" ng-hide="(order.user.tel === '')">
         添加收货地址
       </div>
-      <div ng-hide="!order.hasAddress" class="current-address">
+      <div ng-hide="(order.user.tel !== '')" class="current-address">
         <span class="fromWeChat fr">修改地址</span>
         <div>
-          {{order.receiverName}}
+          {{order.use.name}}
         </div>
         <div>
-          {{order.receiverPhone}}
+          {{order.use.tel}}
         </div>
         <p>
-          {{order.receiverAddress}}
+          {{order.use.address}}
         </p>
       </div>
     </section>
     <section uxuan-time user-prefer-time="userPreferTime"></section>
     <section class="order-server">
       <span>选择管家</span>
-      <label ng-repeat="eG in eGuard">
-        <input type="radio" name="eGuard" ng-checked="$first" value={{eG.id}} ng-model="order.guard">
+      <label ng-repeat="eG in order.eGuards">
+        <input type="radio" name="eGuard" ng-checked="$first" value= {{eG.id}} ng-model="order.guard">
         <span>{{eG.name}}</span>
       </label>
     </section>
     <ion-list class="good-list-in-order">
-      <ion-item ng-repeat="cart in carts" ng-class="{'not-reach': !cart.seller.isReachStartPrice}">
+      <ion-item ng-repeat="cart in order.carts" ng-class="{'not-reach': !cart.seller.isReachStartPrice}">
         <div class="order-cart-seller clearfix">
           <label class="clearfix">
             <div class="check-good fl">
               <input type="checkbox" ng-model="cart.isChecked" ng-click="calculateMoney($event, cart)">
             </div>
-            <div class="fl"><img class="seller-img" ng-src="http://lifeuxuan.com/backend/{{cart.seller.sellerPicUrl}}" alt=""></div>
+            <div class="fl"><img class="seller-img" ng-src="http://lifeuxuan.com/backend/{{cart.seller.sellerPicUrl}}"
+                alt=""></div>
             <div class="cart-seller-name"><span>{{cart.seller.sellerName}}</span></div>
             <div class="calculate-money fr">
               <span class="totalMoney">￥{{cart.seller.totalMoney/100}}元</span>
@@ -54,7 +55,7 @@
                   <p class="sendPrice sendStartPrice">￥{{good.price/100}}</p>
                 </div>
               </label>
-              <div single-cart class="order-cart-action"></div>
+              <!-- <div single-cart class="order-cart-action"></div> -->
           </ion-list>
         </div>
         </ion-item>
