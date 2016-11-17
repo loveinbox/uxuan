@@ -1,35 +1,37 @@
 <ion-view view-title="U选到家">
-    <ion-content>
-        <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-        <ion-list class="">
-            <ion-item class="list-order-list" ng-repeat="order in orders" href="/orderDetail/{{order.orderId}}">
-                <div class="clearfix">
-                	<p class="list-order-id fl">订单号:{{order.orderId}}</p>
-                	<p class="list-order-status fr">{{order.orderStatus}}</p>
-                </div>
-                <div class="h-list clearfix">
-                    <!-- <ion-scroll direction="x" scrollbar-x="false"> -->
-                        <ion-list class="clearfix">
-                            <ion-item class="index-list-item" ng-repeat="pic in order.goodsList">
-                                <img ng-src="http://lifeuxuan.com/backend/{{pic.productPicUrl}}">
-                            </ion-item>
-                        </ion-list>
-                    <!-- </ion-scroll> -->
-                </div>
-                <div><p class="list-seller">{{order.sellerName}}</p></div>
-                <div  class="clearfix">
-                	<p class="list-money fl">总计：{{order.totalMoney/100}}元</p>
-                	<p class="fl">共{{order.goodsList.length}}件</p>
-	                <p class="list-order-time fr">{{order.orderTime}}</p>
-                </div>
-                <div ng-hide="order.orderStatusId != '7007'" class="is-pay-order clearfix">
-                    <div class="fr" ng-click="rePay($event, order)">支付订单</div>
-                    <div class="fr" ng-click="cancel($event, order)">取消订单</div>
-                </div>
-                <div ng-hide="order.type == '1002'" class="is-pay-order clearfix">
-                    <a ng-href="/washSingleOrder/{{order.sellerId}}">开始计价</a>
-                </div>
-            </ion-item>
+  <ion-content>
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+    <ion-list class="">
+      <ion-item class="orders-list" ng-repeat="order in orders" href="/orderDetail/{{order.orderId}}">
+        <div class="clearfix">
+          <p class="list-order-id fl to-click-outline">【订单号】{{order.orderId}}</p>
+          <p class="list-order-status fr" ng-class="{'attention':order.orderStatusId == 7007}">{{order.orderStatus}}</p>
+        </div>
+        <p class="list-seller">{{order.sellerName}}</p>
+        <ion-list class="clearfix">
+          <ion-item ng-repeat="pic in order.goodsList">
+            <img class="order-list-good-img" ng-if="$index < 4" ng-src="http://lifeuxuan.com/backend/{{pic.productPicUrl}}">
+            <ul class="order-list-good-img more-goods clearfix" ng-if="$index == 4">
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </ion-item>
         </ion-list>
-    </ion-content>
+        <div class="clearfix">
+          <p class="list-money fl">总计:￥{{order.totalMoney/100}}</p>
+          <p class="fl">共{{order.goodsList.length}}件</p>
+          <p class="list-order-time fr">{{order.orderTime}}</p>
+        </div>
+        <div ng-hide="order.orderStatusId != '7007'" class="is-pay-order clearfix">
+          <div class="fr to-click" ng-click="rePay($event, order)">支付订单</div>
+          <div class="fr" ng-click="cancel($event, order)">取消订单</div>
+        </div>
+        <!-- <div ng-hide="order.type == '1002'" class="is-pay-order clearfix">
+  <a ng-href="/washSingleOrder/{{order.sellerId}}">开始计价</a>
+</div>
+ -->
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ion-view>

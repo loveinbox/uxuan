@@ -410,16 +410,6 @@ p.cartNumber {
   color: #fff;
   height: 40px;
 }
-.list-order-list .item-content {
-  padding-right: 16px;
-}
-.h-list .index-list-item {
-  display: inline-block;
-  float: none;
-  width: 115px;
-  margin: 0;
-  border: none;
-}
 img.single-shop {
   width: 150px;
   height: 80px;

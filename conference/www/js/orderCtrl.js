@@ -6,7 +6,7 @@ angular.module('starter.controllers')
         receiverPhone: user.addressInfo.tel || '收货人手机',
         receiverAddress: user.addressInfo.address || '收货地址'
       };
-      $scope.order.hasAddress = !false;
+      $scope.order.hasAddress = false;
       $scope.order.guard = 1;
       $scope.orderButton = { isDisabled: true };
       $scope.carts = ShoppingCart.getCart();

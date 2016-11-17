@@ -109,7 +109,14 @@ angular.module('starter.directives', [])
     restrict: 'A',
     templateUrl: 'templateDirectives/singleCart.html',
     controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
+      $scope.cartAction = {};
+      if ($scope.good) {
+        $scope.cartAction.singleNumber = ShoppingCart.getSellerCartNumber($scope.good.sellerId);
+      }
       UserInfo.then(function(user) {
+        $scope.$on('cartChange', function(event, data) {
+          $scope.cartAction.singleNumber = ShoppingCart.getSellerCartNumber($scope.good.sellerId);
+        });
         $scope.addCart = function(event, good) {
           event.stopPropagation();
           if (!(user.verify - 0)) {

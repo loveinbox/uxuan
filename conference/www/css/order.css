@@ -165,7 +165,7 @@ cart-detail*/
   border: 2px solid #eee;
   border-radius: 10px;
   font-size: 12px;
-  margin-left: 10px;
+  margin: 10px 0 0 10px;
 }
 /*order-detail*/
 .order-detail-table {

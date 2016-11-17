@@ -11,7 +11,8 @@
         </a>
       </div>
       <div class="lunbo">
-        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true" auto-play="true" show-pager="false">
+        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500"
+          does-continue="true" auto-play="true" show-pager="false">
           <ion-slide>
             <div class="box blue">
               <img src="img/1.jpg">
@@ -45,7 +46,8 @@
     </div>
     <div class="index-hot-list list-top" ng-show="!location.isOut && sessions.length > 0">
       <div class="divider">U选爆款</div>
-      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
+      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll"
+        scrollbar-x="false">
         <ion-list class="single goods index-list clearfix">
           <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.productId}}">
             <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}" alt="">
@@ -58,7 +60,7 @@
     <div class="index-shop-list list-top" ng-show="!location.isOut && sellers.length > 0">
       <div class="divider">附近商家</div>
       <ion-list class="seller-list clearfix">
-        <ion-item ng-repeat="seller in sellers" href="/seller/{{seller.sellerId}}">
+        <ion-item ng-repeat="seller in sellers" href="/washSingle/39">
           <div class="seller-img clearfix">
             <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
           </div>

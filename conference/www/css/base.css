@@ -1,0 +1,13 @@
+.bl {
+  color: #619de5;
+}
+.to-click {
+  background: #619de5;
+  color: #fff;
+}
+.to-click-outline {
+  color: #619de5 !important;
+}
+.attention {
+  color: #ef0000 !important;
+}

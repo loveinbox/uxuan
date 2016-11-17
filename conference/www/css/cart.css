@@ -1,3 +1,16 @@
+.bl {
+  color: #619de5;
+}
+.to-click {
+  background: #619de5;
+  color: #fff;
+}
+.to-click-outline {
+  color: #619de5 !important;
+}
+.attention {
+  color: #ef0000 !important;
+}
 .button-cart-wrap {
   position: absolute;
   bottom: 20px;
@@ -46,4 +59,45 @@
   width: 100%;
   padding: 0;
   border: none;
+}
+.orders-list.item {
+  margin-bottom: 10px;
+  border: none;
+}
+.orders-list .item-content {
+  padding: 15px 20px;
+}
+.orders-list .item {
+  float: left;
+  padding: 10px 20px 10px 0;
+  border: none;
+}
+.orders-list .list-order-id {
+  text-indent: -8px;
+}
+.orders-list .list-money {
+  margin-right: 5px;
+}
+.orders-list .order-list-good-img {
+  width: 52px;
+  height: 45px;
+  border: solid 1px #eee;
+  border-radius: 15px;
+}
+.orders-list .more-goods {
+  padding: 20px 5px;
+  background: #f2f7fa;
+}
+.orders-list .more-goods li {
+  float: left;
+  width: 10px;
+  height: 10px;
+  background: #999;
+  border-radius: 10px;
+}
+.orders-list .more-goods li:nth-child(2) {
+  margin: 0 4px;
+}
+.orders-list .order-action div {
+  margin: 5px 0;
 }
