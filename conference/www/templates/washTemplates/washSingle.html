@@ -22,7 +22,7 @@
       <ion-list class="index-list clearfix">
         <ion-item ng-class="{'show': $index==currentIndex}" class="index-list-item detail-list-item detail-class-item"
           ng-repeat="class in classes">
-          <p class="name wash-tag" ng-click="scrollTo(class.classifyId, $index)" style="text-align: center;">{{class.classifyName}}</p>
+          <p class="name wash-tag" ng-click="scrollTo(class.classifyId, $index)">{{class.classifyName}}</p>
         </ion-item>
       </ion-list>
     </ion-scroll>

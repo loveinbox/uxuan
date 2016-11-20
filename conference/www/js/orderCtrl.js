@@ -12,6 +12,7 @@ angular.module('starter.controllers')
         isGetThroesold: false,
         isAddressValidated: false
       };
+      $scope.order.totalMoney = ShoppingCart.getTotalCartMoney();
 
       NearByEguard.get({
         'longitude': user.longitude,
@@ -26,23 +27,24 @@ angular.module('starter.controllers')
       $scope.$on('cartChange', function(event, data) {
         $scope.status.isGetThroesold = ShoppingCart.isGetThroesold();
         $scope.order.carts = ShoppingCart.getCart();
+        $scope.order.totalMoney = ShoppingCart.getTotalCartMoney();
       });
 
       $scope.pickShop = function(event, shop) {
         event.stopPropagation();
         ShoppingCart.checkShop(shop);
-        $scope.order.carts = ShoppingCart.getCart();
+        $rootScope.$broadcast('cartChange');
       }
 
       $scope.pickShopGood = function(event, good, shop) {
         event.stopPropagation();
         ShoppingCart.checkShopGood(good, shop);
-        $scope.order.carts = ShoppingCart.getCart();
+        $rootScope.$broadcast('cartChange');
       }
 
       $scope.pickAll = function() {
-        $scope.order.isAllChecked = !$scope.order.isAllChecked;
-        $scope.order.carts = ShoppingCart.getCart();
+        ShoppingCart.checkAll($scope.order.isAllChecked);
+        $rootScope.$broadcast('cartChange');
       }
 
       $scope.confirmOrder = function() {

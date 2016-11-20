@@ -52,6 +52,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.index', {
     url: '/sessions',
+    cache: false,
     views: {
       'tab-index': {
         templateUrl: 'templates/sessions.html',
@@ -62,6 +63,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.account', {
     url: '/account',
+    cache: false,
     views: {
       'tab-account': {
         templateUrl: 'templates/account.html',
@@ -72,6 +74,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.orders', {
     url: '/orders',
+    cache: false,
     views: {
       'tab-orders': {
         templateUrl: 'templates/orders.html',
@@ -82,6 +85,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.cart', {
     url: '/cart',
+    cache: false,
     views: {
       'tab-cart': {
         templateUrl: 'templates/order.html',

@@ -98,6 +98,11 @@ angular.module('starter.services')
     return totalCartNumber;
   }
 
+  this.getTotalCartMoney = function() {
+    calculateMoney();
+    return totalCartMoney;
+  }
+
   this.getGoodNumber = function(good, shop) {
     var shopIndex = _.findIndex(totalCart, { 'shopId': shop.shopId });
     if (shopIndex < 0) {
@@ -124,7 +129,7 @@ angular.module('starter.services')
 
   this.isGetThroesold = function() {
     isGetThroesold = true;
-    if (this.totalCartMoney > 0) {
+    if (totalCartMoney > 0) {
       $.each(totalCart, function(index, shopCart) {
         // 如果选择了，却为达到起送价
         if (shopCart.isChecked == true && shopCart.isReachStartPrice == false) {
@@ -143,7 +148,17 @@ angular.module('starter.services')
     calculateMoney();
   }
 
-  this.checkShopGood = function(good, shop) {
+  this.checkAll = function(isAllChecked) {
+    $.each(totalCart, function(index, el) {
+      el.isChecked = isAllChecked;
+      $.each(el.goodsList, function(index, value) {
+        value.isChecked = isAllChecked;
+      });
+    });
+    calculateMoney();
+  }
+
+  this.checkShopGood = function() {
     calculateMoney();
   }
 
@@ -165,7 +180,7 @@ angular.module('starter.services')
   }
 
   function calculateMoney() {
-    this.totalCartMoney = 0;
+    totalCartMoney = 0;
     $.each(totalCart, function(index, shopCart) {
       var tempTotalMoney = 0;
       $.each(shopCart.goodsList, function(index, value) {
@@ -184,7 +199,7 @@ angular.module('starter.services')
       } else {
         shopCart.isReachStartPrice = true;
       }
-      this.totalCartMoney += shopCart.singleCartTotalNumber;
+      totalCartMoney += shopCart.singleCartTotalNumber;
     });
     localStorage.setItem('UxuanShoppingCart', JSON.stringify(totalCart));
   }

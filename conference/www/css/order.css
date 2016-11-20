@@ -199,6 +199,7 @@ cart-detail*/
 .order-cart-shop .calculate-money {
   position: absolute;
   right: 0;
+  width: 80px;
 }
 
 .calculate-money .totalMoney {

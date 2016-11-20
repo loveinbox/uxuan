@@ -166,17 +166,28 @@ angular.module('starter.controllers')
   })
 })
 
-.controller('shopListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank, UserInfo) {
+.controller('shopListCtrl', function($scope, $rootScope, $stateParams, MainPageHot, NearByFruitShops, UserInfo) {
+  $scope.location = {};
+  // UserInfo.then(function(user) {
+  //   getWashHot.get({
+  //     'longitude': user.longitude,
+  //     'latitude': user.latitude
+  //   }, function(data) {
+  //     $scope.sessions = data.data;
+  //   }, function(data) {
+  //     alert('NO DATA MainPageHot');
+  //   });
+  //   getWashShops.get({
+  //     'longitude': user.longitude,
+  //     'latitude': user.latitude,
+  //     'shopId': 2
+  //   }, function(data) {
+  //     $scope.shops = data.data;
+  //   }, function(data) {
+  //     alert('NO DATA MainPageHot');
+  //   });
+  // })
   UserInfo.then(function(user) {
-    NearByEguard.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-    }, function(data) {
-      $scope.eGuard = data.data;
-    }, function(data) {
-      alert('NO DATA');
-    })
-
     MainPageHot.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
@@ -186,7 +197,7 @@ angular.module('starter.controllers')
       alert('NO DATA');
     });
 
-    FruitUxuanRank.get({
+    NearByFruitShops.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
     }, function(data) {
