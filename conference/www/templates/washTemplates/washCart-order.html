@@ -31,16 +31,17 @@
       </label>
     </section>
     <ion-list class="good-list-in-order">
-      <ion-item ng-repeat="cart in carts" ng-class="{'not-reach': !cart.seller.isReachStartPrice}">
-        <div class="order-cart-seller clearfix">
+      <ion-item ng-repeat="cart in carts" ng-class="{'not-reach': !cart.shop.isReachStartPrice}">
+        <div class="order-cart-shop clearfix">
           <label class="clearfix">
             <input type="checkbox" ng-model="cart.isChecked" ng-click="calculateMoney($event, cart)">
-            <img class="cart-seller-img" ng-src="http://lifeuxuan.com/backend/{{cart.seller.sellerPicUrl}}" alt="">
-            <span class="cart-seller-name">{{cart.seller.sellerName}}</span>
+            <img class="cart-shop-img" ng-src="http://lifeuxuan.com/backend/{{cart.shop.shopPicUrl}}"
+              alt="">
+            <span class="cart-shop-name">{{cart.shop.shopName}}</span>
             <div class="calculate-money fr">
-              <span class="totalMoney">￥{{cart.seller.totalMoney/100}}元</span>
-              <p class="sendPrice">含运费{{cart.seller.sendPrice}}元</p>
-              <p class="sendPrice sendStartPrice">起送价{{cart.seller.sendStartPrice}}元</p>
+              <span class="totalMoney">￥{{cart.shop.totalMoney/100}}元</span>
+              <p class="sendPrice">含运费{{cart.shop.sendPrice}}元</p>
+              <p class="sendPrice sendStartPrice">起送价{{cart.shop.sendStartPrice}}元</p>
             </div>
           </label>
         </div>
@@ -48,7 +49,8 @@
           <ion-list class="clearfix">
             <ion-item ng-repeat="good in cart.goodsList">
               <input type="checkbox" ng-model="good.isChecked" ng-click="calculateSingleMoney($event, cart)">
-              <img class="cart-seller-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
+              <img class="cart-shop-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}"
+                alt="">
               <div class="cart-goods-info-wrap">
                 <p class="cart-goods-name">{{good.productName}}</p>
                 <span class="cart-goods-info">￥{{good.price/100}}</span>

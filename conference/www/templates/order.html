@@ -21,23 +21,23 @@
     <section class="order-server">
       <span>选择管家</span>
       <label ng-repeat="eG in order.eGuards">
-        <input type="radio" name="eGuard" ng-checked="$first" value= {{eG.eguardId}} ng-model="order.guard">
+        <input type="radio" name="eGuard" ng-checked="$first" value={ {eG.eguardId}} ng-model="order.guard">
         <span>{{eG.eguardName}}</span>
       </label>
     </section>
     <ion-list class="good-list-in-order">
       <ion-item ng-repeat="shop in order.carts" ng-class="{'not-reach': !shop.isReachStartPrice}">
-        <div class="order-cart-seller clearfix">
+        <div class="order-cart-shop clearfix">
           <label class="clearfix">
             <div class="check-good fl">
               <input type="checkbox" ng-model="shop.isChecked" ng-click="pickShop($event, shop)">
             </div>
-            <div class="fl"><img class="seller-img" ng-src="http://lifeuxuan.com/{{shop.sellerInfo.sellerPicUrl}}"></div>
-            <div class="cart-seller-name"><span>{{shop.sellerInfo.sellerName}}</span></div>
+            <div class="fl"><img class="shop-img" ng-src="http://lifeuxuan.com/{{shop.shopInfo.shopPicUrl}}"></div>
+            <div class="cart-shop-name"><span>{{shop.shopInfo.shopName}}</span></div>
             <div class="calculate-money fr">
               <span class="totalMoney">￥{{shop.singleCartTotalNumber/100}}元</span>
-              <p class="sendPrice">含运费{{shop.sellerInfo.sendPrice}}元</p>
-              <p class="sendPrice sendStartPrice">起送价{{shop.sellerInfo.sendStartPrice}}元</p>
+              <p class="sendPrice">含运费{{shop.shopInfo.sendPrice}}元</p>
+              <p class="sendPrice sendStartPrice">起送价{{shop.shopInfo.sendStartPrice}}元</p>
             </div>
           </label>
         </div>

@@ -7,7 +7,7 @@
           <p class="list-order-id fl to-click-outline">【订单号】{{order.orderId}}</p>
           <p class="list-order-status fr" ng-class="{'attention':order.orderStatusId == 7007}">{{order.orderStatus}}</p>
         </div>
-        <p class="list-seller">{{order.sellerName}}</p>
+        <p class="list-shop">{{order.shopName}}</p>
         <ion-list class="clearfix">
           <ion-item ng-repeat="pic in order.goodsList">
             <img class="order-list-good-img" ng-if="$index < 4" ng-src="http://lifeuxuan.com/backend/{{pic.productPicUrl}}">
@@ -28,7 +28,7 @@
           <div class="fr" ng-click="cancel($event, order)">取消订单</div>
         </div>
         <!-- <div ng-hide="order.type == '1002'" class="is-pay-order clearfix">
-  <a ng-href="/washSingleOrder/{{order.sellerId}}">开始计价</a>
+  <a ng-href="/washSingleOrder/{{order.shopId}}">开始计价</a>
 </div>
  -->
       </ion-item>

@@ -90,18 +90,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
     }
   })
 
-  .state('seller-list', {
-    url: '/sellerList',
+  .state('shop-list', {
+    url: '/shopList',
     cache: false,
-    templateUrl: 'templates/sellerList.html',
-    controller: 'sellerListCtrl'
+    templateUrl: 'templates/shopList.html',
+    controller: 'shopListCtrl'
   })
 
-  .state('seller', {
-    url: '/seller/:sellerId',
+  .state('shop', {
+    url: '/shop/:shopId',
     cache: false,
-    templateUrl: 'templates/seller.html',
-    controller: 'sellerCtrl'
+    templateUrl: 'templates/shop.html',
+    controller: 'shopCtrl'
   })
 
   .state('orderStatus', {
@@ -163,7 +163,7 @@ angular.module('starter')
       })
 
     .state('washSingle', {
-      url: '/washSingle/:washId',
+      url: '/washSingle/:shopId',
       cache: false,
       templateUrl: 'templates/washTemplates/washSingle.html ',
       controller: 'washSingleCtrl'
@@ -177,7 +177,7 @@ angular.module('starter')
     })
 
     .state('washSingleOrder', {
-      url: '/washSingleOrder/:washId',
+      url: '/washSingleOrder/:shopId',
       cache: false,
       templateUrl: 'templates/washTemplates/washSingle-order.html ',
       controller: 'washSingleOrderCtrl'

@@ -1,7 +1,7 @@
 angular.module('starter.services')
 
 .factory('verndorList', function($resource) {
-    return $resource('http://www.lifeuxuan.com/backend/api/SellerNewOrderList.php');
+  return $resource('http://www.lifeuxuan.com/backend/api/shopNewOrderList.php');
 })
 
 // // 接单
@@ -18,5 +18,3 @@ angular.module('starter.services')
 // .factory('fetchClothesService', function($resource) {
 //     return $resource('http://www.lifeuxuan.com/backend/api/EguardFetchClothesConfirm.php');
 // })
-
-

@@ -1,37 +1,45 @@
-.seller-detail {
+.shop-detail {
   height: 150px;
   padding: 55px 25px 5px;
   border-bottom: solid #eee 10px;
 }
-.seller-detail .seller-img {
+
+.shop-detail .shop-img {
   margin: 10px 0;
 }
-.seller-detail .name {
+
+.shop-detail .name {
   font-size: 16px;
 }
-.seller-detail .item-content,
+
+.shop-detail .item-content,
 .rank .item-content {
   margin: 0 auto 10px;
   border: 1px solid #ddd;
 }
+
 .detail-info-wrap {
   margin-left: 75px;
   font-size: 12px;
 }
+
 .detail-list-item {
   padding: 10px;
   border: 1px solid #ddd;
   border-top: none;
 }
+
 .detail-list-item img {
   width: 75px;
   height: 60px;
   border-radius: 20px;
 }
+
 .detail-class-item {
   padding: 6px 10px;
   background: #f2f7fa;
 }
+
 .detail-class-item.show {
   background: #fff;
 }

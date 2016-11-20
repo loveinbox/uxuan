@@ -1,4 +1,4 @@
-var baseURL = 'http://www.lifeuxuan.com/index.php'
+var baseURL = 'http://www.lifeuxuan.com/index.php';
 
 angular.module('starter.services', ['ngResource'])
 

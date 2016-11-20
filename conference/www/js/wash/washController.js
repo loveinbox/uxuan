@@ -1,18 +1,9 @@
 angular.module('starter.controllers')
 
-.controller('washListCtrl', function($scope, UserInfo, MainPageHot, getWashShops) {
+.controller('washListCtrl', function($scope, UserInfo, getWashHot, getWashShops) {
   $scope.location = {};
   UserInfo.then(function(user) {
-    getWashShops.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-      'sellerId': 2
-    }, function(data) {
-      $scope.sellers = data.data;
-    }, function(data) {
-      alert('NO DATA MainPageHot');
-    });
-    MainPageHot.get({
+    getWashHot.get({
       'longitude': user.longitude,
       'latitude': user.latitude
     }, function(data) {
@@ -20,11 +11,20 @@ angular.module('starter.controllers')
     }, function(data) {
       alert('NO DATA MainPageHot');
     });
+    getWashShops.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+      'shopId': 2
+    }, function(data) {
+      $scope.shops = data.data;
+    }, function(data) {
+      alert('NO DATA MainPageHot');
+    });
   })
 
 })
 
-.controller('washSingleCtrl', function($scope, $stateParams, $timeout, $ionicScrollDelegate, UserInfo, MainPageHot, getWashShop) {
+.controller('washSingleCtrl', function($scope, $stateParams, $timeout, $ionicScrollDelegate, UserInfo, getWashShop) {
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;
@@ -32,52 +32,39 @@ angular.module('starter.controllers')
     getWashShop.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
-      'sellerId': $stateParams.washId
+      'shopId': $stateParams.shopId
     }, function(res) {
       var count = 0;
       var lastId = -1;
       var indexCount = 0;
-      $scope.seller = res.data.shop;
-      $scope.goods = Array.prototype.slice.call(res.data.productsList)
-        .sort(function(a, b) {
-          return a.classifyId - b.classifyId;
-        });
-      $scope.classes = Array.prototype.slice.call(res.data.classify)
-        .sort(function(a, b) {
-          return a.classifyId - b.classifyId;
-        });
+      $scope.shop = res.data.shop;
+      $scope.goods = res.data.productsList;
+      $scope.classes = res.data.classifysList;
       $scope.goods
         .forEach(function(el, index) {
-          if (el.classifyId != lastId) {
-            lastId = el.classifyId;
-            scrollObj[el.classifyId] = count;
+          if (el.productClassifyId != lastId) {
+            lastId = el.productClassifyId;
+            scrollObj[el.productClassifyId] = count;
             indexArray[count] = indexCount++;
           }
           count++;
         });
-
     }, function(data) {
-      alert('NO DATA MainPageHot');
+      alert('NO DATA getWashShop');
     });
   });
-  // var i = 0;
-  //   $interval(function () {
 
-  //     $scope.currentIndex = ++i %5;
-  //     console.log($scope.currentIndex);
-  //   },1000)
-
-  $scope.washScrollTo = function(classifyId, index) {
+  $scope.scrollTo = function(classifyId, index) {
     $scope.currentIndex = index;
     $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
     $scope.getScrollPosition = null;
     $timeout(function() {
-      $scope.getScrollPosition = getP;
+      $scope.getScrollPosition = getOffSet;
     }, 500);
   }
-  $scope.getScrollPosition = getP;
+  $scope.getScrollPosition = getOffSet;
 
-  function getP() {
+  function getOffSet() {
     var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
     var getIndex = 0;
     for (var p in scrollObj) {
@@ -86,12 +73,12 @@ angular.module('starter.controllers')
         continue;
       }
     }
-        console.log(getIndex);
+    console.log(getIndex);
     if ($scope.currentIndex !== indexArray[getIndex]) {
       $scope.currentIndex = indexArray[getIndex];
       $scope.getScrollPosition = null;
       $timeout(function() {
-        $scope.getScrollPosition = getP;
+        $scope.getScrollPosition = getOffSet;
       }, 100);
     }
   }
@@ -145,7 +132,7 @@ angular.module('starter.controllers')
           'totalMoney': 1,
           'note': $scope.order.note || "无" + "",
           'username': $scope.order.receiverName,
-          'sellerId': $stateParams.shopId,
+          'shopId': $stateParams.shopId,
           'orderTime': '2016-07-04 19:00:40'
         }
       };
@@ -184,12 +171,12 @@ angular.module('starter.controllers')
     getWashShop.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
-      'sellerId': $stateParams.washId
+      'shopId': $stateParams.shopId
     }, function(res) {
       var count = 0;
       var lastId = -1;
       var scrollArray = [];
-      $scope.seller = res.data.shop;
+      $scope.shop = res.data.shop;
       $scope.goods = Array.prototype.slice.call(res.data.productsList)
         .sort(function(a, b) {
           return a.classifyId - b.classifyId;
@@ -208,7 +195,7 @@ angular.module('starter.controllers')
         });
 
       // 显示购物车数量  
-      $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.seller.sellerId);
+      $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId);
     }, function(data) {
       alert('NO DATA MainPageHot');
     });
@@ -216,7 +203,7 @@ angular.module('starter.controllers')
 
   $scope.$on('cartChange', function(event, data) {
     // 更新购物车数量  
-    $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.seller.sellerId);
+    $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId);
   });
 
   $scope.washScrollTo = function(classifyId) {
@@ -271,7 +258,7 @@ angular.module('starter.controllers')
       if ($scope.carts.allGoodsTotalMoney > 0) {
         $scope.orderButton.isDisabled = false;
         $.each($scope.carts, function(index, cart) {
-          if (cart.isChecked && cart.seller.isReachStartPrice == false) {
+          if (cart.isChecked && cart.shop.isReachStartPrice == false) {
             $scope.orderButton.isDisabled = true;
           }
         });
@@ -327,11 +314,11 @@ angular.module('starter.controllers')
             tempTotalMoney += value.price * value.quantity;
           }
         });
-        $scope.carts.allGoodsTotalMoney += cart.seller.totalMoney = tempTotalMoney + cart.seller.sendPrice * 100;
-        if (cart.seller.totalMoney <= cart.seller.sendStartPrice * 100) {
-          cart.seller.isReachStartPrice = false;
+        $scope.carts.allGoodsTotalMoney += cart.shop.totalMoney = tempTotalMoney + cart.shop.sendPrice * 100;
+        if (cart.shop.totalMoney <= cart.shop.sendStartPrice * 100) {
+          cart.shop.isReachStartPrice = false;
         } else {
-          cart.seller.isReachStartPrice = true;
+          cart.shop.isReachStartPrice = true;
         }
       });
       judgeOrder();
@@ -346,18 +333,18 @@ angular.module('starter.controllers')
             tempTotalMoney += value.price * value.quantity;
           }
         });
-        cart.seller.totalMoney = tempTotalMoney;
+        cart.shop.totalMoney = tempTotalMoney;
         // 是否计算运费
         if (tempTotalMoney > 0) {
-          cart.seller.totalMoney += cart.seller.sendPrice * 100;
+          cart.shop.totalMoney += cart.shop.sendPrice * 100;
         }
         // 是否达到起送价
-        if (cart.seller.totalMoney <= cart.seller.sendStartPrice * 100) {
-          cart.seller.isReachStartPrice = false;
+        if (cart.shop.totalMoney <= cart.shop.sendStartPrice * 100) {
+          cart.shop.isReachStartPrice = false;
         } else {
-          cart.seller.isReachStartPrice = true;
+          cart.shop.isReachStartPrice = true;
         }
-        $scope.carts.allGoodsTotalMoney += cart.seller.totalMoney;
+        $scope.carts.allGoodsTotalMoney += cart.shop.totalMoney;
       });
       localStorage.setItem('cart', JSON.stringify($scope.carts));
       judgeOrder();

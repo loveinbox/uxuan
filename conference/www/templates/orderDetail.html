@@ -1,60 +1,60 @@
 <ion-view view-title="U选到家">
-    <div class="index-header">
-        <div go-back></div>
+  <div class="index-header">
+    <div go-back></div>
+  </div>
+  <ion-content class="has-header">
+    <table class="order-detail-table">
+      <tr>
+        <td class="order-detail-name">订单编号</td>
+        <td>{{order.orderId}}</td>
+      </tr>
+      <tr>
+        <td class="order-detail-name">订单状态</td>
+        <td>{{order.orderStatus}}</td>
+      </tr>
+      <tr>
+        <td class="order-detail-name">订单金额</td>
+        <td>{{order.totalMoney/100}}</td>
+      </tr>
+      <tr>
+        <td class="order-detail-name">服务管家</td>
+        <td>{{order.eguardName}}{{order.eguardPhoneNumber}}</td>
+      </tr>
+      <tr>
+        <td class="order-detail-name">预计送达</td>
+        <td>{{order.orderTime}}</td>
+      </tr>
+      <tr>
+        <td class="order-detail-name">收货信息</td>
+        <td>{{order.username}}
+          <br>{{order.userPhoneNumber}}
+          <br>{{order.userAddress}}</td>
+      </tr>
+      <tr>
+        <td class="order-detail-name">支付方式</td>
+        <td>微信支付</td>
+      </tr>
+      <tr>
+        <td class="order-detail-name">店铺信息</td>
+        <td>{{order.shopName}}</td>
+      </tr>
+    </table>
+    <div class="order-detail-list-name">商品列表</div>
+    <ion-scroll direction="y" overflow-scroll="true" class="height100">
+      <ion-list class="index-list order-detail-list">
+        <ion-item class="index-list-item" ng-repeat="good in order.goodsList">
+          <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
+          <p class="name">{{good.productName}}</p>
+          <p class="description">{{good.description}}</p>
+          <p class="price">￥{{good.price/100 }}/{{good.unit}}</p>
+        </ion-item>
+      </ion-list>
+    </ion-scroll>
+  </ion-content>
+  <ion-footer-bar>
+    <div ng-show="order.isPaid" class="bottom-bar order-total shopping-cart-bar">
+      <p class="fl">应支付￥{{order.totalMoney/100 }}元</p>
+      <div class="button button-assertive go-cart" ng-click="rePay($event, order)">去支付</div>
     </div>
-    <ion-content class="has-header">
-        <table class="order-detail-table">
-            <tr>
-                <td class="order-detail-name">订单编号</td>
-                <td>{{order.orderId}}</td>
-            </tr>
-            <tr>
-                <td class="order-detail-name">订单状态</td>
-                <td>{{order.orderStatus}}</td>
-            </tr>
-            <tr>
-                <td class="order-detail-name">订单金额</td>
-                <td>{{order.totalMoney/100}}</td>
-            </tr>
-            <tr>
-                <td class="order-detail-name">服务管家</td>
-                <td>{{order.eguardName}}{{order.eguardPhoneNumber}}</td>
-            </tr>
-            <tr>
-                <td class="order-detail-name">预计送达</td>
-                <td>{{order.orderTime}}</td>
-            </tr>
-            <tr>
-                <td class="order-detail-name">收货信息</td>
-                <td>{{order.username}}
-                    <br>{{order.userPhoneNumber}}
-                    <br>{{order.userAddress}}</td>
-            </tr>
-            <tr>
-                <td class="order-detail-name">支付方式</td>
-                <td>微信支付</td>
-            </tr>
-            <tr>
-                <td class="order-detail-name">店铺信息</td>
-                <td>{{order.sellerName}}</td>
-            </tr>
-        </table>
-        <div class="order-detail-list-name">商品列表</div>
-        <ion-scroll direction="y" overflow-scroll="true" class="height100">
-            <ion-list class="index-list order-detail-list">
-                <ion-item class="index-list-item" ng-repeat="good in order.goodsList">
-                    <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
-                    <p class="name">{{good.productName}}</p>
-                    <p class="description">{{good.description}}</p>
-                    <p class="price">￥{{good.price/100 }}/{{good.unit}}</p>
-                </ion-item>
-            </ion-list>
-        </ion-scroll>
-    </ion-content>
-    <ion-footer-bar>
-        <div ng-show="order.isPaid" class="bottom-bar order-total shopping-cart-bar">
-            <p class="fl">应支付￥{{order.totalMoney/100 }}元</p>
-            <div class="button button-assertive go-cart" ng-click="rePay($event, order)">去支付</div>
-        </div>
-    </ion-footer-bar>
+  </ion-footer-bar>
 </ion-view>

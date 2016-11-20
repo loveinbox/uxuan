@@ -77,7 +77,7 @@ angular.module('starter.directives', [])
     templateUrl: 'templateDirectives/cartModalIcon.html',
     controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
       $scope.$on('cartChange', function(event, data) {
-        $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.shop.shopId);
+        $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId);
       });
       $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
         scope: $scope,
@@ -89,7 +89,7 @@ angular.module('starter.directives', [])
       $scope.openModal = function() {
         if ($scope.totalNumber > 0) {
           $scope.modal.show();
-          $scope.cartGoods = ShoppingCart.getSellerProductList($scope.shop.shopId);
+          $scope.cartGoods = ShoppingCart.getshopProductList($scope.shop.shopId);
         }
       };
       $scope.closeModal = function() {

@@ -11,7 +11,8 @@
         </a>
       </div>
       <div class="lunbo">
-        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true" auto-play="true" show-pager="false">
+        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500"
+          does-continue="true" auto-play="true" show-pager="false">
           <ion-slide>
             <div class="box blue">
               <img src="img/1.jpg">
@@ -45,55 +46,56 @@
     </div>
     <div class="index-hot-list list-top" ng-show="!location.isOut && sessions.length > 0">
       <div class="divider">U选爆款</div>
-      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
+      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll"
+        scrollbar-x="false">
         <ion-list class="single goods index-list clearfix">
           <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.productId}}">
-            <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}" alt="">
+            <img ng-src="http://lifeuxuan.com/{{session.productHeadImg}}">
             <span class="name">{{session.productName}}</span>
-            <p class="price">￥{{session.price/100}}/{{session.unit}}</p>
+            <p class="price">￥{{session.productPrice/100}}/{{session.productUnit}}</p>
           </ion-item>
         </ion-list>
       </ion-scroll>
     </div>
-    <div class="index-shop-list list-top" ng-show="!location.isOut && sellers.length > 0">
+    <div class="index-shop-list list-top" ng-show="!location.isOut && shops.length > 0">
       <div class="divider">附近商家</div>
-      <ion-list class="seller-list clearfix">
-        <ion-item ng-repeat="seller in sellers" href="/washSingle/{{seller.sellerId}}">
-          <div class="seller-img clearfix">
-            <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
+      <ion-list class="shop-list clearfix">
+        <ion-item ng-repeat="shop in shops" href="/washSingle/{{shop.shopId}}">
+          <div class="shop-img clearfix">
+            <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
           </div>
-          <div class="seller-info-wrap">
-            <div class="seller-info1">
-              <span class="name">{{seller.sellerName}}</span>
+          <div class="shop-info-wrap">
+            <div class="shop-info1">
+              <span class="name">{{shop.shopName}}</span>
             </div>
-            <div class="seller-info2">
-              <span>月售{{seller.soldNumber}}单</span>
-              <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{seller.distance}}米</span>
+            <div class="shop-info2">
+              <span>月售{{shop.shopMonthSaleVolume}}单</span>
+              <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{shop.shopDistance}}米</span>
             </div>
-            <div class="seller-info3">
-              <span>起送￥{{seller.sendStartPrice}}</span>
+            <div class="shop-info3">
+              <span>起送￥{{shop.shopStartMoney}}</span>
               <span class="send-divide">|</span>
-              <span>配送￥{{seller.sendPrice}}</span>
+              <span>配送￥{{shop.shopDeliveryFee}}</span>
             </div>
           </div>
         </ion-item>
       </ion-list>
     </div>
-    <!-- <div class="index-fruit-list list-top" ng-show="!location.isOut && sellers.length > 0">
+    <!-- <div class="index-fruit-list list-top" ng-show="!location.isOut && shops.length > 0">
       <div class="divider">U选排行榜</div>
-      <ion-list class="seller-list clearfix">
-        <ion-item ng-repeat="good in sellers" href="/sessions/{{good.productId}}">
-          <div class="seller-img clearfix">
-            <img class="single-good-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
+      <ion-list class="shop-list clearfix">
+        <ion-item ng-repeat="good in shops" href="/sessions/{{good.productId}}">
+          <div class="shop-img clearfix">
+            <img class="single-good-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}">
           </div>
-          <div class="seller-info-wrap good-info">
-            <div class="seller-info1 good-name">
+          <div class="shop-info-wrap good-info">
+            <div class="shop-info1 good-name">
               <span class="name">{{good.productName}}</span>
             </div>
-            <div class="seller-info2">
+            <div class="shop-info2">
               <span>{{good.description}}</span>
             </div>
-            <div class="seller-info3">
+            <div class="shop-info3">
               <span class="single-good-price">￥{{good.price/100}}/{{good.unit}}</span>
             </div>
           </div>

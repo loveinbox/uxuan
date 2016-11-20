@@ -1,48 +1,48 @@
 <ion-view view-title="Search">
-    <ion-header-bar class="index-header">
-        <div go-back></div>
-    </ion-header-bar>
-    <ion-content>
-        <div class="list">
-            <div class="item item-input-inset">
-                <label class="item-input-wrapper">
-                    <i class="icon ion-search placeholder-icon"></i>
-                    <input type="text" placeholder="商家或商品" ng-model="search.keyword">
-                </label>
-                <button class="button button-small" ng-click="searchGo()">
-                    搜索
-                </button>
-            </div>
+  <ion-header-bar class="index-header">
+    <div go-back></div>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <div class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <i class="icon ion-search placeholder-icon"></i>
+          <input type="text" placeholder="商家或商品" ng-model="search.keyword">
+        </label>
+        <button class="button button-small" ng-click="searchGo()">
+          搜索
+        </button>
+      </div>
+    </div>
+    <div class="divider">U选商家</div>
+    <ion-list class="shop index-list clearfix">
+      <ion-item class="index-list-item" ng-repeat="shop in search.shops" href="/shop/{{shop.shopId}}">
+        <img ng-src="http://lifeuxuan.com/backend/{{shop.shopPicUrl}}" alt="">
+        <span class="name">{{shop.shopName}}</span>
+        <ul class="good-info-wrap clearfix">
+          <li class="distance">月售{{shop.soldNumber}}单</li>
+          <li class="distance">{{shop.distance}}米</li>
+          <li class="distance">{{shop.sendStartPrice}}元起送</li>
+          <li class="distance">{{shop.sendPrice}}元配送费</li>
+        </ul>
+        <div class="slogen">{{shop.shopSlogen}}</div>
+        <div class="list-cart">
+          <i class="icon ion-ios-cart "></i>
+          <p class="cartNumber" ng-show="shop.cartNumber > 0">{{shop.cartNumber}}</p>
         </div>
-        <div class="divider">U选商家</div>
-        <ion-list class="seller index-list clearfix">
-            <ion-item class="index-list-item" ng-repeat="seller in search.sellers" href="/seller/{{seller.sellerId}}">
-                <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
-                <span class="name">{{seller.sellerName}}</span>
-                <ul class="good-info-wrap clearfix">
-                    <li class="distance">月售{{seller.soldNumber}}单</li>
-                    <li class="distance">{{seller.distance}}米</li>
-                    <li class="distance">{{seller.sendStartPrice}}元起送</li>
-                    <li class="distance">{{seller.sendPrice}}元配送费</li>
-                </ul>
-                <div class="slogen">{{seller.sellerSlogen}}</div>
-                <div class="list-cart">
-                    <i class="icon ion-ios-cart "></i>
-                    <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p>
-                </div>
-            </ion-item>
-        </ion-list>
-        <div class="divider">U选生鲜水果</div>
-        <ion-list class="rank index-list clearfix">
-            <ion-item class="index-list-item" ng-repeat="good in search.goods" href="/sessions/{{good.productId}}">
-                <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
-                <!-- <img src="img/single.jpg"> -->
-                <span class="name">{{good.productName}}</span>
-                <span class="description">{{good.description}}</span>
-                <p class="price">￥{{good.price/100}}/{{good.unit}}</p>
-                <div single-cart></div>
-                <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
-            </ion-item>
-        </ion-list>
-    </ion-content>
+      </ion-item>
+    </ion-list>
+    <div class="divider">U选生鲜水果</div>
+    <ion-list class="rank index-list clearfix">
+      <ion-item class="index-list-item" ng-repeat="good in search.goods" href="/sessions/{{good.productId}}">
+        <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
+        <!-- <img src="img/single.jpg"> -->
+        <span class="name">{{good.productName}}</span>
+        <span class="description">{{good.description}}</span>
+        <p class="price">￥{{good.price/100}}/{{good.unit}}</p>
+        <div single-cart></div>
+        <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ion-view>

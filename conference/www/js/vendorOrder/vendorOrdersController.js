@@ -88,11 +88,11 @@ angular.module('starter.services')
 //     getWashShop.get({
 //       'longitude': user.longitude,
 //       'latitude': user.latitude,
-//       'sellerId': $stateParams.sellerId
+//       'shopId': $stateParams.shopId
 //     }, function(data) {
-//       $scope.seller = data.data.shop;
-//       $scope.goods = getGoodQuuantity(data.data.shop.sellerId, data.data.products);
-//       $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.seller.sellerId);
+//       $scope.shop = data.data.shop;
+//       $scope.goods = getGoodQuuantity(data.data.shop.shopId, data.data.products);
+//       $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId);
 //     }, function(data) {
 //       alert('NO DATA');
 //     });

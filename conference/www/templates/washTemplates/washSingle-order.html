@@ -6,16 +6,17 @@
       <i class="icon ion-ios-search placeholder-icon"></i>
     </label>
   </div>
-  <div class="seller-detail">
-    <img class="single-shop" ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
-    <p class="name">{{seller.sellerName}}</p>
+  <div class="shop-detail">
+    <img class="single-shop" ng-src="http://lifeuxuan.com/backend/{{shop.shopPicUrl}}"
+      alt="">
+    <p class="name">{{shop.shopName}}</p>
     <ul class="good-info-wrap clearfix">
-      <li class="distance">月售{{seller.soldNumber}}单</li>
-      <li class="distance">{{seller.distance}}米</li>
-      <li class="distance">{{seller.sendPrice}}元起送</li>
-      <li class="distance">{{seller.sendStartPrice}}元配送费</li>
+      <li class="distance">月售{{shop.soldNumber}}单</li>
+      <li class="distance">{{shop.distance}}米</li>
+      <li class="distance">{{shop.sendPrice}}元起送</li>
+      <li class="distance">{{shop.sendStartPrice}}元配送费</li>
     </ul>
-    <div class="slogen">{{seller.sellerSlogen}}</div>
+    <div class="slogen">{{shop.shopSlogen}}</div>
   </div>
   <ion-content class="has-header has-detail-header" scroll="false">
     <ion-scroll direction="y" overflow-scroll="true" class="height100 wash-class fl">
@@ -43,7 +44,7 @@
     <div class="bottom-bar shopping-cart-bar">
       <div cart-modal></div>
       <div class="cart-number-tip" ng-show="totalNumber > 0">{{totalNumber}}</div>
-      <a ng-href="/washCartOrder/{{seller.sellerId}}">
+      <a ng-href="/washCartOrder/{{shop.shopId}}">
         <div class="button button-assertive go-cart fr">选好了</div>
       </a>
     </div>

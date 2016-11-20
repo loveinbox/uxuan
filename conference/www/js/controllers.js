@@ -166,7 +166,7 @@ angular.module('starter.controllers')
   })
 })
 
-.controller('sellerListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank, UserInfo) {
+.controller('shopListCtrl', function($scope, $rootScope, $stateParams, NearByEguard, MainPageHot, FruitUxuanRank, UserInfo) {
   UserInfo.then(function(user) {
     NearByEguard.get({
       'longitude': user.longitude,
@@ -190,7 +190,7 @@ angular.module('starter.controllers')
       'longitude': user.longitude,
       'latitude': user.latitude,
     }, function(data) {
-      $scope.sellers = data.data;
+      $scope.shops = data.data;
     }, function(data) {
       alert('NO DATA');
     });
@@ -198,19 +198,64 @@ angular.module('starter.controllers')
 
 })
 
-.controller('sellerCtrl', function($scope, $stateParams, FruitsByShop, ShoppingCart, $ionicModal, UserInfo) {
+.controller('shopCtrl', function($scope, $stateParams, FruitsByShop, ShoppingCart, $ionicModal, UserInfo) {
+  var scrollObj = {};
+  var indexArray = [];
+  $scope.currentIndex = 0;
   UserInfo.then(function(user) {
     FruitsByShop.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
-      'sellerId': $stateParams.sellerId
+      'shopId': $stateParams.shopId
+    }, function(res) {
+      var count = 0;
+      var lastId = -1;
+      var indexCount = 0;
+      $scope.shop = res.data.shop;
+      $scope.goods = res.data.productsList;
+      $scope.classes = res.data.classifysList;
+      $scope.goods
+        .forEach(function(el, index) {
+          if (el.productClassifyId != lastId) {
+            lastId = el.productClassifyId;
+            scrollObj[el.productClassifyId] = count;
+            indexArray[count] = indexCount++;
+          }
+          count++;
+        });
     }, function(data) {
-      $scope.seller = data.data.shop;
-      $scope.goods = data.data.products;
-    }, function(data) {
-      alert('NO DATA');
+      alert('NO DATA getWashShop');
     });
   });
+
+  $scope.scrollTo = function(classifyId, index) {
+    $scope.currentIndex = index;
+    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
+    $scope.getScrollPosition = null;
+    $timeout(function() {
+      $scope.getScrollPosition = getOffSet;
+    }, 500);
+  }
+  $scope.getScrollPosition = getOffSet;
+
+  function getOffSet() {
+    var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
+    var getIndex = 0;
+    for (var p in scrollObj) {
+      if (scrollObj[p] * 80 < currentScroll) {
+        getIndex = scrollObj[p];
+        continue;
+      }
+    }
+    console.log(getIndex);
+    if ($scope.currentIndex !== indexArray[getIndex]) {
+      $scope.currentIndex = indexArray[getIndex];
+      $scope.getScrollPosition = null;
+      $timeout(function() {
+        $scope.getScrollPosition = getOffSet;
+      }, 100);
+    }
+  }
 
 })
 
@@ -425,7 +470,7 @@ angular.module('starter.controllers')
       'keywords': $scope.search.keyword
     }, function(e) {
       $scope.search.goods = e.data.fruitProducts;
-      $scope.search.sellers = e.data.fruitSellers;
+      $scope.search.shops = e.data.fruitshops;
     })
   }
 

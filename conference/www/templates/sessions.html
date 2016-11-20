@@ -58,7 +58,7 @@
     <div class="index-nav">
       <ul class="clearfix">
         <li>
-          <a href="/sellerList"><img src="img/fruit.svg" alt="">
+          <a href="/shopList"><img src="img/fruit.svg" alt="">
             <p>生鲜水果</p>
           </a>
         </li>
@@ -97,20 +97,20 @@
     </div>
     <div class="index-shop-list list-top" ng-show="!location.isOut && shops.length > 0">
       <div class="divider">附近商家</div>
-      <ion-list class="seller-list clearfix">
-        <ion-item ng-repeat="shop in shops" href="/washSingle/39">
-          <div class="seller-img clearfix">
+      <ion-list class="shop-list clearfix">
+        <ion-item ng-repeat="shop in shops" href="/shop/{{shop.shopId}}">
+          <div class="shop-img clearfix">
             <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}" alt="">
           </div>
-          <div class="seller-info-wrap">
-            <div class="seller-info1">
+          <div class="shop-info-wrap">
+            <div class="shop-info1">
               <span class="name">{{shop.shopName}}</span>
             </div>
-            <div class="seller-info2">
+            <div class="shop-info2">
               <span>月售{{shop.shopMonthSaleVolume}}单</span>
               <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{shop.shopDistance}}米</span>
             </div>
-            <div class="seller-info3">
+            <div class="shop-info3">
               <span>起送￥{{shop.shopStartMoney}}</span>
               <span class="send-divide">|</span>
               <span>配送￥{{shop.shopDeliveryFee}}</span>
@@ -121,19 +121,19 @@
     </div>
     <div class="index-fruit-list list-top" ng-show="!location.isOut && goods.length > 0">
       <div class="divider">U选排行榜</div>
-      <ion-list class="seller-list clearfix">
+      <ion-list class="shop-list clearfix">
         <ion-item ng-repeat="good in goods" href="/sessions/{{good.productId}}">
-          <div class="seller-img clearfix">
+          <div class="shop-img clearfix">
             <img class="single-good-img" ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
           </div>
-          <div class="seller-info-wrap good-info">
-            <div class="seller-info1 good-name">
+          <div class="shop-info-wrap good-info">
+            <div class="shop-info1 good-name">
               <span class="name">{{good.productName}}</span>
             </div>
-            <div class="seller-info2">
-              <span>{{good.description}}</span>
+            <div class="shop-info2">
+              <span>{{good.productDescription}}</span>
             </div>
-            <div class="seller-info3">
+            <div class="shop-info3">
               <span class="single-good-price">￥{{good.productPrice/100}}/{{good.productUnit}}</span>
             </div>
           </div>
@@ -154,7 +154,7 @@
             </ion-list> -->
     </div>
     <!--     <div class="divider">U选洗衣</div>
-        <ion-list class="seller index-list clearfix">
+        <ion-list class="shop index-list clearfix">
             <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.goodId}}"> -->
     <!-- <img ng-src="http://lifeuxuan.com/backend/{{session.goodListPic}}" alt=""> -->
     <!-- <img src="img/single.jpg">
