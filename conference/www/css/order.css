@@ -14,8 +14,23 @@
 }
 
 .add-address {
+  height: 40px;
+  line-height: 40px;
   text-align: center;
   color: #619de5;
+}
+
+.current-address-name {
+  float: left;
+  margin-right: 15px
+}
+
+.current-address-tel {
+  float: left;
+}
+
+.current-address-string {
+  clear: both;
 }
 
 .order-receiver-date,
@@ -31,10 +46,6 @@
 .create-order section {
   margin-bottom: 10px;
   padding: 15px;
-}
-
-.current-address div {
-  display: inline-block;
 }
 
 .current-address p {

@@ -19,14 +19,14 @@ angular.module('starter.directives', [])
   return {
     restrict: 'A',
     replace: true,
-    template: '<p class="guard">管家<strong>{{eGuard.name}}</strong>为您服务</p>',
+    template: '<p class="guard">管家<strong>{{eGuard.eguardName}}</strong>为您服务</p>',
     controller: function($scope, $rootScope, NearByEguard, Location, UserInfo) {
       UserInfo.then(function(user) {
         NearByEguard.get({
           'longitude': user.longitude,
           'latitude': user.latitude,
         }, function(data) {
-          $rootScope.eGuard = $scope.eGuard = data.data[0];
+          $rootScope.eGuard = data.data[0];
         }, function(data) {
           alert('NO DATA');
         });
@@ -45,7 +45,7 @@ angular.module('starter.directives', [])
     templateUrl: 'templateDirectives/addCart.html',
     controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
       $scope.$on('cartChange', function(event, data) {
-        $scope.singleNumber = ShoppingCart.get($scope.good);
+        $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
         if ($scope.singleNumber > 0) {
           $scope.isHideAddCart = true;
         } else {
@@ -56,18 +56,13 @@ angular.module('starter.directives', [])
         if ($scope.singleNumber > 0) {
           $scope.isHideAddCart = true;
         }
-        $scope.addCart = function(event, good) {
+        $scope.addCart = function(event, good, shop) {
           event.stopPropagation();
           if (!(user.verify - 0)) {
             $state.go('phoneNumberCheck');
             return;
           }
-          ShoppingCart.add(event, good);
-          $rootScope.$broadcast('cartChange');
-        };
-        $scope.removeCart = function(good) {
-          event.stopPropagation();
-          ShoppingCart.remove(good);
+          ShoppingCart.add(event, good, shop);
           $rootScope.$broadcast('cartChange');
         };
       })
@@ -82,7 +77,7 @@ angular.module('starter.directives', [])
     templateUrl: 'templateDirectives/cartModalIcon.html',
     controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
       $scope.$on('cartChange', function(event, data) {
-        $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.good.sellerId);
+        $scope.totalNumber = ShoppingCart.getSellerCartNumber($scope.shop.shopId);
       });
       $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
         scope: $scope,
@@ -94,7 +89,7 @@ angular.module('starter.directives', [])
       $scope.openModal = function() {
         if ($scope.totalNumber > 0) {
           $scope.modal.show();
-          $scope.cartGoods = ShoppingCart.getSellerProductList($scope.good.sellerId);
+          $scope.cartGoods = ShoppingCart.getSellerProductList($scope.shop.shopId);
         }
       };
       $scope.closeModal = function() {
@@ -111,25 +106,25 @@ angular.module('starter.directives', [])
     controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
       $scope.cartAction = {};
       if ($scope.good) {
-        $scope.cartAction.singleNumber = ShoppingCart.getSellerCartNumber($scope.good.sellerId);
+        $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
       }
       UserInfo.then(function(user) {
         $scope.$on('cartChange', function(event, data) {
-          $scope.cartAction.singleNumber = ShoppingCart.getSellerCartNumber($scope.good.sellerId);
+          $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
         });
-        $scope.addCart = function(event, good) {
+        $scope.addCart = function(event, good, shop) {
           event.stopPropagation();
-          if (!(user.verify - 0)) {
-            $state.go('phoneNumberCheck');
-            return;
-          }
-          ShoppingCart.add(event, good);
+          // if (!(user.verify - 0)) {
+          //   $state.go('phoneNumberCheck');
+          //   return;
+          // }
+          ShoppingCart.add(event, good, shop);
           $rootScope.$broadcast('cartChange');
         };
 
-        $scope.removeCart = function(good) {
+        $scope.removeCart = function(good, shop) {
           event.stopPropagation();
-          ShoppingCart.remove(good);
+          ShoppingCart.remove(good, shop);
           $rootScope.$broadcast('cartChange');
         };
       })

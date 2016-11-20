@@ -1,63 +1,65 @@
+var baseURL = 'http://www.lifeuxuan.com/index.php'
+
 angular.module('starter.services', ['ngResource'])
 
 .factory('NearByEguard', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/NearByEguard.php');
+  return $resource(baseURL + '/eguards');
 })
 
 .factory('MainPageHot', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/MainPageHot.php');
+  return $resource(baseURL + '/hot/index');
 })
 
 .factory('NearByFruitShops', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/NearByFruitShops.php');
+  return $resource(baseURL + '/shoplist/fruit');
 })
 
 .factory('FruitsByShop', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/FruitsByShop.php');
+  return $resource(baseURL + '/shop/fruit');
 })
 
 .factory('FruitDetail', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/FruitDetail.php');
+  return $resource(baseURL + '/product/fruit');
 })
 
 .factory('FruitPicShow', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/FruitPicShow.php');
+  return $resource(baseURL + '/productshow/fruit');
 })
 
 .factory('FruitUxuanRank', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/FruitUxuanRank.php');
+  return $resource(baseURL + '/rank/index/fruit');
 })
 
 .factory('FruitOrderInsert', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/FruitOrderInsert.php');
+  return $resource(baseURL + '/order/insert/fruit');
 })
 
 .factory('QueryOrderList', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/QueryOrderList.php');
+  return $resource(baseURL + '/QueryOrderList.php');
 })
 
 .factory('PayConfirm', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/PayConfirm.php');
+  return $resource(baseURL + '/PayConfirm.php');
 })
 
 .factory('OrderCancel', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/OrderCancel.php');
+  return $resource(baseURL + '/OrderCancel.php');
 })
 
 .factory('QueryOrderDetail', function($rootScope, $resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/QueryOrderDetail.php');
+  return $resource(baseURL + '/QueryOrderDetail.php');
 })
 
 .factory('SendCheckCode', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/SendCheckCode.php');
+  return $resource(baseURL + '/SendCheckCode.php');
 })
 
 .factory('CheckCheckCode', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/CheckCheckCode.php');
+  return $resource(baseURL + '/CheckCheckCode.php');
 })
 
 .factory('Search', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/Search.php');
+  return $resource(baseURL + '/Search.php');
 })
 
 ;

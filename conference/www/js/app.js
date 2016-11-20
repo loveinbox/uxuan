@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives','starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -20,6 +20,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
       StatusBar.styleDefault();
     }
   });
+})
+
+.config(function($httpProvider) {
+  // $httpProvider.defaults.transformRequest = function(obj) {
+  //   var str = [];
+  //   for (var p in obj) {
+  //     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+  //   }
+  //   return str.join("&");
+  // };
+  // $httpProvider.defaults.headers.post = {
+  //   'Content-Type': 'application/x-www-form-urlencoded'
+  // }
+
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $locationProvider) {
@@ -78,42 +92,49 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('seller-list', {
     url: '/sellerList',
+    cache: false,
     templateUrl: 'templates/sellerList.html',
     controller: 'sellerListCtrl'
   })
 
   .state('seller', {
     url: '/seller/:sellerId',
+    cache: false,
     templateUrl: 'templates/seller.html',
     controller: 'sellerCtrl'
   })
 
   .state('orderStatus', {
     url: '/orderStatus',
+    cache: false,
     templateUrl: 'templates/orderStatus.html',
     controller: 'OrderStatusCtrl'
   })
 
   .state('session', {
     url: '/sessions/:sessionId',
+    cache: false,
     templateUrl: 'templates/session.html',
     controller: 'SessionCtrl'
   })
 
   .state('search', {
     url: '/search',
+    cache: false,
     templateUrl: 'templates/search.html',
     controller: 'SearchCtrl'
   })
 
   .state('orderDetail', {
     url: '/orderDetail/:orderId',
+    cache: false,
     templateUrl: 'templates/orderDetail.html ',
     controller: 'orderDetailCtrl'
   })
 
   .state('phoneNumberCheck', {
     url: '/phoneNumberCheck',
+    cache: false,
     templateUrl: 'templates/phoneNumberCheck.html ',
     controller: 'phoneNumberCheckCtrl'
   })

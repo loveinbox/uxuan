@@ -77,7 +77,7 @@ angular.module('starter.controllers')
       'longitude': user.longitude,
       'latitude': user.latitude,
     }, function(data) {
-      $scope.sellers = data.data;
+      $scope.shops = data.data;
     }, function(data) {
       alert('NO DATA NearByFruitShops');
     });
@@ -138,7 +138,8 @@ angular.module('starter.controllers')
       'latitude': user.latitude,
       'productId': $stateParams.sessionId
     }, function(data) {
-      $scope.good = data.data;
+      $scope.good = data.data.product;
+      $scope.shop = data.data.shop;
       $rootScope.$broadcast('cartChange');
       FruitPicShow.get({
         'longitude': user.longitude,
@@ -154,7 +155,7 @@ angular.module('starter.controllers')
     });
 
     $scope.$on('cartChange', function(event, data) {
-      $scope.singleNumber = ShoppingCart.get($scope.good);
+      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
       if ($scope.singleNumber > 0) {
         $scope.isHideAddCart = true;
       } else {

@@ -88,32 +88,32 @@
         scrollbar-x="false">
         <ion-list class="single goods index-list clearfix">
           <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.productId}}">
-            <img ng-src="http://lifeuxuan.com/backend/{{session.productPicUrl}}" alt="">
+            <img ng-src="http://lifeuxuan.com/{{session.productHeadImg}}" alt="">
             <span class="name">{{session.productName}}</span>
-            <p class="price">￥{{session.price/100}}/{{session.unit}}</p>
+            <p class="price">￥{{session.productPrice/100}}/{{session.productUnit}}</p>
           </ion-item>
         </ion-list>
       </ion-scroll>
     </div>
-    <div class="index-shop-list list-top" ng-show="!location.isOut && sellers.length > 0">
+    <div class="index-shop-list list-top" ng-show="!location.isOut && shops.length > 0">
       <div class="divider">附近商家</div>
       <ion-list class="seller-list clearfix">
-        <ion-item ng-repeat="seller in sellers" href="/washSingle/39">
+        <ion-item ng-repeat="shop in shops" href="/washSingle/39">
           <div class="seller-img clearfix">
-            <img ng-src="http://lifeuxuan.com/backend/{{seller.sellerPicUrl}}" alt="">
+            <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}" alt="">
           </div>
           <div class="seller-info-wrap">
             <div class="seller-info1">
-              <span class="name">{{seller.sellerName}}</span>
+              <span class="name">{{shop.shopName}}</span>
             </div>
             <div class="seller-info2">
-              <span>月售{{seller.soldNumber}}单</span>
-              <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{seller.distance}}米</span>
+              <span>月售{{shop.shopMonthSaleVolume}}单</span>
+              <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{shop.shopDistance}}米</span>
             </div>
             <div class="seller-info3">
-              <span>起送￥{{seller.sendStartPrice}}</span>
+              <span>起送￥{{shop.shopStartMoney}}</span>
               <span class="send-divide">|</span>
-              <span>配送￥{{seller.sendPrice}}</span>
+              <span>配送￥{{shop.shopDeliveryFee}}</span>
             </div>
           </div>
         </ion-item>
@@ -124,9 +124,7 @@
       <ion-list class="seller-list clearfix">
         <ion-item ng-repeat="good in goods" href="/sessions/{{good.productId}}">
           <div class="seller-img clearfix">
-            <img class="single-good-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}"
-              alt="">
-            <!-- <p class="cartNumber" ng-show="seller.cartNumber > 0">{{seller.cartNumber}}</p> -->
+            <img class="single-good-img" ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
           </div>
           <div class="seller-info-wrap good-info">
             <div class="seller-info1 good-name">
@@ -136,7 +134,7 @@
               <span>{{good.description}}</span>
             </div>
             <div class="seller-info3">
-              <span class="single-good-price">￥{{good.price/100}}/{{good.unit}}</span>
+              <span class="single-good-price">￥{{good.productPrice/100}}/{{good.productUnit}}</span>
             </div>
           </div>
           <div class="single-good-top">
@@ -150,7 +148,7 @@
                     <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
                     <span class="name">{{good.productName}}</span>
                     <span class="description">{{good.description}}</span>
-                    <p class="price">￥{{good.price/100}}/{{good.unit}}</p>
+                    <p class="price">￥{{good.price/100}}/{{good.productUnit}}</p>
                     <div single-cart></div>
                 </ion-item>
             </ion-list> -->

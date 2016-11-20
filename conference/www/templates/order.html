@@ -1,61 +1,60 @@
 <ion-view class="create-order" view-title="U选到家">
   <ion-content class="singePage cart-page">
     <section class="order-address" ng-click="getAddress()">
-      <div class="add-address" ng-hide="(order.user.tel === '')">
+      <div class="add-address" ng-hide="address.isAdded">
         添加收货地址
       </div>
-      <div ng-hide="(order.user.tel !== '')" class="current-address">
+      <div ng-hide="!address.isAdded" class="current-address">
         <span class="fromWeChat fr">修改地址</span>
-        <div>
-          {{order.use.name}}
+        <div class="current-address-name">
+          {{order.user.name}}
         </div>
-        <div>
-          {{order.use.tel}}
+        <div class="current-address-tel">
+          {{order.user.tel}}
         </div>
-        <p>
-          {{order.use.address}}
-        </p>
+        <div class="current-address-string">
+          {{order.user.address}}
+        </div>
       </div>
     </section>
     <section uxuan-time user-prefer-time="userPreferTime"></section>
     <section class="order-server">
       <span>选择管家</span>
       <label ng-repeat="eG in order.eGuards">
-        <input type="radio" name="eGuard" ng-checked="$first" value= {{eG.id}} ng-model="order.guard">
-        <span>{{eG.name}}</span>
+        <input type="radio" name="eGuard" ng-checked="$first" value= {{eG.eguardId}} ng-model="order.guard">
+        <span>{{eG.eguardName}}</span>
       </label>
     </section>
     <ion-list class="good-list-in-order">
-      <ion-item ng-repeat="cart in order.carts" ng-class="{'not-reach': !cart.seller.isReachStartPrice}">
+      <ion-item ng-repeat="shop in order.carts" ng-class="{'not-reach': !shop.isReachStartPrice}">
         <div class="order-cart-seller clearfix">
           <label class="clearfix">
             <div class="check-good fl">
-              <input type="checkbox" ng-model="cart.isChecked" ng-click="calculateMoney($event, cart)">
+              <input type="checkbox" ng-model="shop.isChecked" ng-click="pickShop($event, shop)">
             </div>
-            <div class="fl"><img class="seller-img" ng-src="http://lifeuxuan.com/backend/{{cart.seller.sellerPicUrl}}"
-                alt=""></div>
-            <div class="cart-seller-name"><span>{{cart.seller.sellerName}}</span></div>
+            <div class="fl"><img class="seller-img" ng-src="http://lifeuxuan.com/{{shop.sellerInfo.sellerPicUrl}}"></div>
+            <div class="cart-seller-name"><span>{{shop.sellerInfo.sellerName}}</span></div>
             <div class="calculate-money fr">
-              <span class="totalMoney">￥{{cart.seller.totalMoney/100}}元</span>
-              <p class="sendPrice">含运费{{cart.seller.sendPrice}}元</p>
-              <p class="sendPrice sendStartPrice">起送价{{cart.seller.sendStartPrice}}元</p>
+              <span class="totalMoney">￥{{shop.singleCartTotalNumber/100}}元</span>
+              <p class="sendPrice">含运费{{shop.sellerInfo.sendPrice}}元</p>
+              <p class="sendPrice sendStartPrice">起送价{{shop.sellerInfo.sendStartPrice}}元</p>
             </div>
           </label>
         </div>
         <div class="order-cart-goods clearfix">
           <ion-list class="clearfix">
-            <ion-item ng-repeat="good in cart.goodsList">
+            <ion-item ng-repeat="good in shop.goodsList">
               <label class="clearfix">
                 <div class="check-good fl">
-                  <input type="checkbox" ng-model="cart.isChecked" ng-click="calculateSingleMoney($event, cart)">
+                  <input type="checkbox" ng-model="good.isChecked" ng-click="pickShopGood($event, good, shop)">
                 </div>
-                <div class="fl"><img class="cart-detail-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}"></div>
+                <div class="fl"><img class="cart-detail-img" ng-src="http://lifeuxuan.com/{{good.productHeadImg}}"></div>
                 <div class="cart-goods-info">
                   <p class="sendPrice">{{good.productName}}</p>
-                  <p class="sendPrice sendStartPrice">￥{{good.price/100}}</p>
+                  <p class="sendPrice sendStartPrice">￥{{good.productPrice/100}}</p>
                 </div>
               </label>
-              <!-- <div single-cart class="order-cart-action"></div> -->
+              <div single-cart class="order-cart-action"></div>
           </ion-list>
         </div>
         </ion-item>

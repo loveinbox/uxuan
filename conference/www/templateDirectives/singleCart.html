@@ -1,9 +1,9 @@
 <div class="button-cart-action-wrap">
-  <div class="button-cart cart-action" ng-click="removeCart(good)">
+  <div class="button-cart cart-action" ng-click="removeCart(good, shop)">
     <i class="icon ion-minus-round"></i>
   </div>
   <div class="button-cart-number ng-binding">{{cartAction.singleNumber}}</div>
-  <div class="button-cart cart-action" ng-click="addCart($event, good)">
+  <div class="button-cart cart-action" ng-click="addCart($event, good, shop)">
     <i class="icon ion-plus-round"></i>
   </div>
 </div>
