@@ -35,7 +35,7 @@ angular.module('starter.services', ['ngResource'])
 })
 
 .factory('QueryOrderList', function($resource) {
-  return $resource(baseURL + '/QueryOrderList.php');
+  return $resource(baseURL + '/orderlist/customer');
 })
 
 .factory('PayConfirm', function($resource) {
@@ -60,6 +60,14 @@ angular.module('starter.services', ['ngResource'])
 
 .factory('Search', function($resource) {
   return $resource(baseURL + '/Search.php');
+})
+
+.factory('WxPay', function($resource) {
+  return $resource(baseURL + '/wxctrl/pay');
+})
+
+.factory('WxPayConfirm', function($resource) {
+  return $resource(baseURL + '/payconfirm/fruit');
 })
 
 ;

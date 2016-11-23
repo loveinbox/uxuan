@@ -73,7 +73,7 @@ angular.module('starter.services')
   var deferred = $q.defer();
   var user = {
     'name': 'test',
-    'userId': '22',
+    'userId': 'C0000000008',
     'latitude': 31.199345,
     'longitude': 121.446322,
     'openId': '',

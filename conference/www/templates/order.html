@@ -17,7 +17,7 @@
         </div>
       </div>
     </section>
-    <section uxuan-time user-prefer-time="userPreferTime"></section>
+    <section uxuan-time></section>
     <section class="order-server">
       <span>选择管家</span>
       <label ng-repeat="eG in order.eGuards">
@@ -43,7 +43,7 @@
         </div>
         <div class="order-cart-goods clearfix">
           <ion-list class="clearfix">
-            <ion-item ng-repeat="good in shop.goodsList">
+            <ion-item ng-repeat="good in shop.productsList">
               <label class="clearfix">
                 <div class="check-good fl">
                   <input type="checkbox" ng-model="good.isChecked" ng-click="pickShopGood($event, good, shop)">

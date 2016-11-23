@@ -1,5 +1,6 @@
 angular.module('starter.controllers')
-  .controller('OrderCtrl', function($scope, $rootScope, $state, $q, UserInfo, NearByEguard, FruitOrderInsert, PayConfirm, ShoppingCart, orderStatus) {
+  .controller('OrderCtrl', function($scope, $rootScope, $state, $q, UserInfo, NearByEguard,
+    FruitOrderInsert, WxPay, WxPayConfirm, ShoppingCart, orderStatus) {
     UserInfo.then(function(user) {
       $scope.order = {
         user: user,
@@ -46,7 +47,6 @@ angular.module('starter.controllers')
         ShoppingCart.checkAll($scope.order.isAllChecked);
         $rootScope.$broadcast('cartChange');
       }
-
       $scope.confirmOrder = function() {
         // if ($scope.status.isGetThroesold !== true || $scope.status.isAddressValidated !== true) {
         //   return;
@@ -61,7 +61,7 @@ angular.module('starter.controllers')
           'rcvName': $scope.order.user.name,
           'rcvPhone': $scope.order.user.tel,
           'rcvAddress': $scope.order.user.address,
-          'preferRcvTime': ['1', '2'], //期望收货时间
+          'preferRcvTime': $scope.order.sendTime, //期望收货时间
           'needTicket': false,
           'tip': '',
           'detail': ShoppingCart.getCart()
@@ -69,14 +69,17 @@ angular.module('starter.controllers')
         FruitOrderInsert.save(orderData)
           .$promise
           .then(function(res) {
-            ShoppingCart.cleanCart();
-            PayConfirm.psot(res.ordersId)
-              .then(function() {
+            var data = res.data;
+            WxPay.save({ 'orderIdsList': data.orderIdsList, 'orderType': 17001 })
+              .$promise
+              .then(function(res) {
+                ShoppingCart.cleanCart();
                 orderStatus.paied();
+                WxPayConfirm.save({ 'orderIdsList': data.orderIdsList });
               }, function() {
                 orderStatus.ordered();
               })
-            $state.go('app.orders');
+              // $state.go('app.orders');
           }, function() {
             orderStatus.failed();
             $state.go('app.orders');
@@ -87,7 +90,8 @@ angular.module('starter.controllers')
         wx.ready(function() {
           wx.openAddress({
             success: function(res) {
-              var addressGot = res.provinceName + res.cityName + res.countryName + res.detailInfo;
+              var addressGot = res.provinceName + res.cityName + res.countryName +
+                res.detailInfo;
               $scope.$apply(function() {
                 $scope.order.user.address = addressGot;
                 $scope.order.user.name = res.userName;

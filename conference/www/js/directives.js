@@ -4,7 +4,8 @@ angular.module('starter.directives', [])
   return {
     restrict: 'A',
     replace: true,
-    template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
+    template: '<div class="back-wrap" ng-click="myGoBack()"> ' +
+      '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
     controller: function($scope, $location, $ionicHistory) {
       $scope.myGoBack = function() {
         $backView = $ionicHistory.backView();
@@ -110,7 +111,8 @@ angular.module('starter.directives', [])
       }
       UserInfo.then(function(user) {
         $scope.$on('cartChange', function(event, data) {
-          $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+          $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good,
+            $scope.shop);
         });
         $scope.addCart = function(event, good, shop) {
           event.stopPropagation();
@@ -136,9 +138,9 @@ angular.module('starter.directives', [])
   return {
     restrict: 'A',
     replace: true,
-    scope: {
-      userPreferTime: '='
-    },
+    // scope: {
+    //   userPreferTime: '='
+    // },
     templateUrl: 'templateDirectives/timePick.html',
     controller: function($scope, $stateParams) {
       var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
@@ -185,8 +187,10 @@ angular.module('starter.directives', [])
               value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
             })
             $scope.tp.times.push({
-              name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
-              value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
+              name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) +
+                ':00',
+              value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) +
+                ':00'
             })
           }
         } else {
@@ -212,8 +216,10 @@ angular.module('starter.directives', [])
         var pDate = addDate(date, dayOff);
         if ($scope.order) {
           $scope.order.sendTime = [
-            date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[0] + ':00',
-            date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[1] + ':00'
+            date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[0] +
+            ':00',
+            date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[1] +
+            ':00'
           ];
         }
       }

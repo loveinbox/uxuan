@@ -6,7 +6,7 @@ angular.module('starter.controllers')
   // console.log(123);
   (function register() {
     $.ajax({
-        url: 'http://www.lifeuxuan.com/backend/WxAddressCtrl.php',
+        url: 'http://www.lifeuxuan.com/index.php/wxctrl/register',
         type: 'GET',
         dataType: 'json',
         data: {
@@ -15,7 +15,7 @@ angular.module('starter.controllers')
       })
       .done(function(e) {
         wx.config({
-          debug: false,
+          debug: true,
           appId: e.appId,
           timestamp: e.timestamp,
           nonceStr: e.nonceStr,
@@ -46,7 +46,8 @@ angular.module('starter.controllers')
   //     });
 })
 
-.controller('SessionsCtrl', function($scope, $rootScope, $timeout, MainPageHot, FruitUxuanRank, UserInfo, $ionicScrollDelegate, NearByFruitShops) {
+.controller('SessionsCtrl', function($scope, $rootScope, $timeout, MainPageHot, FruitUxuanRank,
+  UserInfo, $ionicScrollDelegate, NearByFruitShops) {
   $scope.location = {
     isGet: false,
     isOut: false,
@@ -128,7 +129,8 @@ angular.module('starter.controllers')
 
 })
 
-.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
+.controller('SessionCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory,
+  $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
   $scope.isHideAddCart = false;
   $scope.singleNumber = 0;
 
@@ -166,27 +168,9 @@ angular.module('starter.controllers')
   })
 })
 
-.controller('shopListCtrl', function($scope, $rootScope, $stateParams, MainPageHot, NearByFruitShops, UserInfo) {
+.controller('shopListCtrl', function($scope, $rootScope, $stateParams, MainPageHot,
+  NearByFruitShops, UserInfo) {
   $scope.location = {};
-  // UserInfo.then(function(user) {
-  //   getWashHot.get({
-  //     'longitude': user.longitude,
-  //     'latitude': user.latitude
-  //   }, function(data) {
-  //     $scope.sessions = data.data;
-  //   }, function(data) {
-  //     alert('NO DATA MainPageHot');
-  //   });
-  //   getWashShops.get({
-  //     'longitude': user.longitude,
-  //     'latitude': user.latitude,
-  //     'shopId': 2
-  //   }, function(data) {
-  //     $scope.shops = data.data;
-  //   }, function(data) {
-  //     alert('NO DATA MainPageHot');
-  //   });
-  // })
   UserInfo.then(function(user) {
     MainPageHot.get({
       'longitude': user.longitude,
@@ -209,14 +193,13 @@ angular.module('starter.controllers')
 
 })
 
-.controller('shopCtrl', function($scope, $stateParams, FruitsByShop, ShoppingCart, $ionicModal, UserInfo) {
+.controller('shopCtrl', function($scope, $stateParams, $ionicScrollDelegate, $timeout, $rootScope,
+  FruitsByShop, ShoppingCart, $ionicModal, UserInfo) {
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;
   UserInfo.then(function(user) {
     FruitsByShop.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
       'shopId': $stateParams.shopId
     }, function(res) {
       var count = 0;
@@ -234,6 +217,7 @@ angular.module('starter.controllers')
           }
           count++;
         });
+      $rootScope.$broadcast('cartChange');
     }, function(data) {
       alert('NO DATA getWashShop');
     });
@@ -241,7 +225,8 @@ angular.module('starter.controllers')
 
   $scope.scrollTo = function(classifyId, index) {
     $scope.currentIndex = index;
-    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
+    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80,
+      true);
     $scope.getScrollPosition = null;
     $timeout(function() {
       $scope.getScrollPosition = getOffSet;
@@ -270,7 +255,8 @@ angular.module('starter.controllers')
 
 })
 
-.controller('OrderStatusCtrl', function($scope, $stateParams, $ionicHistory, $rootScope, orderStatus) {
+.controller('OrderStatusCtrl', function($scope, $stateParams, $ionicHistory, $rootScope,
+  orderStatus) {
   var status = orderStatus.get();
   console.log('111111111$rootScope.message', status);
   if (status == "ordered") {
@@ -301,7 +287,8 @@ angular.module('starter.controllers')
   }
 })
 
-.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList, PayConfirm, OrderCancel, UserInfo, orderStatus, $state) {
+.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList, PayConfirm, OrderCancel,
+  UserInfo, orderStatus, $state) {
 
   UserInfo.then(function(user) {
     getOrders();
@@ -319,50 +306,6 @@ angular.module('starter.controllers')
       $scope.$broadcast('scroll.refreshComplete');
     }
 
-    $scope.rePay = function(e, order) {
-      e.stopPropagation();
-      e.preventDefault();
-      (function ForwardPay() {
-        $.ajax({
-            url: 'http://www.lifeuxuan.com/backend/wxpay/pay/WxPayCtrl.php',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-              //'openId': 'oDHyIvznjdxR2KFmyAjWMs2S0lyU',
-              // 'payMoney': $scope.carts.allGoodsTotalMoney
-              'payMoney': '1'
-            }
-          })
-          .done(function(e) {
-            // cleanCart();
-            // alert(e);
-            wx.ready(function() {
-              // alert(e);
-              wx.chooseWXPay({
-                timestamp: e.timeStamp,
-                nonceStr: e.nonceStr,
-                package: e.package,
-                signType: e.signType,
-                paySign: e.paySign,
-                success: function(res) {
-                  console.log('paied success');
-                  PayConfirm.get({
-                    'longitude': user.longitude,
-                    'latitude': user.latitude,
-                    'orderId[]': [order.orderId]
-                  }, function(data) {
-                    getOrders();
-                  });
-                }
-              });
-            });
-
-          })
-          .fail(function(e) {})
-          .always(function() {});
-      })();
-    }
-
     $scope.cancel = function(e, order) {
       e.stopPropagation();
       e.preventDefault();
@@ -377,9 +320,8 @@ angular.module('starter.controllers')
 
     function getOrders() {
       QueryOrderList.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'userId': user.userId
+        'customerId': user.userId,
+        'pos': 0
       }, function(data) {
         $scope.orders = data.data;
       });
@@ -387,7 +329,8 @@ angular.module('starter.controllers')
   });
 })
 
-.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, QueryOrderDetail, PayConfirm, UserInfo) {
+.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, QueryOrderDetail,
+  PayConfirm, UserInfo) {
   UserInfo.then(function(user) {
     function getOrder(argument) {
       QueryOrderDetail.get({
@@ -415,7 +358,8 @@ angular.module('starter.controllers')
 
 })
 
-.controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserInfo, SendCheckCode, CheckCheckCode, $ionicHistory) {
+.controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserInfo, SendCheckCode,
+  CheckCheckCode, $ionicHistory) {
   var e = {};
   $scope.check = {};
   $scope.check.time = 0;

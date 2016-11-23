@@ -20,7 +20,7 @@ angular.module('starter.services')
       'singleCartTotalNumber': 0,
       'isChecked': true,
       'number': 0, //购物车内所有商品的数量
-      'goodsList': [] //goods in this shopCart
+      'productsList': [] //goods in this shopCart
     }
     return shopCart;
   }
@@ -36,7 +36,7 @@ angular.module('starter.services')
       'productMeasure': good.productMeasure,
       'productPrice': good.productPrice,
       'productMonthSaleVolume': good.productMonthSaleVolume,
-      'number': 0, //该商品的数量
+      'productQuantity': 0, //该商品的数量
       'isChecked': true
     }
     return cartGood;
@@ -52,22 +52,22 @@ angular.module('starter.services')
     var shopCart = toshopCart(shop);
     // 商店购物车第一次被添加
     if (shopIndex < 0) {
-      cartGood.number = 1;
+      cartGood.productQuantity = 1;
       shopCart.number = 1;
-      shopCart.goodsList = [cartGood];
+      shopCart.productsList = [cartGood];
       totalCart.push(shopCart);
       totalCartNumber = 1;
     } else {
-      var goodIndex = _.findIndex(totalCart[shopIndex].goodsList, { 'productId': good.productId });
+      var goodIndex = _.findIndex(totalCart[shopIndex].productsList, { 'productId': good.productId });
       // 商品第一次被添加
       if (goodIndex < 0) {
-        cartGood.number = 1;
+        cartGood.productQuantity = 1;
         shopCart.number++;
-        totalCart[shopIndex].goodsList.push(cartGood);
+        totalCart[shopIndex].productsList.push(cartGood);
         totalCartNumber++;
       } else {
         // 商品第二次被添加
-        totalCart[shopIndex].goodsList[goodIndex].number++;
+        totalCart[shopIndex].productsList[goodIndex].productQuantity++;
         totalCart[shopIndex].number++;
         totalCartNumber++;
       }
@@ -78,15 +78,21 @@ angular.module('starter.services')
 
   this.remove = function(good, shop) {
     var shopIndex = _.findIndex(totalCart, { 'shopId': shop.shopId });
-    var goodIndex = _.findIndex(totalCart[shopIndex].goodsList, { 'productId': good.productId });
+    if (shopIndex < 0) {
+      return;
+    }
+    var goodIndex = _.findIndex(totalCart[shopIndex].productsList, { 'productId': good.productId });
+    if (goodIndex < 0) {
+      return;
+    }
     var cartGood = toCartGood(good);
     var shopCart = toshopCart(shop);
-    var tempNumber = --totalCart[shopIndex].goodsList[goodIndex].number;
+    var tempNumber = --totalCart[shopIndex].productsList[goodIndex].productQuantity;
     totalCart[shopIndex].number--;
     totalCartNumber--;
     if (tempNumber == 0) {
-      totalCart[shopIndex].goodsList.splice(goodIndex, 1);
-      if (totalCart[shopIndex].goodsList.length == 0) {
+      totalCart[shopIndex].productsList.splice(goodIndex, 1);
+      if (totalCart[shopIndex].productsList.length == 0) {
         totalCart.splice(shopIndex, 1);
       }
     }
@@ -108,8 +114,8 @@ angular.module('starter.services')
     if (shopIndex < 0) {
       return 0;
     } else {
-      var goodIndex = _.findIndex(totalCart[shopIndex].goodsList, { 'productId': good.productId });
-      return goodIndex < 0 ? 0 : totalCart[shopIndex].goodsList[goodIndex].number;
+      var goodIndex = _.findIndex(totalCart[shopIndex].productsList, { 'productId': good.productId });
+      return goodIndex < 0 ? 0 : totalCart[shopIndex].productsList[goodIndex].productQuantity;
     }
   }
 
@@ -124,7 +130,7 @@ angular.module('starter.services')
 
   this.getshopProductList = function(shopId) {
     var shopIndex = _.findIndex(totalCart, { 'shopId': shopId });
-    return totalCart[shopIndex].goodsList;
+    return totalCart[shopIndex].productsList;
   }
 
   this.isGetThroesold = function() {
@@ -142,7 +148,7 @@ angular.module('starter.services')
 
   this.checkShop = function(shop) {
     var shopIndex = _.findIndex(totalCart, { 'shopId': shop.shopId });
-    $.each(totalCart[shopIndex].goodsList, function(index, value) {
+    $.each(totalCart[shopIndex].productsList, function(index, value) {
       value.isChecked = totalCart[shopIndex].isChecked;
     });
     calculateMoney();
@@ -151,7 +157,7 @@ angular.module('starter.services')
   this.checkAll = function(isAllChecked) {
     $.each(totalCart, function(index, el) {
       el.isChecked = isAllChecked;
-      $.each(el.goodsList, function(index, value) {
+      $.each(el.productsList, function(index, value) {
         value.isChecked = isAllChecked;
       });
     });
@@ -168,24 +174,24 @@ angular.module('starter.services')
         if (totalCart[i].isChecked) {
           totalCart.splice(i, 1);
         } else {
-          for (var j = totalCart[i].goodsList.length - 1; j >= 0; j--) {
-            if (totalCart[i].goodsList[j] && totalCart[i].goodsList[j].isChecked) {
-              totalCart[i].goodsList.splice(j, 1);
+          for (var j = totalCart[i].productsList.length - 1; j >= 0; j--) {
+            if (totalCart[i].productsList[j] && totalCart[i].productsList[j].isChecked) {
+              totalCart[i].productsList.splice(j, 1);
             }
           }
         }
       }
     }
-    localStorage.setItem('UxuanShoppingCart', JSON.stringify(carts));
+    localStorage.setItem('UxuanShoppingCart', JSON.stringify(totalCart));
   }
 
   function calculateMoney() {
     totalCartMoney = 0;
     $.each(totalCart, function(index, shopCart) {
       var tempTotalMoney = 0;
-      $.each(shopCart.goodsList, function(index, value) {
+      $.each(shopCart.productsList, function(index, value) {
         if (value.isChecked) {
-          tempTotalMoney += value.productPrice * value.number;
+          tempTotalMoney += value.productPrice * value.productQuantity;
         }
       });
       shopCart.singleCartTotalNumber = tempTotalMoney;

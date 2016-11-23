@@ -7,8 +7,7 @@
     </label>
   </div>
   <div class="shop-detail">
-    <img class="single-shop" ng-src="http://lifeuxuan.com/backend/{{shop.shopPicUrl}}"
-      alt="">
+    <img class="single-shop" ng-src="http://lifeuxuan.com/backend/{{shop.shopPicUrl}}" alt="">
     <p class="name">{{shop.shopName}}</p>
     <ul class="good-info-wrap clearfix">
       <li class="distance">月售{{shop.soldNumber}}单</li>
@@ -42,8 +41,7 @@
   </ion-content>
   <ion-footer-bar>
     <div class="bottom-bar shopping-cart-bar">
-      <div cart-modal></div>
-      <div class="cart-number-tip" ng-show="totalNumber > 0">{{totalNumber}}</div>
+      <div cart-modal-icon></div>
       <a ng-href="/washCartOrder/{{shop.shopId}}">
         <div class="button button-assertive go-cart fr">选好了</div>
       </a>
