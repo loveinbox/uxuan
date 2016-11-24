@@ -73,13 +73,31 @@ angular.module('starter.controllers')
             WxPay.save({ 'orderIdsList': data.orderIdsList, 'orderType': 17001 })
               .$promise
               .then(function(res) {
-                ShoppingCart.cleanCart();
-                orderStatus.paied();
-                WxPayConfirm.save({ 'orderIdsList': data.orderIdsList });
+                wx.ready(function() {
+                  wx.chooseWXPay({
+                    timestamp: res.timeStamp,
+                    nonceStr: res.nonceStr,
+                    package: res.package,
+                    signType: res.signType,
+                    paySign: res.paySign,
+                    success: function(res) {
+                      orderStatus.paied();
+                      WxPayConfirm.save({ 'orderIdsList': data.orderIdsList });
+                      $state.go('app.orders');
+                    },
+                    cancel: function(res) {
+                      orderStatus.ordered();
+                      $state.go('app.orders');
+                    },
+                    complete: function(res) {
+                      ShoppingCart.cleanCart();
+                    }
+                  });
+                });
               }, function() {
                 orderStatus.ordered();
+                $state.go('app.orders');
               })
-              // $state.go('app.orders');
           }, function() {
             orderStatus.failed();
             $state.go('app.orders');

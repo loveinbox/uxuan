@@ -5,7 +5,7 @@
       <ion-item class="orders-list" ng-repeat="order in orders" href="/orderDetail/{{order.orderId}}">
         <div ng-if="order.orderType == 17001">
           <div class="clearfix">
-            <p class="list-order-id fl to-click-outline">【订单号】{{order.orderId}}</p>
+            <p class="list-order-id fl to-click-outline">【订单号】{{order.orderId | limitTo: 14}}</p>
             <p class="list-order-status fr" ng-class="{'attention':order.orderStatusId == 7007}">{{order.orderStatus}}</p>
           </div>
           <p class="list-shop">{{order.shopName}}</p>

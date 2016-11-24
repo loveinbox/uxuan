@@ -1,20 +1,16 @@
+var baseURL = 'http://www.lifeuxuan.com/index.php';
+
 angular.module('starter.services')
 
-.factory('verndorList', function($resource) {
-  return $resource('http://www.lifeuxuan.com/backend/api/shopNewOrderList.php');
+.factory('VendorOrderList', function($resource) {
+  return {
+    new: $resource(baseURL + '/orderlist/shop/new'),
+    process: $resource(baseURL + '/orderlist/shop/process'),
+    finish: $resource(baseURL + '/orderlist/shop/finish')
+  }
 })
 
-// // 接单
-// .factory('acceptOrderService', function($resource) {
-//     return $resource('http://www.lifeuxuan.com/backend/api/EguardAcceptOrderConfirm.php');
-// })
-
-// // 拒单
-// .factory('rejectOrderService', function($resource) {
-//     return $resource('http://www.lifeuxuan.com/backend/api/EguardRefuseOrderConfirm.php');
-// })
-
-// // 取衣
-// .factory('fetchClothesService', function($resource) {
-//     return $resource('http://www.lifeuxuan.com/backend/api/EguardFetchClothesConfirm.php');
-// })
+// 接单
+.factory('VendorAction', function($resource) {
+  return $resource(baseURL + '/api/EguardAcceptOrderConfirm.php');
+})

@@ -30,10 +30,11 @@
 
 .guard-order-button {
   text-align: center;
+  margin-top: 10px;
 }
 
 .guard-order-button button {
   width: 30%;
-  float: right;
   margin-left: 15px;
+  font-size: 14px;
 }

@@ -1,38 +1,47 @@
 <ion-view view-title="U选到家">
-  <ion-content>
+  <div class="index-header" style="background: #003333">
+    <ul class="order-tabs">
+      <li ng-click="clickForOrders('new')">新订单</li>
+      <li ng-click="clickForOrders('process')">处理中</li>
+      <li ng-click="clickForOrders('finish')">已完成</li>
+    </ul>
+  </div>
+  <ion-content class="has-header">
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-    <ion-list class="">
-      <!-- <ion-item class="list-order-list" ng-repeat="order in orders" href="/orderDetail/{{order.orderId}}"> -->
+    <ion-list>
       <ion-item class="list-order-list" ng-repeat="order in orders">
         <div class="clearfix">
-          <p class="fl">订单号:{{order.orderId}}</p>
-          <p class="fr">{{orderTypeObj[order.type]}}</p>
-          <p class="fr">{{orderStatusObj[order.orderStatusId]}}---</p>
+          <p class="fl bl">订单号:{{order.orderId | limitTo: 16}}</p>
+          <p class="fr">{{orderTypeObj[order.orderType]}}</p>
+          <!-- <p class="fr">{{order.orderStatus}}</p> -->
         </div>
         <div class="clearfix">
-          <p class="fl">服务费:{{order.profit}}</p>
+          <p class="fl">服务费:{{order.serviceFee}}</p>
           <p class="fr">{{order.orderTime}}</p>
         </div>
-        <p>预约时间:{{order.userPreferTime[0]}}--{{order.userPreferTime[1]}}</p>
+        <div class="clearfix" style="color: red">
+          <div class="w40 fl ">
+            <p class="fl" style="color: red">预约时间:</p>
+            <p class="fr text-center" style="color: red">{{toTimestamp(order.reserveTime[0])| date : 'MM-dd'}}</p>
+          </div>
+          <div class="fl" style="padding: 0 15px;">|</div>
+          <div class="w40 fl text-center ">
+            <p class="fl" style="color: red">{{toWeekCn(order.reserveTime[0])}}</p>
+            <p class="fr" style="color: red">{{toTimestamp(order.reserveTime[1])| date : 'HH:mm'}}</p>
+            <p class="fr" style="color: red">{{toTimestamp(order.reserveTime[0])| date : 'HH:mm'}}--</p>
+          </div>
+        </div>
         <div class="clearfix">
-          <p class="fl">收件人:{{order.username}}</p>
-          <p class="fr">电话:{{order.userPhoneNumber}}</p>
+          <p class="fl">收件人:{{order.rcvName}}</p>
+          <p class="fr"><a class="bl" href="tel:{{order.rcvPhone}}">收货电话:{{order.rcvPhone}}</a></p>
         </div>
-        <p>预约时间:{{order.userAddress}}</p>
-        <div class="guard-order-button" ng-show="order.orderStatusId == '7008'" class="is-pay-order clearfix">
-          <!-- <div class="button-bar"> -->
-            <button class="button button-calm button-small button-right" ng-click="acceptOrder(order)">接单</button>
-            <button class="button button-assertive button-small button-right" ng-click="rejectOrder(order)">拒收</button>
-          <!-- </div> -->
+        <p>收货地址:{{order.rcvAddress}}</p>
+        <p>商家名称:{{order.shopName}}</p>
+        <div class="guard-order-button is-pay-order clearfix">
+          <button class="button button-calm button-small button-right" ng-show="order.isBlueShow" ng-click="clickBlue(order)">{{order.blueText}}</button>
+          <button class="button button-assertive button-small button-right" ng-show="order.isRedShow"
+            ng-click="clickRed(order)">{{order.redText}}</button>
         </div>
-        <div class="guard-order-button" ng-show="order.orderStatusId == '7009'" class="is-pay-order clearfix">
-          <button class="button button-calm button-small button-right" ng-click="fetchClothes(order)">开始计价</button>
-        </div>
-        <div class="guard-order-button" ng-show="order.orderStatusId == '7006'" class="is-pay-order clearfix">
-          <button class="button button-calm button-small button-right" ng-click="fetchClothes(order)">衣服已收到</button>
-        </div>
-        <div class="guard-order-button" ng-show="order.orderStatusId == '7007' || order.orderStatusId == '7010'" class="is-pay-order clearfix">
-          <button class="button button-stable button-small button-right" disabled>进行中...</button>
         </div>
       </ion-item>
     </ion-list>

@@ -21,7 +21,7 @@
     <section class="order-server">
       <span>选择管家</span>
       <label ng-repeat="eG in order.eGuards">
-        <input type="radio" name="eGuard" ng-checked="$first" value={ {eG.eguardId}} ng-model="order.guard">
+        <input type="radio" name="eGuard" ng-checked="$first" value={{eG.eguardId}} ng-model="order.guard">
         <span>{{eG.eguardName}}</span>
       </label>
     </section>
