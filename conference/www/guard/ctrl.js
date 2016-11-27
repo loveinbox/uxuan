@@ -95,15 +95,15 @@ angular.module('starter.controllers')
         $scope.status = { isChecked: res.data.eguardStatusId === 4001 };
         $scope.$watch('status.isChecked', function(newValue, oldValue) {
           if (newValue !== oldValue) {
-            if (newValue == true) {
-              guardWork.get({ 'eguardId': user.userId })
+            if (newValue == false) {
+              guardFree.get({ 'eguardId': user.userId });
             } else {
-              var flag = confirm('确定要休息么？')
-              if (flag) {
-                guardFree.get({ 'eguardId': user.userId });
-              } else {
-                $scope.status.isChecked = !$scope.status.isChecked;
-              }
+              guardWork.get({ 'eguardId': user.userId })
+                // var flag = confirm('确定要休息么？')
+                // if (flag) {
+                // } else {
+                //   $scope.status.isChecked = !$scope.status.isChecked;
+                // }
             }
           }
         })
@@ -229,7 +229,7 @@ angular.module('starter.controllers')
       })
     }
     $scope.clickRed = function(order) {
-      methodAction[redStatus2Action[order.orderStatusId]].get({
+      methodAction[redStatus2Action[type][order.orderStatusId]].get({
         'orderId': order.orderId
       }, function(res) {
         if (res.code === 0) {

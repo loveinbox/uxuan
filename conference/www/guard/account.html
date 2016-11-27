@@ -10,14 +10,14 @@
       <h1>{{user.name}}</h1>
     </div>
     <div class="account-toggle text-center">
-      <span class="account-status" ng-class="{'account-unactive': !status.isChecked}">接单</span>
+      <span class="account-status" ng-class="{'account-unactive': status.isChecked}">休息</span>
       <label class="toggle">
         <input type="checkbox" ng-model="status.isChecked">
         <div class="track">
           <div class="handle"></div>
         </div>
       </label>
-      <span class="account-status" ng-class="{'account-unactive': status.isChecked}">休息</span>
+      <span class="account-status" ng-class="{'account-unactive': !status.isChecked}">接单</span>
     </div>
     <div class="row account-box">
       <div class="col-33">配送规则</div>
