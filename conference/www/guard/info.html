@@ -1,0 +1,43 @@
+<ion-view view-title="U选到家" ng-controller="infoCtrl">
+  <div class="index-header" style="background: #003333">
+    <div go-back></div>
+    <ul class="order-tabs">
+      <li class='back-active' style="width: 100%">个人资料</li>
+    </ul>
+  </div>
+  <ion-content class="has-header padding">
+    <div class="row padding">
+      <div class="padding col-33">姓名：</div>
+      <div class="padding col-67">{{guard.name}}</div>
+    </div>
+    <div class="row padding">
+      <div class="padding col-33">电话：</div>
+      <div class="padding col-67">{{guard.tel}}</div>
+    </div>
+    <div class="row padding">
+      <div class="padding col-33">身份证：</div>
+      <div class="padding col-67">{{guard.id}}</div>
+    </div>
+    <div class="row padding">
+      <div class="padding col-33">住址：</div>
+      <div class="padding col-67">{{guard.address}}</div>
+    </div>
+    <div class="row padding">
+      <div class="padding col-33">银行卡号：</div>
+      <div class="padding col-67">{{guard.bankNum}}</div>
+    </div>
+    <div class="row padding">
+      <div class="padding col-33">开户行：</div>
+    </div>
+    <div class="row padding">
+      <div class="padding col-offset-25"></div>
+      <div class="padding col-50">{{guard.bank}}</div>
+      <div class="col-25">银行</div>
+    </div>
+    <div class="row padding">
+      <div class="padding col-offset-25"></div>
+      <div class="padding col-50">{{guard.branch}}</div>
+      <div class="col-25">支行</div>
+    </div>
+  </ion-content>
+</ion-view>

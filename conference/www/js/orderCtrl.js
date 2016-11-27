@@ -79,7 +79,7 @@ angular.module('starter.controllers')
         'tip': '',
         'detail': ShoppingCart.getCart(type),
         'shopId': FuritOrWash.getParams().washShopId,
-        'orderId': FuritOrWash.getParams().washOrderId
+        'orderIdsList': [FuritOrWash.getParams().washOrderId]
       };
       if (type == 'furit') {
         insertMethod = FruitOrderInsert;
@@ -96,6 +96,7 @@ angular.module('starter.controllers')
         .then(function(res) {
           if (isReserve) {
             alert('预约成功');
+            ShoppingCart.cleanCart(type);
             $state.go('app.orders');
           } else {
             var data = res.data;
@@ -103,7 +104,7 @@ angular.module('starter.controllers')
               'orderIdsList': data.orderIdsList,
               'orderType': 17001
             } : {
-              'orderIdsList': [data.orderId],
+              'orderIdsList': [data.orderIdsList],
               'orderType': 17002
             };
             sendData.money = data.money;

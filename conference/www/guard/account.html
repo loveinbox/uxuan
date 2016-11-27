@@ -26,10 +26,11 @@
     </div>
     <div class="row account-box">
       <div class="col-33">通知</div>
-      <div class="col-33">退出登录</div>
+      <div class="col-33" ng-click="logout()">退出登录</div>
       <div class="col-33"><a href="/resetPassword/guard" style="display: block;">修改密码</a></div>
     </div>
-    <ul>
+    <p style="padding: 0 10px;margin: 0">通知</p>
+    <ul class="padding">
       <li ng-repeat="notice in notices">{{notice.content}}</li>
     </ul>
   </ion-content>

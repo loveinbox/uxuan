@@ -40,6 +40,11 @@
   border-right: solid 1px #fff;
 }
 
+.order-tabs li.active {
+  font-weight: bold;
+  color: #33CC99 !important;
+}
+
 .back-active {
   font-weight: bold;
   color: #33CC99 !important;

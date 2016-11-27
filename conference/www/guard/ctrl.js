@@ -1,5 +1,21 @@
 angular.module('starter.controllers')
 
+.controller('infoCtrl', function($scope, UserInfo, guardInfo) {
+  UserInfo.then(function(user) {
+    guardInfo.get({
+        'eguardId': user.userId
+      })
+      .$promise
+      .then(function(res) {
+        if (res.code === 0) {
+          $scope.guard = res.data;
+        } else {
+          alert(res.msg);
+        }
+      })
+  })
+})
+
 .controller('resetCtrl', function($scope, $stateParams, $state, resetShop, resetGuard, UserInfo) {
   var type = $stateParams.type;
   var method = type === 'guard' ? resetGuard : resetShop;
@@ -61,14 +77,16 @@ angular.module('starter.controllers')
   })
 })
 
-.controller('guardAccountCtrl', function($scope, $stateParams, UserInfo, guardAccount, shopAccount,
-  guardNotices, shopNotices, guardWork, guardFree) {
+.controller('guardAccountCtrl', function($scope, $stateParams, $state, UserInfo, guardAccount,
+  shopAccount, guardNotices, shopNotices, guardWork, guardFree, guardLogout, shopLogout) {
   var type = $stateParams.type;
-  var nameKey = type === 'guard' ? 'eguardId' : 'shopHostId'
-  var method = type === 'guard' ? guardAccount : shopAccount
-  var methodNotice = type === 'guard' ? guardNotices : shopNotices
+  var nameKey = type === 'guard' ? 'eguardId' : 'shopHostId';
+  var method = type === 'guard' ? guardAccount : shopAccount;
+  var methodNotice = type === 'guard' ? guardNotices : shopNotices;
+  var methodLogout = type === 'guard' ? guardLogout : shopLogout;
   var data = {};
   UserInfo.then(function(user) {
+    $scope.user = user;
     data[nameKey] = user.userId;
     method.get(data)
       .$promise
@@ -92,11 +110,21 @@ angular.module('starter.controllers')
       }, function(res) {
         // alert('用户名/密码错误');
       });
+
     methodNotice.get(data)
       .$promise
       .then(function(res) {
         $scope.notices = res.data;
       });
+
+    $scope.logout = function() {
+      data[nameKey] = user.userId;
+      methodLogout.save(data)
+        .$promise
+        .then(function() {
+          $state.go('login', { type: type });
+        })
+    };
   })
 })
 
@@ -112,7 +140,7 @@ angular.module('starter.controllers')
   getOrders();
 
   function getOrders() {
-    guardOrderFlow.get({
+    guardOrderFlow.save({
       'eguardId': 'C0000000009',
       'timeZone': [moment($scope.time.start).format('YYYY-MM-DD'), moment($scope.time.end).format(
         'YYYY-MM-DD')]

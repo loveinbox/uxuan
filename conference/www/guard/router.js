@@ -53,7 +53,7 @@ angular.module('starter')
       templateUrl: 'guard/rule.html'
     })
     .state('guardInfo', {
-      url: '/guardInfo/:type',
+      url: '/guardInfo',
       templateUrl: 'guard/info.html'
     })
     .state('guardInfoEdit', {

@@ -76,7 +76,7 @@ angular.module('starter.controllers')
     function getOrders() {
       $scope.status.noOrder = false;
       VendorOrderList[$scope.status.now].get({
-        'eguardId': 'C0000000007',
+        'shopHostId': 'C0000000007',
         'pos': 0
       }, function(data) {
         $scope.orders = addStatus(data.data);

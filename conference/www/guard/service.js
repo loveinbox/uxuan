@@ -1,6 +1,6 @@
 var baseUrl = 'http://www.lifeuxuan.com/index.php';
 var serviceURLs = {
-  guardOrderFlow: '/orderflow/eguard',
+  guardOrderFlow: '/account/eguard/orderflow',
   resetGuard: '/account/eguard/updatepassword',
   resetShop: '/account/shop/updatepassword',
   guardAccount: '/account/eguard/basicinfo',
@@ -10,7 +10,10 @@ var serviceURLs = {
   guardNotices: '/account/eguard/notify',
   shopNotices: '/account/shop/notify',
   guardWork: '/account/eguard/work',
-  guardFree: '/account/eguard/free'
+  guardFree: '/account/eguard/free',
+  guardLogout: '/account/eguard/logout',
+  shopLogout: '/account/shop/logout',
+  guardInfo: '/account/eguard/extendinfo'
 }
 ServiceFactory(serviceURLs);
 

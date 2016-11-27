@@ -60,22 +60,20 @@
         </ion-item>
     </ion-list>
   </ion-content>
-  <ion-footer-bar class="order-cart">
-    <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash" ng-if="order.isReserve">
+  <ion-footer-bar class="order-cart" ng-if="order.isReserve">
+    <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash">
       <div class="button button-assertive button-full go-wash-cart" ng-click="confirmOrder()">确认预约</div>
     </div>
-    <div ng-if="!order.isReserve">
-      <label class="pick-all">
-        <input type="checkbox" name="" ng-model="order.isAllChecked" ng-click="pickAll()">
-        <span>全选</span>
-      </label>
-      <div class="total-price">
-        <span>总价</span>
-        <span>￥{{order.totalMoney/100}}</span>
-      </div>
-      <!-- <a href=""> -->
-      <div class="button confirm-cart" ng-click="confirmOrder()" ng-class="{'disable-pay': orderButton.isDisabled}">微信支付</div>
+  </ion-footer-bar>
+  <ion-footer-bar class="order-cart" ng-if="!order.isReserve">
+    <label class="pick-all">
+      <input type="checkbox" name="" ng-model="order.isAllChecked" ng-click="pickAll()">
+      <span>全选</span>
+    </label>
+    <div class="total-price">
+      <span>总价</span>
+      <span>￥{{order.totalMoney/100}}</span>
     </div>
-    <!-- </a> -->
+    <div class="button confirm-cart" ng-click="confirmOrder()" ng-class="{'disable-pay': orderButton.isDisabled}">微信支付</div>
   </ion-footer-bar>
 </ion-view>
