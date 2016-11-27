@@ -196,12 +196,14 @@ angular.module('starter')
 
     .state('vendor', {
       url: '/vendor',
+      cache: false,
       templateUrl: 'templates/backTemplates/vendorOrdersTemplate.html ',
       controller: 'vendorOrdersCtrl'
     })
 
     .state('pay', {
       url: '/pay',
+      cache: false,
       templateUrl: 'templates/wxPay.html ',
       controller: 'wxPayCtrl'
     })

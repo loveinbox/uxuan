@@ -20,14 +20,12 @@
   <ion-content class="has-header has-detail-header" scroll="false">
     <ion-scroll direction="y" overflow-scroll="true" class="height100 wash-class fl">
       <ion-list class="index-list clearfix">
-        <ion-item ng-class="{'show': $index==currentIndex}" class="index-list-item detail-list-item detail-class-item"
-          ng-repeat="class in classes">
+        <ion-item ng-class="{'show': $index==currentIndex}" class="index-list-item detail-list-item detail-class-item" ng-repeat="class in classes">
           <p class="name wash-tag" ng-click="scrollTo(class.classifyId, $index)">{{class.classifyName}}</p>
         </ion-item>
       </ion-list>
     </ion-scroll>
-    <ion-scroll direction="y" overflow-scroll="true" delegate-handle="wash-scroll" class="height100 wash-single fl"
-      on-scroll="getScrollPosition()">
+    <ion-scroll direction="y" overflow-scroll="true" delegate-handle="wash-scroll" class="height100 wash-single fl" on-scroll="getScrollPosition()">
       <ion-list class="index-list clearfix">
         <ion-item class="index-list-item detail-list-item" ng-repeat="good in goods" ng-class="good.productClassifyId">
           <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
@@ -42,7 +40,7 @@
   </ion-content>
   <ion-footer-bar>
     <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash">
-      <a href="/washCart/{{shop.shopId}}">
+      <a href="/app/cart">
         <div class="button button-assertive button-full go-wash-cart">预约洗衣</div>
       </a>
     </div>

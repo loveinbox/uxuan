@@ -1,10 +1,10 @@
 <ion-view class="create-order" view-title="U选到家">
   <ion-content class="singePage cart-page">
     <section class="order-address" ng-click="getAddress()">
-      <div class="add-address" ng-hide="address.isAdded">
+      <div class="add-address" ng-hide="status.isAdded">
         添加收货地址
       </div>
-      <div ng-hide="!address.isAdded" class="current-address">
+      <div ng-hide="!status.isAdded" class="current-address">
         <span class="fromWeChat fr">修改地址</span>
         <div class="current-address-name">
           {{order.user.name}}
@@ -61,16 +61,21 @@
     </ion-list>
   </ion-content>
   <ion-footer-bar class="order-cart">
-    <label class="pick-all">
-      <input type="checkbox" name="" ng-model="order.isAllChecked" ng-click="pickAll()">
-      <span>全选</span>
-    </label>
-    <div class="total-price">
-      <span>总价</span>
-      <span>￥{{order.totalMoney/100}}</span>
+    <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash" ng-if="order.isReserve">
+      <div class="button button-assertive button-full go-wash-cart" ng-click="confirmOrder()">确认预约</div>
     </div>
-    <!-- <a href=""> -->
-    <div class="button confirm-cart" ng-click="confirmOrder()" ng-class="{'disable-pay': orderButton.isDisabled}">微信支付</div>
+    <div ng-if="!order.isReserve">
+      <label class="pick-all">
+        <input type="checkbox" name="" ng-model="order.isAllChecked" ng-click="pickAll()">
+        <span>全选</span>
+      </label>
+      <div class="total-price">
+        <span>总价</span>
+        <span>￥{{order.totalMoney/100}}</span>
+      </div>
+      <!-- <a href=""> -->
+      <div class="button confirm-cart" ng-click="confirmOrder()" ng-class="{'disable-pay': orderButton.isDisabled}">微信支付</div>
+    </div>
     <!-- </a> -->
   </ion-footer-bar>
 </ion-view>

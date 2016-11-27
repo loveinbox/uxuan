@@ -2,17 +2,24 @@ angular.module('starter.controllers')
 
 .controller('OrderCtrl', function($scope, $rootScope, $state, $q, UserInfo, NearByEguard,
   FruitOrderInsert, WxPay, WxPayParam, ShoppingCart, orderStatus, FuritOrWash,
-  insertWashOrder) {
+  insertWashOrder, insertWashReserve) {
   UserInfo.then(function(user) {
     var type = FuritOrWash.get();
+    var isReserve = FuritOrWash.getParams().isReserve;
     $scope.order = {
       user: user,
       sendTime: [],
       guard: 0,
-      carts: ShoppingCart.getCart(type)
+      carts: ShoppingCart.getCart(type),
+      isReserve: isReserve
     }
+    if (isReserve) {
+      $scope.order.carts = {}
+    }
+
     $scope.order.isAllChecked = true;
     $scope.status = {
+      isAdded: false,
       isGetThroesold: false,
       isAddressValidated: false
     };
@@ -67,6 +74,7 @@ angular.module('starter.controllers')
         'rcvPhone': $scope.order.user.tel,
         'rcvAddress': $scope.order.user.address,
         'preferRcvTime': $scope.order.sendTime, //期望收货时间
+        'preferFetchTime': $scope.order.sendTime,
         'needTicket': false,
         'tip': '',
         'detail': ShoppingCart.getCart(type),
@@ -76,24 +84,33 @@ angular.module('starter.controllers')
       if (type == 'furit') {
         insertMethod = FruitOrderInsert;
       } else {
-        insertMethod = insertWashOrder;
-        orderData.detail = ShoppingCart.getCart(type)[0].productsList;
+        if (isReserve) {
+          insertMethod = insertWashReserve;
+        } else {
+          insertMethod = insertWashOrder;
+          orderData.detail = ShoppingCart.getCart(type)[0].productsList;
+        }
       }
       insertMethod.save(orderData)
         .$promise
         .then(function(res) {
-          var data = res.data;
-          var sendData = FuritOrWash.get().furitOrWash == 'furit' ? {
-            'orderIdsList': data.orderIdsList,
-            'orderType': 17001
-          } : {
-            'orderIdsList': [data.orderId],
-            'orderType': 17002
-          };
-          data.money = res.money;
-          WxPayParam.set(data);
-          ShoppingCart.cleanCart(type);
-          $state.go('pay');
+          if (isReserve) {
+            alert('预约成功');
+            $state.go('app.orders');
+          } else {
+            var data = res.data;
+            var sendData = FuritOrWash.get() == 'furit' ? {
+              'orderIdsList': data.orderIdsList,
+              'orderType': 17001
+            } : {
+              'orderIdsList': [data.orderId],
+              'orderType': 17002
+            };
+            sendData.money = data.money;
+            WxPayParam.set(sendData);
+            ShoppingCart.cleanCart(type);
+            $state.go('pay');
+          }
         })
         .catch(function(res) {
           alert('下订单失败');
@@ -112,7 +129,8 @@ angular.module('starter.controllers')
             $scope.$apply(function() {
               $scope.order.user.address = addressGot;
               $scope.order.user.name = res.userName;
-              $scope.order.user.tel = res.telNumber;
+              $scope.order.user.tel = res.telNumber + '';
+              $scope.status.isAdded = true;
               isTooFar(addressGot).then(function() {
                 $scope.status.isAddressValidated = true;
               }, function() {
@@ -170,7 +188,7 @@ angular.module('starter.controllers')
         .$promise
         .then(function(res) {
           if (res.code === 0) {
-            FuritOrWash.toWash();
+            FuritOrWash.toWash(order.shopId, order.orderId, true);
             $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
           }
         })
@@ -223,28 +241,43 @@ angular.module('starter.controllers')
               signType: res.signType,
               paySign: res.paySign,
               success: function(res) {
-                if (sendData.orderType == 17001) {
-                  WxPayConfirmFurit.save({ 'orderIdsList': sendData.orderIdsList });
-                } else {
-                  WxPayConfirmWash.save({ 'orderIdsList': sendData.orderIdsList });
-                }
-                orderStatus.paied();
                 alert('支付成功');
+                orderStatus.paied();
+                if (sendData.orderType == 17001) {
+                  WxPayConfirmFurit.save({ 'orderIdsList': sendData.orderIdsList })
+                    // .$promise
+                    // .finally(function() {
+                    //   // window.location.replace('/app/orders');
+                    //   $state.go('app.orders')
+                    // });
+                } else {
+                  WxPayConfirmWash.save({ 'orderIdsList': sendData.orderIdsList })
+                    // .$promise
+                    // .finally(function() {
+                    //   WxPayParam.set({});
+                    //   // window.location.replace('/app/orders');
+                    //   $state.go('app.orders')
+                    // })
+                }
+                WxPayParam.set({});
                 $state.go('app.orders');
               },
               cancel: function(res) {
                 alert('下订单成功，等待支付');
                 orderStatus.ordered();
-                $state.go('app.orders');
+                // window.location.replace('/app/orders');
+                $state.go('app.orders')
               },
-              complete: function(res) {}
+              complete: function(res) {
+
+              }
             });
           });
-
         }, function() {
           alert('下订单成功，等待支付');
           orderStatus.ordered();
-          $state.go('app.orders');
+          // window.location.replace('/app/orders');
+          $state.go('app.orders')
         })
     }
   })
