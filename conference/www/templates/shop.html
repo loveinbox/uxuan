@@ -2,12 +2,9 @@
   <div class="index-header">
     <div go-back></div>
     <p e-guard></p>
-    <label class="header-search">
-      <i class="icon ion-ios-search placeholder-icon"></i>
-    </label>
+    <label class="header-search"> <i class="icon ion-ios-search placeholder-icon"></i> </label>
   </div>
-  <div class="shop-detail">
-    <img class="shop-img" ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
+  <div class="shop-detail"> <img class="shop-img" ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
     <ul class="detail-info-wrap">
       <li class="name">{{shop.shopName}}</li>
       <li class="">营业时间：{{shop.shopOpenTime}}--{{shop.shopCloseTime}}</li>
@@ -20,17 +17,15 @@
   <ion-content class="has-header has-detail-header" scroll="false">
     <ion-scroll direction="y" overflow-scroll="true" class="height100 wash-class fl">
       <ion-list class="index-list clearfix">
-        <ion-item ng-class="{'show': $index==currentIndex}" class="index-list-item detail-list-item detail-class-item"
-          ng-repeat="class in classes">
+        <ion-item ng-class="{'show': $index==currentIndex}" class="index-list-item detail-list-item detail-class-item" ng-repeat="class in classes">
           <p class="name wash-tag" ng-click="scrollTo(class.classifyId, $index)">{{class.classifyName}}</p>
         </ion-item>
       </ion-list>
     </ion-scroll>
-    <ion-scroll direction="y" overflow-scroll="true" delegate-handle="wash-scroll" class="height100 wash-single fl"
-      on-scroll="getScrollPosition()">
+    <ion-scroll direction="y" overflow-scroll="true" delegate-handle="wash-scroll" class="height100 wash-single fl" on-scroll="getScrollPosition()">
       <ion-list class="index-list clearfix">
         <ion-item class="index-list-item detail-list-item" ng-repeat="good in goods" ng-class="good.productClassifyId">
-          <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
+          <a ng-href="/sessions/{{good.productId}}"><img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}"></a>
           <div class="goods-list-item">
             <p class="name">{{good.productName}}</p>
             <p class="description">{{good.description}}</p>

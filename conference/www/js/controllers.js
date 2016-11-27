@@ -3,7 +3,6 @@ angular.module('starter.controllers', []);
 angular.module('starter.controllers')
 
 .run(function run($rootScope) {
-  // console.log(123);
   (function register() {
     $.ajax({
         url: 'http://www.lifeuxuan.com/index.php/wxctrl/register',
@@ -28,7 +27,6 @@ angular.module('starter.controllers')
         // alert(e);
       })
       .always(function() {});
-
   })();
 })
 
@@ -47,7 +45,7 @@ angular.module('starter.controllers')
 })
 
 .controller('SessionsCtrl', function($scope, $rootScope, $timeout, MainPageHot, FruitUxuanRank,
-  UserInfo, $ionicScrollDelegate, NearByFruitShops) {
+  UserInfo, $ionicScrollDelegate, NearByFruitShops, getWashShops, getWashRank) {
   $scope.location = {
     isGet: false,
     isOut: false,
@@ -60,6 +58,13 @@ angular.module('starter.controllers')
       'longitude': user.longitude,
       'latitude': user.latitude
     }, function(data) {
+      data.data.forEach(function(value) {
+        if (value.productType == 17001) {
+          value.href = '/sessions/' + value.productId;
+        } else {
+          value.href = '/washSingle/' + value.shopId;
+        }
+      });
       $scope.sessions = data.data;
     }, function(data) {
       alert('NO DATA MainPageHot');
@@ -82,6 +87,25 @@ angular.module('starter.controllers')
     }, function(data) {
       alert('NO DATA NearByFruitShops');
     });
+
+    getWashShops.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude
+    }, function(data) {
+      $scope.washShops = data.data;
+    }, function(data) {
+      alert('NO DATA MainPageHot');
+    });
+
+    getWashRank.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude
+    }, function(data) {
+      $scope.washShopsRank = data.data;
+    }, function(data) {
+      alert('NO DATA MainPageHot');
+    });
+
   })
 
   $timeout(function() {
@@ -285,77 +309,6 @@ angular.module('starter.controllers')
       });
     });
   }
-})
-
-.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList, PayConfirm, OrderCancel,
-  UserInfo, orderStatus, $state) {
-
-  UserInfo.then(function(user) {
-    getOrders();
-
-    $scope.$on("$ionicParentView.enter", function(event, data) {
-      console.log('loaded');
-      getOrders();
-    });
-
-    $scope.doRefresh = function() {
-      console.log('Refreshing!', UserInfo.userid);
-      getOrders();
-
-      //Stop the ion-refresher from spinning
-      $scope.$broadcast('scroll.refreshComplete');
-    }
-
-    $scope.cancel = function(e, order) {
-      e.stopPropagation();
-      e.preventDefault();
-      OrderCancel.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'orderId': [order.orderId]
-      }, function(data) {
-        getOrders();
-      });
-    }
-
-    function getOrders() {
-      QueryOrderList.get({
-        'customerId': user.userId,
-        'pos': 0
-      }, function(data) {
-        $scope.orders = data.data;
-      });
-    }
-  });
-})
-
-.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, QueryOrderDetail,
-  PayConfirm, UserInfo) {
-  UserInfo.then(function(user) {
-    function getOrder(argument) {
-      QueryOrderDetail.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'orderId': $stateParams.orderId
-      }, function(data) {
-        $scope.order = data.data;
-      });
-    }
-    getOrder();
-
-    $scope.rePay = function(e, order) {
-      e.stopPropagation();
-      e.preventDefault();
-      PayConfirm.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'orderId': [$scope.order.orderId]
-      }, function(data) {
-        getOrder();
-      });
-    }
-  })
-
 })
 
 .controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserInfo, SendCheckCode,

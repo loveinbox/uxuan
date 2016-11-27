@@ -14,4 +14,16 @@ angular.module('starter.services')
   return $resource(baseURL + '/hot/shoplist/wash');
 })
 
+.factory('getWashRank', function($resource, $http) {
+  return $resource(baseURL + '/rank/index/wash');
+})
+
+.factory('insertWashReserve', function($resource, $http) {
+  return $resource(baseURL + '/order/reserve/wash');
+})
+
+.factory('insertWashOrder', function($resource, $http) {
+  return $resource(baseURL + '/order/insert/wash');
+})
+
 ;

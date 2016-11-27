@@ -1,14 +1,15 @@
 <ion-view view-title="U选到家">
   <div class="index-header" style="background: #003333">
     <ul class="order-tabs">
-      <li ng-click="clickForOrders('new')">新订单</li>
-      <li ng-click="clickForOrders('process')">处理中</li>
-      <li ng-click="clickForOrders('finish')">已完成</li>
+      <li ng-click="clickTab('new')" ng-class="{'active': status.now == 'new'}">新订单</li>
+      <li ng-click="clickTab('process')" ng-class="{'active': status.now == 'process'}">处理中</li>
+      <li ng-click="clickTab('finish')" ng-class="{'active': status.now == 'finish'}">已完成</li>
     </ul>
   </div>
   <ion-content class="has-header">
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-    <ion-list>
+    <div class="no-order" ng-show="status.noOrder">无订单</div>
+    <ion-list ng-show="!status.noOrder">
       <ion-item class="list-order-list" ng-repeat="order in orders">
         <div class="clearfix">
           <p class="fl bl">订单号:{{order.orderId | limitTo: 16}}</p>

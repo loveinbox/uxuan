@@ -36,6 +36,59 @@
 }
 
 .order-tabs li:nth-child(2) {
-  border-left: solid 1px;
-  border-right: solid 1px;
+  border-left: solid 1px #fff;
+  border-right: solid 1px #fff;
+}
+
+.back-active {
+  font-weight: bold;
+  color: #33CC99 !important;
+}
+
+.no-order {
+  width: 30%;
+  margin: 50px auto;
+  text-align: center;
+  font-size: 16px;
+}
+
+.has-filter {
+  top: 220px;
+}
+
+.flow-filter {
+  position: absolute;
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+}
+
+.flow-filter button {
+  margin: 15px;
+}
+
+.flow-filter input {
+  display: inline-block;
+}
+
+.account-box div {
+  height: 70px;
+  line-height: 70px;
+  text-align: center;
+  border: solid 1px;
+}
+
+.account-unactive {
+  color: #ddd;
+}
+
+.account-status {
+  display: inline-block;
+  font-size: 16px;
+  /* height: 30px; */
+  height: 46px;
+  vertical-align: top;
+  /* padding-bottom: 10px; */
+  line-height: 34px;
+  padding: 0 10px;
 }

@@ -177,11 +177,11 @@ angular.module('starter')
       url: '/washCart/:shopId',
       cache: false,
       templateUrl: 'templates/washTemplates/washCart.html ',
-      controller: 'washCartController'
+      controller: 'washCartCtrl'
     })
 
     .state('washSingleOrder', {
-      url: '/washSingleOrder/:shopId',
+      url: '/washSingleOrder/:shopId/:orderId',
       cache: false,
       templateUrl: 'templates/washTemplates/washSingle-order.html ',
       controller: 'washSingleOrderCtrl'
@@ -191,22 +191,30 @@ angular.module('starter')
       url: '/washCartOrder/:shopId',
       cache: false,
       templateUrl: 'templates/washTemplates/washCart-order.html ',
-      controller: 'washCartOrderController'
-    })
-
-    .state('guard', {
-      url: '/guard',
-      templateUrl: 'templates/backTemplates/guardOrdersTemplate.html ',
-      controller: 'guardOrdersController'
+      controller: 'washCartOrderCtrl'
     })
 
     .state('vendor', {
       url: '/vendor',
       templateUrl: 'templates/backTemplates/vendorOrdersTemplate.html ',
-      controller: 'vendorOrdersController'
+      controller: 'vendorOrdersCtrl'
+    })
+
+    .state('pay', {
+      url: '/pay',
+      templateUrl: 'templates/wxPay.html ',
+      controller: 'wxPayCtrl'
     })
 
     ;
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/sessions');
+  });
+
+
+angular.module('starter')
+  .filter('toTimeStamp', function() {
+    return function(input, param) {
+      return moment(input).unix() * 1000;
+    }
   });

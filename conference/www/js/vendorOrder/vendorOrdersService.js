@@ -1,5 +1,6 @@
 var baseURL = 'http://www.lifeuxuan.com/index.php';
-
+// var 20.商家端 '洗衣 开始清洗 communicate/shop/wash/start';
+// var 21.商家端 '洗衣 清洗完成 communicate/shop/wash/finish';
 angular.module('starter.services')
 
 .factory('VendorOrderList', function($resource) {

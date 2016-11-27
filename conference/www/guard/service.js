@@ -1,4 +1,30 @@
-var baseUrl = 'http://www.lifeuxuan.com/index.php/';
+var baseUrl = 'http://www.lifeuxuan.com/index.php';
+var serviceURLs = {
+  guardOrderFlow: '/orderflow/eguard',
+  resetGuard: '/account/eguard/updatepassword',
+  resetShop: '/account/shop/updatepassword',
+  guardAccount: '/account/eguard/basicinfo',
+  shopAccount: '/account/shop/basicinfo',
+  guardLogin: '/account/eguard/login',
+  shopLogin: '/account/shop/login',
+  guardNotices: '/account/eguard/notify',
+  shopNotices: '/account/shop/notify',
+  guardWork: 'account/eguard/work',
+  guardFree: 'account/eguard/free'
+}
+ServiceFactory(serviceURLs);
+
+function ServiceFactory(serviceURLs) {
+  for (var p in serviceURLs) {
+    (function(param) {
+      angular.module('starter.services')
+        .factory(p, function($resource) {
+          return $resource(baseUrl + serviceURLs[param]);
+        })
+    })(p);
+  }
+};
+
 var agreecancelUrl = '/communicate/eguard/fruit/agreecancel';
 var refuseUrl = '/communicate/eguard/fruit/refuse';
 var acceptUrl = '/communicate/eguard/fruit/accept';

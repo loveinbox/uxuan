@@ -36,6 +36,33 @@ angular.module('starter.directives', [])
   }
 })
 
+
+.directive('payOrder', function() {
+  return {
+    restrict: 'A',
+    replace: true,
+    scope: {
+      order: '@'
+    },
+    transclude: true,
+    template: '<button ng-click="rePay({{order}})" ng-transclude></button>',
+    controller: function($scope, WxPayParam, $state) {
+      $scope.rePay = function(order) {
+        var data = order.orderType === 17001 ? {
+          'orderIdsList': [order.orderId],
+          'orderType': 17001
+        } : {
+          'orderIdsList': [order.orderId],
+          'orderType': 17002
+        };
+        data.money = order.money;
+        WxPayParam.set(data);
+        $state.go('pay');
+      }
+    }
+  }
+})
+
 .directive('addCart', function() {
   return {
     restrict: 'A',
@@ -76,9 +103,10 @@ angular.module('starter.directives', [])
     restrict: 'A',
     replace: true,
     templateUrl: 'templateDirectives/cartModalIcon.html',
-    controller: function($scope, $rootScope, $ionicModal, ShoppingCart) {
+    controller: function($scope, $rootScope, $ionicModal, ShoppingCart, FuritOrWash) {
+      var type = FuritOrWash.get();
       $scope.$on('cartChange', function(event, data) {
-        $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId);
+        $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId, type);
       });
       $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
         scope: $scope,
@@ -90,7 +118,7 @@ angular.module('starter.directives', [])
       $scope.openModal = function() {
         if ($scope.totalNumber > 0) {
           $scope.modal.show();
-          $scope.cartGoods = ShoppingCart.getshopProductList($scope.shop.shopId);
+          $scope.cartGoods = ShoppingCart.getshopProductList($scope.shop.shopId, type);
         }
       };
       $scope.closeModal = function() {
@@ -104,15 +132,17 @@ angular.module('starter.directives', [])
   return {
     restrict: 'A',
     templateUrl: 'templateDirectives/singleCart.html',
-    controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
+    controller: function($scope, $rootScope, ShoppingCart, UserInfo, FuritOrWash) {
+      var type = FuritOrWash.get();
       $scope.cartAction = {};
       if ($scope.good) {
-        $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+        $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop,
+          type);
       }
       UserInfo.then(function(user) {
         $scope.$on('cartChange', function(event, data) {
           $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good,
-            $scope.shop);
+            $scope.shop, type);
         });
         $scope.addCart = function(event, good, shop) {
           event.stopPropagation();
@@ -120,13 +150,13 @@ angular.module('starter.directives', [])
           //   $state.go('phoneNumberCheck');
           //   return;
           // }
-          ShoppingCart.add(event, good, shop);
+          ShoppingCart.add(event, good, shop, type);
           $rootScope.$broadcast('cartChange');
         };
 
         $scope.removeCart = function(good, shop) {
           event.stopPropagation();
-          ShoppingCart.remove(good, shop);
+          ShoppingCart.remove(good, shop, type);
           $rootScope.$broadcast('cartChange');
         };
       })

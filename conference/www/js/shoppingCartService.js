@@ -1,14 +1,30 @@
 angular.module('starter.services')
 
 .service('ShoppingCart', function($rootScope) {
-
+  var stroage = {
+    'furit': 'UxuanShoppingCart',
+    'wash': 'washShoppingCart'
+  };
   // 所有商家的购物车，即整个购物车的集合
-  var totalCart = JSON.parse(localStorage.getItem('UxuanShoppingCart')) || [];
-  var totalCartNumber = 0;
-  var totalCartMoney = 0;
-  var isGetThroesold = false;
+  var furitCart = {
+    number: 0,
+    money: 0,
+    isGetThroesold: false,
+    cart: JSON.parse(localStorage.getItem('UxuanShoppingCart')) || []
+  }
+  var washCart = {
+    number: 0,
+    money: 0,
+    isGetThroesold: false,
+    cart: JSON.parse(localStorage.getItem('washShoppingCart')) || []
+  }
+  var totalCart = {
+    furit: furitCart,
+    wash: washCart
+  }
+
   // 一个商家的购物车
-  function toshopCart(shop) {
+  function toShopCart(shop) {
     var shopCart = {
       'shopId': shop.shopId,
       'shopInfo': {
@@ -42,152 +58,175 @@ angular.module('starter.services')
     return cartGood;
   }
 
-  this.getCart = function() {
-    return totalCart;
+  this.getCart = function(type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    return _cart;
   }
-  this.add = function(event, good, shop) {
+  this.add = function(event, good, shop, type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
     cartFly(event);
-    var shopIndex = _.findIndex(totalCart, { 'shopId': shop.shopId });
+    var shopIndex = _.findIndex(_cart, { 'shopId': shop.shopId });
     var cartGood = toCartGood(good);
-    var shopCart = toshopCart(shop);
+    var shopCart = toShopCart(shop);
     // 商店购物车第一次被添加
     if (shopIndex < 0) {
       cartGood.productQuantity = 1;
       shopCart.number = 1;
       shopCart.productsList = [cartGood];
-      totalCart.push(shopCart);
-      totalCartNumber = 1;
+      _cart.push(shopCart);
     } else {
-      var goodIndex = _.findIndex(totalCart[shopIndex].productsList, { 'productId': good.productId });
+      var goodIndex = _.findIndex(_cart[shopIndex].productsList, { 'productId': good.productId });
       // 商品第一次被添加
       if (goodIndex < 0) {
         cartGood.productQuantity = 1;
-        shopCart.number++;
-        totalCart[shopIndex].productsList.push(cartGood);
-        totalCartNumber++;
+        _cart[shopIndex].number++;
+        _cart[shopIndex].productsList.push(cartGood);
       } else {
         // 商品第二次被添加
-        totalCart[shopIndex].productsList[goodIndex].productQuantity++;
-        totalCart[shopIndex].number++;
-        totalCartNumber++;
+        _cart[shopIndex].productsList[goodIndex].productQuantity++;
+        _cart[shopIndex].number++;
       }
     }
+    totalCart[type].number++;
     $rootScope.$broadcast('cartChange');
-    calculateMoney();
+    calculateMoney(type);
   }
 
-  this.remove = function(good, shop) {
-    var shopIndex = _.findIndex(totalCart, { 'shopId': shop.shopId });
+  this.remove = function(good, shop, type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    var shopIndex = _.findIndex(_cart, { 'shopId': shop.shopId });
     if (shopIndex < 0) {
       return;
     }
-    var goodIndex = _.findIndex(totalCart[shopIndex].productsList, { 'productId': good.productId });
+    var goodIndex = _.findIndex(_cart[shopIndex].productsList, { 'productId': good.productId });
     if (goodIndex < 0) {
       return;
     }
     var cartGood = toCartGood(good);
-    var shopCart = toshopCart(shop);
-    var tempNumber = --totalCart[shopIndex].productsList[goodIndex].productQuantity;
-    totalCart[shopIndex].number--;
-    totalCartNumber--;
+    var shopCart = toShopCart(shop);
+    var tempNumber = --_cart[shopIndex].productsList[goodIndex].productQuantity;
+    _cart[shopIndex].number--;
+    totalCart[type].number--;
     if (tempNumber == 0) {
-      totalCart[shopIndex].productsList.splice(goodIndex, 1);
-      if (totalCart[shopIndex].productsList.length == 0) {
-        totalCart.splice(shopIndex, 1);
+      _cart[shopIndex].productsList.splice(goodIndex, 1);
+      if (_cart[shopIndex].productsList.length == 0) {
+        _cart.splice(shopIndex, 1);
       }
     }
     $rootScope.$broadcast('cartChange');
-    calculateMoney();
+    calculateMoney(type);
   }
 
-  this.getTotalCartNumber = function() {
-    return totalCartNumber;
+  this.getTotalCartNumber = function(type) {
+    var type = type || 'furit';
+    return totalCart[type].number;
   }
 
-  this.getTotalCartMoney = function() {
-    calculateMoney();
-    return totalCartMoney;
+  this.getTotalCartMoney = function(type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    calculateMoney(type);
+    return _cart.money;
   }
 
-  this.getGoodNumber = function(good, shop) {
-    var shopIndex = _.findIndex(totalCart, { 'shopId': shop.shopId });
+  this.getGoodNumber = function(good, shop, type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    var shopIndex = _.findIndex(_cart, { 'shopId': shop.shopId });
     if (shopIndex < 0) {
       return 0;
     } else {
-      var goodIndex = _.findIndex(totalCart[shopIndex].productsList, { 'productId': good.productId });
-      return goodIndex < 0 ? 0 : totalCart[shopIndex].productsList[goodIndex].productQuantity;
+      var goodIndex = _.findIndex(_cart[shopIndex].productsList, { 'productId': good.productId });
+      return goodIndex < 0 ? 0 : _cart[shopIndex].productsList[goodIndex].productQuantity;
     }
   }
 
-  this.getshopCartNumber = function(shopId) {
-    var shopIndex = _.findIndex(totalCart, { 'shopId': shopId });
+  this.getshopCartNumber = function(shopId, type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    var shopIndex = _.findIndex(_cart, { 'shopId': shopId });
     if (shopIndex < 0) {
       return 0;
     } else {
-      return totalCart[shopIndex].number;
+      return _cart[shopIndex].number;
     }
   }
 
-  this.getshopProductList = function(shopId) {
-    var shopIndex = _.findIndex(totalCart, { 'shopId': shopId });
-    return totalCart[shopIndex].productsList;
+  this.getshopProductList = function(shopId, type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    var shopIndex = _.findIndex(_cart, { 'shopId': shopId });
+    return _cart[shopIndex].productsList;
   }
 
   this.isGetThroesold = function() {
-    isGetThroesold = true;
-    if (totalCartMoney > 0) {
-      $.each(totalCart, function(index, shopCart) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    _cart.isGetThroesold = true;
+    if (_cart.money > 0) {
+      $.each(_cart, function(index, shopCart) {
         // 如果选择了，却为达到起送价
         if (shopCart.isChecked == true && shopCart.isReachStartPrice == false) {
-          isGetThroesold = false;
+          _cart.isGetThroesold = false;
         }
       });
     }
-    return isGetThroesold;
+    return _cart.isGetThroesold;
   }
 
-  this.checkShop = function(shop) {
-    var shopIndex = _.findIndex(totalCart, { 'shopId': shop.shopId });
-    $.each(totalCart[shopIndex].productsList, function(index, value) {
-      value.isChecked = totalCart[shopIndex].isChecked;
+  this.checkShop = function(shop, type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    var shopIndex = _.findIndex(_cart, { 'shopId': shop.shopId });
+    $.each(_cart[shopIndex].productsList, function(index, value) {
+      value.isChecked = _cart[shopIndex].isChecked;
     });
-    calculateMoney();
+    calculateMoney(type);
   }
 
-  this.checkAll = function(isAllChecked) {
-    $.each(totalCart, function(index, el) {
+  this.checkAll = function(isAllChecked, type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    $.each(_cart, function(index, el) {
       el.isChecked = isAllChecked;
       $.each(el.productsList, function(index, value) {
         value.isChecked = isAllChecked;
       });
     });
-    calculateMoney();
+    calculateMoney(type);
   }
 
   this.checkShopGood = function() {
-    calculateMoney();
+    calculateMoney(type);
   }
 
-  this.cleanCart = function() {
-    for (var i = totalCart.length - 1; i >= 0; i--) {
-      if (totalCart[i]) {
-        if (totalCart[i].isChecked) {
-          totalCart.splice(i, 1);
+  this.cleanCart = function(type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    for (var i = _cart.length - 1; i >= 0; i--) {
+      if (_cart[i]) {
+        if (_cart[i].isChecked) {
+          _cart.splice(i, 1);
         } else {
-          for (var j = totalCart[i].productsList.length - 1; j >= 0; j--) {
-            if (totalCart[i].productsList[j] && totalCart[i].productsList[j].isChecked) {
-              totalCart[i].productsList.splice(j, 1);
+          for (var j = _cart[i].productsList.length - 1; j >= 0; j--) {
+            if (_cart[i].productsList[j] && _cart[i].productsList[j].isChecked) {
+              _cart[i].productsList.splice(j, 1);
             }
           }
         }
       }
     }
-    localStorage.setItem('UxuanShoppingCart', JSON.stringify(totalCart));
+    localStorage.setItem(stroage[type], JSON.stringify(_cart));
   }
 
-  function calculateMoney() {
-    totalCartMoney = 0;
-    $.each(totalCart, function(index, shopCart) {
+  function calculateMoney(type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    _cart.money = 0;
+    $.each(_cart, function(index, shopCart) {
       var tempTotalMoney = 0;
       $.each(shopCart.productsList, function(index, value) {
         if (value.isChecked) {
@@ -205,9 +244,9 @@ angular.module('starter.services')
       } else {
         shopCart.isReachStartPrice = true;
       }
-      totalCartMoney += shopCart.singleCartTotalNumber;
+      _cart.money += shopCart.singleCartTotalNumber;
     });
-    localStorage.setItem('UxuanShoppingCart', JSON.stringify(totalCart));
+    localStorage.setItem(stroage[type], JSON.stringify(_cart));
   }
 
   function cartFly(event) {
@@ -263,7 +302,7 @@ angular.module('starter.services')
 //         'userPreferTime': $scope.userPreferTime.value,
 //         'eguardId': $scope.order.guard + "",
 //         'isPaid': true,
-//         'totalMoney': $scope.carts.allGoodsTotalMoney,
+//         'totalCartMoney': $scope.carts.allGoodsTotalMoney,
 //         'note': $scope.order.note || "无" + "",
 //         'productList': cleanedCarts,
 //         // 'username': user.user.name || ''

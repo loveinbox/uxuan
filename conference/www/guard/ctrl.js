@@ -1,5 +1,120 @@
 angular.module('starter.controllers')
 
+.controller('resetCtrl', function($scope, $stateParams, $state, resetShop, resetGuard, UserInfo) {
+  var type = $stateParams.type;
+  var method = type === 'guard' ? resetGuard : resetShop;
+  var nameKey = type === 'guard' ? 'userId' : 'shopHostId';
+  var order = type === 'guard' ? 'guard.order' : 'shop.order';
+  $scope.input = {};
+  UserInfo.then(function(user) {
+    $scope.reset = function() {
+      if ($scope.input.password !== $scope.input.passwordConfirm) {
+        alert('两次输入的新密码不一致');
+        return;
+      }
+      var data = {
+        'eguardId': user.userId,
+        'account': '',
+        'rawPassword': $scope.input.oldPassword,
+        'newPassword': $scope.input.password
+      }
+      method.save(data)
+        .$promise
+        .then(function(res) {
+          if (res.code === 0) {
+            alert(res.msg);
+            $state.go(order)
+          } else {
+            alert(res.msg);
+          }
+        }, function(res) {
+          alert('用户名/密码错误');
+        })
+    }
+  })
+})
+
+.controller('loginCtrl', function($scope, $stateParams, $state, guardLogin, shopLogin, UserInfo) {
+  UserInfo.then(function(user) {
+    $scope.input = {};
+    $scope.login = function() {
+      var type = $stateParams.type;
+      var method = type === 'guard' ? guardLogin : shopLogin
+      var nameKey = type === 'guard' ? 'eguardId' : 'shopHostId'
+      var data = {
+        'account': $scope.input.username,
+        'password': $scope.input.password
+      }
+      data[nameKey] = user.userId;
+      method.get(data)
+        .$promise
+        .then(function(res) {
+          if (res.code === 0) {
+            $state.go('guard.order')
+          } else {
+            alert(res.msg);
+          }
+        }, function(res) {
+          alert('用户名/密码错误');
+        })
+    }
+  })
+})
+
+.controller('guardAccountCtrl', function($scope, $stateParams, UserInfo, guardAccount, shopAccount,
+  guardNotices, shopNotices) {
+  var type = $stateParams.type;
+  var nameKey = type === 'guard' ? 'eguardId' : 'shopHostId'
+  var method = type === 'guard' ? guardAccount : shopAccount
+  var methodNotice = type === 'guard' ? guardNotices : shopNotices
+  var data = {};
+  UserInfo.then(function(user) {
+    data[nameKey] = user.userId;
+    method.get(data)
+      .$promise
+      .then(function(res) {
+        $scope.user = res.data;
+        $scope.status = { isChecked: eguardStatusId === 4001 };
+        $scope.$watch($scope.status.isChecked, function() {
+          if ($scope.status.isChecked == true) {
+            guardWork.get({ 'eguardId': user.userId })
+          } else {
+            guardFree.get({ 'eguardId': user.userId })
+          }
+        })
+      }, function(res) {
+        // alert('用户名/密码错误');
+      });
+    methodNotice.get(data)
+      .$promise
+      .then(function(res) {
+        $scope.notices = res.data;
+      });
+  })
+})
+
+.controller('guardFlowCtrl', function($scope, $stateParams, UserInfo, guardOrderFlow) {
+
+  $scope.time = {
+    start: new Date(moment().subtract(7, 'days')),
+    end: new Date()
+  }
+  $scope.filterOrder = function() {
+    getOrders();
+  }
+  getOrders();
+
+  function getOrders() {
+    guardOrderFlow.get({
+      'eguardId': 'C0000000009',
+      'timeZone': [moment($scope.time.start).format('YYYY-MM-DD'), moment($scope.time.end).format(
+        'YYYY-MM-DD')]
+    }, function(res) {
+      $scope.flows = res.data;
+    })
+  }
+})
+
 .controller('guardOrdersCtrl', function($scope, UserInfo, EguardOrderList,
   EguardAction) {
   $scope.orderTypeObj = {

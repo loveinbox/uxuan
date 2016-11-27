@@ -1,0 +1,41 @@
+<ion-view view-title="U选到家" ng-controller="guardFlowCtrl">
+  <div class="index-header" style="background: #003333">
+    <ul class="order-tabs">
+      <li class='back-active' style="width: 100%">订单流水</li>
+    </ul>
+  </div>
+  <div class="has-header flow-filter">
+    <div class="row">
+      <label class="item item-input col">
+        <input type="date" ng-model="time.start">
+      </label>
+      <span class="col-20" style="line-height: 44px;">--</span>
+      <label class="item item-input col">
+        <input type="date" ng-model="time.end">
+      </label>
+    </div>
+    <button class="button button-calm" ng-click="filterOrder()">筛选订单</button>
+    <ul class="row">
+      <li class="col-50 back-active" style="font-size: 16px;">共计{{flows.totalCount}}单</li>
+      <li class="col-50 back-active" style="font-size: 16px;">{{flows.totalMoney}}元</li>
+    </ul>
+  </div>
+  <ion-content class="has-filter padding">
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+    <div class="no-order" ng-show="flows.length <= 0">无订单</div>
+    <ul class="row">
+      <li class="col-25">序号</li>
+      <li class="col-50">订单号</li>
+      <li class="col-25">金额</li>
+    </ul>
+    <ion-list ng-show="flows.length > 0">
+      <ion-item class="list-order-list" ng-repeat="flow in flows.detail">
+        <ul class="row">
+          <li class="col-25">{{$index}}</li>
+          <li class="col-50">{{flow.orderId}}</li>
+          <li class="col-25">{{flow.money}}</li>
+        </ul>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

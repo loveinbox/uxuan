@@ -66,8 +66,51 @@ angular.module('starter.services', ['ngResource'])
   return $resource(baseURL + '/wxctrl/pay');
 })
 
-.factory('WxPayConfirm', function($resource) {
+.service('WxPayParam', function($resource) {
+  var param = {
+    money: 0
+  };
+  this.set = function(input) {
+    param = input;
+  }
+  this.get = function() {
+    return param;
+  }
+})
+
+.factory('WxPayConfirmFurit', function($resource) {
   return $resource(baseURL + '/payconfirm/fruit');
+})
+
+.factory('WxPayConfirmWash', function($resource) {
+  return $resource(baseURL + '/payconfirm/wash');
+})
+
+.factory('StartPrice', function($resource) {
+  return $resource(baseURL + '/communicate/customer/wash/startprice');
+})
+
+.service('FuritOrWash', function($resource) {
+  var furitOrWash = 'furit';
+  var washShopId = '000';
+  var washOrderId = '000';
+  this.toFurit = function() {
+    furitOrWash = 'furit';
+  }
+  this.toWash = function(shopId, orderId) {
+    furitOrWash = 'wash';
+    washShopId = shopId;
+    washOrderId = orderId;
+  }
+  this.get = function() {
+    return furitOrWash;
+  }
+  this.getParams = function() {
+    return {
+      washShopId: washShopId,
+      washOrderId: washOrderId
+    }
+  }
 })
 
 ;

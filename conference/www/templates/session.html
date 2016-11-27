@@ -3,19 +3,16 @@
     <div go-back></div>
   </div>
   <ion-content>
-    <div class="good-img">
-      <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
-    </div>
+    <div class="good-img"> <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}"> </div>
     <div class="good-main-info">
       <div class="good-name">{{good.productName}}</div>
       <div class="good-descirbe">{{good.productDescription}}</div>
       <div class="good-price">￥{{good.productPrice/100}}</div>
       <div add-cart></div>
     </div>
-    <a href="/shop/39">
+    <a ng-href="/shop/{{shop.shopId}}">
       <div class="good-shop">
-        <div class="shop-part">
-          <i class="icon ion-ios-home"></i>
+        <div class="shop-part"> <i class="icon ion-ios-home"></i>
           <p class="shop-name">{{shop.shopName}}</p>
         </div>
         <div class="shop-part shop-yingye">
@@ -24,16 +21,12 @@
             <p>{{shop.shopOpenTime}}-{{shop.shopCloseTime}}</p>
           </div>
         </div>
-        <div class="shop-address">
-          地址：{{shop.shopAddress}}
-        </div>
+        <div class="shop-address"> 地址：{{shop.shopAddress}} </div>
       </div>
     </a>
     <div class="good-more-info">
       <ion-list class="index-list">
-        <ion-item class="index-list-item" ng-repeat="img in imgs">
-          <img ng-src="http://lifeuxuan.com/{{img}}">
-        </ion-item>
+        <ion-item class="index-list-item" ng-repeat="img in imgs"> <img ng-src="http://lifeuxuan.com/{{img}}"> </ion-item>
       </ion-list>
     </div>
   </ion-content>

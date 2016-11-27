@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>404</title>
+</head>
+
+<body>
+  <h1 id="error" style="text-align: center"></h1>
+  <script type="text/javascript">
+  error.innerHTML = '你暂无权限访问该页面';
+  var string = window.location.search;
+  error.innerHTML = decodeURI(string.split('&')[1].split('=')[1]);
+  </script>
+</body>
+
+</html>
