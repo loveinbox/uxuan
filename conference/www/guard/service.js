@@ -9,8 +9,8 @@ var serviceURLs = {
   shopLogin: '/account/shop/login',
   guardNotices: '/account/eguard/notify',
   shopNotices: '/account/shop/notify',
-  guardWork: 'account/eguard/work',
-  guardFree: 'account/eguard/free'
+  guardWork: '/account/eguard/work',
+  guardFree: '/account/eguard/free'
 }
 ServiceFactory(serviceURLs);
 

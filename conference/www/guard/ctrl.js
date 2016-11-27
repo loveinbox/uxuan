@@ -62,7 +62,7 @@ angular.module('starter.controllers')
 })
 
 .controller('guardAccountCtrl', function($scope, $stateParams, UserInfo, guardAccount, shopAccount,
-  guardNotices, shopNotices) {
+  guardNotices, shopNotices, guardWork, guardFree) {
   var type = $stateParams.type;
   var nameKey = type === 'guard' ? 'eguardId' : 'shopHostId'
   var method = type === 'guard' ? guardAccount : shopAccount
@@ -74,12 +74,19 @@ angular.module('starter.controllers')
       .$promise
       .then(function(res) {
         $scope.user = res.data;
-        $scope.status = { isChecked: eguardStatusId === 4001 };
-        $scope.$watch($scope.status.isChecked, function() {
-          if ($scope.status.isChecked == true) {
-            guardWork.get({ 'eguardId': user.userId })
-          } else {
-            guardFree.get({ 'eguardId': user.userId })
+        $scope.status = { isChecked: res.data.eguardStatusId === 4001 };
+        $scope.$watch('status.isChecked', function(newValue, oldValue) {
+          if (newValue !== oldValue) {
+            if (newValue == true) {
+              guardWork.get({ 'eguardId': user.userId })
+            } else {
+              var flag = confirm('确定要休息么？')
+              if (flag) {
+                guardFree.get({ 'eguardId': user.userId });
+              } else {
+                $scope.status.isChecked = !$scope.status.isChecked;
+              }
+            }
           }
         })
       }, function(res) {
