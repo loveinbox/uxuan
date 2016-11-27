@@ -28,14 +28,11 @@
       <li class="col-50">订单号</li>
       <li class="col-25">金额</li>
     </ul>
-    <ion-list ng-show="flows.length > 0">
-      <ion-item class="list-order-list" ng-repeat="flow in flows.detail">
-        <ul class="row">
-          <li class="col-25">{{$index}}</li>
-          <li class="col-50">{{flow.orderId}}</li>
-          <li class="col-25">{{flow.money}}</li>
-        </ul>
-      </ion-item>
-    </ion-list>
+    <div class="no-order" ng-show="flows.length <= 0">无订单</div>
+    <ul class="row" ng-show="flows.length > 0" ng-repeat="flow in flows">
+      <li class="col-25">{{$index}}</li>
+      <li class="col-50">{{flow.orderId}}</li>
+      <li class="col-25">{{flow.money}}</li>
+    </ul>
   </ion-content>
 </ion-view>

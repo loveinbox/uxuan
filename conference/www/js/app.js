@@ -194,12 +194,12 @@ angular.module('starter')
       controller: 'washCartOrderCtrl'
     })
 
-    .state('vendor', {
-      url: '/vendor',
-      cache: false,
-      templateUrl: 'templates/backTemplates/vendorOrdersTemplate.html ',
-      controller: 'vendorOrdersCtrl'
-    })
+    // .state('vendor', {
+    //   url: '/vendor',
+    //   cache: false,
+    //   templateUrl: 'templates/backTemplates/vendorOrdersTemplate.html ',
+    //   controller: 'vendorOrdersCtrl'
+    // })
 
     .state('pay', {
       url: '/pay',

@@ -137,6 +137,10 @@ angular.module('starter.controllers')
   $scope.filterOrder = function() {
     getOrders();
   }
+  $scope.doRefresh = function() {
+    getOrders();
+    $scope.$broadcast('scroll.refreshComplete');
+  }
   getOrders();
 
   function getOrders() {
@@ -145,18 +149,28 @@ angular.module('starter.controllers')
       'timeZone': [moment($scope.time.start).format('YYYY-MM-DD'), moment($scope.time.end).format(
         'YYYY-MM-DD')]
     }, function(res) {
-      $scope.flows = res.data;
+      $scope.flows = res.data.detail;
     })
   }
 })
 
-.controller('guardOrdersCtrl', function($scope, UserInfo, EguardOrderList,
-  EguardAction) {
+.controller('guardOrdersCtrl', function($scope, $stateParams, UserInfo, EguardOrderList,
+  EguardAction, VendorOrderList, VendorAction) {
+  var type = $stateParams.type;
+  var nameKey = type === 'guard' ? 'eguardId' : 'shopHostId';
+  var methodList = type === 'guard' ? EguardOrderList : VendorOrderList;
+  var methodAction = type === 'guard' ? EguardAction : VendorAction;
+  // var methodLogout = type === 'guard' ? guardLogout : shopLogout;
+  var data = {
+    'eguardId': 'C0000000009',
+    'shopHostId': 'C0000000008',
+    'pos': 0
+  };
   $scope.orderTypeObj = {
     17001: '水果',
     17002: '洗衣',
-    17003: '星巴克',
-    17004: '代买'
+    17003: '洗衣',
+    // 17004: '代买'
   }
 
   $scope.status = {
@@ -175,22 +189,35 @@ angular.module('starter.controllers')
   }
 
   var blueStatus2Action = {
-    12001: 'accept',
-    12004: 'fetch',
-    12005: 'finish',
-    13001: 'acceptWash',
-    13004: 'fetchWash',
-    13007: 'finishWash'
+    guard: {
+      12001: 'accept',
+      12004: 'fetch',
+      12005: 'finish',
+      13001: 'acceptWash',
+      13004: 'fetchWash',
+      13007: 'finishWash',
+      16001: 'acceptSendWash',
+      16003: 'fetchSendWash',
+      16004: 'finishSendWash',
+    },
+    vendor: {
+      14003: 'begin',
+      14004: 'finish'
+    }
   }
 
   var redStatus2Action = {
-    12001: 'refuse'
+    guard: {
+      12001: 'refuse',
+      13001: 'refuseWash',
+      16001: 'refuseSendWash',
+    }
   }
 
   UserInfo.then(function(user) {
     getOrders();
     $scope.clickBlue = function(order) {
-      EguardAction[blueStatus2Action[order.orderStatusId]].get({
+      methodAction[blueStatus2Action[type][order.orderStatusId]].get({
         'orderId': order.orderId
       }, function(res) {
         if (res.code === 0) {
@@ -202,7 +229,7 @@ angular.module('starter.controllers')
       })
     }
     $scope.clickRed = function(order) {
-      EguardAction[redStatus2Action[order.orderStatusId]].get({
+      methodAction[redStatus2Action[order.orderStatusId]].get({
         'orderId': order.orderId
       }, function(res) {
         if (res.code === 0) {
@@ -231,11 +258,10 @@ angular.module('starter.controllers')
     }
 
     function getOrders() {
+      // data[nameKey] = user.userId;
+      data.pos = 0;
       $scope.status.noOrder = false;
-      EguardOrderList[$scope.status.now].get({
-        'eguardId': 'C0000000009',
-        'pos': 0
-      }, function(data) {
+      methodList[$scope.status.now].get(data, function(data) {
         $scope.orders = addStatus(data.data);
       })
     }
@@ -252,7 +278,7 @@ angular.module('starter.controllers')
         switch (value.orderStatusId) {
           case 12001:
             value.isBlueShow = true;
-            value.isRedShow = false;
+            value.isRedShow = true;
             value.blueText = '接单';
             value.redText = '拒单';
             break;
@@ -270,7 +296,7 @@ angular.module('starter.controllers')
             break;
           case 13001:
             value.isBlueShow = true;
-            value.isRedShow = false;
+            value.isRedShow = true;
             value.blueText = '接单';
             value.redText = '拒单';
             break;
@@ -284,6 +310,36 @@ angular.module('starter.controllers')
             value.isBlueShow = true;
             value.isRedShow = false;
             value.blueText = '送达洗衣店';
+            value.redText = 'Red';
+            break;
+          case 14003:
+            value.isBlueShow = true;
+            value.isRedShow = false;
+            value.blueText = '开始清洗';
+            value.redText = 'Red';
+            break;
+          case 14004:
+            value.isBlueShow = true;
+            value.isRedShow = false;
+            value.blueText = '清洗完成';
+            value.redText = 'Red';
+            break;
+          case 16001:
+            value.isBlueShow = true;
+            value.isRedShow = true;
+            value.blueText = '接单';
+            value.redText = '拒单';
+            break;
+          case 16003:
+            value.isBlueShow = true;
+            value.isRedShow = false;
+            value.blueText = '洗衣店取回';
+            value.redText = 'Red';
+            break;
+          case 16004:
+            value.isBlueShow = true;
+            value.isRedShow = false;
+            value.blueText = '已送达';
             value.redText = 'Red';
             break;
         }

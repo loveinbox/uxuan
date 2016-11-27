@@ -104,7 +104,7 @@ angular.module('starter.controllers')
               'orderIdsList': data.orderIdsList,
               'orderType': 17001
             } : {
-              'orderIdsList': [data.orderIdsList],
+              'orderIdsList': data.orderIdsList,
               'orderType': 17002
             };
             sendData.money = data.money;
