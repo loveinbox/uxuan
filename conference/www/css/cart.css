@@ -17,7 +17,7 @@
 
 .button-cart-wrap {
   position: absolute;
-  bottom: 20px;
+  bottom: 15px;
   right: 10px;
 }
 
@@ -42,6 +42,7 @@
 
 .cart-modal-icon {
   position: absolute;
+  width: 30%;
 }
 
 .cart-modal-icon .icon-cart {

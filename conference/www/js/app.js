@@ -50,7 +50,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
     controller: 'AppCtrl'
   })
 
-  .state('app.index', {
+  .state('app.sessions', {
     url: '/sessions',
     cache: false,
     views: {

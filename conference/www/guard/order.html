@@ -27,11 +27,11 @@
               {{order.reserveTime[0] | toTimeStamp | date : 'MM-dd'}}
             </p>
           </div>
-          <div class="fl" style="padding: 0 15px;">|</div>
-          <div class="w40 fl text-center ">
+          <div class="w10 fl text-center">|</div>
+          <div class="w50 fl text-center ">
             <p class="fl" style="color: red">{{toWeekCn(order.reserveTime[0])}}</p>
             <p class="fr" style="color: red">{{order.reserveTime[1]| toTimeStamp | date : 'HH:mm'}}</p>
-            <p class="fr" style="color: red">{{order.reserveTime[0]| toTimeStamp | date : 'HH:mm'}}--</p>
+            <p class="fr" style="color: red">{{order.reserveTime[0]| toTimeStamp | date : 'HH:mm'}}-</p>
           </div>
         </div>
         <div class="clearfix">

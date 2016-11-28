@@ -6,11 +6,14 @@ angular.module('starter.directives', [])
     replace: true,
     template: '<div class="back-wrap" ng-click="myGoBack()"> ' +
       '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
-    controller: function($scope, $location, $ionicHistory) {
+    controller: function($scope, $state, $ionicHistory) {
       $scope.myGoBack = function() {
         $backView = $ionicHistory.backView();
-        $backView.go();
-        console.log('back');
+        if ($backView) {
+          $backView.go();
+        } else {
+          $state.go('app.sessions')
+        }
       };
     }
   }
