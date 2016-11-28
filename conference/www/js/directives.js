@@ -180,7 +180,7 @@ angular.module('starter.directives', [])
       $scope.tp = {};
 
       initDate();
-      $scope.changeDate = changeDateFunction;
+      // changeDateFunction;
       $scope.changeTime = changeTimeFunction;
 
       function initDate() {
@@ -197,13 +197,14 @@ angular.module('starter.directives', [])
         setOrderDate(0);
       }
 
-      function changeDateFunction($index) {
+      $scope.changeDate = function changeDateFunction(index) {
         startHour = date.getHours() > 8 ? date.getHours() : 8;
         weight = startHour >= 20 ? 1 : 0;
         if ($scope.tp.preferDate > 0) {
           weight = 1;
         }
         initTime(weight);
+        $scope.tp.week = weekArray[date.getDay() + index];
         // $scope.tp.preferDate is used as index
         setOrderDate($scope.tp.preferDate);
       }
