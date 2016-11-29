@@ -166,8 +166,8 @@ angular.module('starter.controllers')
 })
 
 
-.controller('OrdersCtrl', function($scope, $rootScope, QueryOrderList, PayConfirm, OrderCancel,
-  UserInfo, orderStatus, $state, StartPrice, FuritOrWash, WxPayParam) {
+.controller('OrdersCtrl', function($scope, $rootScope, UserInfo, orderStatus, $state, StartPrice,
+  QueryOrderList, FuritOrWash, WxPayParam) {
   UserInfo.then(function(user) {
     getOrders();
     $scope.$on("$ionicParentView.enter", function(event, data) {
@@ -207,23 +207,23 @@ angular.module('starter.controllers')
 })
 
 .controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, QueryOrderDetail,
-  PayConfirm, UserInfo, WxPayParam) {
+  UserInfo, WxPayParam) {
   UserInfo.then(function(user) {
     getOrder();
-  })
 
-  function getOrder(argument) {
-    QueryOrderDetail.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-      'orderId': $stateParams.orderId
-    }, function(data) {
-      $scope.order = data.data;
-    });
-  }
+    function getOrder(argument) {
+      QueryOrderDetail.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'orderId': $stateParams.orderId
+      }, function(data) {
+        $scope.order = data.data;
+      });
+    }
+  })
 })
 
-.controller('wxPayCtrl', function($scope, $state, $stateParams, WxPayParam, PayConfirm, UserInfo,
+.controller('wxPayCtrl', function($scope, $state, $stateParams, WxPayParam, UserInfo,
   orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFurit) {
   UserInfo.then(function(user) {
     var sendData = WxPayParam.get();

@@ -101,3 +101,8 @@
   line-height: 34px;
   padding: 0 10px;
 }
+
+.button-small-x {
+  width: 70px;
+  border-radius: 6px;
+}

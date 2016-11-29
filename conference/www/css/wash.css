@@ -29,12 +29,10 @@
 }
 
 .guard-order-button {
-  text-align: center;
+  text-align: right;
   margin-top: 10px;
 }
 
 .guard-order-button button {
-  width: 30%;
-  margin-left: 15px;
-  font-size: 14px;
+  margin-left: 10px;
 }

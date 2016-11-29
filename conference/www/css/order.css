@@ -218,7 +218,8 @@ cart-detail*/
 
 .order-detail-table {
   width: 90%;
-  margin: 15px;
+  margin: 0 auto;
+  background: #fff;
 }
 
 .order-detail-table tr {
@@ -228,7 +229,7 @@ cart-detail*/
 }
 
 .order-detail-name {
-  padding: 2px 10px;
+  padding: 2px 0;
 }
 
 .order-detail-list-name {

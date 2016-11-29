@@ -38,16 +38,8 @@ angular.module('starter.services', ['ngResource'])
   return $resource(baseURL + '/orderlist/customer');
 })
 
-.factory('PayConfirm', function($resource) {
-  return $resource(baseURL + '/PayConfirm.php');
-})
-
-.factory('OrderCancel', function($resource) {
-  return $resource(baseURL + '/OrderCancel.php');
-})
-
 .factory('QueryOrderDetail', function($rootScope, $resource) {
-  return $resource(baseURL + '/QueryOrderDetail.php');
+  return $resource(baseURL + '/orderdetail/customer/fruit');
 })
 
 .factory('SendCheckCode', function($resource) {
