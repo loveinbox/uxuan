@@ -3,7 +3,7 @@
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
     <div class="no-order" ng-show="orders.length == 0">快去下个订单吧~</div>
     <ion-list class="">
-      <ion-item class="orders-list" ng-repeat="order in orders" ng-href="/orderDetail/{{order.orderId}}">
+      <ion-item class="orders-list" ng-repeat="order in orders" ng-href="/orderDetail/{{order.orderId}}/{{order.orderType}}">
         <div ng-if="order.orderType == 17001">
           <div class="clearfix">
             <p class="list-order-id fl to-click-outline">【订单号】{{order.orderId}}</p>
@@ -29,7 +29,7 @@
             <button class="button button-small button-small-x to-click" pay-order order={{order}}>支付订单</button>
           </div>
         </div>
-        <div ng-if="order.orderType == 17002" href="/orderDetail/{{order.orderId}}">
+        <div ng-if="order.orderType == 17002" href="/orderDetail/{{order.orderId}}/{{order.orderType}}">
           <div class="clearfix">
             <p class="list-order-id fl to-click-outline">【订单号】{{order.orderId}}</p>
             <p class="list-order-status fr" ng-class="{'attention':order.orderStatusId == 7007}">{{order.orderStatus}}</p>
@@ -46,7 +46,7 @@
           </ion-list>
           <div class="clearfix">
             <p class="list-money fl">
-              取件时间：{{order.preferFetchTime[0]}} -- {{order.preferFetchTime[1]| toTimeStamp | date : 'HH:mm:ss'}}
+              取件时间：{{order.preferFetchTime[0] * 1000 | date: 'yyyy/MM/dd HH:mm'}} -- {{order.preferFetchTime[1] * 1000 | date: 'HH:mm'}}
             </p>
           </div>
           <div class="guard-order-button is-pay-order clearfix" ng-show="order.orderStatusId == 10001 || order.orderStatusId == 10002">
@@ -57,8 +57,16 @@
             <button class="button  button-small button-small-x disabled">支付订单</button>
             <button class="button button-small button-small-x" ng-click="clickRed(order)">取消订单</button>
           </div>
+          <div class="guard-order-button is-pay-order clearfix" ng-show="order.orderStatusId == 11001">
+            <button class="button button-small button-small-x" ng-click="clickRed(order)">取消订单</button>
+            <button class="button button-small button-small-x disabled">
+              开始计价
+            </button>
+          </div>
           <div class="guard-order-button is-pay-order clearfix" ng-show="order.orderStatusId == 11004 || order.orderStatusId == 11005">
-            <button class="button  button-small button-small-x to-click" ng-click="clickPrice(order)">开始计价</button>
+            <button class="button button-small button-small-x to-click" ng-click="clickPrice(order)">
+              开始计价
+            </button>
           </div>
           <div class="guard-order-button is-pay-order clearfix" ng-show="order.orderStatusId == 11006">
             <button class="button  button-small button-small-x to-click" pay-order order={{order}}>支付订单</button>

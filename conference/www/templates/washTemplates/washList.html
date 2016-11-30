@@ -11,20 +11,8 @@
       <div class="lunbo">
         <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true"
           auto-play="true" show-pager="false">
-          <ion-slide>
-            <div class="box blue"> <img src="img/1.jpg"> </div>
-          </ion-slide>
-          <ion-slide>
-            <div class="box yellow"> <img src="img/2.jpg"> </div>
-          </ion-slide>
-          <ion-slide>
-            <div class="box pink"> <img src="img/3.jpg"> </div>
-          </ion-slide>
-          <ion-slide>
-            <div class="box pink"> <img src="img/4.jpg"> </div>
-          </ion-slide>
-          <ion-slide>
-            <div class="box pink"> <img src="img/5.jpg"> </div>
+          <ion-slide ng-repeat="banner in banners">
+            <div class="box"><img ng-src="http://lifeuxuan.com/{{banner}}"> </div>
           </ion-slide>
         </ion-slide-box>
       </div>
@@ -34,8 +22,7 @@
     </div>
     <div class="index-hot-list list-top" ng-show="!location.isOut && sessions.length > 0">
       <div class="divider">U选爆款</div>
-      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll"
-        scrollbar-x="false">
+      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
         <ion-list class="single goods index-list clearfix">
           <ion-item class="index-list-item" ng-repeat="session in sessions" href="/washSingle/{{session.shopId}}"> <img ng-src="http://lifeuxuan.com/{{session.productHeadImg}}"> <span class="name">{{session.productName}}</span>
             <p class="price">￥{{session.productPrice/100}}/{{session.productUnit}}</p>

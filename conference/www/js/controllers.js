@@ -45,7 +45,8 @@ angular.module('starter.controllers')
 })
 
 .controller('SessionsCtrl', function($scope, $rootScope, $timeout, MainPageHot, FruitUxuanRank,
-  UserInfo, $ionicScrollDelegate, NearByFruitShops, getWashShops, getWashRank) {
+  UserInfo, $ionicScrollDelegate, NearByFruitShops, getWashShops, getWashRank, BannerIndex,
+  $ionicSlideBoxDelegate) {
   $scope.location = {
     isGet: false,
     isOut: false,
@@ -68,6 +69,16 @@ angular.module('starter.controllers')
       $scope.sessions = data.data;
     }, function(data) {
       alert('NO DATA MainPageHot');
+    });
+
+    BannerIndex.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+    }, function(data) {
+      $scope.banners = data.data;
+      $ionicSlideBoxDelegate.update();
+    }, function(data) {
+      alert('NO DATA banners');
     });
 
     FruitUxuanRank.get({
@@ -193,7 +204,7 @@ angular.module('starter.controllers')
 })
 
 .controller('shopListCtrl', function($scope, $rootScope, $stateParams, MainPageHot,
-  NearByFruitShops, UserInfo) {
+  NearByFruitShops, UserInfo, BannerFurit, $ionicSlideBoxDelegate) {
   $scope.location = {};
   UserInfo.then(function(user) {
     MainPageHot.get({
@@ -212,6 +223,16 @@ angular.module('starter.controllers')
       $scope.shops = data.data;
     }, function(data) {
       alert('NO DATA');
+    });
+
+    BannerFurit.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+    }, function(data) {
+      $scope.banners = data.data;
+      $ionicSlideBoxDelegate.update();
+    }, function(data) {
+      alert('NO DATA banners');
     });
   });
 

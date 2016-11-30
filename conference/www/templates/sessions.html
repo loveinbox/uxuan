@@ -8,27 +8,10 @@
         </a>
       </div>
       <div class="lunbo">
-        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500"
-          does-continue="true" auto-play="true" show-pager="false">
-          <ion-slide>
-            <div class="box blue">
-              <!-- <h1>水果推荐1</h1> --><img src="img/1.jpg"> </div>
-          </ion-slide>
-          <ion-slide>
-            <div class="box yellow">
-              <!-- <h1>水果推荐2</h1> --><img src="img/2.jpg"> </div>
-          </ion-slide>
-          <ion-slide>
-            <div class="box pink">
-              <!-- <h1>洗衣推荐</h1> --><img src="img/3.jpg"> </div>
-          </ion-slide>
-          <ion-slide>
-            <div class="box pink">
-              <!-- <h1>洗衣推荐</h1> --><img src="img/4.jpg"> </div>
-          </ion-slide>
-          <ion-slide>
-            <div class="box pink">
-              <!-- <h1>洗衣推荐</h1> --><img src="img/5.jpg"> </div>
+        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true"
+          auto-play="true" show-pager="false">
+          <ion-slide ng-repeat="banner in banners">
+            <div class="box"><img ng-src="http://lifeuxuan.com/{{banner}}"> </div>
           </ion-slide>
         </ion-slide-box>
       </div>
@@ -68,8 +51,7 @@
     </div>
     <div class="index-hot-list list-top" ng-show="!location.isOut && sessions.length > 0">
       <div class="divider">U选爆款</div>
-      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll"
-        scrollbar-x="false">
+      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
         <ion-list class="single goods index-list clearfix">
           <ion-item class="index-list-item" ng-repeat="session in sessions" ng-href="{{session.href}}">
             <img ng-src="http://lifeuxuan.com/{{session.productHeadImg}}" alt="">
@@ -123,13 +105,13 @@
       <div class="divider">U选排行榜</div>
       <ion-list class="shop-list clearfix">
         <ion-item ng-repeat="good in goods" href="/sessions/{{good.productId}}">
-          <div class="shop-img clearfix"> <img class="single-good-img" ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">            </div>
+          <div class="shop-img clearfix"> <img class="single-good-img" ng-src="http://lifeuxuan.com/{{good.productHeadImg}}"> </div>
           <div class="shop-info-wrap good-info">
             <div class="shop-info1 good-name"> <span class="name">{{good.productName}}</span> </div>
             <div class="shop-info2">
               <span>{{good.productDescription}}</span> </div>
             <div class="shop-info3">
-              <span class="single-good-price">￥{{good.productPrice/100}}/{{good.productUnit}}</span>              </div>
+              <span class="single-good-price">￥{{good.productPrice/100}}/{{good.productUnit}}</span> </div>
           </div>
           <div class="single-good-top">
             <div class="single-good-top-header">top</div>

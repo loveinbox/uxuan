@@ -1,86 +1,55 @@
+angular.module('starter.services', ['ngResource']);
 var baseURL = 'http://www.lifeuxuan.com/index.php';
+var serviceURLs = {
+  'NearByEguard': '/eguards',
+  'MainPageHot': '/hot/index',
+  'NearByFruitShops': '/shoplist/fruit',
+  'FruitsByShop': '/shop/fruit',
+  'FruitDetail': '/product/fruit',
+  'FruitPicShow': '/productshow/fruit',
+  'FruitUxuanRank': '/rank/index/fruit',
+  'FruitOrderInsert': '/order/insert/fruit',
+  'OrderList': '/orderlist/customer',
+  'FuritOrderDetail': '/orderdetail/customer/fruit',
+  'WashOrderDetail': '/orderdetail/customer/wash',
+  'SendCheckCode': '/SendCheckCode.php',
+  'CheckCheckCode': '/CheckCheckCode.php',
+  'Search': '/Search.php',
+  'WxPay': '/wxctrl/pay',
+  'WxPayConfirmFurit': '/payconfirm/fruit',
+  'WxPayConfirmWash': '/payconfirm/wash',
+  'StartPrice': '/communicate/customer/wash/startprice',
+  'BannerIndex': '/banner/index',
+  'BannerFurit': '/banner/shoplist/fruit',
+  'BannerWash': '/banner/shoplist/wash',
+  'cancelFurit': '/communicate/customer/fruit/cancel',
+  'cancelWash': '/communicate/customer/wash/cancel',
+};
+ServiceFactory(serviceURLs);
 
-angular.module('starter.services', ['ngResource'])
-
-.factory('NearByEguard', function($resource) {
-  return $resource(baseURL + '/eguards');
-})
-
-.factory('MainPageHot', function($resource) {
-  return $resource(baseURL + '/hot/index');
-})
-
-.factory('NearByFruitShops', function($resource) {
-  return $resource(baseURL + '/shoplist/fruit');
-})
-
-.factory('FruitsByShop', function($resource) {
-  return $resource(baseURL + '/shop/fruit');
-})
-
-.factory('FruitDetail', function($resource) {
-  return $resource(baseURL + '/product/fruit');
-})
-
-.factory('FruitPicShow', function($resource) {
-  return $resource(baseURL + '/productshow/fruit');
-})
-
-.factory('FruitUxuanRank', function($resource) {
-  return $resource(baseURL + '/rank/index/fruit');
-})
-
-.factory('FruitOrderInsert', function($resource) {
-  return $resource(baseURL + '/order/insert/fruit');
-})
-
-.factory('QueryOrderList', function($resource) {
-  return $resource(baseURL + '/orderlist/customer');
-})
-
-.factory('QueryOrderDetail', function($rootScope, $resource) {
-  return $resource(baseURL + '/orderdetail/customer/fruit');
-})
-
-.factory('SendCheckCode', function($resource) {
-  return $resource(baseURL + '/SendCheckCode.php');
-})
-
-.factory('CheckCheckCode', function($resource) {
-  return $resource(baseURL + '/CheckCheckCode.php');
-})
-
-.factory('Search', function($resource) {
-  return $resource(baseURL + '/Search.php');
-})
-
-.factory('WxPay', function($resource) {
-  return $resource(baseURL + '/wxctrl/pay');
-})
-
-.service('WxPayParam', function($resource) {
-  var param = {
-    money: 0
-  };
-  this.set = function(input) {
-    param = input;
+function ServiceFactory(serviceURLs) {
+  for (var p in serviceURLs) {
+    (function(param) {
+      angular.module('starter.services')
+        .factory(p, function($resource) {
+          return $resource(baseUrl + serviceURLs[param]);
+        })
+    })(p);
   }
-  this.get = function() {
-    return param;
-  }
-})
+};
 
-.factory('WxPayConfirmFurit', function($resource) {
-  return $resource(baseURL + '/payconfirm/fruit');
-})
-
-.factory('WxPayConfirmWash', function($resource) {
-  return $resource(baseURL + '/payconfirm/wash');
-})
-
-.factory('StartPrice', function($resource) {
-  return $resource(baseURL + '/communicate/customer/wash/startprice');
-})
+angular.module('starter.services')
+  .service('WxPayParam', function($resource) {
+    var param = {
+      money: 0
+    };
+    this.set = function(input) {
+      param = input;
+    }
+    this.get = function() {
+      return param;
+    }
+  })
 
 .service('FuritOrWash', function($resource) {
   var furitOrWash = 'furit';

@@ -15,6 +15,11 @@
   color: #ef0000 !important;
 }
 
+.disabled {
+  background: #eee !important;
+  color: #999 !important;
+}
+
 .w50 {
   width: 50%;
 }
@@ -105,4 +110,37 @@
 .button-small-x {
   width: 70px;
   border-radius: 6px;
+}
+
+.dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 30px;
+  margin: 0 auto;
+}
+
+.dot-line-r,
+.dot-line-l {
+  position: absolute;
+  top: 50%;
+  width: 50%;
+  height: 5px;
+  transform: translateY(-50%);
+}
+
+.dot-line-r {
+  right: 0;
+}
+
+.dot-line-l {
+  left: 0;
+}
+
+.relative>div {
+  position: relative;
+  margin: 30px auto 10px;
 }

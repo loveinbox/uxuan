@@ -3,7 +3,7 @@
     <div go-back></div>
   </div>
   <ion-content class="has-header" style="background: #fff">
-    <p class="text-center" style="margin:0;padding: 5px 0 0 0;background: #f2f7fa">订单欣喜</p>
+    <p class="text-center" style="margin: 0;padding: 5px 0;background: #f2f7fa">订单信息</p>
     <div>
       <table class="order-detail-table">
         <tr>
@@ -14,7 +14,7 @@
           <td class="order-detail-name">订单状态</td>
           <td>{{order.orderStatus}}</td>
         </tr>
-        <tr>
+        <tr ng-if="order.orderStatusId != 11001 && order.orderStatusId != 11002">
           <td class="order-detail-name">订单金额</td>
           <td>￥{{order.money/100 | number:2}}</td>
         </tr>
@@ -24,7 +24,7 @@
         </tr>
         <tr>
           <td class="order-detail-name">预计送达</td>
-          <td>{{order.orderTime}}</td>
+          <td>{{order.orderTime | date: 'yyyy/MM/dd HH:mm'}}</td>
         </tr>
         <tr>
           <td class="order-detail-name">收货信息</td>
@@ -42,27 +42,97 @@
         </tr>
       </table>
     </div>
-    <p class="text-center" style="margin: 0;padding: 5px 0;background: #f2f7fa">商品列表</p>
-    <ion-scroll direction="y" overflow-scroll="true" class="height100">
-      <ion-list class="index-list">
-        <div>
-          <ion-item style="border-bottom: none;">
-            <div class="row" ng-repeat="good in order.productsList" style="border-bottom: solid 1px #ddd;margin-bottom: 10px">
-              <div class="col-25" style="margin-right: 10px">
-                <div class="shop-img">
-                  <img class="single-good-img" ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
+    <div ng-if="type == 17001">
+      <p class="text-center" style="margin: 0;padding: 5px 0;background: #f2f7fa">商品列表</p>
+      <ion-scroll direction="y" overflow-scroll="true">
+        <ion-list class=" index-list ">
+          <div>
+            <ion-item style="border-bottom: none; ">
+              <div class="row" ng-repeat="good in order.productsList " style="border-bottom: solid 1px #ddd;margin-bottom:10px ">
+                <div class="col-25 " style="margin-right: 10px ">
+                  <div class="shop-img ">
+                    <img class="single-good-img " ng-src="http://lifeuxuan.com/{{good.productHeadImg}} ">
+                  </div>
+                </div>
+                <div class="col-60 ">
+                  <p>{{good.productName}}</p>
+                  <p>{{good.description}}</p>
+                  <p class="fr ">x{{good.productQuantity}}</p>
+                  <p class="bl ">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
                 </div>
               </div>
-              <div class="col-60">
-                <p>{{good.productName}}</p>
-                <p>{{good.description}}</p>
-                <p class="fr">x{{good.productQuantity}}</p>
-                <p class="bl">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
-              </div>
-            </div>
-          </ion-item>
+            </ion-item>
+          </div>
+        </ion-list>
+      </ion-scroll>
+    </div>
+    <div ng-if="type == 17002">
+      <div class="row" style="margin-bottom: 30px">
+        <div class="row">
+          <div class="col-20 text-center"><i class="ion-ios-bell" style="font-size: 30px"></i></div>
+          <div class="col">{{order.orderStatus}}</div>
         </div>
-      </ion-list>
-    </ion-scroll>
+      </div>
+      <div class="row text-center">
+        <div class="col-25" ng-class="{'to-click-outline': stage01}">预约</div>
+        <div class="col-25" ng-class="{'to-click-outline': stage02}">取件</div>
+        <div class="col-25" ng-class="{'to-click-outline': stage03}">清洗</div>
+        <div class="col-25" ng-class="{'to-click-outline': stage04}">送回</div>
+      </div>
+      <div class="row relative">
+        <div class="col-25 text-center">
+          <div class="to-click dot-line-r" ng-class="{'disabled': !(stage02 || stage03 || stage04)}"></div>
+          <div class="to-click dot"></div>
+        </div>
+        <div class="col-25 text-center">
+          <div class="to-click dot-line-l" ng-class="{'disabled': !(stage02 || stage03 || stage04)}"></div>
+          <div class="to-click dot-line-r" ng-class="{'disabled': !(stage03 || stage04)}"></div>
+          <div class="to-click dot" ng-class="{'disabled': !(stage02 || stage03 || stage04)}"></div>
+        </div>
+        <div class="col-25 text-center">
+          <div class="to-click dot-line-l" ng-class="{'disabled': !(stage03 || stage04)}"></div>
+          <div class="to-click dot-line-r" ng-class="{'disabled': !stage04}"></div>
+          <div class="to-click dot" ng-class="{'disabled': !(stage03 || stage04)}"></div>
+        </div>
+        <div class="col-25 text-center">
+          <div class=" to-click dot-line-l " ng-class="{'disabled': !stage04} "></div>
+          <div class="to-click dot " ng-class="{'disabled': !stage04} "></div>
+        </div>
+      </div>
+      <div ng-if="stage01" style="margin: 10px">
+        <button class="button button-block disabled " style="width: 50%;margin: 0 auto">
+          开始计价
+        </button>
+      </div>
+      <div ng-if="stage02" style="margin: 10px">
+        <button class="button button-block to-click" style="width: 50%;margin: 0 auto" ng-click="clickPrice(order)">
+          开始计价
+        </button>
+      </div>
+      <div ng-if="stage03 || stage04 ">
+        <p class="text-center " style="margin: 0;padding: 5px 0;background: #f2f7fa ">商品列表</p>
+        <ion-scroll direction="y " overflow-scroll="true ">
+          <ion-list class=" index-list ">
+            <div>
+              <ion-item style="border-bottom: none; ">
+                <div class="row " ng-repeat="good in order.productsList " style="border-bottom: solid 1px #ddd;margin-bottom:10px ">
+                  <div class="col-25 " style="margin-right: 10px ">
+                    <div class="shop-img ">
+                      <img class="single-good-img " ng-src="http://lifeuxuan.com/{{good.productHeadImg}} ">
+                    </div>
+                  </div>
+                  <div class="col-60 ">
+                    <p>{{good.productName}}</p>
+                    <p>{{good.description}}</p>
+                    <p class="fr ">x{{good.productQuantity}}</p>
+                    <p class="bl ">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
+                  </div>
+                </div>
+              </ion-item>
+            </div>
+          </ion-list>
+        </ion-scroll>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

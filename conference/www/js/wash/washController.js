@@ -1,6 +1,7 @@
 angular.module('starter.controllers')
 
-.controller('washListCtrl', function($scope, UserInfo, getWashHot, getWashShops) {
+.controller('washListCtrl', function($scope, UserInfo, getWashHot, getWashShops, BannerWash,
+  $ionicSlideBoxDelegate) {
   $scope.location = {};
   UserInfo.then(function(user) {
     getWashHot.get({
@@ -19,6 +20,15 @@ angular.module('starter.controllers')
       $scope.shops = data.data;
     }, function(data) {
       alert('NO DATA MainPageHot');
+    });
+    BannerWash.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+    }, function(data) {
+      $scope.banners = data.data;
+      $ionicSlideBoxDelegate.update();
+    }, function(data) {
+      alert('NO DATA banners');
     });
   })
 })

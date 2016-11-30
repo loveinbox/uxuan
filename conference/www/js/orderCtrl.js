@@ -73,8 +73,8 @@ angular.module('starter.controllers')
         'rcvName': $scope.order.user.name,
         'rcvPhone': $scope.order.user.tel,
         'rcvAddress': $scope.order.user.address,
-        'preferRcvTime': $scope.order.sendTime, //期望收货时间
-        'preferFetchTime': $scope.order.sendTime,
+        'preferRcvTime': [moment($scope.order.sendTime[0]).unix() * 1000, moment($scope.order.sendTime[1]).unix() * 1000], //期望收货时间
+        'preferFetchTime': [moment($scope.order.sendTime[0]).unix() * 1000, moment($scope.order.sendTime[1]).unix() * 1000],
         'needTicket': false,
         'tip': '',
         'detail': ShoppingCart.getCart(type),
@@ -167,7 +167,7 @@ angular.module('starter.controllers')
 
 
 .controller('OrdersCtrl', function($scope, $rootScope, UserInfo, orderStatus, $state, StartPrice,
-  QueryOrderList, FuritOrWash, WxPayParam) {
+  OrderList, WxPayParam, cancelFurit, cancelWash) {
   UserInfo.then(function(user) {
     getOrders();
     $scope.$on("$ionicParentView.enter", function(event, data) {
@@ -183,7 +183,7 @@ angular.module('starter.controllers')
     }
 
     $scope.clickPrice = function(order) {
-      StartPrice.get({
+      StartPrice.save({
           orderId: order.orderId
         })
         .$promise
@@ -192,11 +192,25 @@ angular.module('starter.controllers')
             FuritOrWash.toWash(order.shopId, order.orderId, true);
             $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
           }
+        });
+    }
+
+    $scope.clickRed = function(order) {
+      var cancelMethod = order.orderType == 17001 ? cancelFurit : cancelWash;
+      cancelMethod.save({
+          orderId: order.orderId
         })
+        .$promise
+        .then(function(res) {
+          if (res.code === 0) {
+            FuritOrWash.toWash(order.shopId, order.orderId, true);
+            $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
+          }
+        });
     }
 
     function getOrders() {
-      QueryOrderList.get({
+      OrderList.get({
         'customerId': user.userId,
         'pos': 0
       }, function(data) {
@@ -206,21 +220,60 @@ angular.module('starter.controllers')
   });
 })
 
-.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, QueryOrderDetail,
-  UserInfo, WxPayParam) {
+.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, FuritOrderDetail,
+  WashOrderDetail, UserInfo, StartPrice, FuritOrWash) {
+  $scope.type = $stateParams.orderType;
   UserInfo.then(function(user) {
     getOrder();
 
     function getOrder(argument) {
-      QueryOrderDetail.get({
+      var detailMethod = $scope.type == 17001 ? FuritOrderDetail : WashOrderDetail;
+      detailMethod.get({
         'longitude': user.longitude,
         'latitude': user.latitude,
         'orderId': $stateParams.orderId
       }, function(data) {
         $scope.order = data.data;
+        var orderStage = data.data.orderStatusId
+        if (orderStage - 0 <= 11003) {
+          setStage([1]);
+          return;
+        }
+        if (orderStage - 0 < 11012) {
+          setStage([0, 1]);
+          return;
+        }
+        if (orderStage == 11012) {
+          setStage([0, 0, 1]);
+          return;
+        }
+        if (orderStage == 11013) {
+          setStage([0, 0, 0, 1]);
+          return;
+        }
       });
     }
+
+    $scope.clickPrice = function(order) {
+      StartPrice.save({
+          orderId: order.orderId
+        })
+        .$promise
+        .then(function(res) {
+          if (res.code === 0) {
+            FuritOrWash.toWash(order.shopId, order.orderId, true);
+            $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
+          }
+        });
+    }
   })
+
+  function setStage(array) {
+    $scope.stage01 = (array[0] === 1);
+    $scope.stage02 = (array[1] === 1);
+    $scope.stage03 = (array[2] === 1);
+    $scope.stage04 = (array[3] === 1);
+  }
 })
 
 .controller('wxPayCtrl', function($scope, $state, $stateParams, WxPayParam, UserInfo,
