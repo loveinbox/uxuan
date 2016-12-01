@@ -239,10 +239,12 @@ angular.module('starter.controllers')
 })
 
 .controller('shopCtrl', function($scope, $stateParams, $ionicScrollDelegate, $timeout, $rootScope,
-  FruitsByShop, ShoppingCart, $ionicModal, UserInfo) {
+  FruitsByShop, ShoppingCart, $ionicModal, UserInfo, FuritOrWash) {
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;
+
+  FuritOrWash.toFurit();
   UserInfo.then(function(user) {
     FruitsByShop.get({
       'shopId': $stateParams.shopId

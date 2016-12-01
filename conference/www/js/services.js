@@ -24,6 +24,11 @@ var serviceURLs = {
   'BannerWash': '/banner/shoplist/wash',
   'cancelFurit': '/communicate/customer/fruit/cancel',
   'cancelWash': '/communicate/customer/wash/cancel',
+  'guardOrderDetailFurit': '/orderdetail/eguard/fruit',
+  'guardOrderDetailFetchwash': '/orderdetail/eguard/fetchwash',
+  'guardOrderDetailSendwash': '/orderdetail/eguard/sendwash',
+  'guardOrderNumber': '/communicate/statistic/eguard',
+  'shopOrderNumber': '/communicate/statistic/shop',
 };
 ServiceFactory(serviceURLs);
 

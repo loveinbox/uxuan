@@ -43,12 +43,14 @@ angular.module('starter.controllers')
 
     $scope.pickShop = function(event, shop) {
       event.stopPropagation();
+      event.preventDefault();
       ShoppingCart.checkShop(shop, type);
       $rootScope.$broadcast('cartChange');
     }
 
     $scope.pickShopGood = function(event, good, shop) {
       event.stopPropagation();
+      event.preventDefault();
       ShoppingCart.checkShopGood(good, shop, type);
       $rootScope.$broadcast('cartChange');
     }
@@ -167,7 +169,7 @@ angular.module('starter.controllers')
 
 
 .controller('OrdersCtrl', function($scope, $rootScope, UserInfo, orderStatus, $state, StartPrice,
-  OrderList, WxPayParam, cancelFurit, cancelWash) {
+  OrderList, WxPayParam, cancelFurit, cancelWash, FuritOrWash) {
   UserInfo.then(function(user) {
     getOrders();
     $scope.$on("$ionicParentView.enter", function(event, data) {
@@ -182,7 +184,9 @@ angular.module('starter.controllers')
       $scope.$broadcast('scroll.refreshComplete');
     }
 
-    $scope.clickPrice = function(order) {
+    $scope.clickPrice = function(event, order) {
+      event.stopPropagation();
+      event.preventDefault();
       StartPrice.save({
           orderId: order.orderId
         })
@@ -195,7 +199,9 @@ angular.module('starter.controllers')
         });
     }
 
-    $scope.clickRed = function(order) {
+    $scope.clickRed = function(event, order) {
+      event.stopPropagation();
+      event.preventDefault();
       var cancelMethod = order.orderType == 17001 ? cancelFurit : cancelWash;
       cancelMethod.save({
           orderId: order.orderId
@@ -239,22 +245,24 @@ angular.module('starter.controllers')
           setStage([1]);
           return;
         }
-        if (orderStage - 0 < 11012) {
+        if (orderStage - 0 < 11007) {
           setStage([0, 1]);
           return;
         }
-        if (orderStage == 11012) {
+        if (orderStage - 0 < 11012) {
           setStage([0, 0, 1]);
           return;
         }
-        if (orderStage == 11013) {
+        if (orderStage - 0 <= 11013) {
           setStage([0, 0, 0, 1]);
           return;
         }
       });
     }
 
-    $scope.clickPrice = function(order) {
+    $scope.clickPrice = function(event, order) {
+      event.stopPropagation();
+      event.preventDefault();
       StartPrice.save({
           orderId: order.orderId
         })

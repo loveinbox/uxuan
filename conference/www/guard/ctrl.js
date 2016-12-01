@@ -154,12 +154,59 @@ angular.module('starter.controllers')
   }
 })
 
+.controller('guardOrderDetailCtrl', function($scope, $rootScope, $stateParams, UserInfo, StartPrice,
+  FuritOrWash, guardOrderDetailFurit, guardOrderDetailFetchwash, guardOrderDetailSendwash) {
+  $scope.type = $stateParams.orderType;
+  UserInfo.then(function(user) {
+    getOrder();
+
+    function getOrder(argument) {
+
+      var detailMethod;
+      if ($scope.type == 17001) {
+        detailMethod = guardOrderDetailFurit;
+      } else {
+        if ($scope.type == 17002) {
+          detailMethod = guardOrderDetailFetchwash;
+        } else {
+          detailMethod = guardOrderDetailSendwash
+        }
+      }
+      detailMethod.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'orderId': $stateParams.orderId
+      }, function(data) {
+        $scope.order = data.data;
+        var orderStage = data.data.orderStatusId - 0;
+        if ((orderStage >= 12005 && orderStage < 13000) || orderStage >= 13006) {
+          $scope.isGet = true;
+        }
+      });
+    }
+
+    $scope.clickPrice = function(event, order) {
+      StartPrice.save({
+          orderId: order.orderId
+        })
+        .$promise
+        .then(function(res) {
+          if (res.code === 0) {
+            FuritOrWash.toWash(order.shopId, order.orderId, true);
+            $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
+          }
+        });
+    }
+  })
+})
+
 .controller('guardOrdersCtrl', function($scope, $stateParams, UserInfo, EguardOrderList,
-  EguardAction, VendorOrderList, VendorAction) {
+  EguardAction, VendorOrderList, VendorAction, guardOrderNumber, shopOrderNumber) {
   var type = $stateParams.type;
   var nameKey = type === 'guard' ? 'eguardId' : 'shopHostId';
   var methodList = type === 'guard' ? EguardOrderList : VendorOrderList;
   var methodAction = type === 'guard' ? EguardAction : VendorAction;
+  var methodNumber = type === 'guard' ? guardOrderNumber : shopOrderNumber;
   // var methodLogout = type === 'guard' ? guardLogout : shopLogout;
   var data = {
     'eguardId': 'C0000000009',
@@ -216,7 +263,9 @@ angular.module('starter.controllers')
 
   UserInfo.then(function(user) {
     getOrders();
-    $scope.clickBlue = function(order) {
+    $scope.clickBlue = function(event, order) {
+      event.stopPropagation();
+      event.preventDefault();
       methodAction[blueStatus2Action[type][order.orderStatusId]].get({
         'orderId': order.orderId
       }, function(res) {
@@ -225,10 +274,12 @@ angular.module('starter.controllers')
         } else {
           alert('操作失败！');
         }
-        getOrders()
+        getOrders();
       })
     }
-    $scope.clickRed = function(order) {
+    $scope.clickRed = function(event, order) {
+      event.stopPropagation();
+      event.preventDefault();
       methodAction[redStatus2Action[type][order.orderStatusId]].get({
         'orderId': order.orderId
       }, function(res) {
@@ -237,7 +288,7 @@ angular.module('starter.controllers')
         } else {
           alert('操作失败！');
         }
-        getOrders()
+        getOrders();
       })
     }
 
@@ -264,6 +315,10 @@ angular.module('starter.controllers')
       methodList[$scope.status.now].get(data, function(data) {
         $scope.orders = addStatus(data.data);
       })
+      methodNumber.get(data, function(data) {
+        $scope.ordersNumber = data.data;
+      })
+
     }
 
     function addStatus(dataArray) {

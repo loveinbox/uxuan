@@ -1,9 +1,9 @@
 <ion-view view-title="U选到家" ng-controller="guardOrdersCtrl">
   <div class="index-header" style="background: #003333">
     <ul class="order-tabs">
-      <li ng-click="clickTab('new')" ng-class="{'active': status.now == 'new'}">新订单</li>
-      <li ng-click="clickTab('process')" ng-class="{'active': status.now == 'process'}">处理中</li>
-      <li ng-click="clickTab('finish')" ng-class="{'active': status.now == 'finish'}">已完成</li>
+      <li ng-click="clickTab('new')" ng-class="{'active': status.now == 'new'}">新订单({{ordersNumber.new}})</li>
+      <li ng-click="clickTab('process')" ng-class="{'active': status.now == 'process'}">处理中({{ordersNumber.process}})</li>
+      <li ng-click="clickTab('finish')" ng-class="{'active': status.now == 'finish'}">已完成({{ordersNumber.finish}})</li>
     </ul>
   </div>
   <ion-content class="has-header">

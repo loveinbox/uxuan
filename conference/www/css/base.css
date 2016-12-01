@@ -144,3 +144,9 @@
   position: relative;
   margin: 30px auto 10px;
 }
+
+.item-complex .item-content,
+.item-radio .item-content {
+  padding: 16px;
+  x
+}

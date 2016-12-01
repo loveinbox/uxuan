@@ -74,7 +74,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.orders', {
     url: '/orders',
-    // cache: false,
+    cache: false,
     views: {
       'tab-orders': {
         templateUrl: 'templates/orders.html',

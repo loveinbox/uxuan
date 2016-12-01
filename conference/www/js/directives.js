@@ -48,9 +48,11 @@ angular.module('starter.directives', [])
       order: '@'
     },
     transclude: true,
-    template: '<button ng-click="rePay({{order}})" ng-transclude></button>',
+    template: '<button ng-click="rePay($event, {{order}})" ng-transclude></button>',
     controller: function($scope, WxPayParam, $state) {
-      $scope.rePay = function(order) {
+      $scope.rePay = function(event, order) {
+        event.stopPropagation();
+        event.preventDefault();
         var data = order.orderType === 17001 ? {
           'orderIdsList': [order.orderId],
           'orderType': 17001
