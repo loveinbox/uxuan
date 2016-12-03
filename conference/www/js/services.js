@@ -52,7 +52,7 @@ angular.module('starter.services')
   })
 
 .service('FuritOrWash', function($resource) {
-  var furitOrWash = 'wash';
+  var furitOrWash = 'furit';
   var washShopId = '000';
   var washOrderId = '000';
   var isReserve = false;

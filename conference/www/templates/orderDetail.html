@@ -22,9 +22,18 @@
           <td class="order-detail-name">服务管家</td>
           <td>{{order.eguardName}}{{order.eguardPhoneNumber}}</td>
         </tr>
-        <tr>
-          <td class="order-detail-name">预计送达</td>
-          <td>{{order.orderTime | date: 'yyyy/MM/dd HH:mm'}}</td>
+        <tr ng-if="type == 17001">
+          <td class="order-detail-name" ng-if="order.orderStatusId != 10009">预计送达</td>
+          <td class="order-detail-name" ng-if="order.orderStatusId == 10009">送达时间</td>
+          <td>{{order.finishTime * 1000 | date: 'yyyy/MM/dd HH:mm'}}</td>
+        </tr>
+        <tr ng-if="type == 17002">
+          <td ng-if="order.orderStatusId - 0 < 11004" class="order-detail-name">预计取衣</td>
+          <td ng-if="order.orderStatusId - 0 < 11004">{{order.preferFetchTime[0] * 1000 | date: 'yyyy-MM-dd HH:mm'}} -- {{order.preferFetchTime[1] * 1000 | date: 'HH:mm'}}</td>
+          <td ng-if="order.orderStatusId - 0 >= 11004" class="order-detail-name">取衣时间</td>
+          <td ng-if="order.orderStatusId - 0 >= 11004">{{order.fetchTime * 1000 | date: 'yyyy/MM/dd HH:mm'}}</td>
+          <td ng-if="order.orderStatusId == 11015" class="order-detail-name">到达时间</td>
+          <td ng-if="order.orderStatusId == 11015">{{order.finishTime * 1000 | date: 'yyyy/MM/dd HH:mm'}}</td>
         </tr>
         <tr>
           <td class="order-detail-name">收货信息</td>

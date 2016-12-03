@@ -128,8 +128,9 @@ angular.module('starter.controllers')
   })
 })
 
-.controller('guardFlowCtrl', function($scope, $stateParams, UserInfo, guardOrderFlow) {
-
+.controller('guardFlowCtrl', function($scope, $stateParams, UserInfo, guardOrderFlow, shopOrderFlow) {
+  var type = $stateParams.type;
+  var method = type === 'guard' ? guardOrderFlow : shopOrderFlow;
   $scope.time = {
     start: new Date(moment().subtract(7, 'days')),
     end: new Date()
@@ -144,8 +145,8 @@ angular.module('starter.controllers')
   getOrders();
 
   function getOrders() {
-    guardOrderFlow.save({
-      'eguardId': 'C0000000009',
+    method.save({
+      'eguardId': 'C0000000008',
       'timeZone': [moment($scope.time.start).format('YYYY-MM-DD'), moment($scope.time.end).format(
         'YYYY-MM-DD')]
     }, function(res) {

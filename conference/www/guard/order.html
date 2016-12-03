@@ -12,12 +12,12 @@
     <ion-list ng-show="!status.noOrder">
       <ion-item class="list-order-list" ng-repeat="order in orders" ng-href="guard/orderDetail/{{order.orderId}}/{{order.orderType}}/{{type}}">
         <div class="clearfix">
-          <p class="fl bl">订单号:{{order.orderId}}</p>
-          <p class="fr">{{orderTypeObj[order.orderType]}}</p>
+          <p class="fl bl">订单号:{{order.customerOrderId}}</p>
+          <p class="fr order-popo">{{orderTypeObj[order.orderType]}}</p>
           <!-- <p class="fr">{{order.orderStatus}}</p> -->
         </div>
         <div class="clearfix">
-          <p class="fl">服务费:{{order.serviceFee}}</p>
+          <p class="fl">服务费:￥{{order.serviceFee}}</p>
           <p class="fr">{{order.orderTime | date : 'yyyy-MM-dd' }}</p>
         </div>
         <div class="clearfix" style="color: red">
@@ -41,8 +41,8 @@
         <p>收货地址:{{order.rcvAddress}}</p>
         <p>商家名称:{{order.shopName}}</p>
         <div class="guard-order-button is-pay-order clearfix">
-          <button class="button button-assertive button-small button-right" ng-show="order.isRedShow" ng-click="clickRed($event, order)">{{order.redText}}</button>
-          <button class="button button-calm button-small button-right" ng-show="order.isBlueShow" ng-click="clickBlue($event, order)">{{order.blueText}}</button>
+          <button class="button button-small button-small-x" ng-show="order.isRedShow" ng-click="clickRed($event, order)">{{order.redText}}</button>
+          <button class="button button-small button-small-x to-click" ng-show="order.isBlueShow" ng-click="clickBlue($event, order)">{{order.blueText}}</button>
         </div>
         </div>
       </ion-item>

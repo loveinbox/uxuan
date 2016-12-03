@@ -77,8 +77,8 @@ angular.module('starter.controllers')
         'rcvName': $scope.order.user.name,
         'rcvPhone': $scope.order.user.tel,
         'rcvAddress': $scope.order.user.address,
-        'preferRcvTime': [moment($scope.order.sendTime[0]).unix() * 1000, moment($scope.order.sendTime[1]).unix() * 1000], //期望收货时间
-        'preferFetchTime': [moment($scope.order.sendTime[0]).unix() * 1000, moment($scope.order.sendTime[1]).unix() * 1000],
+        'preferRcvTime': [moment($scope.order.sendTime[0]).unix(), moment($scope.order.sendTime[1]).unix()], //期望收货时间
+        'preferFetchTime': [moment($scope.order.sendTime[0]).unix(), moment($scope.order.sendTime[1]).unix()],
         'needTicket': false,
         'tip': '',
         'detail': ShoppingCart.getCart(type),

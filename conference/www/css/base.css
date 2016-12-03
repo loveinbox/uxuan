@@ -148,5 +148,11 @@
 .item-complex .item-content,
 .item-radio .item-content {
   padding: 16px;
-  x
+}
+
+.order-popo {
+  background: #619de5;
+  border-radius: 5px;
+  color: #fff !important;
+  padding: 0 5px;
 }

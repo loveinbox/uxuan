@@ -21,7 +21,7 @@
           </ion-list>
           <div class="clearfix">
             <p class="list-money fl">总计:￥{{order.money/100| number:2}}</p>
-            <p class="fl">共{{order.productImgsList.length}}件</p>
+            <p class="fl">共{{order.totalCount}}件</p>
             <p class="list-order-time fr">{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</p>
           </div>
           <div class="guard-order-button is-pay-order clearfix" ng-show="order.orderStatusId == 10001 || order.orderStatusId == 10002">
@@ -44,9 +44,24 @@
               </ul>
             </ion-item>
           </ion-list>
-          <div class="clearfix">
+          <div class="clearfix" ng-if="order.orderStatusId - 0 < 11004">
             <p class="list-money fl">
-              取件时间：{{order.preferFetchTime[0] * 1000 | date: 'yyyy/MM/dd HH:mm'}} -- {{order.preferFetchTime[1] * 1000 | date: 'HH:mm'}}
+              预计取衣：{{order.preferFetchTime[0] * 1000 | date: 'yyyy-MM-dd HH:mm'}} -- {{order.preferFetchTime[1] * 1000 | date: 'HH:mm'}}
+            </p>
+          </div>
+          <div class="clearfix" ng-if="order.orderStatusId - 0 >= 11004">
+            <p class="list-money fl">
+              取衣时间：{{order.fetchTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+            </p>
+          </div>
+          <div class="clearfix" ng-if="order.orderStatusId - 0 >= 11004">
+            <p class="list-money fl">
+              送回时间：{{order.finishTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+            </p>
+          </div>
+          <div class="clearfix">
+            <p class="fl">
+              下单时间：{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
             </p>
           </div>
           <div class="guard-order-button is-pay-order clearfix" ng-show="order.orderStatusId == 10001 || order.orderStatusId == 10002">

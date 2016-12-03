@@ -13,7 +13,6 @@ angular.module('starter')
     })
     .state('vendor.order', {
       url: '/order/:type',
-      cache: false,
       views: {
         'tab-order': {
           templateUrl: 'vendor/order.html'

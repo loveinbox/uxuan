@@ -199,7 +199,7 @@ angular.module('starter.directives', [])
         }
         $scope.tp.preferDate = weight;
         initTime(weight);
-        setOrderDate(0);
+        setOrderDate(weight);
       }
 
       $scope.changeDate = function changeDateFunction(index) {
