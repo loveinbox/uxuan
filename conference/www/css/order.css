@@ -207,10 +207,12 @@ cart-detail*/
   font-size: 16px;
   color: #619de5;
   font-weight: bold;
+  text-align: right;
 }
 
 .calculate-money .sendPrice {
   font-size: 12px;
+  text-align: right;
 }
 
 
@@ -252,10 +254,11 @@ cart-detail*/
   padding-left: 30px;
 }
 
-.not-reach,
+
+/*.not-reach,
 .not-reach .item {
   background: #ddd !important;
-}
+}*/
 
 .not-reach .sendStartPrice {
   font-weight: bold;

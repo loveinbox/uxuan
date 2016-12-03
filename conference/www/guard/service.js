@@ -13,7 +13,14 @@ var serviceURLs = {
   guardFree: '/account/eguard/free',
   guardLogout: '/account/eguard/logout',
   shopLogout: '/account/shop/logout',
-  guardInfo: '/account/eguard/extendinfo'
+  guardInfo: '/account/eguard/extendinfo',
+  'guardOrderDetailFurit': '/orderdetail/eguard/fruit',
+  'guardOrderDetailFetchwash': '/orderdetail/eguard/fetchwash',
+  'guardOrderDetailSendwash': '/orderdetail/eguard/sendwash',
+  'guardOrderNumber': '/communicate/statistic/eguard',
+  'shopOrderNumber': '/communicate/statistic/shop',
+  'shopOrderDetailFurit': '/orderdetail/shop/fruit',
+  'shopOrderDetailWash': '/orderdetail/shop/wash',
 }
 ServiceFactory(serviceURLs);
 

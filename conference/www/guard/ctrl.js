@@ -155,22 +155,31 @@ angular.module('starter.controllers')
 })
 
 .controller('guardOrderDetailCtrl', function($scope, $rootScope, $stateParams, UserInfo, StartPrice,
-  FuritOrWash, guardOrderDetailFurit, guardOrderDetailFetchwash, guardOrderDetailSendwash) {
+  FuritOrWash, guardOrderDetailFurit, guardOrderDetailFetchwash, guardOrderDetailSendwash,
+  shopOrderDetailFurit, shopOrderDetailWash) {
   $scope.type = $stateParams.orderType;
+  var guardOrVendor = $stateParams.type;
   UserInfo.then(function(user) {
     getOrder();
 
     function getOrder(argument) {
-
       var detailMethod;
       if ($scope.type == 17001) {
-        detailMethod = guardOrderDetailFurit;
-      } else {
-        if ($scope.type == 17002) {
-          detailMethod = guardOrderDetailFetchwash;
+        if (guardOrVendor == 'vendor') {
+          detailMethod = shopOrderDetailFurit;
         } else {
-          detailMethod = guardOrderDetailSendwash
+          detailMethod = guardOrderDetailFurit;
         }
+      }
+      if ($scope.type == 17002) {
+        if (guardOrVendor == 'vendor') {
+          detailMethod = shopOrderDetailWash;
+        } else {
+          detailMethod = guardOrderDetailFetchwash;
+        }
+      }
+      if ($scope.type == 17003) {
+        detailMethod = guardOrderDetailSendwash;
       }
       detailMethod.get({
         'longitude': user.longitude,
@@ -213,6 +222,8 @@ angular.module('starter.controllers')
     'shopHostId': 'C0000000008',
     'pos': 0
   };
+
+  $scope.type = type;
   $scope.orderTypeObj = {
     17001: '水果',
     17002: '洗衣',

@@ -15,7 +15,6 @@ angular.module('starter')
     })
     .state('guard.order', {
       url: '/order/:type',
-      // cache: false,
       views: {
         'tab-order': {
           templateUrl: 'guard/order.html'
@@ -41,7 +40,7 @@ angular.module('starter')
       }
     })
     .state('guradOrderDetail', {
-      url: '/guard/orderDetail/:orderId/:orderType',
+      url: '/guard/orderDetail/:orderId/:orderType/:type',
       cache: false,
       templateUrl: 'guard/orderDetail.html'
     })

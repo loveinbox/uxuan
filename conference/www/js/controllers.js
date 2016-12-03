@@ -165,9 +165,11 @@ angular.module('starter.controllers')
 })
 
 .controller('SessionCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory,
-  $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
+  $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, FuritOrWash) {
   $scope.isHideAddCart = false;
   $scope.singleNumber = 0;
+
+  FuritOrWash.toFurit();
 
   UserInfo.then(function(user) {
     FruitDetail.get({
@@ -204,8 +206,9 @@ angular.module('starter.controllers')
 })
 
 .controller('shopListCtrl', function($scope, $rootScope, $stateParams, MainPageHot,
-  NearByFruitShops, UserInfo, BannerFurit, $ionicSlideBoxDelegate) {
+  NearByFruitShops, UserInfo, BannerFurit, $ionicSlideBoxDelegate, FuritOrWash) {
   $scope.location = {};
+  FuritOrWash.toFurit();
   UserInfo.then(function(user) {
     MainPageHot.get({
       'longitude': user.longitude,

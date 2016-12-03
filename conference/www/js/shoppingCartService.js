@@ -31,7 +31,7 @@ angular.module('starter.services')
         shopName: shop.shopName,
         shopPicUrl: shop.shopHeadImg,
         sendPrice: shop.shopDeliveryFee,
-        sendStartPrice: shop.shopStartMoney
+        sendStartPrice: shop.shopStartMoney || shop.shopFreeDeliveryMoney
       },
       'singleCartTotalNumber': 0,
       'isChecked': true,
@@ -162,11 +162,11 @@ angular.module('starter.services')
     return _cart[shopIndex].productsList;
   }
 
-  this.isGetThroesold = function() {
+  this.isGetThroesold = function(type) {
     var type = type || 'furit';
     var _cart = totalCart[type].cart;
     _cart.isGetThroesold = true;
-    if (_cart.money > 0) {
+    if (_cart.length > 0) {
       $.each(_cart, function(index, shopCart) {
         // 如果选择了，却为达到起送价
         if (shopCart.isChecked == true && shopCart.isReachStartPrice == false) {
@@ -175,6 +175,13 @@ angular.module('starter.services')
       });
     }
     return _cart.isGetThroesold;
+  }
+
+  this.isShowReachStartPrice = function(shopId, type) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    var shopIndex = _.findIndex(_cart, { 'shopId': shopId });
+    return _cart[shopIndex].isReachStartPrice;
   }
 
   this.checkShop = function(shop, type) {
@@ -199,7 +206,7 @@ angular.module('starter.services')
     calculateMoney(type);
   }
 
-  this.checkShopGood = function() {
+  this.checkShopGood = function(type) {
     calculateMoney(type);
   }
 
@@ -234,15 +241,16 @@ angular.module('starter.services')
         }
       });
       shopCart.singleCartTotalNumber = tempTotalMoney;
-      // 是否计算运费
-      if (tempTotalMoney > 0) {
-        shopCart.singleCartTotalNumber += shopCart.shopInfo.sendPrice * 100;
-      }
       // 是否达到起送价
       if (shopCart.singleCartTotalNumber <= shopCart.shopInfo.sendStartPrice * 100) {
         shopCart.isReachStartPrice = false;
       } else {
         shopCart.isReachStartPrice = true;
+      }
+      // 是否计算运费
+      if (tempTotalMoney > 0) {
+        if (!(type == 'wash' && shopCart.isReachStartPrice))
+          shopCart.singleCartTotalNumber += shopCart.shopInfo.sendPrice * 100;
       }
       _cart.money += shopCart.singleCartTotalNumber;
     });

@@ -38,6 +38,11 @@ angular.module('starter')
         }
       }
     })
+    .state('vendorOrderDetail', {
+      url: '/vendor/orderDetail/:orderId/:orderType/:type',
+      cache: false,
+      templateUrl: 'vendor/orderDetail.html'
+    })
     .state('vendorRule', {
       url: '/vendorRule',
       templateUrl: 'vendor/rule.html'

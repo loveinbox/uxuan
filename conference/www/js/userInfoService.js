@@ -91,10 +91,10 @@ angular.module('starter.services')
     user.userLocation = userLocation;
 
     // ------------for test-----------------
-    // $timeout(function (){
-    deferred.resolve(user)
-    return deferred.promise;
-    // }) ;
+    if (window.location.hostname == "localhost") {
+      deferred.resolve(user);
+      return deferred.promise;
+    }
     // ------------for test-----------------
 
     userWechatInfo.get({}, function(e) {

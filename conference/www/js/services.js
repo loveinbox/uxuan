@@ -24,11 +24,6 @@ var serviceURLs = {
   'BannerWash': '/banner/shoplist/wash',
   'cancelFurit': '/communicate/customer/fruit/cancel',
   'cancelWash': '/communicate/customer/wash/cancel',
-  'guardOrderDetailFurit': '/orderdetail/eguard/fruit',
-  'guardOrderDetailFetchwash': '/orderdetail/eguard/fetchwash',
-  'guardOrderDetailSendwash': '/orderdetail/eguard/sendwash',
-  'guardOrderNumber': '/communicate/statistic/eguard',
-  'shopOrderNumber': '/communicate/statistic/shop',
 };
 ServiceFactory(serviceURLs);
 
@@ -57,7 +52,7 @@ angular.module('starter.services')
   })
 
 .service('FuritOrWash', function($resource) {
-  var furitOrWash = 'furit';
+  var furitOrWash = 'wash';
   var washShopId = '000';
   var washOrderId = '000';
   var isReserve = false;

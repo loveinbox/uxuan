@@ -366,9 +366,18 @@ p.cartNumber {
 }
 
 .good-shop .shop-part {
+  position: relative;
   width: 50%;
   height: 40px;
   float: left;
+}
+
+.icon-text {
+  position: absolute;
+  width: 50px;
+  top: 26px;
+  left: 16px;
+  font-size: 10px;
 }
 
 .good-shop .shop-address {
@@ -389,7 +398,7 @@ p.cartNumber {
   vertical-align: middle;
   height: 40px;
   width: 155px;
-  padding-left: 35px;
+  padding-left: 40px;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;

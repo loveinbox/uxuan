@@ -6,6 +6,8 @@ angular.module('starter.controllers')
   UserInfo.then(function(user) {
     var type = FuritOrWash.get();
     var isReserve = FuritOrWash.getParams().isReserve;
+
+    $scope.type = type;
     $scope.order = {
       user: user,
       sendTime: [],
@@ -20,7 +22,7 @@ angular.module('starter.controllers')
     $scope.order.isAllChecked = true;
     $scope.status = {
       isAdded: false,
-      isGetThroesold: false,
+      isGetThroesold: ShoppingCart.isGetThroesold(type),
       isAddressValidated: false
     };
     $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
@@ -51,7 +53,7 @@ angular.module('starter.controllers')
     $scope.pickShopGood = function(event, good, shop) {
       event.stopPropagation();
       event.preventDefault();
-      ShoppingCart.checkShopGood(good, shop, type);
+      ShoppingCart.checkShopGood(type);
       $rootScope.$broadcast('cartChange');
     }
 
