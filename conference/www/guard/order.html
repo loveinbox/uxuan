@@ -18,20 +18,20 @@
         </div>
         <div class="clearfix">
           <p class="fl">服务费:￥{{order.serviceFee}}</p>
-          <p class="fr">{{order.orderTime | date : 'yyyy-MM-dd' }}</p>
+          <p class="fr">{{order.orderTime * 1000 | date : 'yyyy-MM-dd' }}</p>
         </div>
         <div class="clearfix" style="color: red">
           <div class="w50 fl ">
             <p class="fl" style="color: red">预约时间:</p>
             <p class="fr text-center" style="color: red">
-              {{order.reserveTime[0] | date : 'yyyy-MM-dd'}}
+              {{order.reserveTime[0] * 1000 | date : 'yyyy-MM-dd'}}
             </p>
           </div>
           <div class="w10 fl text-center">|</div>
           <div class="w40 fl text-center ">
             <p class="fl" style="color: red">{{toWeekCn(order.reserveTime[0])}}</p>
-            <p class="fr" style="color: red">{{order.reserveTime[1] | date : 'HH:mm'}}</p>
-            <p class="fr" style="color: red">{{order.reserveTime[0] | date : 'HH:mm'}}-</p>
+            <p class="fr" style="color: red">{{order.reserveTime[1] * 1000 | date : 'HH:mm'}}</p>
+            <p class="fr" style="color: red">{{order.reserveTime[0] * 1000 | date : 'HH:mm'}}-</p>
           </div>
         </div>
         <div class="clearfix">

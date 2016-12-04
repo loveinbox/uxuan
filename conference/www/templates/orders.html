@@ -22,7 +22,7 @@
           <div class="clearfix">
             <p class="list-money fl">总计:￥{{order.money/100| number:2}}</p>
             <p class="fl">共{{order.totalCount}}件</p>
-            <p class="list-order-time fr">{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}</p>
+            <p class="list-order-time fr">{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}</p>
           </div>
           <div class="guard-order-button is-pay-order clearfix" ng-show="order.orderStatusId == 10001 || order.orderStatusId == 10002">
             <button class="button button-small button-small-x" ng-click="clickRed($event, order)">取消订单</button>
@@ -54,14 +54,14 @@
               取衣时间：{{order.fetchTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
             </p>
           </div>
-          <div class="clearfix" ng-if="order.orderStatusId - 0 >= 11004">
+          <div class="clearfix" ng-if="order.orderStatusId - 0 > 11005">
             <p class="list-money fl">
               送回时间：{{order.finishTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
             </p>
           </div>
           <div class="clearfix">
             <p class="fl">
-              下单时间：{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm:ss'}}
+              下单时间：{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
             </p>
           </div>
           <div class="guard-order-button is-pay-order clearfix" ng-show="order.orderStatusId == 10001 || order.orderStatusId == 10002">

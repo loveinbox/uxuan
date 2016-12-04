@@ -52,7 +52,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.sessions', {
     url: '/sessions',
-    cache: false,
     views: {
       'tab-index': {
         templateUrl: 'templates/sessions.html',
@@ -92,11 +91,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
         controller: 'OrderCtrl'
       }
     }
-  })
-
-  .state('washCart', {
-    url: '/washCart',
-    templateUrl: 'wash/washCart.html'
   })
 
   .state('shop-list', {
@@ -176,6 +170,12 @@ angular.module('starter')
       cache: false,
       templateUrl: 'templates/washTemplates/washSingle.html ',
       controller: 'washSingleCtrl'
+    })
+
+    .state('washCart', {
+      url: '/washCart/:shopId',
+      cache: false,
+      templateUrl: 'templates/washTemplates/washCart.html '
     })
 
     .state('washSingleOrder', {

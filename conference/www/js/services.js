@@ -12,8 +12,8 @@ var serviceURLs = {
   'OrderList': '/orderlist/customer',
   'FuritOrderDetail': '/orderdetail/customer/fruit',
   'WashOrderDetail': '/orderdetail/customer/wash',
-  'SendCheckCode': '/SendCheckCode.php',
-  'CheckCheckCode': '/CheckCheckCode.php',
+  'SendCheckCode': '/code/send',
+  'CheckCheckCode': '/code/check',
   'Search': '/Search.php',
   'WxPay': '/wxctrl/pay',
   'WxPayConfirmFurit': '/payconfirm/fruit',
@@ -39,17 +39,18 @@ function ServiceFactory(serviceURLs) {
 };
 
 angular.module('starter.services')
-  .service('WxPayParam', function($resource) {
-    var param = {
-      money: 0
-    };
-    this.set = function(input) {
-      param = input;
-    }
-    this.get = function() {
-      return param;
-    }
-  })
+
+.service('WxPayParam', function($resource) {
+  var param = {
+    money: 0
+  };
+  this.set = function(input) {
+    param = input;
+  }
+  this.get = function() {
+    return param;
+  }
+})
 
 .service('FuritOrWash', function($resource) {
   var furitOrWash = 'furit';
@@ -60,8 +61,12 @@ angular.module('starter.services')
   }
   this.toWash = function(order, reserve) {
     furitOrWash = 'wash';
-    washOrder = order;
-    isReserve = reserve;
+    if (order) {
+      washOrder = order;
+    }
+    if (reserve) {
+      isReserve = reserve;
+    }
   }
   this.get = function() {
     return furitOrWash;

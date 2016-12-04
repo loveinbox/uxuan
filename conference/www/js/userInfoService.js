@@ -10,13 +10,13 @@ angular.module('starter.services')
 
 .factory('Location', function($q) {
 
-  console.log('start to get loction');
   var deferred = $q.defer();
   var userLocation = {
     'latitude': 31.199345,
     'longitude': 121.446322,
     'isOut': false,
-    'isGet': true
+    'isGet': true,
+    'text': '测试定位'
   };
 
   // var userLocation = JSON.parse(localStorage.getItem('userLocation')) || {
@@ -65,7 +65,9 @@ angular.module('starter.services')
   //   });
   // }
 
+  // for test
   deferred.resolve(userLocation);
+
   return deferred.promise;
 })
 

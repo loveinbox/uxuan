@@ -54,7 +54,14 @@ angular.module('starter.controllers')
   };
   UserInfo.then(function(user) {
     $scope.location = user.userLocation;
-    $scope.location.text = user.userLocation.street + user.userLocation.streetNumber;
+    if (user.userLocation.street) {
+      $scope.location.text = user.userLocation.street + user.userLocation.streetNumber;
+    }
+    $scope.$watch('user.userLocation', function() {
+      if (user.userLocation.street) {
+        $scope.location.text = user.userLocation.street + user.userLocation.streetNumber;
+      }
+    }, true);
     MainPageHot.get({
       'longitude': user.longitude,
       'latitude': user.latitude
@@ -397,16 +404,18 @@ angular.module('starter.controllers')
 .controller('SearchCtrl', function($scope, UserInfo, Search) {
 
   $scope.search = {};
-  $scope.searchGo = function(e, order) {
-    Search.get({
-      'latitude': user.latitude,
-      'longitude': user.longitude,
-      'keywords': $scope.search.keyword
-    }, function(e) {
-      $scope.search.goods = e.data.fruitProducts;
-      $scope.search.shops = e.data.fruitshops;
-    })
-  }
+  UserInfo.then(function(user) {
+    $scope.searchGo = function(e, order) {
+      Search.get({
+        'latitude': user.latitude,
+        'longitude': user.longitude,
+        'keywords': $scope.search.keyword
+      }, function(e) {
+        $scope.search.goods = e.data.fruitProducts;
+        $scope.search.shops = e.data.fruitshops;
+      })
+    }
+  })
 
 })
 

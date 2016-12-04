@@ -48,15 +48,13 @@ angular.module('starter.controllers')
 
     $scope.pickShop = function(event, shop) {
       event.stopPropagation();
-      event.preventDefault();
       ShoppingCart.checkShop(shop, type);
       $rootScope.$broadcast('cartChange');
     }
 
     $scope.pickShopGood = function(event, good, shop) {
       event.stopPropagation();
-      event.preventDefault();
-      ShoppingCart.checkShopGood(type);
+      ShoppingCart.checkShopGood(type, good, shop);
       $rootScope.$broadcast('cartChange');
     }
 
@@ -85,8 +83,8 @@ angular.module('starter.controllers')
         'needTicket': false,
         'tip': '',
         'detail': ShoppingCart.getCart(type),
-        'shopId': FuritOrWash.getParams().washShopId,
-        'orderIdsList': [FuritOrWash.getParams().washOrderId]
+        'shopId': FuritOrWash.getParams().washOrder.shopId,
+        'orderIdsList': [FuritOrWash.getParams().washOrder.orderId]
       };
       if (type == 'furit') {
         insertMethod = FruitOrderInsert;
@@ -198,7 +196,7 @@ angular.module('starter.controllers')
         .$promise
         .then(function(res) {
           if (res.code === 0) {
-            FuritOrWash.toWash(order, true);
+            FuritOrWash.toWash(order, false);
             $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
           }
         });

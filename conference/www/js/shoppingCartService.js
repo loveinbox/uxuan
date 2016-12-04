@@ -206,7 +206,17 @@ angular.module('starter.services')
     calculateMoney(type);
   }
 
-  this.checkShopGood = function(type) {
+  this.checkShopGood = function(type, good, shop) {
+    var type = type || 'furit';
+    var _cart = totalCart[type].cart;
+    var shopIndex = _.findIndex(_cart, { 'shopId': shop.shopId });
+    var isAllChecked = true;
+    $.each(_cart[shopIndex].productsList, function(index, value) {
+      if (!value.isChecked) {
+        isAllChecked = false;
+      }
+    });
+    _cart[shopIndex].isChecked = isAllChecked;
     calculateMoney(type);
   }
 
