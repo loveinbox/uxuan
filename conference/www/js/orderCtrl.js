@@ -229,7 +229,7 @@ angular.module('starter.controllers')
 })
 
 .controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, FuritOrderDetail,
-  WashOrderDetail, UserInfo, StartPrice, FuritOrWash) {
+  WashOrderDetail, UserInfo, StartPrice, FuritOrWash, $state) {
   $scope.type = $stateParams.orderType;
   UserInfo.then(function(user) {
     getOrder();
@@ -271,7 +271,7 @@ angular.module('starter.controllers')
         .$promise
         .then(function(res) {
           if (res.code === 0) {
-            FuritOrWash.toWash($scope.order, true);
+            FuritOrWash.toWash(order, true);
             $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
           }
         });

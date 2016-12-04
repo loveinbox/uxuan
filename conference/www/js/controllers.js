@@ -404,15 +404,20 @@ angular.module('starter.controllers')
 .controller('SearchCtrl', function($scope, UserInfo, Search) {
 
   $scope.search = {};
+  $scope.search.keyword = '桃';
   UserInfo.then(function(user) {
     $scope.searchGo = function(e, order) {
       Search.get({
         'latitude': user.latitude,
         'longitude': user.longitude,
-        'keywords': $scope.search.keyword
+        'keyword': $scope.search.keyword
       }, function(e) {
-        $scope.search.goods = e.data.fruitProducts;
-        $scope.search.shops = e.data.fruitshops;
+        if (e.data) {
+          $scope.goodsOfWash = e.data.productsList['wash'];
+          $scope.goodsOfFurit = e.data.productsList['furit'];
+          $scope.shopsOfWash = e.data.shopsList['wash'];
+          $scope.shopsOfFurit = e.data.shopsList['furit'];
+        }
       })
     }
   })

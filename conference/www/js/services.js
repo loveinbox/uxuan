@@ -14,7 +14,7 @@ var serviceURLs = {
   'WashOrderDetail': '/orderdetail/customer/wash',
   'SendCheckCode': '/code/send',
   'CheckCheckCode': '/code/check',
-  'Search': '/Search.php',
+  'Search': '/search/normal',
   'WxPay': '/wxctrl/pay',
   'WxPayConfirmFurit': '/payconfirm/fruit',
   'WxPayConfirmWash': '/payconfirm/wash',
@@ -61,12 +61,10 @@ angular.module('starter.services')
   }
   this.toWash = function(order, reserve) {
     furitOrWash = 'wash';
-    if (order) {
+    if (order !== null) {
       washOrder = order;
     }
-    if (reserve) {
-      isReserve = reserve;
-    }
+    isReserve = reserve;
   }
   this.get = function() {
     return furitOrWash;

@@ -14,35 +14,77 @@
         </button>
       </div>
     </div>
-    <div class="divider" ng-if="search.shops.length > 0">U选商家</div>
-    <ion-list class="shop index-list clearfix">
-      <ion-item class="index-list-item" ng-repeat="shop in search.shops" href="/shop/{{shop.shopId}}">
-        <img ng-src="http://lifeuxuan.com/backend/{{shop.shopPicUrl}}" alt="">
-        <span class="name">{{shop.shopName}}</span>
-        <ul class="good-info-wrap clearfix">
-          <li class="distance">月售{{shop.soldNumber}}单</li>
-          <li class="distance">{{shop.distance}}米</li>
-          <li class="distance">{{shop.sendStartPrice}}元起送</li>
-          <li class="distance">{{shop.sendPrice}}元配送费</li>
-        </ul>
-        <div class="slogen">{{shop.shopSlogen}}</div>
-        <div class="list-cart">
-          <i class="icon ion-ios-cart "></i>
-          <p class="cartNumber" ng-show="shop.cartNumber > 0">{{shop.cartNumber}}</p>
-        </div>
-      </ion-item>
-    </ion-list>
-    <div class="divider" ng-if="search.goods.length > 0">U选商品</div>
-    <ion-list class="rank index-list clearfix">
-      <ion-item class="index-list-item" ng-repeat="good in search.goods" href="/sessions/{{good.productId}}">
-        <img ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}" alt="">
-        <!-- <img src="img/single.jpg"> -->
-        <span class="name">{{good.productName}}</span>
-        <span class="description">{{good.description}}</span>
-        <p class="price">￥{{good.price/100}}/{{good.unit}}</p>
-        <div single-cart></div>
-        <!-- <div class="plus" ng-click="addCart($event);$event.stopPropagation();" ion-stop-event="click">+</div> -->
-      </ion-item>
-    </ion-list>
+    <div class="divider" ng-if="shopsOfWash.length > 0 || shopsOfFurit.length > 0">
+      <h5>U选商家</h5>
+      <ion-list class="shop-list clearfix" ng-if="shopsOfWash.length > 0">
+        <ion-item ng-repeat="washShop in shopsOfWash" href="/shop/{{washShop.shopId}}">
+          <div class="shop-img clearfix"> <img ng-src="http://lifeuxuan.com/{{washShop.shopHeadImg}}"> </div>
+          <div class="shop-info-wrap">
+            <div class="shop-info1"> <span class="name">{{washShop.shopName}}</span> </div>
+            <div class="shop-info2">
+              <span>月售{{washShop.shopMonthSaleVolume}}单</span>
+              <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{washShop.shopDistance}}米</span>
+            </div>
+            <div class="shop-info3">
+              <span>起送￥{{washShop.shopStartMoney}}</span>
+              <span class="send-divide">|</span>
+              <span>配送￥{{washShop.shopDeliveryFee}}</span>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+      <ion-list class="shop-list clearfix" ng-if="shopsOfFurit.length > 0">
+        <ion-item ng-repeat="furitShop in shopsOfFurit" href="/shop/{{furitShop.shopId}}">
+          <div class="shop-img clearfix"> <img ng-src="http://lifeuxuan.com/{{furitShop.shopHeadImg}}"> </div>
+          <div class="shop-info-wrap">
+            <div class="shop-info1"> <span class="name">{{furitShop.shopName}}</span> </div>
+            <div class="shop-info2">
+              <span>月售{{furitShop.shopMonthSaleVolume}}单</span>
+              <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{furitShop.shopDistance}}米</span>
+            </div>
+            <div class="shop-info3">
+              <span>起送￥{{furitShop.shopStartMoney}}</span>
+              <span class="send-divide">|</span>
+              <span>配送￥{{furitShop.shopDeliveryFee}}</span>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div class="divider" ng-if="goodsOfWash.length > 0 || goodsOfFurit.length > 0">
+      <h5>U选商品</h5>
+      <ion-list class="shop-list clearfix" ng-if="goodsOfWash.length > 0">
+        <ion-item ng-repeat="washGood in goodsOfWash" href="/sessions/{{washGood.productId}}">
+          <div class="shop-img clearfix"> <img class="single-good-img" ng-src="http://lifeuxuan.com/{{washGood.productHeadImg}}"> </div>
+          <div class="shop-info-wrap good-info">
+            <div class="shop-info1 good-name"> <span class="name">{{washGood.productName}}</span> </div>
+            <div class="shop-info2">
+              <span>{{washGood.productDescription}}</span> </div>
+            <div class="shop-info3">
+              <span class="single-good-price">￥{{washGood.productPrice/100}}/{{washGood.productUnit}}</span> </div>
+          </div>
+          <div class="single-good-top">
+            <div class="single-good-top-header">top</div>
+            <div class="single-good-top-body">{{$index + 1}}</div>
+          </div>
+        </ion-item>
+      </ion-list>
+      <ion-list class="shop-list clearfix" ng-if="goodsOfFurit.length > 0">
+        <ion-item ng-repeat="furitGood in goodsOfFurit" href="/sessions/{{furitGood.productId}}">
+          <div class="shop-img clearfix"> <img class="single-good-img" ng-src="http://lifeuxuan.com/{{furitGood.productHeadImg}}"> </div>
+          <div class="shop-info-wrap good-info">
+            <div class="shop-info1 good-name"> <span class="name">{{furitGood.productName}}</span> </div>
+            <div class="shop-info2">
+              <span>{{furitGood.productDescription}}</span> </div>
+            <div class="shop-info3">
+              <span class="single-good-price">￥{{furitGood.productPrice/100}}/{{furitGood.productUnit}}</span> </div>
+          </div>
+          <div class="single-good-top">
+            <div class="single-good-top-header">top</div>
+            <div class="single-good-top-body">{{$index + 1}}</div>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
   </ion-content>
 </ion-view>

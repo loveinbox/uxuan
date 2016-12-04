@@ -165,7 +165,7 @@ angular.module('starter.controllers')
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;
-  FuritOrWash.toWash();
+  FuritOrWash.toWash(null, false);
   UserInfo.then(function(user) {
     $scope.washOrder = FuritOrWash.getParams().washOrder;
     getWashShop.get({

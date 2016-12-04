@@ -113,7 +113,7 @@
         </button>
       </div>
       <div ng-if="stage02 && order.orderStatusId !== 11006" style="margin: 10px">
-        <button class="button button-block to-click" style="width: 50%;margin: 0 auto" ng-click="clickPrice(order)">
+        <button class="button button-block to-click" style="width: 50%;margin: 0 auto" ng-click="clickPrice($event, order)">
           开始计价
         </button>
       </div>

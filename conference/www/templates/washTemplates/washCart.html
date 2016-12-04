@@ -50,12 +50,7 @@
         </ion-item>
     </ion-list>
   </ion-content>
-  <ion-footer-bar class="order-cart" ng-if="order.isReserve">
-    <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash">
-      <div class="button button-assertive button-full go-wash-cart" ng-click="confirmOrder()">确认预约</div>
-    </div>
-  </ion-footer-bar>
-  <ion-footer-bar class="order-cart" ng-if="!order.isReserve">
+  <ion-footer-bar class="order-cart">
     <label class="pick-all">
       <input type="checkbox" name="" ng-model="order.isAllChecked" ng-click="pickAll()">
       <span>全选</span>
