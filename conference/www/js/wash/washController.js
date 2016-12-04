@@ -59,7 +59,7 @@ angular.module('starter.controllers')
           }
           count++;
         });
-      FuritOrWash.toWash(res.data.shop.shopId, null, true);
+      FuritOrWash.toWash(null, true);
     }, function(data) {
       alert('NO DATA getWashShop');
     });
@@ -160,7 +160,7 @@ angular.module('starter.controllers')
 
 .controller('washSingleOrderCtrl', function($scope, $stateParams, $rootScope, $ionicScrollDelegate,
   $ionicModal, UserInfo, getWashShop, ShoppingCart, FuritOrWash) {
-  FuritOrWash.toWash($stateParams.shopId, $stateParams.orderId);
+  FuritOrWash.toWash(null, true);
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;

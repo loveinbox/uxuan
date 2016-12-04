@@ -6,6 +6,9 @@ angular.module('starter.controllers')
   UserInfo.then(function(user) {
     var type = FuritOrWash.get();
     var isReserve = FuritOrWash.getParams().isReserve;
+    if (type == 'wash') {
+      $scope.washOrder = FuritOrWash.getParams().washOrder;
+    }
 
     $scope.type = type;
     $scope.order = {
@@ -195,7 +198,7 @@ angular.module('starter.controllers')
         .$promise
         .then(function(res) {
           if (res.code === 0) {
-            FuritOrWash.toWash(order.shopId, order.orderId, true);
+            FuritOrWash.toWash(order, true);
             $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
           }
         });
@@ -211,7 +214,6 @@ angular.module('starter.controllers')
         .$promise
         .then(function(res) {
           if (res.code === 0) {
-            FuritOrWash.toWash(order.shopId, order.orderId, true);
             $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
           }
         });
@@ -271,7 +273,7 @@ angular.module('starter.controllers')
         .$promise
         .then(function(res) {
           if (res.code === 0) {
-            FuritOrWash.toWash(order.shopId, order.orderId, true);
+            FuritOrWash.toWash($scope.order, true);
             $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
           }
         });

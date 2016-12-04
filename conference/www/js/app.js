@@ -94,6 +94,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
     }
   })
 
+  .state('washCart', {
+    url: '/washCart',
+    templateUrl: 'wash/washCart.html'
+  })
+
   .state('shop-list', {
     url: '/shopList',
     cache: false,
@@ -171,13 +176,6 @@ angular.module('starter')
       cache: false,
       templateUrl: 'templates/washTemplates/washSingle.html ',
       controller: 'washSingleCtrl'
-    })
-
-    .state('washCart', {
-      url: '/washCart/:shopId',
-      cache: false,
-      templateUrl: 'templates/washTemplates/washCart.html ',
-      controller: 'washCartCtrl'
     })
 
     .state('washSingleOrder', {

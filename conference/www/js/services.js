@@ -53,16 +53,14 @@ angular.module('starter.services')
 
 .service('FuritOrWash', function($resource) {
   var furitOrWash = 'furit';
-  var washShopId = '000';
-  var washOrderId = '000';
+  var washOrder = null;
   var isReserve = false;
   this.toFurit = function() {
     furitOrWash = 'furit';
   }
-  this.toWash = function(shopId, orderId, reserve) {
+  this.toWash = function(order, reserve) {
     furitOrWash = 'wash';
-    washShopId = shopId;
-    washOrderId = orderId;
+    washOrder = order;
     isReserve = reserve;
   }
   this.get = function() {
@@ -70,8 +68,7 @@ angular.module('starter.services')
   }
   this.getParams = function() {
     return {
-      washShopId: washShopId,
-      washOrderId: washOrderId,
+      washOrder: washOrder,
       isReserve: isReserve
     }
   }
