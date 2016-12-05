@@ -145,8 +145,9 @@ angular.module('starter.controllers')
   getOrders();
 
   function getOrders() {
-    method.save({
-      'eguardId': 'C0000000008',
+    method.get({
+      'eguardId': 'C0000000009',
+      'shopHostId': 'C0000000008',
       'timeZone': [moment($scope.time.start).format('YYYY-MM-DD'), moment($scope.time.end).format(
         'YYYY-MM-DD')]
     }, function(res) {
