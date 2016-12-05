@@ -82,9 +82,12 @@ angular.module('starter.controllers')
         'preferFetchTime': [moment($scope.order.sendTime[0]).unix(), moment($scope.order.sendTime[1]).unix()],
         'needTicket': false,
         'tip': '',
-        'detail': ShoppingCart.getCart(type),
-        'shopId': FuritOrWash.getParams().washOrder.shopId,
-        'orderIdsList': [FuritOrWash.getParams().washOrder.orderId]
+        'detail': ShoppingCart.getCart(type)
+      };
+
+      if (FuritOrWash.getParams().washOrder) {
+        orderData.shopId = FuritOrWash.getParams().washOrder.shopId
+        orderData.orderIdsList = [FuritOrWash.getParams().washOrder.orderId]
       };
       if (type == 'furit') {
         insertMethod = FruitOrderInsert;

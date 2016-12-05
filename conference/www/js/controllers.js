@@ -30,18 +30,11 @@ angular.module('starter.controllers')
   })();
 })
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope, $http) {
-  // var config = {
-  //     headers: {
-  //         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-  //     }
-  // }
-  // $http.post("http://www.lifeuxuan.com/backend/api/test.php", 'asd', config)
-  //     .success(function(data, status, headers, config) {
-  //         $scope.data = data;
-  //     }).error(function(data, status, headers, config) {
-  //         $scope.status = status;
-  //     });
+.controller('AppCtrl', function($scope, $state, FuritOrWash) {
+  $scope.toFurit = function() {
+    FuritOrWash.toFurit();
+    $state.go('app.cart')
+  }
 })
 
 .controller('SessionsCtrl', function($scope, $rootScope, $timeout, MainPageHot, FruitUxuanRank,
@@ -176,9 +169,8 @@ angular.module('starter.controllers')
   $scope.isHideAddCart = false;
   $scope.singleNumber = 0;
 
-  FuritOrWash.toFurit();
-
   UserInfo.then(function(user) {
+    FuritOrWash.toFurit();
     FruitDetail.get({
       'longitude': user.longitude,
       'latitude': user.latitude,

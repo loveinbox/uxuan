@@ -13,12 +13,13 @@
       <ion-item class="list-order-list" ng-repeat="order in orders" ng-href="vendor/orderDetail/{{order.orderId}}/{{order.orderType}}/{{type}}">
         <div class="clearfix">
           <p class="fl bl">客户单号:{{order.customerOrderId}}</p>
-          <p class="fr">{{order.orderTime * 1000 | date : 'yyyy-MM-dd' }}</p>
+          <p class="fr">{{order.orderTime * 1000 | date : 'MM-dd HH:mm' }}</p>
           <p class="fl bl">商家单号:{{order.orderId}}</p>
         </div>
         <p>客户地址:{{order.rcvAddress}}</p>
         <p>管家电话:{{order.eguardPhone}}</p>
-        <p class="order-popo">订单状态:{{order.orderStatus}}</p>
+        <p>订单状态:{{order.orderStatus}}</p>
+        <!-- <p class="order-popo">订单状态:{{order.orderStatus}}</p> -->
         <div class="guard-order-button is-pay-order clearfix">
           <button class="button button-small button-small-x" ng-show="order.isRedShow" ng-click="clickRed($event, order)">{{order.redText}}</button>
           <button class="button button-small button-small-x to-click" ng-show="order.isBlueShow" ng-click="clickBlue($event, order)">{{order.blueText}}</button>
