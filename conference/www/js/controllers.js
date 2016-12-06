@@ -9,7 +9,7 @@ angular.module('starter.controllers')
         type: 'GET',
         dataType: 'json',
         data: {
-          'url': 'http://www.lifeuxuan.com/app/cart'
+          'url': window.location.href
         }
       })
       .done(function(e) {
