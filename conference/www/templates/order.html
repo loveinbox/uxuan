@@ -7,13 +7,13 @@
       <div ng-hide="!status.isAdded" class="current-address">
         <span class="fromWeChat fr">修改地址</span>
         <div class="current-address-name">
-          {{order.user.name}}
+          {{order.user.rcvName}}
         </div>
         <div class="current-address-tel">
-          {{order.user.tel}}
+          {{order.user.rcvPhonel}}
         </div>
         <div class="current-address-string">
-          {{order.user.address}}
+          {{order.user.rcvAddress}}
         </div>
       </div>
     </section>
@@ -64,7 +64,7 @@
   </ion-content>
   <ion-footer-bar class="order-cart" ng-if="order.isReserve">
     <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash">
-      <div class="button button-assertive button-full go-wash-cart" ng-click="confirmOrder()">确认预约</div>
+      <div class="button button-assertive button-full go-wash-cart" ng-click="confirmOrder($event)">确认预约</div>
     </div>
   </ion-footer-bar>
   <ion-footer-bar class="order-cart" ng-if="!order.isReserve">
@@ -76,6 +76,6 @@
       <span>总价</span>
       <span>￥{{order.totalMoney/100}}</span>
     </div>
-    <div class="button confirm-cart" ng-click="confirmOrder()" ng-class="{'disable-pay': orderButton.isDisabled}">微信支付</div>
+    <div class="button confirm-cart" ng-click="confirmOrder($event)" ng-class="{'disable-pay': orderButton.isDisabled}">{{payButton.text}}</div>
   </ion-footer-bar>
 </ion-view>

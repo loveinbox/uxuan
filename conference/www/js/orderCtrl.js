@@ -3,6 +3,31 @@ angular.module('starter.controllers')
 .controller('OrderCtrl', function($scope, $rootScope, $state, $q, UserInfo, NearByEguard,
   FruitOrderInsert, WxPay, WxPayParam, ShoppingCart, orderStatus, FuritOrWash,
   insertWashOrder, insertWashReserve) {
+  // (function register() {
+  //   $.ajax({
+  //       url: 'http://www.lifeuxuan.com/index.php/wxctrl/register',
+  //       type: 'GET',
+  //       dataType: 'json',
+  //       data: {
+  //         'url': 'http://www.lifeuxuan.com/app/cart'
+  //       }
+  //     })
+  //     .done(function(e) {
+  //       wx.config({
+  //         debug: true,
+  //         appId: e.appId,
+  //         timestamp: e.timestamp,
+  //         nonceStr: e.nonceStr,
+  //         signature: e.signature,
+  //         jsApiList: ['checkJsApi', 'openAddress', 'getLocation']
+  //       });
+  //       wx.error(function(res) {});
+  //     })
+  //     .fail(function(e) {
+  //       // alert(e);
+  //     })
+  //     .always(function() {});
+  // })();
   UserInfo.then(function(user) {
     var type = FuritOrWash.get();
     var isReserve = FuritOrWash.getParams().isReserve;
@@ -19,7 +44,7 @@ angular.module('starter.controllers')
       isReserve: isReserve
     }
     if (isReserve) {
-      $scope.order.carts = {}
+      $scope.order.carts = [];
     }
 
     $scope.order.isAllChecked = true;
@@ -29,6 +54,13 @@ angular.module('starter.controllers')
       isAddressValidated: false
     };
     $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
+
+    // if (user.userLocation.rcvPhone) {
+    //   $scope.status.isAdded = true;
+    //   $scope.order.user.rcvName = user.userLocation.rcvName;
+    //   $scope.order.user.rcvPhone = user.userLocation.rcvPhone;
+    //   $scope.order.user.rcvAddress = user.userLocation.rcvAddress;
+    // }
 
     NearByEguard.get({
       'longitude': user.longitude,
@@ -40,10 +72,21 @@ angular.module('starter.controllers')
       alert('NO DATA');
     });
 
+    // if ((type == 'furit' && $scope.status.isGetThroesold == false) || ($scope.status.isAdded == false) || ($scope.order.carts.length == 0)) {
+    //   $scope.orderButton = {
+    //     'isDisabled': true
+    //   }
+    // } else {
+    //   $scope.orderButton = {
+    //     'isDisabled': false
+    //   }
+    // }
+
     $scope.$on('cartChange', function(event, data) {
       $scope.status.isGetThroesold = ShoppingCart.isGetThroesold(type);
       $scope.order.carts = ShoppingCart.getCart(type);
       $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
+      judgeOrder();
     });
 
     $scope.pickShop = function(event, shop) {
@@ -62,11 +105,40 @@ angular.module('starter.controllers')
       ShoppingCart.checkAll($scope.order.isAllChecked, type);
       $rootScope.$broadcast('cartChange');
     }
-    $scope.confirmOrder = function() {
-      // if ($scope.status.isGetThroesold !== true || $scope.status.isAddressValidated !== true) {
-      //   return;
-      // }
+    $scope.payButton = {
+      text: '微信支付'
+    }
 
+    function judgeOrder() {
+      if (type == 'furit' && $scope.status.isGetThroesold == false) {
+        // alert('未达起送价');
+        $scope.payButton.text = '未达起送价';
+        return false;
+      }
+      // if ($scope.status.isAdded == false) {
+      //   // alert('请添加收货地址');
+      //   $scope.payButton.text = '请添加收货地址';
+      //   return false;
+      // }
+      if (!$scope.order.carts.length) {
+        // alert('请添加商品');
+        $scope.payButton.text = '请添加商品';
+        return false;
+      }
+      $scope.payButton.text = '微信支付';
+      return true;
+    }
+    $scope.confirmOrder = function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      if (user.name == '哈库那玛塔塔' || user.name == 'test') {
+        if (!judgeOrder()) {
+          return;
+        };
+      }
+      // if ((type == 'furit' && $scope.status.isGetThroesold == false) || ($scope.status.isAdded == false) || ($scope.order.carts.length == 0)) {
+      //   return false;
+      // }
       // 添加新订单
 
       var insertMethod = null;
@@ -75,9 +147,9 @@ angular.module('starter.controllers')
         'longitude': user.latitude,
         'userId': user.userId,
         'eguardId': $scope.order.guard,
-        'rcvName': $scope.order.user.name,
-        'rcvPhone': $scope.order.user.tel,
-        'rcvAddress': $scope.order.user.address,
+        'rcvName': $scope.order.user.rcvName,
+        'rcvPhone': $scope.order.user.rcvPhone,
+        'rcvAddress': $scope.order.user.rcvAddress,
         'preferRcvTime': [moment($scope.order.sendTime[0]).unix(), moment($scope.order.sendTime[1]).unix()], //期望收货时间
         'preferFetchTime': [moment($scope.order.sendTime[0]).unix(), moment($scope.order.sendTime[1]).unix()],
         'needTicket': false,
@@ -136,9 +208,9 @@ angular.module('starter.controllers')
             var addressGot = res.provinceName + res.cityName + res.countryName +
               res.detailInfo;
             $scope.$apply(function() {
-              $scope.order.user.address = addressGot;
-              $scope.order.user.name = res.userName;
-              $scope.order.user.tel = res.telNumber + '';
+              $scope.order.user.rcvAddress = addressGot;
+              $scope.order.user.rcvName = res.userName;
+              $scope.order.user.rcvPhone = res.telNumber + '';
               $scope.status.isAdded = true;
               isTooFar(addressGot).then(function() {
                 $scope.status.isAddressValidated = true;

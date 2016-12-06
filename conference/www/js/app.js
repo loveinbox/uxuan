@@ -84,7 +84,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('app.cart', {
     url: '/cart',
-    cache: false,
     views: {
       'tab-cart': {
         templateUrl: 'templates/order.html',

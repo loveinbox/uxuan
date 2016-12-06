@@ -9,12 +9,12 @@ angular.module('starter.controllers')
         type: 'GET',
         dataType: 'json',
         data: {
-          'url': window.location.href.split("#")[0]
+          'url': 'http://www.lifeuxuan.com/app/cart'
         }
       })
       .done(function(e) {
         wx.config({
-          debug: false,
+          debug: true,
           appId: e.appId,
           timestamp: e.timestamp,
           nonceStr: e.nonceStr,
