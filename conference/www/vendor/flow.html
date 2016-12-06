@@ -14,11 +14,20 @@
         <input type="date" ng-model="time.end">
       </label>
     </div>
-    <button class="button button-calm" ng-click="filterOrder()">筛选订单</button>
+    <button class="button button-small to-click" ng-click="filterOrder()">筛选订单</button>
     <ul class="row">
       <li class="col-50 back-active" style="font-size: 16px;">共计{{flows.totalCount}}单</li>
-      <li class="col-50 back-active" style="font-size: 16px;">{{flows.totalMoney}}元</li>
+      <li class="col-25 back-active" style="font-size: 16px;">
+        <span>{{flows.totalMoney}}元</span>
+      </li>
+      <li class="25">
+        <button class="button button-small to-click" ng-click="askCash()" style="margin:-6px 0">提现</button>
+      </li>
     </ul>
+    <div class="text-center">订单明细</div>
+    <div class="row">
+      <div class="col-offset-75"><a href="/vendor/cashFlow">提现记录</a></div>
+    </div>
   </div>
   <ion-content class="has-filter padding">
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>

@@ -128,32 +128,59 @@ angular.module('starter.controllers')
   })
 })
 
-.controller('guardFlowCtrl', function($scope, $stateParams, UserInfo, guardOrderFlow, shopOrderFlow) {
+.controller('guardFlowCtrl', function($scope, $stateParams, UserInfo, guardOrderFlow, shopOrderFlow, shopCash) {
   var type = $stateParams.type;
   var method = type === 'guard' ? guardOrderFlow : shopOrderFlow;
-  $scope.time = {
-    start: new Date(moment().subtract(7, 'days')),
-    end: new Date()
-  }
-  $scope.filterOrder = function() {
-    getOrders();
-  }
-  $scope.doRefresh = function() {
-    getOrders();
-    $scope.$broadcast('scroll.refreshComplete');
-  }
-  getOrders();
+  var nameKey = type === 'guard' ? 'eguardId' : 'shopHostId';
+  var data = {};
 
-  function getOrders() {
-    method.get({
-      'eguardId': 'C0000000009',
-      'shopHostId': 'C0000000008',
-      'timeZone': [moment($scope.time.start).format('YYYY-MM-DD'), moment($scope.time.end).format(
-        'YYYY-MM-DD')]
-    }, function(res) {
-      $scope.flows = res.data.detail;
-    })
-  }
+  $scope.type = type;
+
+  UserInfo.then(function(user) {
+    data[nameKey] = user.userId;
+    $scope.time = {
+      start: new Date(moment().subtract(7, 'days')),
+      end: new Date()
+    }
+    $scope.filterOrder = function() {
+      getOrders();
+    }
+    $scope.doRefresh = function() {
+      getOrders();
+      $scope.$broadcast('scroll.refreshComplete');
+    }
+    getOrders();
+
+    $scope.askCash = function() {
+      shopCash.get(data, function(res) {
+        if (res.code == 0) {
+          alert('申请提现成功！');
+        }
+      })
+    }
+
+    function getOrders() {
+      data['timeZone'] = [moment($scope.time.start).format('YYYY-MM-DD'), moment($scope.time.end).format(
+        'YYYY-MM-DD')];
+      method.get(data, function(res) {
+        $scope.flows = res.data.detail;
+      })
+    }
+  });
+})
+
+.controller('shopCashFlowCtrl', function($scope, $stateParams, UserInfo, shopCashFlow) {
+  UserInfo.then(function(user) {
+    getOrders();
+
+    function getOrders() {
+      shopCashFlow.get({
+        shopHostId: user.userId
+      }, function(res) {
+        $scope.flows = res.data;
+      })
+    }
+  });
 })
 
 .controller('guardOrderDetailCtrl', function($scope, $rootScope, $stateParams, UserInfo, StartPrice,
@@ -220,106 +247,110 @@ angular.module('starter.controllers')
   var methodNumber = type === 'guard' ? guardOrderNumber : shopOrderNumber;
   // var methodLogout = type === 'guard' ? guardLogout : shopLogout;
   var data = {
-    'eguardId': 'C0000000009',
-    'shopHostId': 'C0000000008',
+    // 'eguardId': 'C0000000009',
+    // 'shopHostId': 'C0000000008',
     'pos': 0
   };
-
-  $scope.type = type;
-  $scope.orderTypeObj = {
-    17001: '水果',
-    17002: '洗衣',
-    17003: '洗衣',
-    // 17004: '代买'
-  }
-
-  $scope.status = {
-    now: 'new',
-    new: 'new',
-    process: 'process',
-    finish: 'finish',
-    noOrder: false
-  }
-
-  $scope.button = {
-    isBlueShow: true,
-    isRedShow: true,
-    blueText: 'Blue',
-    redText: 'Red'
-  }
-
-  var blueStatus2Action = {
-    guard: {
-      12001: 'accept',
-      12004: 'fetch',
-      12005: 'finish',
-      13001: 'acceptWash',
-      13004: 'fetchWash',
-      13007: 'finishWash',
-      16001: 'acceptSendWash',
-      16003: 'fetchSendWash',
-      16004: 'finishSendWash',
-    },
-    vendor: {
-      14003: 'begin',
-      14004: 'finish'
-    }
-  }
-
-  var redStatus2Action = {
-    guard: {
-      12001: 'refuse',
-      13001: 'refuseWash',
-      16001: 'refuseSendWash',
-    }
-  }
-
   UserInfo.then(function(user) {
-    getOrders();
-    $scope.clickBlue = function(event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      methodAction[blueStatus2Action[type][order.orderStatusId]].get({
-        'orderId': order.orderId
-      }, function(res) {
-        if (res.code === 0) {
-          alert('操作成功');
-        } else {
-          alert('操作失败！');
-        }
-        getOrders();
-      })
-    }
-    $scope.clickRed = function(event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      methodAction[redStatus2Action[type][order.orderStatusId]].get({
-        'orderId': order.orderId
-      }, function(res) {
-        if (res.code === 0) {
-          alert('操作成功');
-        } else {
-          alert('操作失败！');
-        }
-        getOrders();
-      })
+
+    data[nameKey] = user.userId;
+
+    $scope.type = type;
+    $scope.orderTypeObj = {
+      17001: '水果',
+      17002: '洗衣',
+      17003: '洗衣',
+      // 17004: '代买'
     }
 
-    $scope.doRefresh = function() {
+    $scope.status = {
+      now: 'new',
+      new: 'new',
+      process: 'process',
+      finish: 'finish',
+      noOrder: false
+    }
+
+    $scope.button = {
+      isBlueShow: true,
+      isRedShow: true,
+      blueText: 'Blue',
+      redText: 'Red'
+    }
+
+    var blueStatus2Action = {
+      guard: {
+        12001: 'accept',
+        12004: 'fetch',
+        12005: 'finish',
+        13001: 'acceptWash',
+        13004: 'fetchWash',
+        13007: 'finishWash',
+        16001: 'acceptSendWash',
+        16003: 'fetchSendWash',
+        16004: 'finishSendWash',
+      },
+      vendor: {
+        14003: 'begin',
+        14004: 'finish'
+      }
+    }
+
+    var redStatus2Action = {
+      guard: {
+        12001: 'refuse',
+        13001: 'refuseWash',
+        16001: 'refuseSendWash',
+      }
+    }
+
+    UserInfo.then(function(user) {
       getOrders();
-      $scope.$broadcast('scroll.refreshComplete');
-    }
+      $scope.clickBlue = function(event, order) {
+        event.stopPropagation();
+        event.preventDefault();
+        methodAction[blueStatus2Action[type][order.orderStatusId]].get({
+          'orderId': order.orderId
+        }, function(res) {
+          if (res.code === 0) {
+            alert('操作成功');
+          } else {
+            alert('操作失败！');
+          }
+          getOrders();
+        })
+      }
+      $scope.clickRed = function(event, order) {
+        event.stopPropagation();
+        event.preventDefault();
+        methodAction[redStatus2Action[type][order.orderStatusId]].get({
+          'orderId': order.orderId
+        }, function(res) {
+          if (res.code === 0) {
+            alert('操作成功');
+          } else {
+            alert('操作失败！');
+          }
+          getOrders();
+        })
+      }
 
-    $scope.clickTab = function(type) {
-      $scope.status.now = $scope.status[type];
-      getOrders();
-    }
+      $scope.doRefresh = function() {
+        getOrders();
+        $scope.$broadcast('scroll.refreshComplete');
+      }
 
-    $scope.toWeekCn = function(dataStr) {
-      var index = moment(dataStr).format('E');
-      var transfer = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
-      return transfer[index];
-    }
+      $scope.clickTab = function(type) {
+        $scope.status.now = $scope.status[type];
+        getOrders();
+      }
+
+      $scope.toWeekCn = function(dataStr) {
+        var index = moment(dataStr).format('E');
+        var transfer = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+        return transfer[index];
+      }
+    });
 
     function getOrders() {
       // data[nameKey] = user.userId;

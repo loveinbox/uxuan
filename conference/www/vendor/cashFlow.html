@@ -1,0 +1,18 @@
+<ion-view view-title="U选到家" ng-controller="shopCashFlowCtrl">
+  <div class="index-header" style="background: #003333">
+    <div go-back></div>
+    <ul class="order-tabs">
+      <li class='back-active' style="width: 100%">提现记录</li>
+    </ul>
+  </div>
+  <ion-content class="has-header padding">
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+    <div class="no-order" ng-show="flows.length <= 0">无订单</div>
+    <ul class="row" ng-show="flows.length > 0" ng-repeat="flow in flows" style="border-bottom: solid 1px;">
+      <li class="col-offset-75 col-25">{{flow.withdrawTime | data 'yyyy-MM-dd'}}</li>
+      <li class="col-50">{{flow.withdrawTimeZone[0] | data 'MM-dd'}}--{{flow.withdrawTimeZone[1] | data 'MM-dd'}}账单</li>
+      <li class="col-offset-75 col-25">{{flow.money}}</li>
+    </ul>
+  </ion-content>
+</ion-view>
+'withdrawTime':'', //提现时间 'withdrawTimeZone':['', ''], //账单起止日期 'money':0

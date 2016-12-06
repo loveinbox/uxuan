@@ -42,6 +42,11 @@ angular.module('starter')
       cache: false,
       templateUrl: 'vendor/orderDetail.html'
     })
+    .state('vendorCashFlow', {
+      url: '/vendor/cashFlow',
+      cache: false,
+      templateUrl: 'vendor/cashFlow.html'
+    })
     .state('vendorRule', {
       url: '/vendorRule',
       templateUrl: 'vendor/rule.html'

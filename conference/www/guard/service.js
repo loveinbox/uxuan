@@ -22,6 +22,8 @@ var serviceURLs = {
   'shopOrderNumber': '/communicate/statistic/shop',
   'shopOrderDetailFurit': '/orderdetail/shop/fruit',
   'shopOrderDetailWash': '/orderdetail/shop/wash',
+  'shopCashFlow': '/account/shop/withdraw/record',
+  'shopCash': '/account/shop/withdraw',
 }
 ServiceFactory(serviceURLs);
 
