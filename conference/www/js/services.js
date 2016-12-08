@@ -58,13 +58,17 @@ angular.module('starter.services')
   var isReserve = false;
   this.toFurit = function() {
     furitOrWash = 'furit';
+    console.log('furitOrWash', furitOrWash);
   }
   this.toWash = function(order, reserve) {
     furitOrWash = 'wash';
+    console.log('furitOrWash', furitOrWash);
     if (order !== null) {
       washOrder = order;
     }
-    isReserve = reserve;
+    if (reserve !== undefined) {
+      isReserve = reserve;
+    }
   }
   this.get = function() {
     return furitOrWash;

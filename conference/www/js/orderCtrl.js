@@ -3,36 +3,20 @@ angular.module('starter.controllers')
 .controller('OrderCtrl', function($scope, $rootScope, $state, $q, UserInfo, NearByEguard,
   FruitOrderInsert, WxPay, WxPayParam, ShoppingCart, orderStatus, FuritOrWash,
   insertWashOrder, insertWashReserve) {
-  // (function register() {
-  //   $.ajax({
-  //       url: 'http://www.lifeuxuan.com/index.php/wxctrl/register',
-  //       type: 'GET',
-  //       dataType: 'json',
-  //       data: {
-  //         'url': 'http://www.lifeuxuan.com/app/cart'
-  //       }
-  //     })
-  //     .done(function(e) {
-  //       wx.config({
-  //         debug: true,
-  //         appId: e.appId,
-  //         timestamp: e.timestamp,
-  //         nonceStr: e.nonceStr,
-  //         signature: e.signature,
-  //         jsApiList: ['checkJsApi', 'openAddress', 'getLocation']
-  //       });
-  //       wx.error(function(res) {});
-  //     })
-  //     .fail(function(e) {
-  //       // alert(e);
-  //     })
-  //     .always(function() {});
-  // })();
+  var type = FuritOrWash.get();
+  var isReserve = FuritOrWash.getParams().isReserve;
+  $scope.$on("$ionicParentView.enter", function(event, data) {
+    type = FuritOrWash.get();
+  });
+
   UserInfo.then(function(user) {
-    var type = FuritOrWash.get();
-    var isReserve = FuritOrWash.getParams().isReserve;
+
+    console.log('type', type);
     if (type == 'wash') {
       $scope.washOrder = FuritOrWash.getParams().washOrder;
+      isReserve = FuritOrWash.getParams().isReserve;
+    } else {
+      isReserve = false;
     }
 
     $scope.type = type;
@@ -43,7 +27,7 @@ angular.module('starter.controllers')
       carts: ShoppingCart.getCart(type),
       isReserve: isReserve
     }
-    if (isReserve) {
+    if (type == 'wash' && isReserve) {
       $scope.order.carts = [];
     }
 
@@ -54,9 +38,6 @@ angular.module('starter.controllers')
       isAddressValidated: false
     };
     $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
-
-    console.log($scope.status.isAdded);
-    console.log(user.rcvPhone);
 
     if (user.rcvPhone) {
       $scope.status.isAdded = true;
@@ -258,7 +239,7 @@ angular.module('starter.controllers')
   UserInfo.then(function(user) {
     getOrders();
     $scope.$on("$ionicParentView.enter", function(event, data) {
-      console.log('loaded');
+      // console.log('loaded');
       getOrders();
     });
 

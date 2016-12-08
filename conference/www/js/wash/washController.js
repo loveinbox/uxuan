@@ -2,13 +2,13 @@ angular.module('starter.controllers')
 
 .controller('washListCtrl', function($scope, UserInfo, getWashHot, getWashShops, BannerWash,
   $ionicSlideBoxDelegate, FuritOrWash) {
-  FuritOrWash.toWash();
   $scope.location = {};
   UserInfo.then(function(user) {
     getWashHot.get({
       'longitude': user.longitude,
       'latitude': user.latitude
     }, function(data) {
+      FuritOrWash.toWash();
       $scope.sessions = data.data;
     }, function(data) {
       alert('NO DATA MainPageHot');
@@ -36,7 +36,6 @@ angular.module('starter.controllers')
 
 .controller('washSingleCtrl', function($scope, $stateParams, $timeout, $ionicScrollDelegate,
   UserInfo, getWashShop, FuritOrWash) {
-  FuritOrWash.toWash();
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;
@@ -46,6 +45,7 @@ angular.module('starter.controllers')
       'latitude': user.latitude,
       'shopId': $stateParams.shopId
     }, function(res) {
+      FuritOrWash.toWash();
       var count = 0;
       var lastId = -1;
       var indexCount = 0;
@@ -165,8 +165,8 @@ angular.module('starter.controllers')
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;
-  FuritOrWash.toWash(null, false);
   UserInfo.then(function(user) {
+    FuritOrWash.toWash(null, false);
     $scope.washOrder = FuritOrWash.getParams().washOrder;
     getWashShop.get({
       'longitude': user.longitude,

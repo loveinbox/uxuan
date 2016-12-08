@@ -123,7 +123,7 @@ angular.module('starter.services')
           user.rcvPhone = address.rcvPhone;
           user.rcvName = address.rcvName;
 
-          console.log(user.rcvPhone);
+          console.log('rcvPhone', user.rcvPhone);
           deferred.resolve(user);
         }
       })

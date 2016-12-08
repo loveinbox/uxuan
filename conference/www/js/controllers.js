@@ -237,8 +237,8 @@ angular.module('starter.controllers')
 .controller('shopListCtrl', function($scope, $rootScope, $stateParams, MainPageHot,
   NearByFruitShops, UserInfo, BannerFurit, $ionicSlideBoxDelegate, FuritOrWash) {
   $scope.location = {};
-  FuritOrWash.toFurit();
   UserInfo.then(function(user) {
+    FuritOrWash.toFurit();
     MainPageHot.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
@@ -276,8 +276,8 @@ angular.module('starter.controllers')
   var indexArray = [];
   $scope.currentIndex = 0;
 
-  FuritOrWash.toFurit();
   UserInfo.then(function(user) {
+    FuritOrWash.toFurit();
     FruitsByShop.get({
       'shopId': $stateParams.shopId
     }, function(res) {
