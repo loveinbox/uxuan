@@ -105,7 +105,7 @@ angular.module('starter.services')
       user.openid = e.data.openid;
       user.headPicUrl = e.data.headimgurl;
       if (user.name == '哈库那玛塔塔') {
-        // screenLog.init({ autoScroll: true });
+        screenLog.init({ autoScroll: true });
       }
       userRegister.get({
         'latitude': user.latitude,
@@ -117,8 +117,13 @@ angular.module('starter.services')
       }, function(e) {
         if (e.data) {
           user.userId = e.data.userId;
-          user.verify = e.data.verify;
-          user.addressInfo = e.data.addressInfo;
+          user.verify = e.data.verifyCode;
+          var address = e.data.lastAddress;
+          user.rcvAddress = address.rcvAddress;
+          user.rcvPhone = address.rcvPhone;
+          user.rcvName = address.rcvName;
+
+          console.log(user.rcvPhone);
           deferred.resolve(user);
         }
       })

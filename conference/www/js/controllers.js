@@ -3,13 +3,43 @@ angular.module('starter.controllers', []);
 angular.module('starter.controllers')
 
 .run(function run($rootScope) {
-  (function register() {
+  register();
+
+  function register() {
     $.ajax({
         url: 'http://www.lifeuxuan.com/index.php/wxctrl/register',
         type: 'GET',
         dataType: 'json',
         data: {
           'url': window.location.href
+        }
+      })
+      .done(function(e) {
+        wx.config({
+          debug: false,
+          appId: e.appId,
+          timestamp: e.timestamp,
+          nonceStr: e.nonceStr,
+          signature: e.signature,
+          jsApiList: ['checkJsApi', 'openAddress', 'getLocation']
+        });
+        wx.error(function(res) {
+          register2();
+        });
+      })
+      .fail(function(e) {
+        // register2();
+      })
+      .always(function() {});
+  };
+
+  function register2() {
+    $.ajax({
+        url: 'http://www.lifeuxuan.com/index.php/wxctrl/register',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+          'url': 'http://www.lifeuxuan.com/app/cart'
         }
       })
       .done(function(e) {
@@ -27,7 +57,7 @@ angular.module('starter.controllers')
         // alert(e);
       })
       .always(function() {});
-  })();
+  };
 })
 
 .controller('AppCtrl', function($scope, $state, FuritOrWash) {

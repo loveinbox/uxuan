@@ -55,12 +55,15 @@ angular.module('starter.controllers')
     };
     $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
 
-    // if (user.userLocation.rcvPhone) {
-    //   $scope.status.isAdded = true;
-    //   $scope.order.user.rcvName = user.userLocation.rcvName;
-    //   $scope.order.user.rcvPhone = user.userLocation.rcvPhone;
-    //   $scope.order.user.rcvAddress = user.userLocation.rcvAddress;
-    // }
+    console.log($scope.status.isAdded);
+    console.log(user.rcvPhone);
+
+    if (user.rcvPhone) {
+      $scope.status.isAdded = true;
+      $scope.order.user.rcvName = user.rcvName;
+      $scope.order.user.rcvPhone = user.rcvPhone;
+      $scope.order.user.rcvAddress = user.rcvAddress;
+    }
 
     NearByEguard.get({
       'longitude': user.longitude,
@@ -115,27 +118,31 @@ angular.module('starter.controllers')
         $scope.payButton.text = '未达起送价';
         return false;
       }
-      // if ($scope.status.isAdded == false) {
-      //   // alert('请添加收货地址');
-      //   $scope.payButton.text = '请添加收货地址';
-      //   return false;
-      // }
-      if (!$scope.order.carts.length) {
+      if ($scope.status.isAdded == false) {
+        // alert('请添加收货地址');
+        $scope.payButton.text = '请添加收货地址';
+        return false;
+      }
+      if ((type == 'furit' || !isReserve) && !$scope.order.carts.length) {
         // alert('请添加商品');
         $scope.payButton.text = '请添加商品';
         return false;
       }
-      $scope.payButton.text = '微信支付';
+      if (isReserve) {
+        $scope.payButton.text = '预约洗衣';
+      } else {
+        $scope.payButton.text = '微信支付';
+      }
       return true;
     }
     $scope.confirmOrder = function(event) {
       event.stopPropagation();
       event.preventDefault();
-      if (user.name == '哈库那玛塔塔' || user.name == 'test') {
-        if (!judgeOrder()) {
-          return;
-        };
-      }
+      // if (user.name == '哈库那玛塔塔' || user.name == 'test') {
+      if (!judgeOrder()) {
+        return;
+      };
+      // }
       // if ((type == 'furit' && $scope.status.isGetThroesold == false) || ($scope.status.isAdded == false) || ($scope.order.carts.length == 0)) {
       //   return false;
       // }
