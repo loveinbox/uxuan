@@ -359,7 +359,7 @@ angular.module('starter.controllers')
       wx.openAddress({
         success: function(res) {},
         cancel: function() {
-          alert("fa");
+          // alert("fa");
         }
       });
     });

@@ -144,7 +144,8 @@ angular.module('starter.controllers')
         'tip': '',
         'detail': ShoppingCart.getCart(type)
       };
-
+      console.log('rcvPhone', $scope.order.user.rcvPhone);
+      console.log('orderData', orderData.rcvPhone);
       if (FuritOrWash.getParams().washOrder) {
         orderData.shopId = FuritOrWash.getParams().washOrder.shopId
         orderData.orderIdsList = [FuritOrWash.getParams().washOrder.orderId]
@@ -275,7 +276,8 @@ angular.module('starter.controllers')
         .$promise
         .then(function(res) {
           if (res.code === 0) {
-            $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
+            alert('取消成功');
+            getOrders();
           }
         });
     }
@@ -310,7 +312,7 @@ angular.module('starter.controllers')
           setStage([1]);
           return;
         }
-        if (orderStage - 0 < 11007) {
+        if (orderStage - 0 < 11008) {
           setStage([0, 1]);
           return;
         }
@@ -318,7 +320,7 @@ angular.module('starter.controllers')
           setStage([0, 0, 1]);
           return;
         }
-        if (orderStage - 0 <= 11013) {
+        if (orderStage - 0 <= 11015) {
           setStage([0, 0, 0, 1]);
           return;
         }
