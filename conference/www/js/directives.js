@@ -209,7 +209,7 @@ angular.module('starter.directives', [])
           weight = 1;
         }
         initTime(weight);
-        $scope.tp.week = weekArray[date.getDay() + index];
+        $scope.tp.week = weekArray[(date.getDay() + index) % 7];
         // $scope.tp.preferDate is used as index
         setOrderDate($scope.tp.preferDate);
       }

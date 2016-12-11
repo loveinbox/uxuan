@@ -42,11 +42,11 @@
 .cart-modal-icon {
   position: absolute;
   width: 30%;
+  padding-left: 40px;
 }
 
-.cart-modal-icon .icon-cart {
-  padding-left: 40px;
-  font-size: 25px;
+.icon-cart {
+  font-size: 28px;
   line-height: 45px;
   color: #619de5;
 }

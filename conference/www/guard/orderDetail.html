@@ -7,8 +7,9 @@
     <ion-list ng-show="!status.noOrder">
       <ion-item class="list-order-list">
         <div class="clearfix">
-          <p class="fl bl">客户订单号:{{order.Id}}</p>
+          <p class="fl bl">客户订单号:{{order.customerOrderId}}</p>
           <p class="fl bl">管家订单号:{{order.orderId}}</p>
+          <p class="fl bl" ng-if="type == 17003">(送回)</p>
           <p class="fr order-popo">{{orderTypeObj[order.orderType]}}</p>
           <!-- <p class="fr">{{order.orderStatus}}</p> -->
         </div>

@@ -271,7 +271,7 @@ angular.module('starter.services')
     if ($(".icon-cart:visible").length < 1) {
       return;
     }
-    var offset = $(".icon-cart:visible").offset();
+    var offset = $("#icon-cart-footer:visible").offset();
     var flyer = $('<i class="u-flyer icon ion-ios-color-filter"><i/>');
     flyer.fly({
       start: {

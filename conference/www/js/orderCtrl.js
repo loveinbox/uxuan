@@ -46,6 +46,12 @@ angular.module('starter.controllers')
       $scope.order.user.rcvAddress = user.rcvAddress;
     }
 
+    isTooFar($scope.order.user.rcvAddress).then(function() {
+      $scope.status.isAddressValidated = false;
+    }, function() {
+      $scope.status.isAddressValidated = true;
+    })
+
     NearByEguard.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
@@ -94,6 +100,7 @@ angular.module('starter.controllers')
     }
 
     function judgeOrder() {
+      $scope.payButton.text = '微信支付';
       if (type == 'furit' && $scope.status.isGetThroesold == false) {
         // alert('未达起送价');
         $scope.payButton.text = '未达起送价';
@@ -107,6 +114,10 @@ angular.module('starter.controllers')
       if ((type == 'furit' || !isReserve) && !$scope.order.carts.length) {
         // alert('请添加商品');
         $scope.payButton.text = '请添加商品';
+        return false;
+      }
+      if (!$scope.status.isAddressValidated) {
+        $scope.payButton.text = '请修改送货地址';
         return false;
       }
       if (isReserve) {
@@ -202,34 +213,35 @@ angular.module('starter.controllers')
               $scope.order.user.rcvPhone = res.telNumber + '';
               $scope.status.isAdded = true;
               isTooFar(addressGot).then(function() {
-                $scope.status.isAddressValidated = true;
-              }, function() {
                 $scope.status.isAddressValidated = false;
+              }, function() {
+                $scope.status.isAddressValidated = true;
               })
             })
           }
         });
       });
+    }
 
-      function isTooFar(address) {
-        var deferred = $q.defer();
-        var gc = new BMap.Geocoder();
-        console.log('start to get location');
-        gc.getPoint(address, function(point) {
-          var map = new BMap.Map("allmap");
-          var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
-          var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
-          // alert('两点的距离是：' + (map.getDistance(pointA, pointB)).toFixed(2) + ' 米。'); //获取两点距离,保留小数点后两位
-          var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
-          if (distacne > 6000) {
-            alert('收货地址可能超出配送范围');
-            deferred.resolve(true);
-          } else {
-            deferred.reject(false);
-          }
-        });
-        return deferred.promise;
-      }
+    function isTooFar(address) {
+      var deferred = $q.defer();
+      var gc = new BMap.Geocoder();
+      console.log('start to get location');
+      address = address || '';
+      gc.getPoint(address, function(point) {
+        var map = new BMap.Map("allmap");
+        var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
+        var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
+        // alert('两点的距离是：' + (map.getDistance(pointA, pointB)).toFixed(2) + ' 米。'); //获取两点距离,保留小数点后两位
+        var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
+        if (distacne > 6000) {
+          alert('收货地址超出您选择店面服务范围');
+          deferred.resolve(true);
+        } else {
+          deferred.reject(false);
+        }
+      });
+      return deferred.promise;
     }
   })
 })

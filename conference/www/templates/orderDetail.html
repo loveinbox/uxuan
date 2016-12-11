@@ -20,7 +20,7 @@
         </tr>
         <tr>
           <td class="order-detail-name">服务管家</td>
-          <td>{{order.eguardName}}{{order.eguardPhoneNumber}}</td>
+          <td>{{order.eguardName}} <a class="to-click-outline" ng-href="tel:{{order.eguardPhone}}">{{order.eguardPhone}}</a> </td>
         </tr>
         <tr ng-if="type == 17001">
           <td class="order-detail-name" ng-if="order.orderStatusId != 10009">预计送达</td>
@@ -114,12 +114,12 @@
           开始计价
         </button>
       </div>
-      <div ng-if="stage02 && order.orderStatusId !== 11006" style="margin: 10px">
+      <div ng-if="stage02 && order.orderStatusId - 0< 11006" style="margin: 10px">
         <button class="button button-block to-click" style="width: 50%;margin: 0 auto" ng-click="clickPrice($event, order)">
           开始计价
         </button>
       </div>
-      <div ng-if="stage03 || stage04 ">
+      <div ng-if="stage03 || stage04 || order.orderStatusId == 11007">
         <p class="text-center " style="margin: 0;padding: 5px 0;background: #f2f7fa ">商品列表</p>
         <ion-scroll direction="y " overflow-scroll="true ">
           <ion-list class=" index-list ">

@@ -185,13 +185,6 @@ angular.module('starter')
       controller: 'washSingleOrderCtrl'
     })
 
-    .state('washCartOrder', {
-      url: '/washCartOrder/:shopId',
-      cache: false,
-      templateUrl: 'templates/washTemplates/washCart-order.html ',
-      controller: 'washCartOrderCtrl'
-    })
-
     // .state('vendor', {
     //   url: '/vendor',
     //   cache: false,
