@@ -91,6 +91,7 @@ angular.module('starter.directives', [])
         }
         $scope.addCart = function(event, good, shop) {
           event.stopPropagation();
+          console.log('1-->', user.verify);
           if (!(user.verify - 0)) {
             $state.go('phoneNumberCheck');
             return;
@@ -137,7 +138,7 @@ angular.module('starter.directives', [])
   return {
     restrict: 'A',
     templateUrl: 'templateDirectives/singleCart.html',
-    controller: function($scope, $rootScope, ShoppingCart, UserInfo, FuritOrWash) {
+    controller: function($scope, $rootScope, $state, ShoppingCart, UserInfo, FuritOrWash) {
       var type = FuritOrWash.get();
       $scope.cartAction = {};
       if ($scope.good) {
@@ -151,10 +152,11 @@ angular.module('starter.directives', [])
         });
         $scope.addCart = function(event, good, shop) {
           event.stopPropagation();
-          // if (!(user.verify - 0)) {
-          //   $state.go('phoneNumberCheck');
-          //   return;
-          // }
+          console.log('1-->', user.verify);
+          if (!(user.verify - 0)) {
+            $state.go('phoneNumberCheck');
+            return;
+          }
           ShoppingCart.add(event, good, shop, type);
           $rootScope.$broadcast('cartChange');
         };

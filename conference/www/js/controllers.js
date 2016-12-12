@@ -322,7 +322,7 @@ angular.module('starter.controllers')
         continue;
       }
     }
-    console.log(getIndex);
+    // console.log(getIndex);
     if ($scope.currentIndex !== indexArray[getIndex]) {
       $scope.currentIndex = indexArray[getIndex];
       $scope.getScrollPosition = null;
@@ -337,7 +337,7 @@ angular.module('starter.controllers')
 .controller('OrderStatusCtrl', function($scope, $stateParams, $ionicHistory, $rootScope,
   orderStatus) {
   var status = orderStatus.get();
-  console.log('111111111$rootScope.message', status);
+  // console.log('111111111$rootScope.message', status);
   if (status == "ordered") {
     $scope.status = "下单成功,未支付";
     return;
@@ -381,12 +381,14 @@ angular.module('starter.controllers')
       SendCheckCode.get({
         'longitude': user.longitude,
         'latitude': user.latitude,
-        'userPhoneNumber': user.phoneNumber
+        'phone': $scope.check.phoneNumber
       }, function(data) {
         if (data.code == -1) {
           return;
+        } else {
+          alert('发送验证码成功');
         }
-        $scope.check.time = 15;
+        $scope.check.time = 60;
         timer = $interval(function() {
           $scope.check.time--;
           if ($scope.check.time < 0) {
@@ -398,13 +400,15 @@ angular.module('starter.controllers')
 
     $scope.checkCode = function(e, order) {
       var phoneNumber = $scope.check.phoneNumber;
+      if (!check.isAgree) {
+        return;
+      }
       CheckCheckCode.get({
         'longitude': user.longitude,
         'latitude': user.latitude,
-        'userPhoneNumber': phoneNumber,
-        'checkCode': $scope.check.checkCode,
-        'userId': user.userId,
-        'XDEBUG_SESSION_START': '657409A8'
+        'phone': $scope.check.phoneNumber,
+        'code': $scope.check.checkCode,
+        'userId': user.userId
       }, function(data) {
         console.log(' checkcoode data.code', data.code);
         console.log(' checkcoode data.msg', data.msg);

@@ -82,8 +82,8 @@ angular.module('starter.services')
     'username': '',
     'password': '',
     'headPicUrl': '',
-    'tel': '18788889999',
-    'verify': 1,
+    'rcvPhone': '18788889999',
+    'verify': 0,
     'address': '12313123'
   }
   Location.then(function(userLocation) {
@@ -105,7 +105,7 @@ angular.module('starter.services')
       user.openid = e.data.openid;
       user.headPicUrl = e.data.headimgurl;
       if (user.name == '哈库那玛塔塔') {
-        // screenLog.init({ autoScroll: true });
+        screenLog.init({ autoScroll: true });
       }
       userRegister.get({
         'latitude': user.latitude,

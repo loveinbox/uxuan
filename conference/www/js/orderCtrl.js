@@ -11,7 +11,7 @@ angular.module('starter.controllers')
 
   UserInfo.then(function(user) {
 
-    console.log('type', type);
+    // console.log('type', type);
     if (type == 'wash') {
       $scope.washOrder = FuritOrWash.getParams().washOrder;
       isReserve = FuritOrWash.getParams().isReserve;
@@ -128,6 +128,10 @@ angular.module('starter.controllers')
       return true;
     }
     $scope.confirmOrder = function(event) {
+      if (!(user.verify - 0)) {
+        $state.go('phoneNumberCheck');
+        return;
+      }
       event.stopPropagation();
       event.preventDefault();
       // if (user.name == '哈库那玛塔塔' || user.name == 'test') {
@@ -155,8 +159,8 @@ angular.module('starter.controllers')
         'tip': '',
         'detail': ShoppingCart.getCart(type)
       };
-      console.log('rcvPhone', $scope.order.user.rcvPhone);
-      console.log('orderData', orderData.rcvPhone);
+      // console.log('rcvPhone', $scope.order.user.rcvPhone);
+      // console.log('orderData', orderData.rcvPhone);
       if (FuritOrWash.getParams().washOrder) {
         orderData.shopId = FuritOrWash.getParams().washOrder.shopId
         orderData.orderIdsList = [FuritOrWash.getParams().washOrder.orderId]
@@ -226,7 +230,7 @@ angular.module('starter.controllers')
     function isTooFar(address) {
       var deferred = $q.defer();
       var gc = new BMap.Geocoder();
-      console.log('start to get location');
+      // console.log('start to get location');
       address = address || '';
       gc.getPoint(address, function(point) {
         var map = new BMap.Map("allmap");
