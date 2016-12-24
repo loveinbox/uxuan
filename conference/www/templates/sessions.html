@@ -8,7 +8,7 @@
         </a>
       </div>
       <div class="lunbo">
-        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true" auto-play="true" show-pager="false">
+        <ion-slide-box class="index-slide" slide-interval="3500" loop="true" does-continue="true" auto-play="true" show-pager="false">
           <ion-slide ng-repeat="banner in banners">
             <div class="box"><img ng-src="http://lifeuxuan.com/{{banner}}"> </div>
           </ion-slide>
@@ -55,33 +55,33 @@
           <ion-item class="index-list-item" ng-repeat="session in sessions" ng-href="{{session.href}}">
             <img ng-src="http://lifeuxuan.com/{{session.productHeadImg}}" alt="">
             <span class="name">{{session.productName}}</span>
-            <p class="price">￥{{session.productPrice/100}}/{{session.productUnit}}</p>
+            <p class="price">￥{{session.productPrice/100}}<span style="font-size: 10px">/{{session.productMeasure}}<span></p>
           </ion-item>
         </ion-list>
       </ion-scroll>
     </div>
     <div class="index-shop-list list-top" ng-show="!location.isOut && shops.length > 0">
-      <div class="divider">附近商家</div>
+      <div class="divider">附近水果店</div>
       <ion-list class="shop-list clearfix">
         <ion-item ng-repeat="shop in shops" href="/shop/{{shop.shopId}}">
           <div class="shop-img clearfix"> <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}" alt=""> </div>
           <div class="shop-info-wrap">
             <div class="shop-info1"> <span class="name">{{shop.shopName}}</span> </div>
-            <div class="shop-info2">
-              <span>月售{{shop.shopMonthSaleVolume}}单</span>
-              <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{shop.shopDistance}}米</span>
-            </div>
-            <div class="shop-info3">
-              <span>起送￥{{shop.shopStartMoney}}</span>
-              <span class="send-divide">|</span>
-              <span>配送￥{{shop.shopDeliveryFee}}</span>
-            </div>
-          </div>
-        </ion-item>
-      </ion-list>
+    <div class="shop-info2">
+      <span>月售{{shop.shopMonthSaleVolume}}单</span>
+      <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{shop.shopDistance}}米</span>
+    </div>
+    <div class="shop-info3">
+      <span>起送￥{{shop.shopStartMoney}}</span>
+      <span class="send-divide">|</span>
+      <span>配送￥{{shop.shopDeliveryFee}}</span>
+    </div>
+    </div>
+    </ion-item>
+    </ion-list>
     </div>
     <div class="index-shop-list list-top" ng-show="!location.isOut && washShops.length > 0">
-      <div class="divider">附近洗衣</div>
+      <div class="divider">附近洗衣店</div>
       <ion-list class="shop-list clearfix">
         <ion-item ng-repeat="washShop in washShops" href="/washSingle/{{washShop.shopId}}">
           <div class="shop-img clearfix"> <img ng-src="http://lifeuxuan.com/{{washShop.shopHeadImg}}"> </div>
@@ -92,9 +92,7 @@
               <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{washShop.shopDistance}}米</span>
             </div>
             <div class="shop-info3">
-              <span>起送￥{{washShop.shopStartMoney}}</span>
-              <span class="send-divide">|</span>
-              <span>配送￥{{washShop.shopDeliveryFee}}</span>
+              配送满{{washShop.shopStartMoney}}元免运费，不满{{washShop.shopStartMoney}}收{{washShop.shopDeliveryFee}}元运费
             </div>
           </div>
         </ion-item>
@@ -110,7 +108,7 @@
             <div class="shop-info2">
               <span>{{good.productDescription}}</span> </div>
             <div class="shop-info3">
-              <span class="single-good-price">￥{{good.productPrice/100}}/{{good.productUnit}}</span> </div>
+              <span class="single-good-price">￥{{good.productPrice/100}}<span style="font-size: 10px">/{{good.productMeasure}}</span> </div>
           </div>
           <div class="single-good-top">
             <div class="single-good-top-header">top</div>
@@ -120,7 +118,7 @@
       </ion-list>
     </div>
     <div class="index-fruit-list list-top" ng-show="!location.isOut && goods.length > 0">
-      <div class="divider">U选商家</div>
+      <div class="divider">U选洗衣</div>
       <ion-list class="shop-list clearfix">
         <ion-item ng-repeat="washGood in washShopsRank" href="/washSingle/{{washGood.shopId}}">
           <div class="shop-img clearfix">

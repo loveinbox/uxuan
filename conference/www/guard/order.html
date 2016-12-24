@@ -13,7 +13,6 @@
       <ion-item class="list-order-list" ng-repeat="order in orders" ng-href="guard/orderDetail/{{order.orderId}}/{{order.orderType}}/{{type}}">
         <div class="clearfix">
           <p class="fl bl">订单号:{{order.customerOrderId}}</p>
-          <p class="fl bl" ng-if="order.orderType == 17003">(送回)</p>
           <p class="fr order-popo">{{orderTypeObj[order.orderType]}}</p>
           <!-- <p class="fr">{{order.orderStatus}}</p> -->
         </div>

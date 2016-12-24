@@ -61,7 +61,7 @@
                   <p>{{good.productName}}</p>
                   <p>{{good.description}}</p>
                   <p class="fr ">x{{good.productQuantity}}</p>
-                  <p class="bl ">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
+                  <p class="bl ">￥{{good.productPrice/100 }}/{{good.productMeasure}}</p>
                 </div>
               </div>
             </ion-item>
@@ -70,16 +70,16 @@
       </ion-scroll>
     </div>
     <div ng-if="type == 17002 || type == 17003">
-      <div style="margin-bottom: 30px">
-        <div class="row">
+      <div>
+        <!-- <div class="row">
           <div class="col" style="color: #33CC99">洗衣订单详情</div>
-        </div>
-        <div class="row">
+        </div> -->
+        <div class="row" ng-if="!isGet">
           <div class="col-offset-10">请提前与客户联系，准时到达订单所显示地址进行取衣计价</div>
         </div>
       </div>
       <div ng-if="isGet">
-        <p class="text-center " style="margin: 0;padding: 5px 0;background: #f2f7fa ">商品列表</p>
+        <p class="text-center " style="margin: 0;padding: 5px 0;background: #f2f7fa ">洗衣订单详情</p>
         <ion-scroll direction="y " overflow-scroll="true ">
           <ion-list class=" index-list ">
             <div>
@@ -94,16 +94,17 @@
                     <p>{{good.productName}}</p>
                     <p>{{good.description}}</p>
                     <p class="fr ">x{{good.productQuantity}}</p>
-                    <p class="bl ">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
+                    <p class="bl ">￥{{good.productPrice/100 }}/{{good.productMeasure}}</p>
                   </div>
                 </div>
               </ion-item>
             </div>
           </ion-list>
         </ion-scroll>
-        <div class="col-20 col-offset-50" style="color: #33CC99">{{order.totalCount}}</div>
-        <div class="col-20 text-center" style="color: #33CC99">{{order.money}}</div>
       </div>
+    </div>
+    <div class="row">
+      <div class="col-offset-66" style="color: #33CC99;text-align: right;">总计：{{order.totalCount}}件/{{order.money/100}}元</div>
     </div>
   </ion-content>
 </ion-view>

@@ -38,9 +38,11 @@
         </tr>
         <tr>
           <td class="order-detail-name">收货信息</td>
-          <td>{{order.rcvName}}
-            <br>{{order.rcvPhone}}
-            <br>{{order.rcvAddress}}</td>
+          <td>
+            <div>{{order.rcvName}}</div>
+            <div>{{order.rcvPhone}}</div>
+            <div style="max-width: 175px">{{order.rcvAddress}}</div>
+          </td>
         </tr>
         <tr>
           <td class="order-detail-name">支付方式</td>
@@ -68,7 +70,7 @@
                   <p>{{good.productName}}</p>
                   <p>{{good.description}}</p>
                   <p class="fr ">x{{good.productQuantity}}</p>
-                  <p class="bl ">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
+                  <p class="bl ">￥{{good.productPrice/100 }}/{{good.productMeasure}}</p>
                 </div>
               </div>
             </ion-item>
@@ -119,7 +121,7 @@
           开始计价
         </button>
       </div>
-      <div ng-if="stage03 || stage04 || order.orderStatusId == 11007">
+      <div ng-if="stage03 || stage04 || order.orderStatusId == 11006 || order.orderStatusId == 11007">
         <p class="text-center " style="margin: 0;padding: 5px 0;background: #f2f7fa ">商品列表</p>
         <ion-scroll direction="y " overflow-scroll="true ">
           <ion-list class=" index-list ">
@@ -135,7 +137,7 @@
                     <p>{{good.productName}}</p>
                     <p>{{good.description}}</p>
                     <p class="fr ">x{{good.productQuantity}}</p>
-                    <p class="bl ">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
+                    <p class="bl ">￥{{good.productPrice/100 }}/{{good.productMeasure}}</p>
                   </div>
                 </div>
               </ion-item>

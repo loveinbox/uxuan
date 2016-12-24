@@ -28,6 +28,7 @@ angular.module('starter.controllers')
     }, function(data) {
       $scope.banners = data.data;
       $ionicSlideBoxDelegate.update();
+      $ionicSlideBoxDelegate.loop(true);
     }, function(data) {
       alert('NO DATA banners');
     });
@@ -35,11 +36,12 @@ angular.module('starter.controllers')
 })
 
 .controller('washSingleCtrl', function($scope, $stateParams, $timeout, $ionicScrollDelegate,
-  UserInfo, getWashShop, FuritOrWash) {
+  $state, UserInfo, getWashShop, FuritOrWash) {
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;
   UserInfo.then(function(user) {
+    console.log(user.verify);
     getWashShop.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
@@ -65,7 +67,17 @@ angular.module('starter.controllers')
     }, function(data) {
       alert('NO DATA getWashShop');
     });
+
+    $scope.goCart = function() {
+      if (!(user.verify - 0)) {
+        $state.go('phoneNumberCheck');
+        return;
+      } else {
+        $state.go('app.cart');
+      }
+    }
   });
+
 
   $scope.scrollTo = function(classifyId, index) {
     $scope.currentIndex = index;
@@ -162,6 +174,7 @@ angular.module('starter.controllers')
 
 .controller('washSingleOrderCtrl', function($scope, $stateParams, $rootScope, $ionicScrollDelegate,
   $ionicModal, UserInfo, getWashShop, ShoppingCart, FuritOrWash) {
+  // localStorage.setItem('backForbidden', true);
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;

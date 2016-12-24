@@ -137,7 +137,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
 
   .state('phoneNumberCheck', {
     url: '/phoneNumberCheck',
-    cache: false,
     templateUrl: 'templates/phoneNumberCheck.html ',
     controller: 'phoneNumberCheckCtrl'
   })

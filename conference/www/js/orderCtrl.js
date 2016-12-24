@@ -100,31 +100,31 @@ angular.module('starter.controllers')
     }
 
     function judgeOrder() {
-      $scope.payButton.text = '微信支付';
-      if (type == 'furit' && $scope.status.isGetThroesold == false) {
-        // alert('未达起送价');
-        $scope.payButton.text = '未达起送价';
-        return false;
-      }
-      if ($scope.status.isAdded == false) {
-        // alert('请添加收货地址');
-        $scope.payButton.text = '请添加收货地址';
-        return false;
-      }
-      if ((type == 'furit' || !isReserve) && !$scope.order.carts.length) {
-        // alert('请添加商品');
-        $scope.payButton.text = '请添加商品';
-        return false;
-      }
-      if (!$scope.status.isAddressValidated) {
-        $scope.payButton.text = '请修改送货地址';
-        return false;
-      }
-      if (isReserve) {
-        $scope.payButton.text = '预约洗衣';
-      } else {
-        $scope.payButton.text = '微信支付';
-      }
+      // $scope.payButton.text = '微信支付';
+      // if (type == 'furit' && $scope.status.isGetThroesold == false) {
+      //   // alert('未达起送价');
+      //   $scope.payButton.text = '未达起送价';
+      //   return false;
+      // }
+      // if ($scope.status.isAdded == false) {
+      //   // alert('请添加收货地址');
+      //   $scope.payButton.text = '请添加收货地址';
+      //   return false;
+      // }
+      // if ((type == 'furit' || !isReserve) && !$scope.order.carts.length) {
+      //   // alert('请添加商品');
+      //   $scope.payButton.text = '请添加商品';
+      //   return false;
+      // }
+      // if (!$scope.status.isAddressValidated) {
+      //   $scope.payButton.text = '请修改送货地址';
+      //   return false;
+      // }
+      // if (isReserve) {
+      //   $scope.payButton.text = '预约洗衣';
+      // } else {
+      //   $scope.payButton.text = '微信支付';
+      // }
       return true;
     }
     $scope.confirmOrder = function(event) {
@@ -150,9 +150,9 @@ angular.module('starter.controllers')
         'longitude': user.latitude,
         'userId': user.userId,
         'eguardId': $scope.order.guard,
-        'rcvName': $scope.order.user.rcvName,
-        'rcvPhone': $scope.order.user.rcvPhone,
-        'rcvAddress': $scope.order.user.rcvAddress,
+        'rcvName': $scope.order.user.rcvName || 'test',
+        'rcvPhone': $scope.order.user.rcvPhone || '123',
+        'rcvAddress': $scope.order.user.rcvAddress || 'test',
         'preferRcvTime': [moment($scope.order.sendTime[0]).unix(), moment($scope.order.sendTime[1]).unix()], //期望收货时间
         'preferFetchTime': [moment($scope.order.sendTime[0]).unix(), moment($scope.order.sendTime[1]).unix()],
         'needTicket': false,
@@ -253,6 +253,7 @@ angular.module('starter.controllers')
 
 .controller('OrdersCtrl', function($scope, $rootScope, UserInfo, orderStatus, $state, StartPrice,
   OrderList, WxPayParam, cancelFurit, cancelWash, FuritOrWash) {
+
   UserInfo.then(function(user) {
     getOrders();
     $scope.$on("$ionicParentView.enter", function(event, data) {
@@ -261,7 +262,6 @@ angular.module('starter.controllers')
     });
 
     $scope.doRefresh = function() {
-      console.log('Refreshing!', UserInfo.userid);
       getOrders();
       //Stop the ion-refresher from spinning
       $scope.$broadcast('scroll.refreshComplete');
@@ -370,6 +370,10 @@ angular.module('starter.controllers')
 .controller('wxPayCtrl', function($scope, $state, $stateParams, WxPayParam, UserInfo,
   orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFurit) {
   UserInfo.then(function(user) {
+    $scope.$on("$ionicParentView.leave", function(event, data) {
+      // console.log('loaded');
+      localStorage.setItem('backForbidden', true);
+    });
     var sendData = WxPayParam.get();
     $scope.pay = {
       money: sendData.money
@@ -408,7 +412,7 @@ angular.module('starter.controllers')
                 $state.go('app.orders');
               },
               cancel: function(res) {
-                alert('下订单成功，等待支付');
+                // alert('下订单成功，等待支付');
                 orderStatus.ordered();
                 // window.location.replace('/app/orders');
                 $state.go('app.orders')

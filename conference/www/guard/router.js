@@ -14,7 +14,8 @@ angular.module('starter')
       templateUrl: 'guard/menu.html'
     })
     .state('guard.order', {
-      url: '/order/:type',
+      url: '/order/:type/:part',
+      cache: false,
       views: {
         'tab-order': {
           templateUrl: 'guard/order.html'
@@ -46,6 +47,7 @@ angular.module('starter')
     })
     .state('login', {
       url: '/login/:type',
+      cache: false,
       templateUrl: 'guard/login.html'
     })
     .state('resetPassword', {
@@ -58,10 +60,12 @@ angular.module('starter')
     })
     .state('guardInfo', {
       url: '/guardInfo',
+      cache: false,
       templateUrl: 'guard/info.html'
     })
     .state('guardInfoEdit', {
       url: '/guardInfoEdit/:type',
+      cache: false,
       templateUrl: 'guard/infoEdit.html'
     })
     .state('guardPromteCode', {

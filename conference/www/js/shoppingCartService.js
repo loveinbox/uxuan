@@ -252,7 +252,7 @@ angular.module('starter.services')
       });
       shopCart.singleCartTotalNumber = tempTotalMoney;
       // 是否达到起送价
-      if (shopCart.singleCartTotalNumber <= shopCart.shopInfo.sendStartPrice * 100) {
+      if (shopCart.singleCartTotalNumber < shopCart.shopInfo.sendStartPrice * 100) {
         shopCart.isReachStartPrice = false;
       } else {
         shopCart.isReachStartPrice = true;

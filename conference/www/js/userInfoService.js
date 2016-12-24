@@ -75,7 +75,7 @@ angular.module('starter.services')
   var deferred = $q.defer();
   var user = {
     'name': 'test',
-    'userId': 'C0000000008',
+    'userId': 'C0000000007',
     'latitude': 31.199345,
     'longitude': 121.446322,
     'openId': '',
@@ -83,7 +83,7 @@ angular.module('starter.services')
     'password': '',
     'headPicUrl': '',
     'rcvPhone': '18788889999',
-    'verify': 0,
+    'verify': 1,
     'address': '12313123'
   }
   Location.then(function(userLocation) {

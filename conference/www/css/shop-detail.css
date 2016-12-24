@@ -1,11 +1,11 @@
 .shop-detail {
   height: 150px;
-  padding: 55px 25px 5px;
+  padding: 55px 0px 5px 20px;
   border-bottom: solid #eee 10px;
 }
 
 .shop-detail .shop-img {
-  margin: 10px 0;
+  margin: 5px 0;
 }
 
 .shop-detail .name {
@@ -19,7 +19,7 @@
 }
 
 .detail-info-wrap {
-  margin-left: 75px;
+  margin-left: 80px;
   font-size: 12px;
 }
 

@@ -7,13 +7,13 @@
     <ion-list ng-show="!status.noOrder">
       <ion-item class="list-order-list">
         <div class="clearfix">
-          <p class="fl bl">客户单号:{{order.id}}</p>
+          <p class="fl bl">客户单号:{{order.customerOrderId}}</p>
           <p class="fr">{{order.orderTime * 1000 | date : 'yyyy-MM-dd' }}</p>
           <p class="fl bl">商家单号:{{order.orderId}}</p>
         </div>
         <p>客户地址:{{order.rcvAddress}}</p>
         <p>管家电话:{{order.eguardPhone}}</p>
-        <p class="order-popo">订单状态:{{order.orderStatus}}</p>
+        <p>订单状态:{{order.orderStatus}}</p>
         <div class="guard-order-button is-pay-order clearfix">
           <button class="button button-assertive button-small button-right" ng-show="order.isRedShow" ng-click="clickRed($event, order)">{{order.redText}}</button>
           <button class="button button-calm button-small button-right" ng-show="order.isBlueShow" ng-click="clickBlue($event, order)">{{order.blueText}}</button>
@@ -37,7 +37,7 @@
                   <p>{{good.productName}}</p>
                   <p>{{good.description}}</p>
                   <p class="fr ">x{{good.productQuantity}}</p>
-                  <p class="bl ">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
+                  <p class="bl ">￥{{good.productPrice/100 }}/{{good.productMeasure}}</p>
                 </div>
               </div>
             </ion-item>
@@ -62,7 +62,7 @@
                     <p>{{good.productName}}</p>
                     <p>{{good.description}}</p>
                     <p class="fr ">x{{good.productQuantity}}</p>
-                    <p class="bl ">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
+                    <p class="bl ">￥{{good.productPrice/100 }}/{{good.productMeasure}}</p>
                   </div>
                 </div>
               </ion-item>
@@ -72,8 +72,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-20 col-offset-50" style="color: #33CC99">{{order.count}}</div>
-      <div class="col-20 text-center" style="color: #33CC99">{{order.money}}</div>
+      <div class="col-offset-66" style="color: #33CC99;text-align: right;">总计：{{order.totalCount}}件/{{order.money/100}}元</div>
     </div>
   </ion-content>
 </ion-view>

@@ -91,7 +91,7 @@ angular.module('starter.directives', [])
         }
         $scope.addCart = function(event, good, shop) {
           event.stopPropagation();
-          console.log('1-->', user.verify);
+          // console.log('1-->', user.verify);
           if (!(user.verify - 0)) {
             $state.go('phoneNumberCheck');
             return;
@@ -152,7 +152,7 @@ angular.module('starter.directives', [])
         });
         $scope.addCart = function(event, good, shop) {
           event.stopPropagation();
-          console.log('1-->', user.verify);
+          // console.log('1-->', user.verify);
           if (!(user.verify - 0)) {
             $state.go('phoneNumberCheck');
             return;

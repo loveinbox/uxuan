@@ -17,7 +17,7 @@
     <button class="button button-small to-click" ng-click="filterOrder()">筛选订单</button>
     <ul class="row">
       <li class="col-50 back-active" style="font-size: 16px;">共计{{flows.totalCount}}单</li>
-      <li class="col-50 back-active" style="font-size: 16px;">{{flows.totalMoney}}元</li>
+      <li class="col-50 back-active" style="font-size: 16px;">￥{{flows.totalMoney/100}}元</li>
     </ul>
   </div>
   <div class="text-center">订单明细</div>
@@ -27,12 +27,12 @@
     <ul class="row" style="border-top: solid 1px;border-bottom: solid 1px;">
       <li class="col-25">序号</li>
       <li class="col-50">订单号</li>
-      <li class="col-25">金额</li>
+      <li class="col-25">收入</li>
     </ul>
-    <ul class="row" ng-show="flows.length && flows.length > 0" ng-repeat="flow in flows" style="border-bottom: solid 1px;">
-      <li class="col-25">{{$index}}</li>
+    <ul class="row" ng-show="flows.length && flows.length > 0" ng-repeat="flow in flows" style="border-bottom: solid 1px;padding-top: 10px">
+      <li class="col-25">{{flow.no}}</li>
       <li class="col-50">{{flow.orderId}}</li>
-      <li class="col-25">{{flow.money}}</li>
+      <li class="col-25">￥{{flow.money/100}}</li>
     </ul>
   </ion-content>
 </ion-view>

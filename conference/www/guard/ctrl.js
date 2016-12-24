@@ -66,7 +66,11 @@ angular.module('starter.controllers')
         .$promise
         .then(function(res) {
           if (res.code === 0) {
-            $state.go('guard.order')
+            if (type === 'guard') {
+              $state.go('guard.order', { type: 'guard' })
+            } else {
+              $state.go('vendor.order', { type: 'vendor' })
+            }
           } else {
             alert(res.msg);
           }
@@ -160,10 +164,11 @@ angular.module('starter.controllers')
     }
 
     function getOrders() {
-      data['timeZone'] = [moment($scope.time.start).format('YYYY-MM-DD'), moment($scope.time.end).format(
-        'YYYY-MM-DD')];
-      method.get(data, function(res) {
+      data['timeZone'] = [moment($scope.time.start).unix(), moment($scope.time.end).unix()];
+      method.save(data, function(res) {
         $scope.flows = res.data.detail;
+        $scope.flows.totalCount = res.data.totalCount
+        $scope.flows.totalMoney = res.data.totalMoney
       })
     }
   });
@@ -217,7 +222,7 @@ angular.module('starter.controllers')
       }, function(data) {
         $scope.order = data.data;
         var orderStage = data.data.orderStatusId - 0;
-        if ((orderStage >= 12005 && orderStage < 13000) || orderStage >= 13006) {
+        if ((orderStage >= 12005 && orderStage < 13000) || orderStage >= 13005) {
           $scope.isGet = true;
         }
       });
@@ -238,8 +243,9 @@ angular.module('starter.controllers')
   })
 })
 
-.controller('guardOrdersCtrl', function($scope, $stateParams, UserInfo, EguardOrderList,
+.controller('guardOrdersCtrl', function($scope, $stateParams, $state, $location, UserInfo, EguardOrderList,
   EguardAction, VendorOrderList, VendorAction, guardOrderNumber, shopOrderNumber) {
+  var part = $stateParams.part || 'new';
   var type = $stateParams.type;
   var nameKey = type === 'guard' ? 'eguardId' : 'shopHostId';
   var methodList = type === 'guard' ? EguardOrderList : VendorOrderList;
@@ -258,8 +264,8 @@ angular.module('starter.controllers')
     $scope.type = type;
     $scope.orderTypeObj = {
       17001: '水果',
-      17002: '洗衣',
-      17003: '洗衣',
+      17002: '洗衣取衣',
+      17003: '洗衣送回',
       // 17004: '代买'
     }
 
@@ -304,53 +310,55 @@ angular.module('starter.controllers')
       }
     }
 
-    UserInfo.then(function(user) {
+    $scope.status.now = part;
+
+    getOrders();
+    $scope.clickBlue = function(event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      methodAction[blueStatus2Action[type][order.orderStatusId]].get({
+        'orderId': order.orderId
+      }, function(res) {
+        if (res.code === 0) {
+          alert('操作成功');
+        } else {
+          alert('操作失败！');
+        }
+        getOrders();
+      })
+    }
+    $scope.clickRed = function(event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      methodAction[redStatus2Action[type][order.orderStatusId]].get({
+        'orderId': order.orderId
+      }, function(res) {
+        if (res.code === 0) {
+          alert('操作成功');
+        } else {
+          alert('操作失败！');
+        }
+        getOrders();
+      })
+    }
+
+    $scope.doRefresh = function() {
       getOrders();
-      $scope.clickBlue = function(event, order) {
-        event.stopPropagation();
-        event.preventDefault();
-        methodAction[blueStatus2Action[type][order.orderStatusId]].get({
-          'orderId': order.orderId
-        }, function(res) {
-          if (res.code === 0) {
-            alert('操作成功');
-          } else {
-            alert('操作失败！');
-          }
-          getOrders();
-        })
-      }
-      $scope.clickRed = function(event, order) {
-        event.stopPropagation();
-        event.preventDefault();
-        methodAction[redStatus2Action[type][order.orderStatusId]].get({
-          'orderId': order.orderId
-        }, function(res) {
-          if (res.code === 0) {
-            alert('操作成功');
-          } else {
-            alert('操作失败！');
-          }
-          getOrders();
-        })
-      }
+      $scope.$broadcast('scroll.refreshComplete');
+    }
 
-      $scope.doRefresh = function() {
-        getOrders();
-        $scope.$broadcast('scroll.refreshComplete');
-      }
+    $scope.clickTab = function(type) {
+      $scope.status.now = $scope.status[type];
+      $state.go('.', { part: $scope.status[type] }, { notify: false });
+      // $location.replace('guard/order/guard/' + $scope.status[type]);
+      getOrders();
+    }
 
-      $scope.clickTab = function(type) {
-        $scope.status.now = $scope.status[type];
-        getOrders();
-      }
-
-      $scope.toWeekCn = function(dataStr) {
-        var index = moment(dataStr).format('E');
-        var transfer = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
-        return transfer[index];
-      }
-    });
+    $scope.toWeekCn = function(dataStr) {
+      var index = moment(dataStr).format('E');
+      var transfer = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+      return transfer[index];
+    }
 
     function getOrders() {
       // data[nameKey] = user.userId;
@@ -446,7 +454,8 @@ angular.module('starter.controllers')
       return dataArray;
     }
 
-  })
+  });
+
 })
 
 ;

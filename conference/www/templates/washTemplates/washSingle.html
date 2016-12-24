@@ -1,4 +1,4 @@
-<ion-view view-title="U选到家" class=" cart-bottom">
+<ion-view view-title="U选到家" class="cart-bottom">
   <div class="index-header">
     <div go-back></div>
     <p e-guard></p>
@@ -32,7 +32,7 @@
           <div class="goods-list-item">
             <p class="name">{{good.productName}}</p>
             <p class="description">{{good.description}}</p>
-            <p class="price">￥{{good.productPrice/100 }}/{{good.productUnit}}</p>
+            <p class="price">￥{{good.productPrice/100 }}<span style="font-size: 10px">/{{good.productMeasure}}</span></p>
           </div>
         </ion-item>
       </ion-list>
@@ -40,9 +40,9 @@
   </ion-content>
   <ion-footer-bar>
     <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash">
-      <a href="/app/cart">
-        <div class="button button-assertive button-full go-wash-cart">预约洗衣</div>
-      </a>
+      <!-- <a href="/app/cart"> -->
+      <div class="button button-assertive button-full go-wash-cart" ng-click="goCart()">预约洗衣</div>
+      <!-- </a> -->
     </div>
   </ion-footer-bar>
 </ion-view>

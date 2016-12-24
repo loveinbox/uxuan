@@ -13,8 +13,8 @@
           <span ng-show="check.time > 0">{{check.time}}</span>
         </div>
         <div class="text-center" style="margin: 10px">
-          <input type="checkbox" ng-model='check.isAgree'>
-          <span>同意<a href="">《众包协议》</a></span>
+          <input id='agree' type="checkbox" ng-model='check.isAgree'>
+          <span><label for='agree'>同意</label> 《<a href="http://mp.weixin.qq.com/s/puylqePsMkR3PhC2vju1Yg" class="to-click-outline">用户协议</a>》</span>
         </div>
         <button class="button button-small button-balanced" ng-class="{'disabled': !check.isAgree}" ng-click="checkCode()" style='display:block;width: 80%;margin: 10px auto;'>验证</button>
       </div>

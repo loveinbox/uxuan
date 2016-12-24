@@ -60,11 +60,25 @@ angular.module('starter.controllers')
   };
 })
 
-.controller('AppCtrl', function($scope, $state, FuritOrWash) {
+.controller('AppCtrl', function($scope, $state, $rootScope, $location, FuritOrWash) {
   $scope.toFurit = function() {
-    FuritOrWash.toFurit();
-    $state.go('app.cart')
-  }
+      FuritOrWash.toFurit();
+      $state.go('app.cart')
+    }
+    // $rootScope.$on("$routeChangeSuccess", function(event, next, current) {
+    //   console.log(123);
+    // });
+  $rootScope.$watch(function() {
+      return $location.path();
+    },
+    function(a) {
+      var backForbidden = localStorage.getItem('backForbidden') == 'true';
+      console.log('url has changed: ' + a, backForbidden);
+      if (backForbidden) {
+        localStorage.setItem('backForbidden', false)
+        $state.go('app.orders');
+      }
+    });
 })
 
 .controller('SessionsCtrl', function($scope, $rootScope, $timeout, MainPageHot, FruitUxuanRank,
@@ -107,6 +121,7 @@ angular.module('starter.controllers')
     }, function(data) {
       $scope.banners = data.data;
       $ionicSlideBoxDelegate.update();
+      $ionicSlideBoxDelegate.loop(true);
     }, function(data) {
       alert('NO DATA banners');
     });
@@ -263,6 +278,7 @@ angular.module('starter.controllers')
     }, function(data) {
       $scope.banners = data.data;
       $ionicSlideBoxDelegate.update();
+      $ionicSlideBoxDelegate.loop(true);
     }, function(data) {
       alert('NO DATA banners');
     });
@@ -367,16 +383,25 @@ angular.module('starter.controllers')
 })
 
 .controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserInfo, SendCheckCode,
-  CheckCheckCode, $ionicHistory) {
+  CheckCheckCode, $ionicHistory, $state) {
   var e = {};
   $scope.check = {};
   $scope.check.time = 0;
   var timer = 0;
 
   UserInfo.then(function(user) {
+    $scope.check.phoneNumber = localStorage.getItem('userPhone')
+    $scope.$watch('check.phoneNumber', function(nv, ov) {
+      if (nv) {
+        localStorage.setItem('userPhone', nv);
+      }
+    })
+
     $scope.sendCode = function(e, order) {
       if ($scope.check.time > 0) {
         return;
+      } else {
+        $scope.check.time = 60;
       }
       SendCheckCode.get({
         'longitude': user.longitude,
@@ -388,7 +413,6 @@ angular.module('starter.controllers')
         } else {
           alert('发送验证码成功');
         }
-        $scope.check.time = 60;
         timer = $interval(function() {
           $scope.check.time--;
           if ($scope.check.time < 0) {
@@ -400,7 +424,7 @@ angular.module('starter.controllers')
 
     $scope.checkCode = function(e, order) {
       var phoneNumber = $scope.check.phoneNumber;
-      if (!check.isAgree) {
+      if (!$scope.check.isAgree) {
         return;
       }
       CheckCheckCode.get({
@@ -410,16 +434,17 @@ angular.module('starter.controllers')
         'code': $scope.check.checkCode,
         'userId': user.userId
       }, function(data) {
-        console.log(' checkcoode data.code', data.code);
-        console.log(' checkcoode data.msg', data.msg);
+        localStorage.removeItem('userPhone');
+        // console.log(' checkcoode data.code', data.code);
+        // console.log(' checkcoode data.msg', data.msg);
         if (data.code == -1) {
           alert('验证失败');
           return;
         }
         console.log('$scope.check.phoneNumber', phoneNumber);
-        UserInfo.phoneNumber = phoneNumber;
-        UserInfo.verify = '1';
-        $ionicHistory.backView().go();
+        user.rdvPhone = $scope.check.phoneNumber;
+        user.verify = '1';
+        $state.go('app.sessions');
       });
     }
   })
@@ -430,7 +455,7 @@ angular.module('starter.controllers')
 .controller('SearchCtrl', function($scope, UserInfo, Search) {
 
   $scope.search = {};
-  $scope.search.keyword = '桃';
+  $scope.search.keyword = '';
   UserInfo.then(function(user) {
     $scope.searchGo = function(e, order) {
       Search.get({
@@ -440,9 +465,9 @@ angular.module('starter.controllers')
       }, function(e) {
         if (e.data) {
           $scope.goodsOfWash = e.data.productsList['wash'];
-          $scope.goodsOfFurit = e.data.productsList['furit'];
+          $scope.goodsOfFurit = e.data.productsList['fruit'];
           $scope.shopsOfWash = e.data.shopsList['wash'];
-          $scope.shopsOfFurit = e.data.shopsList['furit'];
+          $scope.shopsOfFurit = e.data.shopsList['fruit'];
         }
       })
     }

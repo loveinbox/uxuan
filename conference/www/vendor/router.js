@@ -12,7 +12,8 @@ angular.module('starter')
       templateUrl: 'vendor/menu.html'
     })
     .state('vendor.order', {
-      url: '/order/:type',
+      url: '/order/:type/:part',
+      cache: false,
       views: {
         'tab-order': {
           templateUrl: 'vendor/order.html'
@@ -53,10 +54,12 @@ angular.module('starter')
     })
     .state('vendorInfo', {
       url: '/vendorInfo',
+      cache: false,
       templateUrl: 'vendor/info.html'
     })
     .state('vendorInfoEdit', {
       url: '/vendorInfoEdit/:type',
+      cache: false,
       templateUrl: 'vendor/infoEdit.html'
     })
     .state('vendorPromteCode', {
