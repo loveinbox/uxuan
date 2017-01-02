@@ -44,7 +44,7 @@ angular.module('starter.controllers')
       })
       .done(function(e) {
         wx.config({
-          debug: true,
+          debug: false,
           appId: e.appId,
           timestamp: e.timestamp,
           nonceStr: e.nonceStr,
@@ -92,11 +92,11 @@ angular.module('starter.controllers')
   UserInfo.then(function(user) {
     $scope.location = user.userLocation;
     if (user.userLocation.street) {
-      $scope.location.text = user.userLocation.street + user.userLocation.streetNumber;
+      $scope.location.text = user.userLocation.street; // + user.userLocation.streetNumber;
     }
     $scope.$watch('user.userLocation', function() {
       if (user.userLocation.street) {
-        $scope.location.text = user.userLocation.street + user.userLocation.streetNumber;
+        $scope.location.text = user.userLocation.street; // + user.userLocation.streetNumber;
       }
     }, true);
     MainPageHot.get({
