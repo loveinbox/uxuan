@@ -24,7 +24,7 @@
       <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
         <ion-list class="single goods index-list clearfix">
           <ion-item class="index-list-item" ng-repeat="session in sessions" href="/washSingle/{{session.shopId}}"> <img ng-src="http://lifeuxuan.com/{{session.productHeadImg}}"> <span class="name">{{session.productName}}</span>
-            <p class="price">￥{{session.productPrice/100}}<span style="font-size: 10px">/{{session.productMeasure}}<span></p>
+            <p class="price">￥{{session.productPrice/100}}<span style="font-size: 10px">/{{session.productUnit}}<span></p>
           </ion-item>
         </ion-list>
       </ion-scroll>

@@ -28,9 +28,10 @@
             <p>生鲜水果</p>
           </a>
         </li>
-        <li>
-          <a href=""><img src="img/help-bug.svg" alt="">
-            <p>代买</p>
+        <li class="coming-soon-li">
+          <a href=""><img src="img/help-buy.svg" alt="">
+            <p class="relatvie"><span>代买</span>
+              <span class="coming-soon">即将上线</span></p>
           </a>
         </li>
         <li>
@@ -38,9 +39,10 @@
             <p>洗衣</p>
           </a>
         </li>
-        <li>
+        <li class="coming-soon-li">
           <a href=""><img src="img/flower.svg" alt="">
-            <p>鲜花</p>
+            <p class="relatvie"><span>鲜花</span>
+              <span class="coming-soon">即将上线</span></p>
           </a>
         </li>
       </ul>
@@ -108,7 +110,7 @@
             <div class="shop-info2">
               <span>{{good.productDescription}}</span> </div>
             <div class="shop-info3">
-              <span class="single-good-price">￥{{good.productPrice/100}}<span style="font-size: 10px">/{{good.productMeasure}}</span> </div>
+              <span class="single-good-price">￥{{good.productPrice/100}}<span style="font-size: 10px">/{{(good.productMeasure)}}</span> </div>
           </div>
           <div class="single-good-top">
             <div class="single-good-top-header">top</div>

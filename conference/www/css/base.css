@@ -36,6 +36,19 @@
   text-align: center !important;
 }
 
+.relatvie {
+  position: relative;
+}
+
+.coming-soon {
+  position: absolute;
+  top: 17px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  width: 50px;
+}
+
 .order-tabs li {
   float: left;
   width: 33%;
