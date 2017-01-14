@@ -73,19 +73,7 @@ angular.module('starter.services')
 
 .factory('UserInfo', function($resource, $q, $timeout, userWechatInfo, userRegister, Location) {
   var deferred = $q.defer();
-  var user = {
-    'name': 'test',
-    'userId': 'C0000000007',
-    'latitude': 31.199345,
-    'longitude': 121.446322,
-    'openId': '',
-    'username': '',
-    'password': '',
-    'headPicUrl': '',
-    'rcvPhone': '18788889999',
-    'verify': 1,
-    'address': '12313123'
-  }
+  var user = {}
   Location.then(function(userLocation) {
     // user default value
     user.latitude = userLocation.latitude;

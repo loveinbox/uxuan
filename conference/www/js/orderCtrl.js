@@ -100,31 +100,31 @@ angular.module('starter.controllers')
     }
 
     function judgeOrder() {
-      // $scope.payButton.text = '微信支付';
-      // if (type == 'furit' && $scope.status.isGetThroesold == false) {
-      //   // alert('未达起送价');
-      //   $scope.payButton.text = '未达起送价';
-      //   return false;
-      // }
-      // if ($scope.status.isAdded == false) {
-      //   // alert('请添加收货地址');
-      //   $scope.payButton.text = '请添加收货地址';
-      //   return false;
-      // }
-      // if ((type == 'furit' || !isReserve) && !$scope.order.carts.length) {
-      //   // alert('请添加商品');
-      //   $scope.payButton.text = '请添加商品';
-      //   return false;
-      // }
-      // if (!$scope.status.isAddressValidated) {
-      //   $scope.payButton.text = '请修改送货地址';
-      //   return false;
-      // }
-      // if (isReserve) {
-      //   $scope.payButton.text = '预约洗衣';
-      // } else {
-      //   $scope.payButton.text = '微信支付';
-      // }
+      $scope.payButton.text = '微信支付';
+      if (type == 'furit' && $scope.status.isGetThroesold == false) {
+        // alert('未达起送价');
+        $scope.payButton.text = '未达起送价';
+        return false;
+      }
+      if ($scope.status.isAdded == false) {
+        // alert('请添加收货地址');
+        $scope.payButton.text = '请添加收货地址';
+        return false;
+      }
+      if ((type == 'furit' || !isReserve) && !$scope.order.carts.length) {
+        // alert('请添加商品');
+        $scope.payButton.text = '请添加商品';
+        return false;
+      }
+      if (!$scope.status.isAddressValidated) {
+        $scope.payButton.text = '请修改送货地址';
+        return false;
+      }
+      if (isReserve) {
+        $scope.payButton.text = '预约洗衣';
+      } else {
+        $scope.payButton.text = '微信支付';
+      }
       return true;
     }
     $scope.confirmOrder = function(event) {

@@ -1,7 +1,8 @@
 <section class="order-time">
   <div class="order-receiver-date">
     <label>
-      <span>收货时间</span>
+      <span ng-if="type == 'furit'">收货时间</span>
+      <span ng-if="type == 'wash'">预约时间</span>
       <select class="data-pick" ng-model="tp.preferDate" ng-options='option.value as option.name for option in tp.dates' ng-change="changeDate(tp.preferDate)"></select>
     </label>
   </div>

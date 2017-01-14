@@ -191,7 +191,7 @@ angular.module('starter.directives', [])
       $scope.changeTime = changeTimeFunction;
 
       function initDate() {
-        $scope.tp.week = weekArray[date.getDay() + weight];
+        $scope.tp.week = weekArray[(date.getDay() + weight) % 7];
         $scope.tp.dates = [];
         for (var i = 0 + weight; i < 8; i++) {
           $scope.tp.dates.push({

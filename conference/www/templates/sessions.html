@@ -28,20 +28,20 @@
             <p>生鲜水果</p>
           </a>
         </li>
+        <li>
+          <a href="/washList"><img src="img/wash.svg" alt="">
+            <p>洗衣洗鞋</p>
+          </a>
+        </li>
         <li class="coming-soon-li">
-          <a href=""><img src="img/help-buy.svg" alt="">
-            <p class="relatvie"><span>代买</span>
+          <a href=""><img src="img/star.png" alt="">
+            <p class="relatvie"><span>咖啡饮品</span>
               <span class="coming-soon">即将上线</span></p>
           </a>
         </li>
-        <li>
-          <a href="/washList"><img src="img/wash.svg" alt="">
-            <p>洗衣</p>
-          </a>
-        </li>
         <li class="coming-soon-li">
-          <a href=""><img src="img/flower.svg" alt="">
-            <p class="relatvie"><span>鲜花</span>
+          <a href=""><img src="img/help-buy.svg" alt="">
+            <p class="relatvie"><span>生活代购</span>
               <span class="coming-soon">即将上线</span></p>
           </a>
         </li>
@@ -57,7 +57,7 @@
           <ion-item class="index-list-item" ng-repeat="session in sessions" ng-href="{{session.href}}">
             <img ng-src="http://lifeuxuan.com/{{session.productHeadImg}}" alt="">
             <span class="name">{{session.productName}}</span>
-            <p class="price">￥{{session.productPrice/100}}<span style="font-size: 10px">/{{session.productMeasure}}<span></p>
+            <p class="price">￥{{session.productPrice/100}}<span style="font-size: 10px">/{{session.productMeasure || session.productUnit}}<span></p>
           </ion-item>
         </ion-list>
       </ion-scroll>
