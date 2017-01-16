@@ -64,9 +64,16 @@
   white-space: nowrap;
 }
 
-.order-server label {
-  margin-left: 10px;
-  white-space: nowrap;
+.pic-modal {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 100;
+  background: rgba(25, 25, 25, 0.3);
+  padding: 5%;
 }
 
 .pick-all {
@@ -291,4 +298,10 @@ cart-detail*/
 
 .disable-pay {
   background: #f2f7fa !important;
+}
+
+.guard-header {
+  width: 70%;
+  border: 1px solid;
+  border-radius: 15px;
 }

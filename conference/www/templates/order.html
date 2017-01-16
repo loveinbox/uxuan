@@ -19,10 +19,15 @@
     <section uxuan-time></section>
     <section class="order-server">
       <span>选择管家</span>
-      <label ng-repeat="eG in order.eGuards">
-        <input type="radio" name="eGuard" ng-checked="$first" value={{eG.eguardId}} ng-model="order.guard">
-        <span>{{eG.eguardName}}</span>
-      </label>
+      <div class="row">
+        <div ng-repeat="eG in order.eGuards" class="text-center col-33">
+          <img class="guard-header" ng-src="{{eG.eguardHeaderImg || '../img/avator.jpeg'}}" big-pic>
+          <div class="text-center">
+            <input type="radio" name="eGuard" ng-checked="$first" value={{eG.eguardId}} ng-model="order.guard">
+            <span>{{eG.eguardName}}</span>
+          </div>
+        </div>
+      </div>
     </section>
     <ion-list class="good-list-in-order">
       <ion-item ng-repeat="shop in order.carts" ng-class="{'not-reach': !shop.isReachStartPrice}">
