@@ -22,10 +22,10 @@
       <div class="row">
         <div ng-repeat="eG in order.eGuards" class="text-center col-33">
           <img class="guard-header" ng-src="{{eG.eguardHeaderImg || '../img/avator.jpeg'}}" big-pic>
-          <div class="text-center">
+          <label class="text-center" style="display: block;">
             <input type="radio" name="eGuard" ng-checked="$first" value={{eG.eguardId}} ng-model="order.guard">
             <span>{{eG.eguardName}}</span>
-          </div>
+          </label>
         </div>
       </div>
     </section>

@@ -66,8 +66,10 @@ angular.module('starter.services')
   }
 
   // for test
-  // deferred.resolve(userLocation);
-
+  if (window.location.hostname == "localhost") {
+    deferred.resolve(userLocation);
+    return deferred.promise;
+  }
   return deferred.promise;
 })
 

@@ -15,7 +15,7 @@ angular.module('starter.directives', [])
           .attr('src', attr.ngSrc)
           .css({
             'display': 'block',
-            'max-width': '95%',
+            'width': '95%',
             'margin': '50px auto'
           });
         picModal.append(img).show();
