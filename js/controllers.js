@@ -230,11 +230,7 @@ angular.module('starter.controllers')
         'productId': $stateParams.sessionId
       }, function(data) {
         $scope.imgs = data.data;
-      }, function(data) {
-        alert('NO DATA');
       });
-    }, function(data) {
-      alert('NO DATA');
     });
 
     $scope.$on('cartChange', function(event, data) {
@@ -259,8 +255,6 @@ angular.module('starter.controllers')
       'latitude': user.latitude,
     }, function(data) {
       $scope.sessions = data.data;
-    }, function(data) {
-      alert('NO DATA');
     });
 
     NearByFruitShops.get({
@@ -268,8 +262,6 @@ angular.module('starter.controllers')
       'latitude': user.latitude,
     }, function(data) {
       $scope.shops = data.data;
-    }, function(data) {
-      alert('NO DATA');
     });
 
     BannerFurit.get({
@@ -279,8 +271,6 @@ angular.module('starter.controllers')
       $scope.banners = data.data;
       $ionicSlideBoxDelegate.update();
       $ionicSlideBoxDelegate.loop(true);
-    }, function(data) {
-      alert('NO DATA banners');
     });
   });
 
@@ -313,8 +303,6 @@ angular.module('starter.controllers')
           count++;
         });
       $rootScope.$broadcast('cartChange');
-    }, function(data) {
-      alert('NO DATA getWashShop');
     });
   });
 

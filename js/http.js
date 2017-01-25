@@ -10,10 +10,10 @@ function HttpResponseInterceptor($q, $log) {
 
   function res(response) {
     function shequResponse(response) {
-      if (response.status == 200) {
+      if (typeof response.data === 'string' || response.data.code == 0) {
         return response;
       } else {
-        alert('数据错误' + response.status)
+        alert('操作失败' + response.data && response.data.msg)
         return $q.reject(response);
       }
     }
@@ -29,7 +29,7 @@ function HttpResponseInterceptor($q, $log) {
         alert('您要访问的资源似乎不存在');
         break;
       default:
-        alert('系统错误');
+        alert('数据错误');
     }
     return $q.reject(response);
 
