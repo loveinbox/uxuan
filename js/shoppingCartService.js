@@ -160,10 +160,14 @@ angular.module('starter.services')
     var _cart = totalCart[type].cart;
     var shop = _.find(_cart, { 'shopId': shopId });
     var tempTotalMoney = 0;
-    $.each(shop.productsList, function(index, value) {
-      tempTotalMoney += value.productPrice * value.productQuantity;
-    });
-    return tempTotalMoney;
+    if (!shop) {
+      return 0;
+    } else {
+      $.each(shop.productsList, function(index, value) {
+        tempTotalMoney += value.productPrice * value.productQuantity;
+      });
+      return tempTotalMoney;
+    }
   }
 
   this.getshopProductList = function(shopId, type) {

@@ -203,7 +203,6 @@ angular.module('starter')
     $urlRouterProvider.otherwise('/app/sessions');
   });
 
-
 angular.module('starter')
   .filter('toTimeStamp', function() {
     return function(input, param) {
