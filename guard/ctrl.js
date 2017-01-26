@@ -315,6 +315,7 @@ angular.module('starter.controllers')
     getOrders();
     $scope.clickBlue = function(event, order) {
       event.stopPropagation();
+      event.preventDefault();
       methodAction[blueStatus2Action[type][order.orderStatusId]].get({
         'orderId': order.orderId
       }, function(res) {
@@ -328,6 +329,7 @@ angular.module('starter.controllers')
     }
     $scope.clickRed = function(event, order) {
       event.stopPropagation();
+      event.preventDefault();
       methodAction[redStatus2Action[type][order.orderStatusId]].get({
         'orderId': order.orderId
       }, function(res) {
