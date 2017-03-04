@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('OrderCtrl', function($scope, $rootScope, $state, $q, UserInfo, NearByEguard,
+.controller('OrderCtrl', function($scope, $rootScope, $state, $q, $timeout, $ionicPopup, UserInfo, NearByEguard,
   FruitOrderInsert, WxPay, WxPayParam, ShoppingCart, orderStatus, FuritOrWash,
   insertWashOrder, insertWashReserve) {
   var type = FuritOrWash.get();
@@ -128,6 +128,7 @@ angular.module('starter.controllers')
       return true;
     }
     $scope.confirmOrder = function(event) {
+      $scope.showAlert()
       if (!(user.verify - 0)) {
         $state.go('phoneNumberCheck');
         return;
@@ -227,10 +228,16 @@ angular.module('starter.controllers')
       });
     }
 
+    $scope.showAlert = function() {
+      var alertPopup = $ionicPopup.alert({
+        title: 'U选到家',
+        template: '收货地址超出您选择店面服务范围'
+      });
+    }
+
     function isTooFar(address) {
       var deferred = $q.defer();
       var gc = new BMap.Geocoder();
-      // console.log('start to get location');
       address = address || '';
       gc.getPoint(address, function(point) {
         var map = new BMap.Map("allmap");
@@ -239,7 +246,10 @@ angular.module('starter.controllers')
         // alert('两点的距离是：' + (map.getDistance(pointA, pointB)).toFixed(2) + ' 米。'); //获取两点距离,保留小数点后两位
         var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
         if (distacne > 6000) {
-          alert('收货地址超出您选择店面服务范围');
+          // $timeout(function() {
+          //   alert('收货地址超出您选择店面服务范围');
+          // }, 500);
+          $scope.showAlert()
           deferred.resolve(true);
         } else {
           deferred.reject(false);

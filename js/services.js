@@ -1,5 +1,5 @@
 angular.module('starter.services', ['ngResource']);
-var baseURL = 'http://www.lifeuxuan.com/index.php';
+var baseUrl = 'http://www.lifeuxuan.com/index.php';
 var serviceURLs = {
   'NearByEguard': '/eguards',
   'MainPageHot': '/hot/index',

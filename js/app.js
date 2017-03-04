@@ -22,20 +22,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
   });
 })
 
-.config(function($httpProvider) {
-  // $httpProvider.defaults.transformRequest = function(obj) {
-  //   var str = [];
-  //   for (var p in obj) {
-  //     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-  //   }
-  //   return str.join("&");
-  // };
-  // $httpProvider.defaults.headers.post = {
-  //   'Content-Type': 'application/x-www-form-urlencoded'
-  // }
-
-})
-
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 

@@ -13,7 +13,7 @@ function HttpResponseInterceptor($q, $log) {
       if (typeof response.data === 'string' || response.data.code == 0) {
         return response;
       } else {
-        alert('操作失败' + response.data && response.data.msg)
+//        alert('操作失败' + response.data && response.data.msg)
         return $q.reject(response);
       }
     }
@@ -28,16 +28,16 @@ function HttpResponseInterceptor($q, $log) {
       case 404:
         alert('您要访问的资源似乎不存在');
         break;
-      default:
-        alert('数据错误');
+//      default:
+//        alert('数据错误');
     }
-    return $q.reject(response);
+    return response;//$q.reject(response);
 
   }
 
   return {
     request: req,
-    response: res,
+    response: responseError,
     responseError: responseError,
   };
 

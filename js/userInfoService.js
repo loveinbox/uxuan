@@ -11,13 +11,13 @@ angular.module('starter.services')
 .factory('Location', function($q) {
 
   var deferred = $q.defer();
-  var userLocation = {
-    'latitude': 31.199345,
-    'longitude': 121.446322,
-    'isOut': false,
-    'isGet': true,
-    'text': '测试定位'
-  };
+  // var userLocation = {
+  //   'latitude': 31.214197,
+  //   'longitude': 121.496322,
+  //   'isOut': false,
+  //   'isGet': true,
+  //   'text': '测试定位'
+  // };
 
   var userLocation = JSON.parse(localStorage.getItem('userLocation')) || {
     'latitude': 121.446322,
@@ -66,10 +66,10 @@ angular.module('starter.services')
   }
 
   // for test
-  if (window.location.hostname == "localhost") {
-    deferred.resolve(userLocation);
-    return deferred.promise;
-  }
+  // if (window.location.hostname == "localhost") {
+  // deferred.resolve(userLocation);
+  // return deferred.promise;
+  // }
   return deferred.promise;
 })
 
