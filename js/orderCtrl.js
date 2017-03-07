@@ -11,7 +11,6 @@ angular.module('starter.controllers')
 
   UserInfo.then(function(user) {
 
-    // console.log('type', type);
     if (type == 'wash') {
       $scope.washOrder = FuritOrWash.getParams().washOrder;
       isReserve = FuritOrWash.getParams().isReserve;
@@ -61,16 +60,6 @@ angular.module('starter.controllers')
     }, function(data) {
       alert('NO DATA');
     });
-
-    // if ((type == 'furit' && $scope.status.isGetThroesold == false) || ($scope.status.isAdded == false) || ($scope.order.carts.length == 0)) {
-    //   $scope.orderButton = {
-    //     'isDisabled': true
-    //   }
-    // } else {
-    //   $scope.orderButton = {
-    //     'isDisabled': false
-    //   }
-    // }
 
     $scope.$on('cartChange', function(event, data) {
       $scope.status.isGetThroesold = ShoppingCart.isGetThroesold(type);
@@ -128,22 +117,15 @@ angular.module('starter.controllers')
       return true;
     }
     $scope.confirmOrder = function(event) {
-      $scope.showAlert()
       if (!(user.verify - 0)) {
         $state.go('phoneNumberCheck');
         return;
       }
       event.stopPropagation();
       event.preventDefault();
-      // if (user.name == '哈库那玛塔塔' || user.name == 'test') {
       if (!judgeOrder()) {
         return;
       };
-      // }
-      // if ((type == 'furit' && $scope.status.isGetThroesold == false) || ($scope.status.isAdded == false) || ($scope.order.carts.length == 0)) {
-      //   return false;
-      // }
-      // 添加新订单
 
       var insertMethod = null;
       var orderData = {
@@ -160,8 +142,6 @@ angular.module('starter.controllers')
         'tip': '',
         'detail': ShoppingCart.getCart(type)
       };
-      // console.log('rcvPhone', $scope.order.user.rcvPhone);
-      // console.log('orderData', orderData.rcvPhone);
       if (FuritOrWash.getParams().washOrder) {
         orderData.shopId = FuritOrWash.getParams().washOrder.shopId
         orderData.orderIdsList = [FuritOrWash.getParams().washOrder.orderId]
@@ -243,12 +223,8 @@ angular.module('starter.controllers')
         var map = new BMap.Map("allmap");
         var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
         var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
-        // alert('两点的距离是：' + (map.getDistance(pointA, pointB)).toFixed(2) + ' 米。'); //获取两点距离,保留小数点后两位
         var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
         if (distacne > 6000) {
-          // $timeout(function() {
-          //   alert('收货地址超出您选择店面服务范围');
-          // }, 500);
           $scope.showAlert()
           deferred.resolve(true);
         } else {
@@ -267,7 +243,6 @@ angular.module('starter.controllers')
   UserInfo.then(function(user) {
     getOrders();
     $scope.$on("$ionicParentView.enter", function(event, data) {
-      // console.log('loaded');
       getOrders();
     });
 
@@ -404,27 +379,14 @@ angular.module('starter.controllers')
                 orderStatus.paied();
                 if (sendData.orderType == 17001) {
                   WxPayConfirmFurit.save({ 'orderIdsList': sendData.orderIdsList })
-                    // .$promise
-                    // .finally(function() {
-                    //   // window.location.replace('/app/orders');
-                    //   $state.go('app.orders')
-                    // });
                 } else {
                   WxPayConfirmWash.save({ 'orderIdsList': sendData.orderIdsList })
-                    // .$promise
-                    // .finally(function() {
-                    //   WxPayParam.set({});
-                    //   // window.location.replace('/app/orders');
-                    //   $state.go('app.orders')
-                    // })
                 }
                 WxPayParam.set({});
                 $state.go('app.orders');
               },
               cancel: function(res) {
-                // alert('下订单成功，等待支付');
                 orderStatus.ordered();
-                // window.location.replace('/app/orders');
                 $state.go('app.orders')
               },
               complete: function(res) {
@@ -435,7 +397,6 @@ angular.module('starter.controllers')
         }, function() {
           alert('下订单成功，等待支付');
           orderStatus.ordered();
-          // window.location.replace('/app/orders');
           $state.go('app.orders')
         })
     }
