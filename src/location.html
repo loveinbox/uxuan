@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base href="/">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.08&ak=GmTMxfwhUXAjvt2RvxHYTIayFOSUtPRv"></script>
+  <title>定位</title>
+  <style type="text/css">
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: "微软雅黑";
+        font-size: 14px;
+    }
+    
+    #l-map {
+        width: 100%;
+        position: absolute;
+        bottom: 50px;
+        top: 100px;
+    }
+    
+    #r-result {
+        width: 100%;
+    }
+    
+    button {
+        position: absolute;
+        bottom: 0;
+        height: 50px;
+        width: 100%;
+        border: 1px solid #ddd;
+        background: #33cd5f;
+        font-size: 20px;
+        font-weight: bold;
+        color: #fff;
+    }
+    </style>
+</head>
+
+<body>
+  <div id="localCurrent">
+    <table>
+      <tr>
+        <td><img src="http://www.lifeuxuan.com/backend/images/comm/local.jpg" style="width:30px;height:30px" /></td>
+        <td align="left">
+          <label style="color: #0066CC">定位当前位置</label>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <hr style="height: 1px; border: none; border-top: 1px dashed #555555;" />
+  <div id="r-result">
+    <table>
+      <tr>
+        <td><img src="http://www.lifeuxuan.com/backend/images/comm/search.jpg" style="width:30px;height:30px" /></td>
+        <td align="left" width="100%">
+          <input type="text" id="suggestId" size="20" value="" style="width:90%;border-color:#0066cc" />
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="searchResultPanel" style="border:1px solid #c0c0c0;width:150px;height:auto;display:none;"></div>
+  <div id="l-map"></div>
+  <!-- <input type="button" class="mapsearch" value="搜索" /> -->
+  <button id="ok" class="mapsearch">搜索</button>
+</body>
+
+</html>
+<script type="text/javascript">
+$(document).ready(function() {
+
+  var userLocation = JSON.parse(localStorage.getItem('userLocation')) || {};
+
+  $('#localCurrent').click(function(event) {
+    $(".mapsearch").text("确定");
+    userLocation.isSearchGeo = true;
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r) {
+      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+        var mk = new BMap.Marker(r.point);
+        map.addOverlay(mk);
+        map.panTo(r.point);
+        // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+        userLocation.latitude = r.point.lat;
+        userLocation.longitude = r.point.lng;
+        console.log('current', userLocation.latitude, userLocation.longitude)
+        SetPlace(userLocation.latitude, userLocation.longitude);
+      } else {
+        alert('failed' + this.getStatus());
+      }
+    }, {
+      enableHighAccuracy: true
+    })
+  });
+
+  $('#ok').click(function(event) {
+    if ($(this).text() === '确定') {
+      window.location.href = 'http://www.lifeuxuan.com';
+    }
+  });
+
+  function G(id) {
+    return document.getElementById(id);
+  }
+
+  //地图初始化
+  var map = new BMap.Map("l-map");
+  map.centerAndZoom("上海", 12);
+
+  var ac = new BMap.Autocomplete({
+    "input": "suggestId",
+    "location": map
+  });
+
+  //根据经纬度在地图上标记位置
+  function SetPlace(lat, lng) {
+    point = new BMap.Point(lng, lat);
+    map.clearOverlays();
+    map.centerAndZoom(point, 18);
+    map.addOverlay(new BMap.Marker(point));
+    userLocation.latitude = point.lat;
+    userLocation.longitude = point.lng;
+    userLocation.timeStamp = Date.now();
+    localStorage.setItem('userLocation', JSON.stringify(userLocation));
+  }
+
+  //当鼠标点击下拉列表中某项时触发此函数
+  ac.addEventListener("onconfirm", function(e) {
+    var _value = e.item.value;
+    var myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+
+    SearchPlace(myValue);
+    userLocation.isSearchGeo = true;
+    // SetPlace(point.lat, point.lng);
+    $(".mapsearch").text("确定");
+  });
+
+  //根据下拉选择搜索位置
+  function SearchPlace(myValue) {
+    function myFun() {
+      var pp = local.getResults().getPoi(0).point;
+      SetPlace(pp.lat, pp.lng);
+    }
+    var local = new BMap.LocalSearch(map, {
+      onSearchComplete: myFun
+    });
+    local.search(myValue);
+  }
+
+
+  //根据地址获取经纬度
+  function GetPoint(address) {
+    var gc = new BMap.Geocoder();
+    gc.getPoint(address, function(point) {
+      // alert(point.lng + " " + point.lat);
+      console.log(point.lng + " " + point.lat);
+      SetPlace(point.lat, point.lng);
+    });
+  }
+
+  //根据经纬度获取地址
+  function GetAddress(lat, lng) {
+    point = new BMap.Point(lng, lat);
+    var gc = new BMap.Geocoder();
+    gc.getLocation(point, function(rs) {
+      var addComp = rs.addressComponents;
+      var address = addComp.province + "," + addComp.city + "," + addComp.district + "," + addComp.street + "," + addComp.streetNumber;
+      alert(address);
+    });
+  }
+
+  $(".mapsearch").click(function() {
+    var value = $("#suggestId").val();
+    // alert(value);
+    GetPoint(value);
+    userLocation.isSearchGeo = true;
+    $(".mapsearch").text("确定");
+    // setPlace(value);
+    // GetAddress(31.29874, 121.444444);
+    // GetPoint('上海市浦东新区芳华路916弄');
+  });
+
+  $("#suggestId").keydown(function() {
+    $(".mapsearch").text("搜索");
+  });
+});
+</script>

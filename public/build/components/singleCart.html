@@ -1,0 +1,14 @@
+<div class="button-cart-action-wrap">
+  <div ng-if="cartAction.singleNumber <= 0" style="padding-right: 10px" ng-click="addCart($event, good, shop)">
+    <i class="icon ion-ios-cart icon-cart" style="line-height: 30px"></i>
+  </div>
+  <div ng-if="cartAction.singleNumber > 0">
+    <div class="button-cart cart-action" ng-click="removeCart(good, shop)">
+      <i class="icon ion-minus-round"></i>
+    </div>
+    <div class="button-cart-number ng-binding">{{cartAction.singleNumber}}</div>
+    <div class="button-cart cart-action" ng-click="addCart($event, good, shop)">
+      <i class="icon ion-plus-round"></i>
+    </div>
+  </div>
+</div>

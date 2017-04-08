@@ -1,0 +1,16 @@
+<ion-view animation="slide-left-right">
+  <ion-tabs class="tabs-icon-top tabs-color-active-positive">
+    <ion-tab title="首页" icon-off="ion-navicon" icon-on="ion-navicon-round" href="/app/index">
+      <ion-nav-view name="tab-index" animation="slide-left-right"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="购物车" icon-off="ion-ios-cart" icon-on="ion-ios-cart-outline" ng-click="toFurit()">
+      <ion-nav-view name="tab-cart" animation="slide-left-right"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="订单" icon-off="ion-document-text" icon-on="ion-document" href="/app/orders">
+      <ion-nav-view name="tab-orders" animation="slide-left-right"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="我的" icon-off="ion-person" icon-on="ion-person-add" href="/app/account">
+      <ion-nav-view name="tab-account" animation="slide-left-right"></ion-nav-view>
+    </ion-tab>
+  </ion-tabs>
+</ion-view>

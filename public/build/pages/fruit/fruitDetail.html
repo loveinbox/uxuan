@@ -1,0 +1,45 @@
+<ion-view view-title="good" class="backE" animation="slide-left-right">
+  <div class="index-header">
+    <div go-back></div>
+  </div>
+  <ion-content>
+    <div class="good-img"> <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}"> </div>
+    <div class="good-main-info">
+      <div class="good-name">{{good.productName}}</div>
+      <div class="good-descirbe">{{good.productDescription}}&nbsp;&nbsp;{{(good.productMeasure)}}</div>
+      <div class="good-price">￥{{good.productPrice/100}}</div>
+      <div add-cart></div>
+    </div>
+    <a ng-href="/shop/{{shop.shopId}}">
+      <div class="good-shop">
+        <div class="shop-part">
+          <div style="position: absolute;">
+            <i class="icon ion-ios-home"></i>
+            <p class="icon-text to-click-outline">商铺</p>
+          </div>
+          <p class="shop-name">{{shop.shopName}}</p>
+        </div>
+        <div class="shop-part shop-yingye">
+          <div class="shop-time">
+            <p>营业时间</p>
+            <p>{{shop.shopOpenTime}}-{{shop.shopCloseTime}}</p>
+          </div>
+        </div>
+        <div class="shop-address"> 地址：{{shop.shopAddress}} </div>
+      </div>
+    </a>
+    <div class="good-more-info">
+      <ion-list class="index-list">
+        <ion-item class="index-list-item" ng-repeat="img in imgs"> <img ng-src="http://lifeuxuan.com/{{img}}"> </ion-item>
+      </ion-list>
+    </div>
+  </ion-content>
+  <ion-footer-bar class="bar bar-footer">
+    <div class="bottom-bar shopping-cart-bar">
+      <div cart-modal-icon></div>
+      <a href="/app/cart">
+        <div class="button go-cart fr">选好了</div>
+      </a>
+    </div>
+  </ion-footer-bar>
+</ion-view>

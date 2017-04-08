@@ -1,0 +1,86 @@
+<ion-view view-title="U选到家">
+  <ion-content class="backE" delegate-handle="mainScroll">
+    <section class="index-header-wrap">
+      <div class="index-header">
+        <div go-back></div>
+        <p e-guard></p>
+        <a href="/search">
+          <label class="header-icon">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+          </label>
+        </a>
+      </div>
+      <div class="lunbo">
+        <ion-slide-box class="index-slide" on-slide-changed="slideHasChanged($index)" slide-interval="3500" does-continue="true" auto-play="true" show-pager="false">
+          <ion-slide ng-repeat="banner in banners">
+            <div class="box"><img ng-src="http://lifeuxuan.com/{{banner}}"> </div>
+          </ion-slide>
+        </ion-slide-box>
+      </div>
+    </section>
+    <div class="index-hot-list list-top" ng-show="location.isOut || sessions.length <= 0">
+      <div class="divider">不在服务区域内</div>
+    </div>
+    <div class="index-hot-list list-top" ng-show="!location.isOut && sessions.length > 0">
+      <div class="divider">U选爆款</div>
+      <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll" scrollbar-x="false">
+        <ion-list class="single goods index-list clearfix">
+          <ion-item class="index-list-item" ng-repeat="session in sessions" href="/sessions/{{session.productId}}">
+            <img ng-src="http://lifeuxuan.com/{{session.productHeadImg}}">
+            <span class="name">{{session.productName}}</span>
+            <p class="price">￥{{session.productPrice/100}}<span style="font-size: 10px">/{{session.productMeasure}}<span></p>
+          </ion-item>
+        </ion-list>
+      </ion-scroll>
+    </div>
+    <div class="index-shop-list list-top" ng-show="!location.isOut && shops.length > 0">
+      <div class="divider">附近商家</div>
+      <ion-list class="shop-list clearfix">
+        <ion-item ng-repeat="shop in shops" href="/shop/{{shop.shopId}}">
+          <div class="shop-img clearfix">
+            <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
+          </div>
+          <div class="shop-info-wrap">
+            <div class="shop-info1">
+              <span class="name">{{shop.shopName}}</span>
+    </div>
+    <div class="shop-info2">
+      <span>月售{{shop.shopMonthSaleVolume}}单</span>
+      <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{shop.shopDistance}}米</span>
+    </div>
+    <div class="shop-info3">
+      <span>起送￥{{shop.shopStartMoney}}</span>
+      <span class="send-divide">|</span>
+      <span>配送￥{{shop.shopDeliveryFee}}</span>
+    </div>
+    </div>
+    </ion-item>
+    </ion-list>
+    </div>
+    <!-- <div class="index-fruit-list list-top" ng-show="!location.isOut && shops.length > 0">
+      <div class="divider">U选排行榜</div>
+      <ion-list class="shop-list clearfix">
+        <ion-item ng-repeat="good in shops" href="/sessions/{{good.productId}}">
+          <div class="shop-img clearfix">
+            <img class="single-good-img" ng-src="http://lifeuxuan.com/backend/{{good.productPicUrl}}">
+          </div>
+          <div class="shop-info-wrap good-info">
+            <div class="shop-info1 good-name">
+              <span class="name">{{good.productName}}</span>
+            </div>
+            <div class="shop-info2">
+              <span>{{good.description}}</span>
+            </div>
+            <div class="shop-info3">
+              <span class="single-good-price">￥{{good.price/100}}/{{good.unit}}</span>
+            </div>
+          </div>
+          <div class="single-good-top">
+            <div class="single-good-top-header">top</div>
+            <div class="single-good-top-body">{{$index + 1}}</div>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div> -->
+  </ion-content>
+</ion-view>
