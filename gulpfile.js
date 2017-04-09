@@ -12,6 +12,9 @@ const ngAnnotate = require('gulp-ng-annotate');
 const uglify = require('gulp-uglifyjs');
 
 const codebase = './public/build'
+const htmlSource = ['./src/**/*.html', '!./src/index.html', '!./src/location.html']
+const cssSource = ['./src/stylus/*.styl']
+const jsSource = ['./app.js', './app-router.js', './src/controllers/**/*.js', './src/components/**/*.js']
 let files = {};
 
 gulp.task('clean', function() {
@@ -20,7 +23,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('html', function() {
-  gulp.src(['./src/**/*.html', '!./src/index.html', '!./src/location.html'])
+  gulp.src(htmlSource)
     .pipe(plumber())
     .pipe(changed(codebase))
     .pipe(gulp.dest(codebase))
@@ -28,7 +31,7 @@ gulp.task('html', function() {
 
 gulp.task('src-js', function() {
   files.js =
-    gulp.src(['./app.js', './app-router.js', './src/controllers/**/*.js', './src/components/**/*.js'])
+    gulp.src(jsSource)
     .pipe(changed(codebase))
     .pipe(plumber())
     .pipe(babel({
@@ -41,13 +44,13 @@ gulp.task('src-js', function() {
 });
 
 gulp.task('src-styl', function() {
-  // files.css =
-  //   gulp.src(['./src/css/**/*.styl'])
-  //   .pipe(changed(codebase))
-  //   .pipe(concat('main.styl'))
-  //   .pipe(stylus())
-  //   .pipe(concat('main.css'))
-  //   .pipe(gulp.dest(codebase))
+  files.css =
+    gulp.src(cssSource)
+    .pipe(changed(codebase))
+    .pipe(concat('main.styl'))
+    .pipe(stylus())
+    .pipe(concat('main.css'))
+    .pipe(gulp.dest(codebase))
 });
 
 gulp.task('inject', function() {
@@ -57,9 +60,9 @@ gulp.task('inject', function() {
 
 // 开发时，使用watch监测变化并重新build
 gulp.task('default', ['build'], function() {
-  gulp.watch(['./src/**/*.html'], ['html']);
-  gulp.watch(['./src/**/*.styl'], ['src-styl']);
-  gulp.watch(['./src/**/*.js'], ['src-js']);
+  gulp.watch(htmlSource, ['html']);
+  gulp.watch(cssSource, ['src-styl']);
+  gulp.watch(jsSource, ['src-js']);
 });
 
 gulp.task('build', function() {
