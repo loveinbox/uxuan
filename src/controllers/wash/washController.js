@@ -111,70 +111,8 @@ angular.module('starter.controllers')
 
 })
 
-// .controller('washCartCtrl', function($scope, $state, $stateParams, UserInfo, orderStatus,
-//   NearByEguard, insertWashReserve) {
-//   UserInfo.then(function(user) {
-//     NearByEguard.get({
-//       'longitude': user.longitude,
-//       'latitude': user.latitude,
-//     }, function(data) {
-//       $scope.order.eGuards = data.data;
-//       $scope.order.guard = data.data[0].eguardId;
-//     }, function(data) {
-//       alert('NO DATA');
-//     });
-
-//     $scope.order = {
-//       user: user,
-//       sendTime: [],
-//       guard: 0
-//     }
-
-//     $scope.confirmOrder = function() {
-//       // if ($scope.status.isGetThroesold !== true || $scope.status.isAddressValidated !== true) {
-//       //   return;
-//       // }
-
-//       // 添加新订单
-//       var orderData = {
-//         'latitude': user.longitude,
-//         'longitude': user.latitude,
-//         'userId': user.userId,
-//         'eguardId': $scope.order.guard,
-//         'rcvName': $scope.order.user.name,
-//         'rcvPhone': $scope.order.user.tel,
-//         'rcvAddress': $scope.order.user.address,
-//         'preferFetchTime': $scope.order.sendTime, //期望收货时间
-//         'needTicket': false,
-//         'tip': '',
-//         'shopId': $stateParams.shopId
-//       }
-//       insertWashReserve.save(orderData)
-//         .$promise
-//         .then(function(res) {
-//           if (res.code === 0) {
-//             alert('预约成功！');
-//             $state.go('app.orders');
-//           } else {
-//             alert('预约失败！');
-//           }
-//         });
-//     }
-
-//     $scope.getAddress = function() {
-//       WxLocation.getAddress()
-//         .then(function() {
-//           orderRequestObj.receiverAddress = addressGot;
-//           orderRequestObj.receiverName = res.userName;
-//           orderRequestObj.receiverPhone = res.telNumber;
-//         })
-//     }
-//   })
-// })
-
 .controller('washSingleOrderCtrl', function($scope, $stateParams, $rootScope, $ionicScrollDelegate,
   $ionicModal, UserInfo, getWashShop, ShoppingCart, FuritOrWash) {
-  // localStorage.setItem('backForbidden', true);
   var scrollObj = {};
   var indexArray = [];
   $scope.currentIndex = 0;
@@ -237,7 +175,3 @@ angular.module('starter.controllers')
     }
   }
 })
-
-// .controller('washCartOrderCtrl', function($scope, $stateParams, $ionicHistory, $rootScope,
-//   $location, $state, UserInfo, orderStatus, NearByEguard, FruitOrderInsert, PayConfirm, $http,
-//   ShoppingCart) {})

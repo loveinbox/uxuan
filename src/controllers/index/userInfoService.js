@@ -45,7 +45,7 @@ angular.module('starter.services')
   }
 
   function GetAddress(lat, lng) {
-    point = new BMap.Point(lng, lat);
+    const point = new BMap.Point(lng, lat);
     var gc = new BMap.Geocoder();
     gc.getLocation(point, function(rs) {
       var addComp = rs.addressComponents;

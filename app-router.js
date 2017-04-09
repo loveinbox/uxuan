@@ -7,8 +7,7 @@ angular.module('starter')
       .state('app', {
       url: '/app',
       abstract: true,
-      templateUrl: './build/pages/common/menu.html',
-      controller: 'AppCtrl'
+      templateUrl: './build/pages/common/menu.html'
     })
 
     .state('app.index', {
@@ -16,7 +15,7 @@ angular.module('starter')
       views: {
         'tab-index': {
           templateUrl: './build/pages/shop/shop-list.html',
-          controller: 'ShopListCtrl'
+          controller: 'IndexCtrl'
         }
       }
     })
@@ -27,7 +26,7 @@ angular.module('starter')
       views: {
         'tab-cart': {
           templateUrl: './build/pages/order/cart.html',
-          controller: 'OrderCtrl'
+          controller: 'CartCtrl'
         }
       }
     })
@@ -38,7 +37,7 @@ angular.module('starter')
       views: {
         'tab-order-list': {
           templateUrl: './build/pages/order/order-list.html',
-          controller: 'OrdersCtrl'
+          controller: 'OrderListCtrl'
         }
       }
     })

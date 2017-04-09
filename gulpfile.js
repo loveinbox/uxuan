@@ -28,7 +28,7 @@ gulp.task('html', function() {
 
 gulp.task('src-js', function() {
   files.js =
-    gulp.src(['./app.js', './app-router.js', './src/js/**/*.js'])
+    gulp.src(['./app.js', './app-router.js', './src/controllers/**/*.js', './src/components/**/*.js'])
     .pipe(changed(codebase))
     .pipe(plumber())
     .pipe(babel({
