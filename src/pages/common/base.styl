@@ -1,3 +1,14 @@
+body
+  background $bg
+a
+  text-decoration none
+  color #001
+section
+  padding 15px 0
+  background #fff
+section + section
+  margin-top 10px
+  
 $bg = #f2f7fa
 $bgc = #d4efff
 $main = #619DE5
@@ -28,17 +39,10 @@ $main = #619DE5
 .back-active
   font-weight bold
   color #33CC99 !important
-
-body
-  background $bg
-a
-  text-decoration none
-  color #001
-section
-  padding 15px 0
-  background #fff
-section + section
-  margin-top 10px
+.fr
+  float right
+.fl
+  float left
   
 // rewirte ionic
 .item
@@ -47,3 +51,6 @@ section + section
   padding 15px !important
 .pane
   background $bg
+.button-small
+  width 70px
+  border-radius 6px

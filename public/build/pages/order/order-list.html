@@ -1,0 +1,91 @@
+<ion-view view-title="U选到家">
+  <ion-content>
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+    <div class="no-order"
+      ng-show="orders.length == 0">快去下个订单吧~</div>
+    <ion-list class="order-list">
+      <ion-item class="order-list-item"
+        ng-repeat="order in orders"
+        ng-href="/order-detail/{{order.orderId}}/{{order.orderType}}">
+        <div>
+          <!-- order base info -->
+          <div class="clearfix">
+            <p class="order-id to-click-outline fl">【订单号】{{order.orderId}}</p>
+            <p class="fr"
+              ng-class="{'danger': order.orderStatusId == 10002}">{{order.orderStatus}}</p>
+          </div>
+          <p>{{order.shopName}}</p>
+          <!-- order more info -->
+          <!-- fruit -->
+          <div ng-if="order.orderType == 17001">
+            <ion-list class="clearfix">
+              <ion-item class="fl"
+                ng-repeat="pic in order.productImgsList">
+                <img class="good-img"
+                  ng-if="$index < 4"
+                  ng-src="http://lifeuxuan.com/{{pic}}">
+              </ion-item>
+            </ion-list>
+            <div class="clearfix">
+              <p class="fl">总计:￥{{order.money/100| number:2}}</p>
+              <p class="fl">共{{order.totalCount}}件</p>
+              <p class="fr">{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}</p>
+            </div>
+          </div>
+          <!-- order more info -->
+          <!-- wash -->
+          <div ng-if="order.orderType == 17002">
+            <p>
+              下单时间：{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+            </p>
+            <p ng-if="order.orderStatusId - 0 < 11004">
+              预计取衣：{{order.preferFetchTime[0] * 1000 | date: 'yyyy-MM-dd HH:mm'}}--{{order.preferFetchTime[1] * 1000 | date: 'HH:mm'}}
+            </p>
+            <p ng-if="order.orderStatusId - 0 >= 11004 && order.orderStatusId - 0 < 11015">
+              取衣时间：{{order.fetchTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+            </p>
+            <p ng-if="order.orderStatusId - 0 == 11015">
+              送回时间：{{order.finishTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+            </p>
+          </div>
+        </div>
+        <!-- buttons -->
+        <div class="button-list-wrap"
+          ng-show="order.orderStatusId == 10001 || order.orderStatusId == 10002">
+          <button class="button button-small to-click"
+            pay-order
+            order={{order}}>支付订单</button>
+          <button class="button button-small"
+            ng-click="clickRed($event, order)">取消订单</button>
+        </div>
+        <!-- <div class="button-list-wrap"
+          ng-show="order.orderStatusId == 10003 || order.orderStatusId == 10004">
+          <button class="button button-small disabled">支付订单</button>
+          <button class="button button-small"
+            ng-click="clickRed($event, order)">取消订单</button>
+        </div> -->
+        <div class="button-list-wrap"
+          ng-show="order.orderStatusId == 11001">
+          <button class="button button-small"
+            ng-click="clickRed($event, order)">取消订单</button>
+          <button class="button button-small disabled">
+            开始计价
+          </button>
+        </div>
+        <div class="button-list-wrap"
+          ng-show="order.orderStatusId == 11004 || order.orderStatusId == 11005">
+          <button class="button button-small to-click"
+            ng-click="clickPrice($event, order)">
+            开始计价
+          </button>
+        </div>
+        <div class="button-list-wrap"
+          ng-show="order.orderStatusId == 11006">
+          <button class="button button-small to-click"
+            pay-order
+            order={{order}}>支付订单</button>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

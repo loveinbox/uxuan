@@ -75,7 +75,9 @@ angular.module('starter.services')
 
 .factory('UserInfo', function($resource, $q, $timeout, userWechatInfo, userRegister, Location) {
   var deferred = $q.defer();
-  var user = {}
+  var user = {
+    userId: 'C0000000001'
+  }
   Location.then(function(userLocation) {
     // user default value
     user.latitude = userLocation.latitude;

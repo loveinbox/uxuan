@@ -117,13 +117,6 @@ angular.module('starter.directives', []);
 // }
 'use strict';
 
-angular.module('starter').filter('toTimeStamp', function () {
-  return function (input, param) {
-    return moment(input).unix() * 1000;
-  };
-});
-'use strict';
-
 angular.module('starter').config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
   $stateProvider
   /*
@@ -132,12 +125,12 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
   .state('app', {
     url: '/app',
     abstract: true,
-    templateUrl: './build/pages/common/menu.html'
+    templateUrl: './build/pages/menu/menu.html'
   }).state('app.index', {
     url: '/index',
     views: {
       'tab-index': {
-        templateUrl: './build/pages/common/index.html',
+        templateUrl: './build/pages/menu/index.html',
         controller: 'IndexCtrl'
       }
     }
@@ -164,7 +157,7 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
     cache: false,
     views: {
       'tab-account': {
-        templateUrl: 'templates/account.html',
+        templateUrl: './build/pages/menu/account.html',
         controller: 'AccountCtrl'
       }
     }
@@ -213,12 +206,12 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
   //   controller: 'OrderStatusCtrl'
   // })
 
-  // .state('search', {
-  //   url: '/search',
-  //   cache: false,
-  //   templateUrl: 'templates/search.html',
-  //   controller: 'SearchCtrl'
-  // })
+  .state('search', {
+    url: '/search',
+    cache: false,
+    templateUrl: './build/pages/common/search.html',
+    controller: 'SearchCtrl'
+  })
 
   // .state('orderDetail', {
   //   url: '/orderDetail/:orderId/:orderType',
@@ -777,7 +770,9 @@ angular.module('starter.services').factory('userWechatInfo', ["$resource", funct
   return deferred.promise;
 }]).factory('UserInfo', ["$resource", "$q", "$timeout", "userWechatInfo", "userRegister", "Location", function ($resource, $q, $timeout, userWechatInfo, userRegister, Location) {
   var deferred = $q.defer();
-  var user = {};
+  var user = {
+    userId: 'C0000000001'
+  };
   Location.then(function (userLocation) {
     // user default value
     user.latitude = userLocation.latitude;
@@ -824,24 +819,129 @@ angular.module('starter.services').factory('userWechatInfo', ["$resource", funct
 
   return deferred.promise;
 }]);
+"use strict";
 'use strict';
 
-angular.module('starter.controllers').controller('OrderStatusCtrl', ["$scope", "$stateParams", "$ionicHistory", "$rootScope", "orderStatus", function ($scope, $stateParams, $ionicHistory, $rootScope, orderStatus) {
-  var status = orderStatus.get();
-  // console.log('111111111$rootScope.message', status);
-  if (status == "ordered") {
-    $scope.status = "下单成功,未支付";
-    return;
+angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$state", "OrderList", "UserInfo", "StartPrice", "cancelFurit", "cancelWash", function ($scope, $state, OrderList, UserInfo, StartPrice, cancelFurit, cancelWash) {
+
+  UserInfo.then(function (user) {
+    getOrders();
+
+    $scope.doRefresh = function () {
+      getOrders();
+      //Stop the ion-refresher from spinning
+      $scope.$broadcast('scroll.refreshComplete');
+    };
+
+    $scope.clickPrice = function (event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      StartPrice.save({
+        orderId: order.orderId
+      }).$promise.then(function (res) {
+        if (res.code === 0) {
+          FuritOrWash.toWash(order, false);
+          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
+        }
+      });
+    };
+
+    $scope.clickRed = function (event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      var cancelMethod = order.orderType == 17001 ? cancelFurit : cancelWash;
+      cancelMethod.save({
+        orderId: order.orderId
+      }).$promise.then(function (res) {
+        if (res.code === 0) {
+          alert('取消成功');
+          getOrders();
+        }
+      });
+    };
+
+    function getOrders() {
+      OrderList.get({
+        'customerId': user.userId,
+        'pos': 0
+      }, function (data) {
+        $scope.orders = data.data;
+      });
+    }
+  });
+}]).controller('orderDetailCtrl', ["$scope", "$rootScope", "$stateParams", "FuritOrderDetail", "WashOrderDetail", "UserInfo", "StartPrice", "FuritOrWash", "$state", function ($scope, $rootScope, $stateParams, FuritOrderDetail, WashOrderDetail, UserInfo, StartPrice, FuritOrWash, $state) {
+  $scope.type = $stateParams.orderType;
+  UserInfo.then(function (user) {
+    getOrder();
+
+    function getOrder(argument) {
+      var detailMethod = $scope.type == 17001 ? FuritOrderDetail : WashOrderDetail;
+      detailMethod.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'orderId': $stateParams.orderId
+      }, function (data) {
+        $scope.order = data.data;
+        var orderStage = data.data.orderStatusId;
+        if (orderStage - 0 <= 11003) {
+          setStage([1]);
+          return;
+        }
+        if (orderStage - 0 < 11008) {
+          setStage([0, 1]);
+          return;
+        }
+        if (orderStage - 0 < 11012) {
+          setStage([0, 0, 1]);
+          return;
+        }
+        if (orderStage - 0 <= 11015) {
+          setStage([0, 0, 0, 1]);
+          return;
+        }
+      });
+    }
+
+    $scope.clickPrice = function (event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      StartPrice.save({
+        orderId: order.orderId
+      }).$promise.then(function (res) {
+        if (res.code === 0) {
+          FuritOrWash.toWash(order, true);
+          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
+        }
+      });
+    };
+  });
+
+  function setStage(array) {
+    $scope.stage01 = array[0] === 1;
+    $scope.stage02 = array[1] === 1;
+    $scope.stage03 = array[2] === 1;
+    $scope.stage04 = array[3] === 1;
   }
-  if (status == "paied") {
-    $scope.status = "支付成功";
-    return;
-  }
-  $scope.status = "下单失败";
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('OrderCtrl', ["$scope", "$rootScope", "$state", "$q", "$timeout", "$ionicPopup", "UserInfo", "NearByEguard", "FruitOrderInsert", "WxPay", "WxPayParam", "ShoppingCart", "orderStatus", "FuritOrWash", "insertWashOrder", "insertWashReserve", function ($scope, $rootScope, $state, $q, $timeout, $ionicPopup, UserInfo, NearByEguard, FruitOrderInsert, WxPay, WxPayParam, ShoppingCart, orderStatus, FuritOrWash, insertWashOrder, insertWashReserve) {
+angular.module('starter.controllers').controller('OrderStatusCtrl', ["$scope", "$stateParams", function ($scope, $stateParams) {
+  var status = $stateParams.status;
+  switch (status) {
+    case 'ordered':
+      $scope.status = "下单成功，未支付";
+      break;
+    case 'paied':
+      $scope.status = "支付成功";
+      break;
+    default:
+      $scope.status = "下单失败";
+      break;
+  }
+}]);
+'use strict';
+
+angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootScope", "$state", "$q", "$timeout", "$ionicPopup", "UserInfo", "NearByEguard", "FruitOrderInsert", "WxPay", "WxPayParam", "ShoppingCart", "orderStatus", "FuritOrWash", "insertWashOrder", "insertWashReserve", function ($scope, $rootScope, $state, $q, $timeout, $ionicPopup, UserInfo, NearByEguard, FruitOrderInsert, WxPay, WxPayParam, ShoppingCart, orderStatus, FuritOrWash, insertWashOrder, insertWashReserve) {
   var type = FuritOrWash.get();
   var isReserve = FuritOrWash.getParams().isReserve;
   $scope.$on("$ionicParentView.enter", function (event, data) {
@@ -1068,109 +1168,6 @@ angular.module('starter.controllers').controller('OrderCtrl', ["$scope", "$rootS
       return deferred.promise;
     }
   });
-}]).controller('OrdersCtrl', ["$scope", "$rootScope", "UserInfo", "orderStatus", "$state", "StartPrice", "OrderList", "WxPayParam", "cancelFurit", "cancelWash", "FuritOrWash", function ($scope, $rootScope, UserInfo, orderStatus, $state, StartPrice, OrderList, WxPayParam, cancelFurit, cancelWash, FuritOrWash) {
-
-  UserInfo.then(function (user) {
-    getOrders();
-    $scope.$on("$ionicParentView.enter", function (event, data) {
-      getOrders();
-    });
-
-    $scope.doRefresh = function () {
-      getOrders();
-      //Stop the ion-refresher from spinning
-      $scope.$broadcast('scroll.refreshComplete');
-    };
-
-    $scope.clickPrice = function (event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      StartPrice.save({
-        orderId: order.orderId
-      }).$promise.then(function (res) {
-        if (res.code === 0) {
-          FuritOrWash.toWash(order, false);
-          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
-        }
-      });
-    };
-
-    $scope.clickRed = function (event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      var cancelMethod = order.orderType == 17001 ? cancelFurit : cancelWash;
-      cancelMethod.save({
-        orderId: order.orderId
-      }).$promise.then(function (res) {
-        if (res.code === 0) {
-          alert('取消成功');
-          getOrders();
-        }
-      });
-    };
-
-    function getOrders() {
-      OrderList.get({
-        'customerId': user.userId,
-        'pos': 0
-      }, function (data) {
-        $scope.orders = data.data;
-      });
-    }
-  });
-}]).controller('orderDetailCtrl', ["$scope", "$rootScope", "$stateParams", "FuritOrderDetail", "WashOrderDetail", "UserInfo", "StartPrice", "FuritOrWash", "$state", function ($scope, $rootScope, $stateParams, FuritOrderDetail, WashOrderDetail, UserInfo, StartPrice, FuritOrWash, $state) {
-  $scope.type = $stateParams.orderType;
-  UserInfo.then(function (user) {
-    getOrder();
-
-    function getOrder(argument) {
-      var detailMethod = $scope.type == 17001 ? FuritOrderDetail : WashOrderDetail;
-      detailMethod.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'orderId': $stateParams.orderId
-      }, function (data) {
-        $scope.order = data.data;
-        var orderStage = data.data.orderStatusId;
-        if (orderStage - 0 <= 11003) {
-          setStage([1]);
-          return;
-        }
-        if (orderStage - 0 < 11008) {
-          setStage([0, 1]);
-          return;
-        }
-        if (orderStage - 0 < 11012) {
-          setStage([0, 0, 1]);
-          return;
-        }
-        if (orderStage - 0 <= 11015) {
-          setStage([0, 0, 0, 1]);
-          return;
-        }
-      });
-    }
-
-    $scope.clickPrice = function (event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      StartPrice.save({
-        orderId: order.orderId
-      }).$promise.then(function (res) {
-        if (res.code === 0) {
-          FuritOrWash.toWash(order, true);
-          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
-        }
-      });
-    };
-  });
-
-  function setStage(array) {
-    $scope.stage01 = array[0] === 1;
-    $scope.stage02 = array[1] === 1;
-    $scope.stage03 = array[2] === 1;
-    $scope.stage04 = array[3] === 1;
-  }
 }]).controller('wxPayCtrl', ["$scope", "$state", "$stateParams", "WxPayParam", "UserInfo", "orderStatus", "WxPay", "WxPayConfirmWash", "WxPayConfirmFurit", function ($scope, $state, $stateParams, WxPayParam, UserInfo, orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFurit) {
   UserInfo.then(function (user) {
     $scope.$on("$ionicParentView.leave", function (event, data) {
@@ -1624,6 +1621,13 @@ angular.module('starter.controllers').controller('ShopListCtrl', ["$scope", "$ro
 }]);
 'use strict';
 
+angular.module('starter').filter('toTimeStamp', function () {
+  return function (input, param) {
+    return moment(input).unix() * 1000;
+  };
+});
+'use strict';
+
 angular.module('starter.controllers').controller('washListCtrl', ["$scope", "UserInfo", "getWashHot", "getWashShops", "BannerWash", "$ionicSlideBoxDelegate", "FuritOrWash", function ($scope, UserInfo, getWashHot, getWashShops, BannerWash, $ionicSlideBoxDelegate, FuritOrWash) {
   $scope.location = {};
   UserInfo.then(function (user) {
@@ -2059,7 +2063,7 @@ angular.module('starter.directives').directive('bigPic', function () {
     template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
     controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {
       $scope.myGoBack = function () {
-        $backView = $ionicHistory.backView();
+        var $backView = $ionicHistory.backView();
         if ($backView) {
           $backView.go();
         } else {

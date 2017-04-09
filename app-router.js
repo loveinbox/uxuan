@@ -7,14 +7,14 @@ angular.module('starter')
       .state('app', {
       url: '/app',
       abstract: true,
-      templateUrl: './build/pages/common/menu.html'
+      templateUrl: './build/pages/menu/menu.html'
     })
 
     .state('app.index', {
       url: '/index',
       views: {
         'tab-index': {
-          templateUrl: './build/pages/common/index.html',
+          templateUrl: './build/pages/menu/index.html',
           controller: 'IndexCtrl'
         }
       }
@@ -47,7 +47,7 @@ angular.module('starter')
       cache: false,
       views: {
         'tab-account': {
-          templateUrl: 'templates/account.html',
+          templateUrl: './build/pages/menu/account.html',
           controller: 'AccountCtrl'
         }
       }
@@ -97,12 +97,12 @@ angular.module('starter')
     //   controller: 'OrderStatusCtrl'
     // })
 
-    // .state('search', {
-    //   url: '/search',
-    //   cache: false,
-    //   templateUrl: 'templates/search.html',
-    //   controller: 'SearchCtrl'
-    // })
+    .state('search', {
+      url: '/search',
+      cache: false,
+      templateUrl: './build/pages/common/search.html',
+      controller: 'SearchCtrl'
+    })
 
     // .state('orderDetail', {
     //   url: '/orderDetail/:orderId/:orderType',

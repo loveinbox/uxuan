@@ -32,7 +32,7 @@ angular.module('starter.directives')
       '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
     controller: function($scope, $state, $ionicHistory) {
       $scope.myGoBack = function() {
-        $backView = $ionicHistory.backView();
+        const $backView = $ionicHistory.backView();
         if ($backView) {
           $backView.go();
         } else {
