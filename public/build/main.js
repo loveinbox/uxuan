@@ -117,6 +117,13 @@ angular.module('starter.directives', []);
 // }
 'use strict';
 
+angular.module('starter').filter('toTimeStamp', function () {
+  return function (input, param) {
+    return moment(input).unix() * 1000;
+  };
+});
+'use strict';
+
 angular.module('starter').config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
   $stateProvider
   /*
@@ -130,7 +137,7 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
     url: '/index',
     views: {
       'tab-index': {
-        templateUrl: './build/pages/shop/shop-list.html',
+        templateUrl: './build/pages/common/index.html',
         controller: 'IndexCtrl'
       }
     }
@@ -1781,61 +1788,7 @@ angular.module('starter.controllers').controller('washListCtrl', ["$scope", "Use
 }]);
 'use strict';
 
-angular.module('starter.directives').directive('bigPic', function () {
-  return {
-    restrict: 'A',
-    scope: {},
-    link: function link(scope, element, attr) {
-      var picModal = $('<div class="pic-modal">').appendTo('body');
-      picModal.click(function (event) {
-        picModal.hide();
-        picModal.empty();
-      });
-      element.on('click', function (event) {
-        var img = $('<img>').attr('src', attr.ngSrc).css({
-          'display': 'block',
-          'width': '95%',
-          'margin': '50px auto'
-        });
-        picModal.append(img).show();
-      });
-    }
-  };
-}).directive('goBack', function () {
-  return {
-    restrict: 'A',
-    replace: true,
-    template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
-    controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {
-      $scope.myGoBack = function () {
-        $backView = $ionicHistory.backView();
-        if ($backView) {
-          $backView.go();
-        } else {
-          $state.go('app.sessions');
-        }
-      };
-    }]
-  };
-}).directive('eGuard', function () {
-  return {
-    restrict: 'A',
-    replace: true,
-    template: '<p class="guard">管家<strong>{{eGuard.eguardName}}</strong>为您服务</p>',
-    controller: ["$scope", "$rootScope", "NearByEguard", "Location", "UserInfo", function controller($scope, $rootScope, NearByEguard, Location, UserInfo) {
-      UserInfo.then(function (user) {
-        NearByEguard.get({
-          'longitude': user.longitude,
-          'latitude': user.latitude
-        }, function (data) {
-          $rootScope.eGuard = data.data[0];
-        }, function (data) {
-          alert('NO DATA');
-        });
-      });
-    }]
-  };
-}).directive('payOrder', function () {
+angular.module('starter.directives').directive('payOrder', function () {
   return {
     restrict: 'A',
     replace: true,
@@ -1865,9 +1818,6 @@ angular.module('starter.directives').directive('bigPic', function () {
   return {
     restrict: 'A',
     replace: true,
-    // scope: {
-    //   gParamId: '@'
-    // },
     templateUrl: 'templateDirectives/addCart.html',
     controller: ["$scope", "$rootScope", "ShoppingCart", "UserInfo", function controller($scope, $rootScope, ShoppingCart, UserInfo) {
       $scope.$on('cartChange', function (event, data) {
@@ -1961,9 +1911,6 @@ angular.module('starter.directives').directive('bigPic', function () {
   return {
     restrict: 'A',
     replace: true,
-    // scope: {
-    //   userPreferTime: '='
-    // },
     templateUrl: 'templateDirectives/timePick.html',
     controller: ["$scope", "$stateParams", function controller($scope, $stateParams) {
       var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
@@ -2059,6 +2006,66 @@ angular.module('starter.directives').directive('bigPic', function () {
           return '0' + '' + number;
         }
       }
+    }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('eGuard', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    template: '<p>管家<strong>{{eGuard.eguardName}}</strong>为您服务</p>',
+    controller: ["$scope", "$rootScope", "NearByEguard", "Location", "UserInfo", function controller($scope, $rootScope, NearByEguard, Location, UserInfo) {
+      UserInfo.then(function (user) {
+        NearByEguard.get({
+          'longitude': user.longitude,
+          'latitude': user.latitude
+        }, function (data) {
+          $rootScope.eGuard = data.data[0];
+        }, function (data) {
+          alert('NO DATA');
+        });
+      });
+    }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('bigPic', function () {
+  return {
+    restrict: 'A',
+    scope: {},
+    link: function link(scope, element, attr) {
+      var picModal = $('<div class="pic-modal">').appendTo('body');
+      picModal.click(function (event) {
+        picModal.hide();
+        picModal.empty();
+      });
+      element.on('click', function (event) {
+        var img = $('<img>').attr('src', attr.ngSrc).css({
+          'display': 'block',
+          'width': '95%',
+          'margin': '50px auto'
+        });
+        picModal.append(img).show();
+      });
+    }
+  };
+}).directive('goBack', function () {
+  return {
+    restrict: 'A',
+    replace: true,
+    template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
+    controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {
+      $scope.myGoBack = function () {
+        $backView = $ionicHistory.backView();
+        if ($backView) {
+          $backView.go();
+        } else {
+          $state.go('app.index');
+        }
+      };
     }]
   };
 });

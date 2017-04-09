@@ -13,8 +13,8 @@ const uglify = require('gulp-uglifyjs');
 
 const codebase = './public/build'
 const htmlSource = ['./src/**/*.html', '!./src/index.html', '!./src/location.html']
-const cssSource = ['./src/stylus/*.styl']
-const jsSource = ['./app.js', './app-router.js', './src/controllers/**/*.js', './src/components/**/*.js']
+const cssSource = ['./src/utils/*.styl', './src/pages/**/*.styl']
+const jsSource = ['./app.js', './src/utils/*.js', './app-router.js', './src/controllers/**/*.js', './src/components/**/*.js']
 let files = {};
 
 gulp.task('clean', function() {

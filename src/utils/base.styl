@@ -1,29 +1,49 @@
-$bgc = #f2f7fa
+$bg = #f2f7fa
+$bgc = #d4efff
 $main = #619DE5
 
 .bl
-    color $main
-    
+  color $main
+  
 .to-click
-    background $main
-    color #fff
-    
+  background $main
+  color #fff
+  
 .to-click-outline
-    color $main !important
-    
+  color $main !important
+  
 .danger
-    color #ef0000 !important
+  color #ef0000 !important
 
 .disabled
-    background #eee !important
-    color #999 !important
+  background #eee !important
+  color #999 !important
 
 .text-center
-    text-align center !important
+  text-align center !important
 
 .rel
-    position relative
+  position relative
 
 .back-active
-    font-weight bold
-    color #33CC99 !important
+  font-weight bold
+  color #33CC99 !important
+
+body
+  background $bg
+a
+  text-decoration none
+  color #001
+section
+  padding 15px 0
+  background #fff
+section + section
+  margin-top 10px
+  
+// rewirte ionic
+.item
+  border none
+.item-content
+  padding 15px !important
+.pane
+  background $bg

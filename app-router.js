@@ -14,7 +14,7 @@ angular.module('starter')
       url: '/index',
       views: {
         'tab-index': {
-          templateUrl: './build/pages/shop/shop-list.html',
+          templateUrl: './build/pages/common/index.html',
           controller: 'IndexCtrl'
         }
       }
