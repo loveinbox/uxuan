@@ -1617,13 +1617,6 @@ angular.module('starter.controllers').controller('ShopListCtrl', ["$scope", "$ro
 }]);
 'use strict';
 
-angular.module('starter').filter('toTimeStamp', function () {
-  return function (input, param) {
-    return moment(input).unix() * 1000;
-  };
-});
-'use strict';
-
 angular.module('starter.controllers').controller('washListCtrl', ["$scope", "UserInfo", "getWashHot", "getWashShops", "BannerWash", "$ionicSlideBoxDelegate", "FuritOrWash", function ($scope, UserInfo, getWashHot, getWashShops, BannerWash, $ionicSlideBoxDelegate, FuritOrWash) {
   $scope.location = {};
   UserInfo.then(function (user) {
