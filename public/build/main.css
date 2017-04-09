@@ -124,7 +124,6 @@ section + section {
 }
 .u-index .u-icon-nav {
   background: #fff;
-  padding-bottom: 10px;
 }
 .u-index .u-icon-nav li {
   float: left;
@@ -134,14 +133,6 @@ section + section {
 .u-index .u-icon-nav img {
   width: 40px;
   height: 40px;
-}
-.u-index .u-icon-nav .coming-soon {
-  position: absolute;
-  top: 17px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px;
-  width: 50px;
 }
 .u-index .u-index-hot-list .u-item-content {
   padding-left: 15px;
