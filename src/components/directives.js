@@ -2,13 +2,13 @@ angular.module('starter.directives')
 
 .directive('payOrder', function() {
   return {
-    restrict: 'A',
+    restrict: 'E',
     replace: true,
     scope: {
-      order: '@'
+      order: '='
     },
     transclude: true,
-    template: '<button ng-click="rePay($event, {{order}})" ng-transclude></button>',
+    template: '<button ng-click="rePay($event, order)" ng-transclude></button>',
     controller: function($scope, WxPayParam, $state) {
       $scope.rePay = function(event, order) {
         event.stopPropagation();

@@ -1,0 +1,48 @@
+<div class="u-list"
+  ng-show="listData.length > 0">
+  <div class="divider">{{listTitle}}</div>
+  <ion-list>
+    <ion-item ng-repeat="shop in listData"
+      href="/shop/{{shop.shopId}}">
+      <div class="img">
+        <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
+      </div>
+      <div ng-if="listType === 'fruit'"
+        class="info-wrap">
+        <div class="info">
+          <span class="name">{{shop.shopName}}</span>
+        </div>
+        <div class="info">
+          <span>月售{{shop.shopMonthSaleVolume}}单</span>
+          <span class="distance">
+                <i class="icon ion-location placeholder-icon"></i>
+                {{shop.shopDistance}}米
+              </span>
+        </div>
+        <div class="info">
+          <span>起送￥{{shop.shopStartMoney}}</span>
+          <span class="send-divide">|</span>
+          <span>配送￥{{shop.shopDeliveryFee}}</span>
+        </div>
+      </div>
+      <div ng-if="listType === 'wash'"
+        class="info-wrap">
+        <div class="info">
+          <span class="name">{{shop.shopName}}</span>
+        </div>
+        <div class="info">
+          <span>月售{{shop.shopMonthSaleVolume}}单</span>
+          <span class="distance">
+                <i class="icon ion-location placeholder-icon"></i>
+                {{shop.shopDistance}}米
+              </span>
+        </div>
+        <div class="info">
+          <span>
+            配送满{{shop.shopStartMoney}}元免运费，不满{{shop.shopStartMoney}}收{{shop.shopDeliveryFee}}元运费
+          </span>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+</div>

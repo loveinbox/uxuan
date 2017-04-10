@@ -144,7 +144,7 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
       }
     }
   }).state('app.order-list', {
-    url: '/order-list',
+    url: '/order',
     cache: false,
     views: {
       'tab-order-list': {
@@ -163,29 +163,26 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
     }
   })
 
-  // /*
-  //  *  Shop route
-  //  */
-  // .state('shop-list', {
-  //   url: '/shopList',
-  //   cache: false,
-  //   templateUrl: 'templates/shopList.html',
-  //   controller: 'shopListCtrl'
-  // })
-
-  // .state('shop-detail', {
-  //   url: '/shop/:shopId',
-  //   cache: false,
-  //   templateUrl: 'templates/shop.html',
-  //   controller: 'shopCtrl'
-  // })
-
+  /*
+   *  Shop route
+   */
+  .state('shop-list', {
+    url: '/shop/:type',
+    cache: false,
+    templateUrl: './build/pages/shop/shop-list.html',
+    controller: 'ShopListCtrl'
+  }).state('shop-detail', {
+    url: '/shop/:type/:shopId',
+    cache: false,
+    templateUrl: './build/pages/shop/shop-detail.html',
+    controller: 'ShopDetailCtrl'
+  })
 
   // /*
   //  *  Goods route
   //  */
   // .state('good-list', {
-  //   url: '/good-list/:type',
+  //   url: '/good/:type',
   //   cache: false,
   //   templateUrl: 'templates/good-detail.html',
   //   controller: 'SessionCtrl'
@@ -206,13 +203,6 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
   //   controller: 'OrderStatusCtrl'
   // })
 
-  .state('search', {
-    url: '/search',
-    cache: false,
-    templateUrl: './build/pages/common/search.html',
-    controller: 'SearchCtrl'
-  })
-
   // .state('orderDetail', {
   //   url: '/orderDetail/:orderId/:orderType',
   //   cache: false,
@@ -224,14 +214,6 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
   //   url: '/phoneNumberCheck',
   //   templateUrl: 'templates/phoneNumberCheck.html ',
   //   controller: 'phoneNumberCheckCtrl'
-  // })
-
-  // .state('location', {
-  //   url: '/location',
-  //   template: "<div></div>",
-  //   controller: function() {
-  //     window.location.replace('/location.html');
-  //   }
   // })
 
   // .state('washList', {
@@ -261,14 +243,23 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
   //   controller: 'washSingleOrderCtrl'
   // })
 
-  // .state('pay', {
-  //   url: '/pay',
-  //   cache: false,
-  //   templateUrl: 'templates/wxPay.html ',
-  //   controller: 'wxPayCtrl'
-  // })
-
-  ;
+  .state('search', {
+    url: '/search',
+    cache: false,
+    templateUrl: './build/pages/common/search.html',
+    controller: 'SearchCtrl'
+  }).state('location', {
+    url: '/location',
+    template: "<div></div>",
+    controller: function controller() {
+      window.location.replace('/location.html');
+    }
+  }).state('pay', {
+    url: '/pay',
+    cache: false,
+    templateUrl: './build/pages/order/wxPay.html ',
+    controller: 'wxPayCtrl'
+  });
   $urlRouterProvider.otherwise('/app/index');
 }]);
 'use strict';
@@ -400,6 +391,7 @@ function ServiceFactory(serviceURLs) {
     })(p);
   }
 };
+'use strict';
 
 angular.module('starter.services').service('WxPayParam', ["$resource", function ($resource) {
   var param = {
@@ -1535,6 +1527,53 @@ angular.module('starter.services').service('ShoppingCart', ["$rootScope", functi
 });
 'use strict';
 
+angular.module('starter.controllers').controller('wxPayCtrl', ["$scope", "$state", "$stateParams", "WxPayParam", "UserInfo", "orderStatus", "WxPay", "WxPayConfirmWash", "WxPayConfirmFurit", function ($scope, $state, $stateParams, WxPayParam, UserInfo, orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFurit) {
+  UserInfo.then(function (user) {
+    $scope.$on("$ionicParentView.leave", function (event, data) {
+      // console.log('loaded');
+      localStorage.setItem('backForbidden', true);
+    });
+    var sendData = WxPayParam.get();
+    $scope.pay = {
+      money: sendData.money
+    };
+    $scope.payOrder = function () {
+      WxPay.save(sendData).$promise.then(function (res) {
+        wx.ready(function () {
+          wx.chooseWXPay({
+            timestamp: res.timeStamp,
+            nonceStr: res.nonceStr,
+            package: res.package,
+            signType: res.signType,
+            paySign: res.paySign,
+            success: function success(res) {
+              alert('支付成功');
+              orderStatus.paied();
+              if (sendData.orderType == 17001) {
+                WxPayConfirmFurit.save({ 'orderIdsList': sendData.orderIdsList });
+              } else {
+                WxPayConfirmWash.save({ 'orderIdsList': sendData.orderIdsList });
+              }
+              WxPayParam.set({});
+              $state.go('app.orders');
+            },
+            cancel: function cancel(res) {
+              orderStatus.ordered();
+              $state.go('app.orders');
+            },
+            complete: function complete(res) {}
+          });
+        });
+      }, function () {
+        alert('下订单成功，等待支付');
+        orderStatus.ordered();
+        $state.go('app.orders');
+      });
+    };
+  });
+}]);
+'use strict';
+
 angular.module('starter.controllers').controller('ShopListCtrl', ["$scope", "$rootScope", "$stateParams", "MainPageHot", "NearByFruitShops", "UserInfo", "BannerFurit", "$ionicSlideBoxDelegate", "FuritOrWash", function ($scope, $rootScope, $stateParams, MainPageHot, NearByFruitShops, UserInfo, BannerFurit, $ionicSlideBoxDelegate, FuritOrWash) {
   $scope.location = {};
   UserInfo.then(function (user) {
@@ -1794,13 +1833,13 @@ angular.module('starter.controllers').controller('washListCtrl', ["$scope", "Use
 
 angular.module('starter.directives').directive('payOrder', function () {
   return {
-    restrict: 'A',
+    restrict: 'E',
     replace: true,
     scope: {
-      order: '@'
+      order: '='
     },
     transclude: true,
-    template: '<button ng-click="rePay($event, {{order}})" ng-transclude></button>',
+    template: '<button ng-click="rePay($event, order)" ng-transclude></button>',
     controller: ["$scope", "WxPayParam", "$state", function controller($scope, WxPayParam, $state) {
       $scope.rePay = function (event, order) {
         event.stopPropagation();
@@ -2032,6 +2071,40 @@ angular.module('starter.directives').directive('eGuard', function () {
         });
       });
     }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('goodList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      listData: '=',
+      listType: '@',
+      listTitle: '@'
+    },
+    templateUrl: './build/components/good-list/list.html',
+    controler: function controler($scope) {
+      if ($scope.listType === 'fruit') {
+        $scope.goodHref = '/good/{{good.productId}}';
+      }
+      if ($scope.listType === 'wash') {
+        $scope.goodHref = '/shop/wash/{{washGood.shopId}}';
+      }
+    }
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('shopList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      listData: '=',
+      listType: '@',
+      listTitle: '@'
+    },
+    templateUrl: './build/components/shop-list/list.html'
   };
 });
 'use strict';

@@ -32,7 +32,7 @@ angular.module('starter')
     })
 
     .state('app.order-list', {
-      url: '/order-list',
+      url: '/order',
       cache: false,
       views: {
         'tab-order-list': {
@@ -54,29 +54,29 @@ angular.module('starter')
     })
 
 
-    // /*
-    //  *  Shop route
-    //  */
-    // .state('shop-list', {
-    //   url: '/shopList',
-    //   cache: false,
-    //   templateUrl: 'templates/shopList.html',
-    //   controller: 'shopListCtrl'
-    // })
+    /*
+     *  Shop route
+     */
+    .state('shop-list', {
+      url: '/shop/:type',
+      cache: false,
+      templateUrl: './build/pages/shop/shop-list.html',
+      controller: 'ShopListCtrl'
+    })
 
-    // .state('shop-detail', {
-    //   url: '/shop/:shopId',
-    //   cache: false,
-    //   templateUrl: 'templates/shop.html',
-    //   controller: 'shopCtrl'
-    // })
+    .state('shop-detail', {
+      url: '/shop/:type/:shopId',
+      cache: false,
+      templateUrl: './build/pages/shop/shop-detail.html',
+      controller: 'ShopDetailCtrl'
+    })
 
 
     // /*
     //  *  Goods route
     //  */
     // .state('good-list', {
-    //   url: '/good-list/:type',
+    //   url: '/good/:type',
     //   cache: false,
     //   templateUrl: 'templates/good-detail.html',
     //   controller: 'SessionCtrl'
@@ -97,13 +97,6 @@ angular.module('starter')
     //   controller: 'OrderStatusCtrl'
     // })
 
-    .state('search', {
-      url: '/search',
-      cache: false,
-      templateUrl: './build/pages/common/search.html',
-      controller: 'SearchCtrl'
-    })
-
     // .state('orderDetail', {
     //   url: '/orderDetail/:orderId/:orderType',
     //   cache: false,
@@ -115,14 +108,6 @@ angular.module('starter')
     //   url: '/phoneNumberCheck',
     //   templateUrl: 'templates/phoneNumberCheck.html ',
     //   controller: 'phoneNumberCheckCtrl'
-    // })
-
-    // .state('location', {
-    //   url: '/location',
-    //   template: "<div></div>",
-    //   controller: function() {
-    //     window.location.replace('/location.html');
-    //   }
     // })
 
     // .state('washList', {
@@ -152,12 +137,27 @@ angular.module('starter')
     //   controller: 'washSingleOrderCtrl'
     // })
 
-    // .state('pay', {
-    //   url: '/pay',
-    //   cache: false,
-    //   templateUrl: 'templates/wxPay.html ',
-    //   controller: 'wxPayCtrl'
-    // })
+    .state('search', {
+      url: '/search',
+      cache: false,
+      templateUrl: './build/pages/common/search.html',
+      controller: 'SearchCtrl'
+    })
+
+    .state('location', {
+      url: '/location',
+      template: "<div></div>",
+      controller: function() {
+        window.location.replace('/location.html');
+      }
+    })
+
+    .state('pay', {
+      url: '/pay',
+      cache: false,
+      templateUrl: './build/pages/order/wxPay.html ',
+      controller: 'wxPayCtrl'
+    })
 
     ;
     $urlRouterProvider.otherwise('/app/index');

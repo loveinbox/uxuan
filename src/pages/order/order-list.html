@@ -52,9 +52,8 @@
         <!-- buttons -->
         <div class="button-list-wrap"
           ng-show="order.orderStatusId == 10001 || order.orderStatusId == 10002">
-          <button class="button button-small to-click"
-            pay-order
-            order={{order}}>支付订单</button>
+          <pay-order class="button button-small to-click"
+            order=order>支付订单</pay-order>
           <button class="button button-small"
             ng-click="clickRed($event, order)">取消订单</button>
         </div>
@@ -81,9 +80,8 @@
         </div>
         <div class="button-list-wrap"
           ng-show="order.orderStatusId == 11006">
-          <button class="button button-small to-click"
-            pay-order
-            order={{order}}>支付订单</button>
+          <pay-order class="button button-small to-click"
+            order=order>支付订单</pay-order>
         </div>
       </ion-item>
     </ion-list>
