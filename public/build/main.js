@@ -264,207 +264,123 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
 }]);
 'use strict';
 
-(function () {
-  var HorizontalScrollFix = function () {
-    function HorizontalScrollFix($timeout, $ionicScrollDelegate) {
-      return {
-        restrict: 'A',
-        link: function link(scope, element, attrs) {
-          var mainScrollID = attrs.horizontalScrollFix,
-              scrollID = attrs.delegateHandle;
+angular.module('starter.services').factory('userWechatInfo', ["$resource", function ($resource) {
+  return $resource('http://www.lifeuxuan.com/index.php/user/basicinfo');
+}]).factory('userRegister', ["$resource", function ($resource) {
+  return $resource('http://www.lifeuxuan.com/index.php/user/register');
+}]).factory('Location', ["$q", function ($q) {
 
-          var getEventTouches = function getEventTouches(e) {
-            return e.touches && (e.touches.length ? e.touches : [{
-              pageX: e.pageX,
-              pageY: e.pageY
-            }]);
-          };
+  var deferred = $q.defer();
+  // var userLocation = {
+  //   'latitude': 31.214197,
+  //   'longitude': 121.496322,
+  //   'isOut': false,
+  //   'isGet': true,
+  //   'text': '测试定位'
+  // };
 
-          var fixHorizontalAndVerticalScroll = function fixHorizontalAndVerticalScroll() {
-            var mainScroll, scroll;
-            mainScroll = $ionicScrollDelegate.$getByHandle(mainScrollID).getScrollView();
-            scroll = $ionicScrollDelegate.$getByHandle(scrollID).getScrollView();
-
-            // patch touchstart
-            scroll.__container.removeEventListener('touchstart', scroll.touchStart);
-            scroll.touchStart = function (e) {
-              var startY;
-              scroll.startCoordinates = ionic.tap.pointerCoord(e);
-              if (ionic.tap.ignoreScrollStart(e)) {
-                return;
-              }
-              scroll.__isDown = true;
-              if (ionic.tap.containsOrIsTextInput(e.target) || e.target.tagName === 'SELECT') {
-                scroll.__hasStarted = false;
-                return;
-              }
-              scroll.__isSelectable = true;
-              scroll.__enableScrollY = true;
-              scroll.__hasStarted = true;
-              scroll.doTouchStart(getEventTouches(e), e.timeStamp);
-              startY = mainScroll.__scrollTop;
-
-              // below is our changes to this method
-              // e.preventDefault();
-
-              // lock main scroll if scrolling horizontal
-              $timeout(function () {
-                var animate, yMovement;
-                yMovement = startY - mainScroll.__scrollTop;
-                if (scroll.__isDragging && yMovement < 2.0 && yMovement > -2.0) {
-                  mainScroll.__isTracking = false;
-                  mainScroll.doTouchEnd();
-                  animate = false;
-                  return mainScroll.scrollTo(0, startY, animate);
-                } else {
-                  return scroll.doTouchEnd();
-                }
-              }, 100);
-            };
-            scroll.__container.addEventListener('touchstart', scroll.touchStart);
-          };
-          $timeout(function () {
-            fixHorizontalAndVerticalScroll();
-          });
-        }
-      };
-    }
-
-    return HorizontalScrollFix;
-  }();
-
-  angular.module('starter').directive('horizontalScrollFix', ['$timeout', '$ionicScrollDelegate', HorizontalScrollFix]);
-}).call(undefined);
-'use strict';
-
-var baseURL = 'http://www.lifeuxuan.com/index.php';
-
-angular.module('starter.services').factory('getWashShops', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/shoplist/wash');
-}]).factory('getWashShop', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/shop/wash');
-}]).factory('getWashHot', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/hot/shoplist/wash');
-}]).factory('getWashRank', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/rank/index/wash');
-}]).factory('insertWashReserve', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/order/reserve/wash');
-}]).factory('insertWashOrder', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/order/insert/wash');
-}]);
-'use strict';
-
-var baseUrl = 'http://www.lifeuxuan.com/index.php';
-var serviceURLs = {
-  'NearByEguard': '/eguards',
-  'MainPageHot': '/hot/index',
-  'NearByFruitShops': '/shoplist/fruit',
-  'FruitsByShop': '/shop/fruit',
-  'FruitDetail': '/product/fruit',
-  'FruitPicShow': '/productshow/fruit',
-  'FruitUxuanRank': '/rank/index/fruit',
-  'FruitOrderInsert': '/order/insert/fruit',
-  'OrderList': '/orderlist/customer',
-  'FuritOrderDetail': '/orderdetail/customer/fruit',
-  'WashOrderDetail': '/orderdetail/customer/wash',
-  'SendCheckCode': '/code/send',
-  'CheckCheckCode': '/code/check',
-  'Search': '/search/normal',
-  'WxPay': '/wxctrl/pay',
-  'WxPayConfirmFurit': '/payconfirm/fruit',
-  'WxPayConfirmWash': '/payconfirm/wash',
-  'StartPrice': '/communicate/customer/wash/startprice',
-  'BannerIndex': '/banner/index',
-  'BannerFurit': '/banner/shoplist/fruit',
-  'BannerWash': '/banner/shoplist/wash',
-  'cancelFurit': '/communicate/customer/fruit/cancel',
-  'cancelWash': '/communicate/customer/wash/cancel'
-};
-ServiceFactory(serviceURLs);
-
-function ServiceFactory(serviceURLs) {
-  for (var p in serviceURLs) {
-    (function (param) {
-      angular.module('starter.services').factory(p, function ($resource) {
-        return $resource(baseUrl + serviceURLs[param]);
-      });
-    })(p);
-  }
-};
-'use strict';
-
-angular.module('starter.services').service('WxPayParam', ["$resource", function ($resource) {
-  var param = {
-    money: 0
+  var userLocation = JSON.parse(localStorage.getItem('userLocation')) || {
+    'latitude': 121.446322,
+    'longitude': 31.199345,
+    'isOut': false,
+    'isGet': true
   };
-  this.set = function (input) {
-    param = input;
-  };
-  this.get = function () {
-    return param;
-  };
-}]).service('FuritOrWash', ["$resource", function ($resource) {
-  var furitOrWash = 'furit';
-  var washOrder = null;
-  var isReserve = false;
-  this.toFurit = function () {
-    furitOrWash = 'furit';
-    // console.log('furitOrWash', furitOrWash);
-  };
-  this.toWash = function (order, reserve) {
-    furitOrWash = 'wash';
-    console.log('furitOrWash', furitOrWash);
-    if (order !== null) {
-      washOrder = order;
-    }
-    if (reserve !== undefined) {
-      isReserve = reserve;
-    }
-  };
-  this.get = function () {
-    return furitOrWash;
-  };
-  this.getParams = function () {
-    return {
-      washOrder: washOrder,
-      isReserve: isReserve
-    };
-  };
-}]);
-'use strict';
 
-angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "$state", "$ionicHistory", "$ionicModal", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", "FuritOrWash", function ($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, FuritOrWash) {
-  $scope.isHideAddCart = false;
-  $scope.singleNumber = 0;
-
-  UserInfo.then(function (user) {
-    FuritOrWash.toFurit();
-    FruitDetail.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-      'productId': $stateParams.sessionId
-    }, function (data) {
-      $scope.good = data.data.product;
-      $scope.shop = data.data.shop;
-      $rootScope.$broadcast('cartChange');
-      FruitPicShow.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'productId': $stateParams.sessionId
-      }, function (data) {
-        $scope.imgs = data.data;
-      });
-    });
-
-    $scope.$on('cartChange', function (event, data) {
-      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
-      if ($scope.singleNumber > 0) {
-        $scope.isHideAddCart = true;
+  if (userLocation.isSearchGeo) {
+    GetAddress(userLocation.latitude, userLocation.longitude);
+  } else {
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function (r) {
+      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+        // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+        userLocation.latitude = r.point.lat;
+        userLocation.longitude = r.point.lng;
+        GetAddress(userLocation.latitude, userLocation.longitude);
       } else {
-        $scope.isHideAddCart = false;
+        alert('failed' + this.getStatus());
       }
+    }, {
+      enableHighAccuracy: true
+    });
+  }
+
+  function GetAddress(lat, lng) {
+    var point = new BMap.Point(lng, lat);
+    var gc = new BMap.Geocoder();
+    gc.getLocation(point, function (rs) {
+      var addComp = rs.addressComponents;
+      userLocation.province = addComp.province;
+      userLocation.city = addComp.city;
+      userLocation.district = addComp.district;
+      userLocation.street = addComp.street;
+      userLocation.streetNumber = addComp.streetNumber;
+      if (addComp.city != '上海市') {
+        userLocation.isOut = true;
+      } else {
+        userLocation.isOut = false;
+      }
+      userLocation.isSearchGeo = false;
+      localStorage.setItem('userLocation', JSON.stringify(userLocation));
+      deferred.resolve(userLocation);
+    });
+  }
+
+  // for test
+  // if (window.location.hostname == "localhost") {
+  // deferred.resolve(userLocation);
+  // return deferred.promise;
+  // }
+  return deferred.promise;
+}]).factory('UserInfo', ["$resource", "$q", "$timeout", "userWechatInfo", "userRegister", "Location", function ($resource, $q, $timeout, userWechatInfo, userRegister, Location) {
+  var deferred = $q.defer();
+  var user = {
+    userId: 'C0000000001'
+  };
+  Location.then(function (userLocation) {
+    // user default value
+    user.latitude = userLocation.latitude;
+    user.longitude = userLocation.longitude;
+    user.userLocation = userLocation;
+
+    // ------------for test-----------------
+    if (window.location.hostname == "localhost") {
+      deferred.resolve(user);
+      return deferred.promise;
+    }
+    // ------------for test-----------------
+
+    userWechatInfo.get({}, function (e) {
+      user.name = e.data.nickname;
+      user.img = e.data.headimgurl;
+      user.openid = e.data.openid;
+      user.headPicUrl = e.data.headimgurl;
+      if (user.name == '哈库那玛塔塔') {
+        // screenLog.init({ autoScroll: true });
+      }
+      userRegister.get({
+        'latitude': user.latitude,
+        'longitude': user.longitude,
+        'openId': user.openid,
+        'username': user.nickname,
+        'password': '',
+        'headPicUrl': user.headPicUrl
+      }, function (e) {
+        if (e.data) {
+          user.userId = e.data.userId;
+          user.verify = e.data.verifyCode;
+          var address = e.data.lastAddress;
+          user.rcvAddress = address.rcvAddress;
+          user.rcvPhone = address.rcvPhone;
+          user.rcvName = address.rcvName;
+
+          console.log('rcvPhone', user.rcvPhone);
+          deferred.resolve(user);
+        }
+      });
     });
   });
+
+  return deferred.promise;
 }]);
 'use strict';
 
@@ -477,11 +393,11 @@ angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootS
   UserInfo.then(function (user) {
     $scope.location = user.userLocation;
     if (user.userLocation.street) {
-      $scope.location.text = user.userLocation.street; // + user.userLocation.streetNumber;
+      $scope.location.text = user.userLocation.street;
     }
     $scope.$watch('user.userLocation', function () {
       if (user.userLocation.street) {
-        $scope.location.text = user.userLocation.street; // + user.userLocation.streetNumber;
+        $scope.location.text = user.userLocation.street;
       }
     }, true);
 
@@ -693,123 +609,351 @@ angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootS
 }]);
 'use strict';
 
-angular.module('starter.services').factory('userWechatInfo', ["$resource", function ($resource) {
-  return $resource('http://www.lifeuxuan.com/index.php/user/basicinfo');
-}]).factory('userRegister', ["$resource", function ($resource) {
-  return $resource('http://www.lifeuxuan.com/index.php/user/register');
-}]).factory('Location', ["$q", function ($q) {
+angular.module('starter.controllers').controller('phoneNumberCheckCtrl', ["$scope", "$rootScope", "$interval", "UserInfo", "SendCheckCode", "CheckCheckCode", "$ionicHistory", "$state", function ($scope, $rootScope, $interval, UserInfo, SendCheckCode, CheckCheckCode, $ionicHistory, $state) {
+  var e = {};
+  $scope.check = {};
+  $scope.check.time = 0;
+  var timer = 0;
 
-  var deferred = $q.defer();
-  // var userLocation = {
-  //   'latitude': 31.214197,
-  //   'longitude': 121.496322,
-  //   'isOut': false,
-  //   'isGet': true,
-  //   'text': '测试定位'
-  // };
-
-  var userLocation = JSON.parse(localStorage.getItem('userLocation')) || {
-    'latitude': 121.446322,
-    'longitude': 31.199345,
-    'isOut': false,
-    'isGet': true
-  };
-
-  if (userLocation.isSearchGeo) {
-    GetAddress(userLocation.latitude, userLocation.longitude);
-  } else {
-    var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
-      if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
-        userLocation.latitude = r.point.lat;
-        userLocation.longitude = r.point.lng;
-        GetAddress(userLocation.latitude, userLocation.longitude);
-      } else {
-        alert('failed' + this.getStatus());
+  UserInfo.then(function (user) {
+    $scope.check.phoneNumber = localStorage.getItem('userPhone');
+    $scope.$watch('check.phoneNumber', function (nv, ov) {
+      if (nv) {
+        localStorage.setItem('userPhone', nv);
       }
-    }, {
-      enableHighAccuracy: true
     });
-  }
 
-  function GetAddress(lat, lng) {
-    var point = new BMap.Point(lng, lat);
-    var gc = new BMap.Geocoder();
-    gc.getLocation(point, function (rs) {
-      var addComp = rs.addressComponents;
-      userLocation.province = addComp.province;
-      userLocation.city = addComp.city;
-      userLocation.district = addComp.district;
-      userLocation.street = addComp.street;
-      userLocation.streetNumber = addComp.streetNumber;
-      if (addComp.city != '上海市') {
-        userLocation.isOut = true;
+    $scope.sendCode = function (e, order) {
+      if ($scope.check.time > 0) {
+        return;
       } else {
-        userLocation.isOut = false;
+        $scope.check.time = 60;
       }
-      userLocation.isSearchGeo = false;
-      localStorage.setItem('userLocation', JSON.stringify(userLocation));
-      deferred.resolve(userLocation);
-    });
-  }
+      SendCheckCode.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'phone': $scope.check.phoneNumber
+      }, function (data) {
+        if (data.code == -1) {
+          return;
+        } else {
+          alert('发送验证码成功');
+        }
+        timer = $interval(function () {
+          $scope.check.time--;
+          if ($scope.check.time < 0) {
+            $interval.cancel(timer);
+          }
+        }, 1000);
+      });
+    };
 
-  // for test
-  // if (window.location.hostname == "localhost") {
-  // deferred.resolve(userLocation);
-  // return deferred.promise;
-  // }
-  return deferred.promise;
-}]).factory('UserInfo', ["$resource", "$q", "$timeout", "userWechatInfo", "userRegister", "Location", function ($resource, $q, $timeout, userWechatInfo, userRegister, Location) {
-  var deferred = $q.defer();
-  var user = {
-    userId: 'C0000000001'
-  };
-  Location.then(function (userLocation) {
-    // user default value
-    user.latitude = userLocation.latitude;
-    user.longitude = userLocation.longitude;
-    user.userLocation = userLocation;
-
-    // ------------for test-----------------
-    if (window.location.hostname == "localhost") {
-      deferred.resolve(user);
-      return deferred.promise;
-    }
-    // ------------for test-----------------
-
-    userWechatInfo.get({}, function (e) {
-      user.name = e.data.nickname;
-      user.img = e.data.headimgurl;
-      user.openid = e.data.openid;
-      user.headPicUrl = e.data.headimgurl;
-      if (user.name == '哈库那玛塔塔') {
-        // screenLog.init({ autoScroll: true });
+    $scope.checkCode = function (e, order) {
+      var phoneNumber = $scope.check.phoneNumber;
+      if (!$scope.check.isAgree) {
+        return;
       }
-      userRegister.get({
+      CheckCheckCode.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'phone': $scope.check.phoneNumber,
+        'code': $scope.check.checkCode,
+        'userId': user.userId
+      }, function (data) {
+        localStorage.removeItem('userPhone');
+        // console.log(' checkcoode data.code', data.code);
+        // console.log(' checkcoode data.msg', data.msg);
+        if (data.code == -1) {
+          alert('验证失败');
+          return;
+        }
+        console.log('$scope.check.phoneNumber', phoneNumber);
+        user.rdvPhone = $scope.check.phoneNumber;
+        user.verify = '1';
+        $state.go('app.sessions');
+      });
+    };
+  });
+}]);
+'use strict';
+
+angular.module('starter.controllers').controller('SearchCtrl', ["$scope", "UserInfo", "Search", function ($scope, UserInfo, Search) {
+
+  $scope.search = {};
+  $scope.search.keyword = '';
+  UserInfo.then(function (user) {
+    $scope.searchGo = function (e, order) {
+      Search.get({
         'latitude': user.latitude,
         'longitude': user.longitude,
-        'openId': user.openid,
-        'username': user.nickname,
-        'password': '',
-        'headPicUrl': user.headPicUrl
+        'keyword': $scope.search.keyword
       }, function (e) {
         if (e.data) {
-          user.userId = e.data.userId;
-          user.verify = e.data.verifyCode;
-          var address = e.data.lastAddress;
-          user.rcvAddress = address.rcvAddress;
-          user.rcvPhone = address.rcvPhone;
-          user.rcvName = address.rcvName;
-
-          console.log('rcvPhone', user.rcvPhone);
-          deferred.resolve(user);
+          $scope.goodsOfWash = e.data.productsList['wash'];
+          $scope.goodsOfFurit = e.data.productsList['fruit'];
+          $scope.shopsOfWash = e.data.shopsList['wash'];
+          $scope.shopsOfFurit = e.data.shopsList['fruit'];
         }
       });
+    };
+  });
+}]);
+'use strict';
+
+angular.module('starter.controllers').controller('ShopDetailCtrl', ["$scope", "$stateParams", "FruitsByShop", "WashByShop", "UserInfo", function ($scope, $stateParams, FruitsByShop, WashByShop, UserInfo) {
+  UserInfo.then(function (user) {
+    var type = $stateParams.type;
+    var method = type === 'fruit' ? FruitsByShop : WashByShop;
+    method.get({
+      'shopId': $stateParams.shopId
+    }, function (res) {
+      $scope.shop = res.data.shop;
+      $scope.goodList = res.data.productsList;
+      $scope.classList = res.data.classifysList;
     });
   });
+}]);
+'use strict';
 
-  return deferred.promise;
+angular.module('starter.controllers').controller('ShopListCtrl', ["$scope", "$rootScope", "$stateParams", "MainPageHot", "NearByFruitShops", "UserInfo", "BannerFurit", "$ionicSlideBoxDelegate", "FuritOrWash", function ($scope, $rootScope, $stateParams, MainPageHot, NearByFruitShops, UserInfo, BannerFurit, $ionicSlideBoxDelegate, FuritOrWash) {
+  $scope.location = {};
+  UserInfo.then(function (user) {
+    FuritOrWash.toFurit();
+    MainPageHot.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude
+    }, function (data) {
+      $scope.sessions = data.data;
+    });
+
+    NearByFruitShops.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude
+    }, function (data) {
+      $scope.shops = data.data;
+    });
+
+    BannerFurit.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude
+    }, function (data) {
+      $scope.banners = data.data;
+      $ionicSlideBoxDelegate.update();
+      $ionicSlideBoxDelegate.loop(true);
+    });
+  });
+}]);
+"use strict";
+'use strict';
+
+angular.module('starter').filter('toTimeStamp', function () {
+  return function (input, param) {
+    return moment(input).unix() * 1000;
+  };
+});
+'use strict';
+
+var baseURL = 'http://www.lifeuxuan.com/index.php';
+
+angular.module('starter.services').factory('getWashShops', ["$resource", "$http", function ($resource, $http) {
+  return $resource(baseURL + '/shoplist/wash');
+}]).factory('WashByShop', ["$resource", "$http", function ($resource, $http) {
+  return $resource(baseURL + '/shop/wash');
+}]).factory('getWashHot', ["$resource", "$http", function ($resource, $http) {
+  return $resource(baseURL + '/hot/shoplist/wash');
+}]).factory('getWashRank', ["$resource", "$http", function ($resource, $http) {
+  return $resource(baseURL + '/rank/index/wash');
+}]).factory('insertWashReserve', ["$resource", "$http", function ($resource, $http) {
+  return $resource(baseURL + '/order/reserve/wash');
+}]).factory('insertWashOrder', ["$resource", "$http", function ($resource, $http) {
+  return $resource(baseURL + '/order/insert/wash');
+}]);
+'use strict';
+
+(function () {
+  var HorizontalScrollFix = function () {
+    function HorizontalScrollFix($timeout, $ionicScrollDelegate) {
+      return {
+        restrict: 'A',
+        link: function link(scope, element, attrs) {
+          var mainScrollID = attrs.horizontalScrollFix,
+              scrollID = attrs.delegateHandle;
+
+          var getEventTouches = function getEventTouches(e) {
+            return e.touches && (e.touches.length ? e.touches : [{
+              pageX: e.pageX,
+              pageY: e.pageY
+            }]);
+          };
+
+          var fixHorizontalAndVerticalScroll = function fixHorizontalAndVerticalScroll() {
+            var mainScroll, scroll;
+            mainScroll = $ionicScrollDelegate.$getByHandle(mainScrollID).getScrollView();
+            scroll = $ionicScrollDelegate.$getByHandle(scrollID).getScrollView();
+
+            // patch touchstart
+            scroll.__container.removeEventListener('touchstart', scroll.touchStart);
+            scroll.touchStart = function (e) {
+              var startY;
+              scroll.startCoordinates = ionic.tap.pointerCoord(e);
+              if (ionic.tap.ignoreScrollStart(e)) {
+                return;
+              }
+              scroll.__isDown = true;
+              if (ionic.tap.containsOrIsTextInput(e.target) || e.target.tagName === 'SELECT') {
+                scroll.__hasStarted = false;
+                return;
+              }
+              scroll.__isSelectable = true;
+              scroll.__enableScrollY = true;
+              scroll.__hasStarted = true;
+              scroll.doTouchStart(getEventTouches(e), e.timeStamp);
+              startY = mainScroll.__scrollTop;
+
+              // below is our changes to this method
+              // e.preventDefault();
+
+              // lock main scroll if scrolling horizontal
+              $timeout(function () {
+                var animate, yMovement;
+                yMovement = startY - mainScroll.__scrollTop;
+                if (scroll.__isDragging && yMovement < 2.0 && yMovement > -2.0) {
+                  mainScroll.__isTracking = false;
+                  mainScroll.doTouchEnd();
+                  animate = false;
+                  return mainScroll.scrollTo(0, startY, animate);
+                } else {
+                  return scroll.doTouchEnd();
+                }
+              }, 100);
+            };
+            scroll.__container.addEventListener('touchstart', scroll.touchStart);
+          };
+          $timeout(function () {
+            fixHorizontalAndVerticalScroll();
+          });
+        }
+      };
+    }
+
+    return HorizontalScrollFix;
+  }();
+
+  angular.module('starter').directive('horizontalScrollFix', ['$timeout', '$ionicScrollDelegate', HorizontalScrollFix]);
+}).call(undefined);
+'use strict';
+
+var baseUrl = 'http://www.lifeuxuan.com/index.php';
+var serviceURLs = {
+  'NearByEguard': '/eguards',
+  'MainPageHot': '/hot/index',
+  'NearByFruitShops': '/shoplist/fruit',
+  'FruitsByShop': '/shop/fruit',
+  'FruitDetail': '/product/fruit',
+  'FruitPicShow': '/productshow/fruit',
+  'FruitUxuanRank': '/rank/index/fruit',
+  'FruitOrderInsert': '/order/insert/fruit',
+  'OrderList': '/orderlist/customer',
+  'FuritOrderDetail': '/orderdetail/customer/fruit',
+  'WashOrderDetail': '/orderdetail/customer/wash',
+  'SendCheckCode': '/code/send',
+  'CheckCheckCode': '/code/check',
+  'Search': '/search/normal',
+  'WxPay': '/wxctrl/pay',
+  'WxPayConfirmFurit': '/payconfirm/fruit',
+  'WxPayConfirmWash': '/payconfirm/wash',
+  'StartPrice': '/communicate/customer/wash/startprice',
+  'BannerIndex': '/banner/index',
+  'BannerFurit': '/banner/shoplist/fruit',
+  'BannerWash': '/banner/shoplist/wash',
+  'cancelFurit': '/communicate/customer/fruit/cancel',
+  'cancelWash': '/communicate/customer/wash/cancel'
+};
+ServiceFactory(serviceURLs);
+
+function ServiceFactory(serviceURLs) {
+  for (var p in serviceURLs) {
+    (function (param) {
+      angular.module('starter.services').factory(p, function ($resource) {
+        return $resource(baseUrl + serviceURLs[param]);
+      });
+    })(p);
+  }
+};
+'use strict';
+
+angular.module('starter.services').service('WxPayParam', ["$resource", function ($resource) {
+  var param = {
+    money: 0
+  };
+  this.set = function (input) {
+    param = input;
+  };
+  this.get = function () {
+    return param;
+  };
+}]).service('FuritOrWash', ["$resource", function ($resource) {
+  var furitOrWash = 'furit';
+  var washOrder = null;
+  var isReserve = false;
+  this.toFurit = function () {
+    furitOrWash = 'furit';
+    // console.log('furitOrWash', furitOrWash);
+  };
+  this.toWash = function (order, reserve) {
+    furitOrWash = 'wash';
+    console.log('furitOrWash', furitOrWash);
+    if (order !== null) {
+      washOrder = order;
+    }
+    if (reserve !== undefined) {
+      isReserve = reserve;
+    }
+  };
+  this.get = function () {
+    return furitOrWash;
+  };
+  this.getParams = function () {
+    return {
+      washOrder: washOrder,
+      isReserve: isReserve
+    };
+  };
+}]);
+'use strict';
+
+angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "$state", "$ionicHistory", "$ionicModal", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", "FuritOrWash", function ($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, FuritOrWash) {
+  $scope.isHideAddCart = false;
+  $scope.singleNumber = 0;
+
+  UserInfo.then(function (user) {
+    FuritOrWash.toFurit();
+    FruitDetail.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+      'productId': $stateParams.sessionId
+    }, function (data) {
+      $scope.good = data.data.product;
+      $scope.shop = data.data.shop;
+      $rootScope.$broadcast('cartChange');
+      FruitPicShow.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'productId': $stateParams.sessionId
+      }, function (data) {
+        $scope.imgs = data.data;
+      });
+    });
+
+    $scope.$on('cartChange', function (event, data) {
+      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+      if ($scope.singleNumber > 0) {
+        $scope.isHideAddCart = true;
+      } else {
+        $scope.isHideAddCart = false;
+      }
+    });
+  });
 }]);
 "use strict";
 'use strict';
@@ -1574,99 +1718,6 @@ angular.module('starter.controllers').controller('wxPayCtrl', ["$scope", "$state
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('ShopListCtrl', ["$scope", "$rootScope", "$stateParams", "MainPageHot", "NearByFruitShops", "UserInfo", "BannerFurit", "$ionicSlideBoxDelegate", "FuritOrWash", function ($scope, $rootScope, $stateParams, MainPageHot, NearByFruitShops, UserInfo, BannerFurit, $ionicSlideBoxDelegate, FuritOrWash) {
-  $scope.location = {};
-  UserInfo.then(function (user) {
-    FuritOrWash.toFurit();
-    MainPageHot.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
-      $scope.sessions = data.data;
-    });
-
-    NearByFruitShops.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
-      $scope.shops = data.data;
-    });
-
-    BannerFurit.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
-      $scope.banners = data.data;
-      $ionicSlideBoxDelegate.update();
-      $ionicSlideBoxDelegate.loop(true);
-    });
-  });
-}]).controller('ShopCtrl', ["$scope", "$stateParams", "$ionicScrollDelegate", "$timeout", "$rootScope", "FruitsByShop", "ShoppingCart", "$ionicModal", "UserInfo", "FuritOrWash", function ($scope, $stateParams, $ionicScrollDelegate, $timeout, $rootScope, FruitsByShop, ShoppingCart, $ionicModal, UserInfo, FuritOrWash) {
-  var scrollObj = {};
-  var indexArray = [];
-  $scope.currentIndex = 0;
-
-  UserInfo.then(function (user) {
-    FuritOrWash.toFurit();
-    FruitsByShop.get({
-      'shopId': $stateParams.shopId
-    }, function (res) {
-      var count = 0;
-      var lastId = -1;
-      var indexCount = 0;
-      $scope.shop = res.data.shop;
-      $scope.goods = res.data.productsList;
-      $scope.classes = res.data.classifysList;
-      $scope.goods.forEach(function (el, index) {
-        if (el.productClassifyId != lastId) {
-          lastId = el.productClassifyId;
-          scrollObj[el.productClassifyId] = count;
-          indexArray[count] = indexCount++;
-        }
-        count++;
-      });
-      $rootScope.$broadcast('cartChange');
-    });
-  });
-
-  $scope.scrollTo = function (classifyId, index) {
-    $scope.currentIndex = index;
-    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
-    $scope.getScrollPosition = null;
-    $timeout(function () {
-      $scope.getScrollPosition = getOffSet;
-    }, 500);
-  };
-  $scope.getScrollPosition = getOffSet;
-
-  function getOffSet() {
-    var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
-    var getIndex = 0;
-    for (var p in scrollObj) {
-      if (scrollObj[p] * 80 < currentScroll) {
-        getIndex = scrollObj[p];
-        continue;
-      }
-    }
-    // console.log(getIndex);
-    if ($scope.currentIndex !== indexArray[getIndex]) {
-      $scope.currentIndex = indexArray[getIndex];
-      $scope.getScrollPosition = null;
-      $timeout(function () {
-        $scope.getScrollPosition = getOffSet;
-      }, 100);
-    }
-  }
-}]);
-'use strict';
-
-angular.module('starter').filter('toTimeStamp', function () {
-  return function (input, param) {
-    return moment(input).unix() * 1000;
-  };
-});
-'use strict';
-
 angular.module('starter.controllers').controller('washListCtrl', ["$scope", "UserInfo", "getWashHot", "getWashShops", "BannerWash", "$ionicSlideBoxDelegate", "FuritOrWash", function ($scope, UserInfo, getWashHot, getWashShops, BannerWash, $ionicSlideBoxDelegate, FuritOrWash) {
   $scope.location = {};
   UserInfo.then(function (user) {
@@ -2054,28 +2105,7 @@ angular.module('starter.directives').directive('payOrder', function () {
 });
 'use strict';
 
-angular.module('starter.directives').directive('eGuard', function () {
-  return {
-    restrict: 'E',
-    replace: true,
-    template: '<p>管家<strong>{{eGuard.eguardName}}</strong>为您服务</p>',
-    controller: ["$scope", "$rootScope", "NearByEguard", "Location", "UserInfo", function controller($scope, $rootScope, NearByEguard, Location, UserInfo) {
-      UserInfo.then(function (user) {
-        NearByEguard.get({
-          'longitude': user.longitude,
-          'latitude': user.latitude
-        }, function (data) {
-          $rootScope.eGuard = data.data[0];
-        }, function (data) {
-          alert('NO DATA');
-        });
-      });
-    }]
-  };
-});
-'use strict';
-
-angular.module('starter.directives').directive('goodList', function () {
+angular.module('starter.directives').directive('goodNearbyList', function () {
   return {
     restrict: 'E',
     scope: {
@@ -2083,7 +2113,7 @@ angular.module('starter.directives').directive('goodList', function () {
       listType: '@',
       listTitle: '@'
     },
-    templateUrl: './build/components/good-list/list.html',
+    templateUrl: './build/components/good-list/nearby-list.html',
     controler: function controler($scope) {
       if ($scope.listType === 'fruit') {
         $scope.goodHref = '/good/{{good.productId}}';
@@ -2104,7 +2134,77 @@ angular.module('starter.directives').directive('goodList', function () {
 });
 'use strict';
 
-angular.module('starter.directives').directive('goBack', function () {
+angular.module('starter.directives').directive('scrollList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      goodList: '=',
+      classList: '='
+    },
+    templateUrl: './build/components/good-list/scroll-list.html',
+    controller: ["$scope", "$stateParams", "$ionicScrollDelegate", "$timeout", function controller($scope, $stateParams, $ionicScrollDelegate, $timeout) {
+      var scrollObj = {};
+      var indexArray = [];
+      var count = 0;
+      var lastId = -1;
+      var indexCount = 0;
+
+      $scope.currentIndex = 0;
+      $scope.$watch('goodList', function (nv) {
+        if (nv && nv.length > 0) {
+          $scope.goodList.forEach(function (el, index) {
+            if (el.productClassifyId != lastId) {
+              lastId = el.productClassifyId;
+              scrollObj[el.productClassifyId] = count;
+              indexArray[count] = indexCount++;
+            }
+            count++;
+          });
+        }
+      });
+
+      $scope.scrollTo = function (classifyId, index) {
+        $scope.currentIndex = index;
+        $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
+        $scope.getScrollPosition = null;
+        $timeout(function () {
+          $scope.getScrollPosition = getOffSet;
+        }, 500);
+      };
+      $scope.getScrollPosition = getOffSet;
+
+      function getOffSet() {
+        var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
+        var getIndex = 0;
+        for (var p in scrollObj) {
+          if (scrollObj[p] * 80 < currentScroll) {
+            getIndex = scrollObj[p];
+            continue;
+          }
+        }
+        if ($scope.currentIndex !== indexArray[getIndex]) {
+          $scope.currentIndex = indexArray[getIndex];
+          $scope.getScrollPosition = null;
+          $timeout(function () {
+            $scope.getScrollPosition = getOffSet;
+          }, 100);
+        }
+      }
+    }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('uHeader', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      noBack: '='
+    },
+    replace: true,
+    templateUrl: './build/components/header/header.html'
+  };
+}).directive('goBack', function () {
   return {
     restrict: 'E',
     replace: true,
@@ -2120,14 +2220,43 @@ angular.module('starter.directives').directive('goBack', function () {
       };
     }]
   };
-}).directive('uHeader', function () {
+}).directive('eGuard', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    template: '<p class="u-guard">管家<strong>{{eGuard.eguardName}}</strong>为您服务</p>',
+    controller: ["$scope", "$rootScope", "NearByEguard", "Location", "UserInfo", function controller($scope, $rootScope, NearByEguard, Location, UserInfo) {
+      UserInfo.then(function (user) {
+        NearByEguard.get({
+          'longitude': user.longitude,
+          'latitude': user.latitude
+        }, function (data) {
+          $rootScope.eGuard = data.data[0];
+        }, function (data) {
+          alert('NO DATA');
+        });
+      });
+    }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('shopDetail', function () {
   return {
     restrict: 'E',
     scope: {
-      hasBack: '='
+      img: '@',
+      name: '@',
+      time: '@',
+      address: '@',
+      tip: '@'
     },
     replace: true,
-    templateUrl: './build/components/header/header.html'
+    templateUrl: './build/components/shop-detail/shop-detail.html',
+    controller: ["$scope", function controller($scope) {
+      debugger;
+      $scope.img = $scope.img || 'http://lifeuxuan.com/images/washshopimage/WS0000005/1.jpg';
+    }]
   };
 });
 'use strict';
@@ -2164,21 +2293,5 @@ angular.module('starter.directives').directive('bigPic', function () {
         picModal.append(img).show();
       });
     }
-  };
-}).directive('goBack', function () {
-  return {
-    restrict: 'E',
-    replace: true,
-    template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
-    controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {
-      $scope.myGoBack = function () {
-        var $backView = $ionicHistory.backView();
-        if ($backView) {
-          $backView.go();
-        } else {
-          $state.go('app.index');
-        }
-      };
-    }]
   };
 });

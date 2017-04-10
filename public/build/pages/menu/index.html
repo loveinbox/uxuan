@@ -1,7 +1,7 @@
 <ion-view view-title="U选到家">
   <ion-content class="u-index"
     delegate-handle="mainScroll">
-    <u-header hasBack="false">
+    <u-header no-back="true">
     </u-header>
     <section>
       <ion-slide-box class="u-slider"
@@ -67,14 +67,14 @@
         list-type="wash"></shop-list>
     </section>
     <section>
-      <good-list list-data="goods"
+      <good-nearby-list list-data="goods"
         list-title="U选水果"
-        list-type="fruit"></good-list>
+        list-type="fruit"></good-nearby-list>
     </section>
     <section>
-      <good-list list-data="washShopsRank"
+      <good-nearby-list list-data="washShopsRank"
         list-title="U选洗衣"
-        list-type="wash"></good-list>
+        list-type="wash"></good-nearby-list>
     </section>
   </ion-content>
 </ion-view>

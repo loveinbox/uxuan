@@ -45,6 +45,9 @@ section + section {
 .fl {
   float: left;
 }
+.has-detail-header {
+  top: 150px;
+}
 .item {
   border: none;
 }
@@ -57,12 +60,6 @@ section + section {
 .button-small {
   width: 70px;
   border-radius: 6px;
-}
-.u-slider {
-  height: 220px;
-}
-.u-slider img {
-  width: 100%;
 }
 .user-info h1 {
   text-align: center;
@@ -149,6 +146,12 @@ section + section {
 .u-index .u-icon-nav img {
   width: 40px;
   height: 40px;
+}
+.u-slider {
+  height: 220px;
+}
+.u-slider img {
+  width: 100%;
 }
 .button-cart-wrap {
   position: absolute;
@@ -304,6 +307,46 @@ section + section {
   font-size: 13px;
   text-indent: -3px;
 }
+.class-list {
+  float: left;
+  width: 20%;
+  height: 100%;
+  background: #eee;
+  text-align: center;
+}
+.class-list .item {
+  padding: 10px 0;
+  background: #f2f7fa;
+}
+.class-list .item.show {
+  background: #fff;
+}
+.scroll-list {
+  width: 80%;
+  height: 100%;
+}
+.scroll-list .item {
+  padding: 10px;
+}
+.scroll-list .item img {
+  float: left;
+  width: 75px;
+  height: 60px;
+  border-radius: 20px;
+}
+.scroll-list .item .info {
+  margin-left: 90px;
+}
+.scroll-list .item .info .name {
+  font-size: 14px;
+}
+.scroll-list .item .info .price {
+  font-size: 16px;
+  color: #619de5;
+}
+.scroll-list .item .info .price .measure {
+  font-size: 12px;
+}
 .u-header {
   position: absolute;
   width: 100%;
@@ -339,6 +382,25 @@ section + section {
 .u-header .u-search-icon i {
   color: #fff;
   font-size: 24px;
+}
+.shop-detail {
+  height: 150px;
+  padding: 55px 0px 5px 20px;
+  border-bottom: solid #eee 10px;
+}
+.shop-detail .shop-img {
+  margin: 5px 0;
+  float: left;
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+}
+.shop-detail .detail-info {
+  margin-left: 80px;
+  font-size: 12px;
+}
+.shop-detail .name {
+  font-size: 16px;
 }
 .u-list .img {
   float: left;

@@ -3,7 +3,7 @@
   <div class="divider">{{listTitle}}</div>
   <ion-list>
     <ion-item ng-repeat="shop in listData"
-      href="/shop/{{shop.shopId}}">
+      href="/shop/{{listType}}/{{shop.shopId}}">
       <div class="img">
         <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
       </div>

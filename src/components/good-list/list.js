@@ -1,6 +1,6 @@
 angular.module('starter.directives')
 
-.directive('goodList', function() {
+.directive('goodNearbyList', function() {
   return {
     restrict: 'E',
     scope: {
@@ -8,7 +8,7 @@ angular.module('starter.directives')
       listType: '@',
       listTitle: '@'
     },
-    templateUrl: './build/components/good-list/list.html',
+    templateUrl: './build/components/good-list/nearby-list.html',
     controler: function($scope) {
       if ($scope.listType === 'fruit') {
         $scope.goodHref = '/good/{{good.productId}}'
