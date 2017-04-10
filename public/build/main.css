@@ -315,11 +315,14 @@ section + section {
   text-align: center;
 }
 .class-list .item {
-  padding: 10px 0;
+  padding: 0;
   background: #f2f7fa;
 }
 .class-list .item.show {
   background: #fff;
+}
+.class-list .item p {
+  padding: 10px;
 }
 .scroll-list {
   width: 80%;

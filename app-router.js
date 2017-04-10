@@ -140,7 +140,7 @@ angular.module('starter')
     .state('search', {
       url: '/search',
       cache: false,
-      templateUrl: './build/pages/common/search.html',
+      templateUrl: './build/pages/search/search.html',
       controller: 'SearchCtrl'
     })
 

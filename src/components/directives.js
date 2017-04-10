@@ -66,8 +66,8 @@ angular.module('starter.directives')
     restrict: 'A',
     replace: true,
     templateUrl: 'templateDirectives/cartModalIcon.html',
-    controller: function($scope, $rootScope, $ionicModal, ShoppingCart, FuritOrWash) {
-      var type = FuritOrWash.get();
+    controller: function($scope, $rootScope, $ionicModal, ShoppingCart, FruitOrWash) {
+      var type = FruitOrWash.get();
       $scope.$on('cartChange', function(event, data) {
         $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId, type);
         $scope.totalMoney = ShoppingCart.getshopCartMoney($scope.shop.shopId, type);
@@ -96,8 +96,8 @@ angular.module('starter.directives')
   return {
     restrict: 'A',
     templateUrl: 'templateDirectives/singleCart.html',
-    controller: function($scope, $rootScope, $state, ShoppingCart, UserInfo, FuritOrWash) {
-      var type = FuritOrWash.get();
+    controller: function($scope, $rootScope, $state, ShoppingCart, UserInfo, FruitOrWash) {
+      var type = FruitOrWash.get();
       $scope.cartAction = {};
       if ($scope.good) {
         $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop,

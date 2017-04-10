@@ -246,7 +246,7 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
   .state('search', {
     url: '/search',
     cache: false,
-    templateUrl: './build/pages/common/search.html',
+    templateUrl: './build/pages/search/search.html',
     controller: 'SearchCtrl'
   }).state('location', {
     url: '/location',
@@ -381,10 +381,25 @@ angular.module('starter.services').factory('userWechatInfo', ["$resource", funct
   });
 
   return deferred.promise;
+}]).controller('AccountCtrl', ["$scope", "$rootScope", "UserInfo", function ($scope, $rootScope, UserInfo) {
+  $scope.user = { img: 'img/avator.jpeg' };
+  UserInfo.then(function (user) {
+    $scope.user = user;
+  });
+  $scope.getAddress = function () {
+    wx.ready(function () {
+      wx.openAddress({
+        success: function success(res) {},
+        cancel: function cancel() {
+          // alert("fa");
+        }
+      });
+    });
+  };
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootScope", "$timeout", "MainPageHot", "FruitUxuanRank", "UserInfo", "$ionicScrollDelegate", "NearByFruitShops", "getWashShops", "getWashRank", "BannerIndex", "$ionicSlideBoxDelegate", function ($scope, $rootScope, $timeout, MainPageHot, FruitUxuanRank, UserInfo, $ionicScrollDelegate, NearByFruitShops, getWashShops, getWashRank, BannerIndex, $ionicSlideBoxDelegate) {
+angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootScope", "$timeout", "$ionicScrollDelegate", "$ionicSlideBoxDelegate", "UserInfo", "BannerIndex", "MainPageHot", "NearByFruitShops", "NearByWashShops", "FruitRank", "WashRank", function ($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicSlideBoxDelegate, UserInfo, BannerIndex, MainPageHot, NearByFruitShops, NearByWashShops, FruitRank, WashRank) {
   $scope.location = {
     isGet: false,
     isOut: false,
@@ -401,67 +416,42 @@ angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootS
       }
     }, true);
 
-    MainPageHot.get({
+    var baseData = {
       'longitude': user.longitude,
       'latitude': user.latitude
-    }, function (data) {
-      data.data.forEach(function (value) {
-        if (value.productType == 17001) {
-          value.href = '/sessions/' + value.productId;
-        } else {
-          value.href = '/washSingle/' + value.shopId;
-        }
-      });
+    };
+
+    MainPageHot.get(baseData, function (data) {
+      // data.data.forEach(function(value) {
+      //   if (value.productType == 17001) {
+      //     value.href = '/sessions/' + value.productId;
+      //   } else {
+      //     value.href = '/washSingle/' + value.shopId;
+      //   }
+      // });
       $scope.hotList = data.data;
-    }, function (data) {
-      alert('NO DATA MainPageHot');
     });
 
-    BannerIndex.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
+    BannerIndex.get(baseData, function (data) {
       $scope.banners = data.data;
       $ionicSlideBoxDelegate.update();
       $ionicSlideBoxDelegate.loop(true);
-    }, function (data) {
-      alert('NO DATA banners');
     });
 
-    FruitUxuanRank.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
-      $scope.goods = data.data;
-    }, function (data) {
-      alert('NO DATA FruitUxuanRank');
+    NearByFruitShops.get(baseData, function (data) {
+      $scope.FruitShops = data.data;
     });
 
-    NearByFruitShops.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
-      $scope.shops = data.data;
-    }, function (data) {
-      alert('NO DATA NearByFruitShops');
+    NearByWashShops.get(baseData, function (data) {
+      $scope.WashShops = data.data;
     });
 
-    getWashShops.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
-      $scope.washShops = data.data;
-    }, function (data) {
-      alert('NO DATA MainPageHot');
+    FruitRank.get(baseData, function (data) {
+      $scope.FruitRank = data.data;
     });
 
-    getWashRank.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
-      $scope.washShopsRank = data.data;
-    }, function (data) {
-      alert('NO DATA MainPageHot');
+    WashRank.get(baseData, function (data) {
+      $scope.WashRank = data.data;
     });
   });
 
@@ -505,106 +495,6 @@ angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootS
     container.addEventListener("mousedown", sv.mouseDown, false);
     document.addEventListener("touchmove", sv.touchMove, false);
     document.addEventListener("mousemove", sv.mouseMove, false);
-  });
-}]).controller('AccountCtrl', ["$scope", "$rootScope", "UserInfo", function ($scope, $rootScope, UserInfo) {
-  $scope.user = { img: 'img/avator.jpeg' };
-  UserInfo.then(function (user) {
-    $scope.user = user;
-  });
-  $scope.getAddress = function () {
-    wx.ready(function () {
-      wx.openAddress({
-        success: function success(res) {},
-        cancel: function cancel() {
-          // alert("fa");
-        }
-      });
-    });
-  };
-}]).controller('phoneNumberCheckCtrl', ["$scope", "$rootScope", "$interval", "UserInfo", "SendCheckCode", "CheckCheckCode", "$ionicHistory", "$state", function ($scope, $rootScope, $interval, UserInfo, SendCheckCode, CheckCheckCode, $ionicHistory, $state) {
-  var e = {};
-  $scope.check = {};
-  $scope.check.time = 0;
-  var timer = 0;
-
-  UserInfo.then(function (user) {
-    $scope.check.phoneNumber = localStorage.getItem('userPhone');
-    $scope.$watch('check.phoneNumber', function (nv, ov) {
-      if (nv) {
-        localStorage.setItem('userPhone', nv);
-      }
-    });
-
-    $scope.sendCode = function (e, order) {
-      if ($scope.check.time > 0) {
-        return;
-      } else {
-        $scope.check.time = 60;
-      }
-      SendCheckCode.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'phone': $scope.check.phoneNumber
-      }, function (data) {
-        if (data.code == -1) {
-          return;
-        } else {
-          alert('发送验证码成功');
-        }
-        timer = $interval(function () {
-          $scope.check.time--;
-          if ($scope.check.time < 0) {
-            $interval.cancel(timer);
-          }
-        }, 1000);
-      });
-    };
-
-    $scope.checkCode = function (e, order) {
-      var phoneNumber = $scope.check.phoneNumber;
-      if (!$scope.check.isAgree) {
-        return;
-      }
-      CheckCheckCode.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'phone': $scope.check.phoneNumber,
-        'code': $scope.check.checkCode,
-        'userId': user.userId
-      }, function (data) {
-        localStorage.removeItem('userPhone');
-        // console.log(' checkcoode data.code', data.code);
-        // console.log(' checkcoode data.msg', data.msg);
-        if (data.code == -1) {
-          alert('验证失败');
-          return;
-        }
-        console.log('$scope.check.phoneNumber', phoneNumber);
-        user.rdvPhone = $scope.check.phoneNumber;
-        user.verify = '1';
-        $state.go('app.sessions');
-      });
-    };
-  });
-}]).controller('SearchCtrl', ["$scope", "UserInfo", "Search", function ($scope, UserInfo, Search) {
-
-  $scope.search = {};
-  $scope.search.keyword = '';
-  UserInfo.then(function (user) {
-    $scope.searchGo = function (e, order) {
-      Search.get({
-        'latitude': user.latitude,
-        'longitude': user.longitude,
-        'keyword': $scope.search.keyword
-      }, function (e) {
-        if (e.data) {
-          $scope.goodsOfWash = e.data.productsList['wash'];
-          $scope.goodsOfFurit = e.data.productsList['fruit'];
-          $scope.shopsOfWash = e.data.shopsList['wash'];
-          $scope.shopsOfFurit = e.data.shopsList['fruit'];
-        }
-      });
-    };
   });
 }]);
 'use strict';
@@ -690,9 +580,9 @@ angular.module('starter.controllers').controller('SearchCtrl', ["$scope", "UserI
       }, function (e) {
         if (e.data) {
           $scope.goodsOfWash = e.data.productsList['wash'];
-          $scope.goodsOfFurit = e.data.productsList['fruit'];
+          $scope.goodsOfFruit = e.data.productsList['fruit'];
           $scope.shopsOfWash = e.data.shopsList['wash'];
-          $scope.shopsOfFurit = e.data.shopsList['fruit'];
+          $scope.shopsOfFruit = e.data.shopsList['fruit'];
         }
       });
     };
@@ -700,10 +590,11 @@ angular.module('starter.controllers').controller('SearchCtrl', ["$scope", "UserI
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('ShopDetailCtrl', ["$scope", "$stateParams", "FruitsByShop", "WashByShop", "UserInfo", function ($scope, $stateParams, FruitsByShop, WashByShop, UserInfo) {
+angular.module('starter.controllers').controller('ShopDetailCtrl', ["$scope", "$stateParams", "FruitByShop", "WashByShop", "UserInfo", function ($scope, $stateParams, FruitByShop, WashByShop, UserInfo) {
   UserInfo.then(function (user) {
     var type = $stateParams.type;
-    var method = type === 'fruit' ? FruitsByShop : WashByShop;
+    var method = type === 'fruit' ? FruitByShop : WashByShop;
+    $scope.type = type;
     method.get({
       'shopId': $stateParams.shopId
     }, function (res) {
@@ -715,28 +606,36 @@ angular.module('starter.controllers').controller('ShopDetailCtrl', ["$scope", "$
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('ShopListCtrl', ["$scope", "$rootScope", "$stateParams", "MainPageHot", "NearByFruitShops", "UserInfo", "BannerFurit", "$ionicSlideBoxDelegate", "FuritOrWash", function ($scope, $rootScope, $stateParams, MainPageHot, NearByFruitShops, UserInfo, BannerFurit, $ionicSlideBoxDelegate, FuritOrWash) {
-  $scope.location = {};
+angular.module('starter.controllers').controller('ShopListCtrl', ["$scope", "$stateParams", "$ionicSlideBoxDelegate", "UserInfo", "NearByFruitShops", "BannerFruit", "FruitHot", "NearByWashShops", "BannerWash", "WashHot", function ($scope, $stateParams, $ionicSlideBoxDelegate, UserInfo, NearByFruitShops, BannerFruit, FruitHot, NearByWashShops, BannerWash, WashHot) {
+  var type = $stateParams.type;
+  var shopMethodMap = {
+    fruit: NearByFruitShops,
+    wash: NearByWashShops
+  };
+  var bannerMethodMap = {
+    fruit: BannerFruit,
+    wash: BannerWash
+  };
+  var hotMethodMap = {
+    fruit: FruitHot,
+    wash: WashHot
+  };
+  $scope.type = type;
   UserInfo.then(function (user) {
-    FuritOrWash.toFurit();
-    MainPageHot.get({
+    var baseData = {
       'longitude': user.longitude,
       'latitude': user.latitude
-    }, function (data) {
-      $scope.sessions = data.data;
+    };
+
+    hotMethodMap[type].get(baseData, function (data) {
+      $scope.hotList = data.data;
     });
 
-    NearByFruitShops.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
+    shopMethodMap[type].get(baseData, function (data) {
       $scope.shops = data.data;
     });
 
-    BannerFurit.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
+    bannerMethodMap[type].get(baseData, function (data) {
       $scope.banners = data.data;
       $ionicSlideBoxDelegate.update();
       $ionicSlideBoxDelegate.loop(true);
@@ -746,6 +645,67 @@ angular.module('starter.controllers').controller('ShopListCtrl', ["$scope", "$ro
 "use strict";
 'use strict';
 
+var baseUrl = 'http://www.lifeuxuan.com/index.php';
+var serviceURLs = {
+  /*
+   * Common
+   */
+  BannerIndex: '/banner/index',
+  NearByEguard: '/eguards',
+  MainPageHot: '/hot/index',
+  FruitRank: '/rank/index/fruit',
+  WashRank: '/rank/index/wash',
+  SendCheckCode: '/code/send',
+  CheckCheckCode: '/code/check',
+  Search: '/search/normal',
+  /*
+   * Order show
+   */
+  OrderList: '/orderlist/customer',
+  FruitOrderDetail: '/orderdetail/customer/fruit',
+  WashOrderDetail: '/orderdetail/customer/wash',
+  /*
+   * Order Action
+   */
+  FruitOrder: '/order/insert/fruit',
+  WashOrder: '/order/insert/wash',
+  WxPay: '/wxctrl/pay',
+  WxPayConfirmFruit: '/payconfirm/fruit',
+  WxPayConfirmWash: '/payconfirm/wash',
+  StartPrice: '/communicate/customer/wash/startprice',
+  cancelFruit: '/communicate/customer/fruit/cancel',
+  cancelWash: '/communicate/customer/wash/cancel',
+  /*
+   * Fruit
+   */
+  BannerFruit: '/banner/shoplist/fruit',
+  NearByFruitShops: '/shoplist/fruit',
+  FruitByShop: '/shop/fruit',
+  FruitHot: '/hot/shoplist/fruit',
+  FruitDetail: '/product/fruit',
+  FruitPicShow: '/productshow/fruit',
+  /*
+   * Wash
+   */
+  BannerWash: '/banner/shoplist/wash',
+  NearByWashShops: '/shoplist/wash',
+  WashByShop: '/shop/wash',
+  WashHot: '/hot/shoplist/wash',
+  WashReserve: '/order/reserve/wash'
+};
+ServiceFactory(serviceURLs);
+
+function ServiceFactory(serviceURLs) {
+  for (var p in serviceURLs) {
+    (function (param) {
+      angular.module('starter.services').factory(p, function ($resource) {
+        return $resource(baseUrl + serviceURLs[param]);
+      });
+    })(p);
+  }
+};
+'use strict';
+
 angular.module('starter').filter('toTimeStamp', function () {
   return function (input, param) {
     return moment(input).unix() * 1000;
@@ -753,20 +713,38 @@ angular.module('starter').filter('toTimeStamp', function () {
 });
 'use strict';
 
-var baseURL = 'http://www.lifeuxuan.com/index.php';
+angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "$state", "$ionicHistory", "$ionicModal", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", "FruitOrWash", function ($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, FruitOrWash) {
+  $scope.isHideAddCart = false;
+  $scope.singleNumber = 0;
 
-angular.module('starter.services').factory('getWashShops', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/shoplist/wash');
-}]).factory('WashByShop', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/shop/wash');
-}]).factory('getWashHot', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/hot/shoplist/wash');
-}]).factory('getWashRank', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/rank/index/wash');
-}]).factory('insertWashReserve', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/order/reserve/wash');
-}]).factory('insertWashOrder', ["$resource", "$http", function ($resource, $http) {
-  return $resource(baseURL + '/order/insert/wash');
+  UserInfo.then(function (user) {
+    FruitOrWash.toFruit();
+    FruitDetail.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+      'productId': $stateParams.sessionId
+    }, function (data) {
+      $scope.good = data.data.product;
+      $scope.shop = data.data.shop;
+      $rootScope.$broadcast('cartChange');
+      FruitPicShow.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'productId': $stateParams.sessionId
+      }, function (data) {
+        $scope.imgs = data.data;
+      });
+    });
+
+    $scope.$on('cartChange', function (event, data) {
+      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+      if ($scope.singleNumber > 0) {
+        $scope.isHideAddCart = true;
+      } else {
+        $scope.isHideAddCart = false;
+      }
+    });
+  });
 }]);
 'use strict';
 
@@ -843,45 +821,6 @@ angular.module('starter.services').factory('getWashShops', ["$resource", "$http"
 }).call(undefined);
 'use strict';
 
-var baseUrl = 'http://www.lifeuxuan.com/index.php';
-var serviceURLs = {
-  'NearByEguard': '/eguards',
-  'MainPageHot': '/hot/index',
-  'NearByFruitShops': '/shoplist/fruit',
-  'FruitsByShop': '/shop/fruit',
-  'FruitDetail': '/product/fruit',
-  'FruitPicShow': '/productshow/fruit',
-  'FruitUxuanRank': '/rank/index/fruit',
-  'FruitOrderInsert': '/order/insert/fruit',
-  'OrderList': '/orderlist/customer',
-  'FuritOrderDetail': '/orderdetail/customer/fruit',
-  'WashOrderDetail': '/orderdetail/customer/wash',
-  'SendCheckCode': '/code/send',
-  'CheckCheckCode': '/code/check',
-  'Search': '/search/normal',
-  'WxPay': '/wxctrl/pay',
-  'WxPayConfirmFurit': '/payconfirm/fruit',
-  'WxPayConfirmWash': '/payconfirm/wash',
-  'StartPrice': '/communicate/customer/wash/startprice',
-  'BannerIndex': '/banner/index',
-  'BannerFurit': '/banner/shoplist/fruit',
-  'BannerWash': '/banner/shoplist/wash',
-  'cancelFurit': '/communicate/customer/fruit/cancel',
-  'cancelWash': '/communicate/customer/wash/cancel'
-};
-ServiceFactory(serviceURLs);
-
-function ServiceFactory(serviceURLs) {
-  for (var p in serviceURLs) {
-    (function (param) {
-      angular.module('starter.services').factory(p, function ($resource) {
-        return $resource(baseUrl + serviceURLs[param]);
-      });
-    })(p);
-  }
-};
-'use strict';
-
 angular.module('starter.services').service('WxPayParam', ["$resource", function ($resource) {
   var param = {
     money: 0
@@ -892,11 +831,11 @@ angular.module('starter.services').service('WxPayParam', ["$resource", function 
   this.get = function () {
     return param;
   };
-}]).service('FuritOrWash', ["$resource", function ($resource) {
+}]).service('FruitOrWash', ["$resource", function ($resource) {
   var furitOrWash = 'furit';
   var washOrder = null;
   var isReserve = false;
-  this.toFurit = function () {
+  this.toFruit = function () {
     furitOrWash = 'furit';
     // console.log('furitOrWash', furitOrWash);
   };
@@ -922,43 +861,461 @@ angular.module('starter.services').service('WxPayParam', ["$resource", function 
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "$state", "$ionicHistory", "$ionicModal", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", "FuritOrWash", function ($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, FuritOrWash) {
-  $scope.isHideAddCart = false;
-  $scope.singleNumber = 0;
-
+angular.module('starter.controllers').controller('washListCtrl', ["$scope", "UserInfo", "getWashHot", "getWashShops", "BannerWash", "$ionicSlideBoxDelegate", "FruitOrWash", function ($scope, UserInfo, getWashHot, getWashShops, BannerWash, $ionicSlideBoxDelegate, FruitOrWash) {
+  $scope.location = {};
   UserInfo.then(function (user) {
-    FuritOrWash.toFurit();
-    FruitDetail.get({
+    getWashHot.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude
+    }, function (data) {
+      FruitOrWash.toWash();
+      $scope.sessions = data.data;
+    }, function (data) {
+      alert('NO DATA MainPageHot');
+    });
+    getWashShops.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
-      'productId': $stateParams.sessionId
+      'shopId': 2
     }, function (data) {
-      $scope.good = data.data.product;
-      $scope.shop = data.data.shop;
-      $rootScope.$broadcast('cartChange');
-      FruitPicShow.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'productId': $stateParams.sessionId
-      }, function (data) {
-        $scope.imgs = data.data;
-      });
+      $scope.shops = data.data;
+    }, function (data) {
+      alert('NO DATA MainPageHot');
     });
-
-    $scope.$on('cartChange', function (event, data) {
-      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
-      if ($scope.singleNumber > 0) {
-        $scope.isHideAddCart = true;
-      } else {
-        $scope.isHideAddCart = false;
-      }
+    BannerWash.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude
+    }, function (data) {
+      $scope.banners = data.data;
+      $ionicSlideBoxDelegate.update();
+      $ionicSlideBoxDelegate.loop(true);
+    }, function (data) {
+      alert('NO DATA banners');
     });
   });
+}]).controller('washSingleOrderCtrl', ["$scope", "$stateParams", "$rootScope", "$ionicScrollDelegate", "$ionicModal", "UserInfo", "getWashShop", "ShoppingCart", "FruitOrWash", function ($scope, $stateParams, $rootScope, $ionicScrollDelegate, $ionicModal, UserInfo, getWashShop, ShoppingCart, FruitOrWash) {
+  var scrollObj = {};
+  var indexArray = [];
+  $scope.currentIndex = 0;
+  UserInfo.then(function (user) {
+    FruitOrWash.toWash(null, false);
+    $scope.washOrder = FruitOrWash.getParams().washOrder;
+    getWashShop.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+      'shopId': $stateParams.shopId
+    }, function (res) {
+      var count = 0;
+      var lastId = -1;
+      var indexCount = 0;
+      $scope.shop = res.data.shop;
+      $scope.goods = res.data.productsList;
+      $scope.classes = res.data.classifysList;
+      $scope.goods.forEach(function (el, index) {
+        if (el.productClassifyId != lastId) {
+          lastId = el.productClassifyId;
+          scrollObj[el.productClassifyId] = count;
+          indexArray[count] = indexCount++;
+        }
+        count++;
+      });
+      $rootScope.$broadcast('cartChange');
+    }, function (res) {
+      alert('NO DATA getWashShop');
+    });
+  });
+
+  $scope.scrollTo = function (classifyId, index) {
+    $scope.currentIndex = index;
+    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
+    $scope.getScrollPosition = null;
+    $timeout(function () {
+      $scope.getScrollPosition = getOffSet;
+    }, 500);
+  };
+  $scope.getScrollPosition = getOffSet;
+
+  function getOffSet() {
+    var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
+    var getIndex = 0;
+    for (var p in scrollObj) {
+      if (scrollObj[p] * 80 < currentScroll) {
+        getIndex = scrollObj[p];
+        continue;
+      }
+    }
+    console.log(getIndex);
+    if ($scope.currentIndex !== indexArray[getIndex]) {
+      $scope.currentIndex = indexArray[getIndex];
+      $scope.getScrollPosition = null;
+      $timeout(function () {
+        $scope.getScrollPosition = getOffSet;
+      }, 100);
+    }
+  }
 }]);
+'use strict';
+
+angular.module('starter.directives').directive('payOrder', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    scope: {
+      order: '='
+    },
+    transclude: true,
+    template: '<button ng-click="rePay($event, order)" ng-transclude></button>',
+    controller: ["$scope", "WxPayParam", "$state", function controller($scope, WxPayParam, $state) {
+      $scope.rePay = function (event, order) {
+        event.stopPropagation();
+        event.preventDefault();
+        var data = order.orderType === 17001 ? {
+          'orderIdsList': [order.orderId],
+          'orderType': 17001
+        } : {
+          'orderIdsList': [order.orderId],
+          'orderType': 17002
+        };
+        data.money = order.money;
+        WxPayParam.set(data);
+        $state.go('pay');
+      };
+    }]
+  };
+}).directive('addCart', function () {
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'templateDirectives/addCart.html',
+    controller: ["$scope", "$rootScope", "ShoppingCart", "UserInfo", function controller($scope, $rootScope, ShoppingCart, UserInfo) {
+      $scope.$on('cartChange', function (event, data) {
+        $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+        if ($scope.singleNumber > 0) {
+          $scope.isHideAddCart = true;
+        } else {
+          $scope.isHideAddCart = false;
+        }
+      });
+      UserInfo.then(function (user) {
+        if ($scope.singleNumber > 0) {
+          $scope.isHideAddCart = true;
+        }
+        $scope.addCart = function (event, good, shop) {
+          event.stopPropagation();
+          // console.log('1-->', user.verify);
+          if (!(user.verify - 0)) {
+            $state.go('phoneNumberCheck');
+            return;
+          }
+          ShoppingCart.add(event, good, shop);
+          $rootScope.$broadcast('cartChange');
+        };
+      });
+    }]
+  };
+}).directive('cartModalIcon', function () {
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'templateDirectives/cartModalIcon.html',
+    controller: ["$scope", "$rootScope", "$ionicModal", "ShoppingCart", "FruitOrWash", function controller($scope, $rootScope, $ionicModal, ShoppingCart, FruitOrWash) {
+      var type = FruitOrWash.get();
+      $scope.$on('cartChange', function (event, data) {
+        $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId, type);
+        $scope.totalMoney = ShoppingCart.getshopCartMoney($scope.shop.shopId, type);
+      });
+      $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function (modal) {
+        $scope.modal = modal;
+        $scope.modal.hide();
+      });
+      $scope.openModal = function () {
+        if ($scope.totalNumber > 0) {
+          $scope.modal.show();
+          $scope.cartGoods = ShoppingCart.getshopProductList($scope.shop.shopId, type);
+        }
+      };
+      $scope.closeModal = function () {
+        $scope.modal.hide();
+      };
+    }]
+  };
+}).directive('singleCart', function () {
+  return {
+    restrict: 'A',
+    templateUrl: 'templateDirectives/singleCart.html',
+    controller: ["$scope", "$rootScope", "$state", "ShoppingCart", "UserInfo", "FruitOrWash", function controller($scope, $rootScope, $state, ShoppingCart, UserInfo, FruitOrWash) {
+      var type = FruitOrWash.get();
+      $scope.cartAction = {};
+      if ($scope.good) {
+        $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop, type);
+      }
+      UserInfo.then(function (user) {
+        $scope.$on('cartChange', function (event, data) {
+          $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop, type);
+        });
+        $scope.addCart = function (event, good, shop) {
+          event.stopPropagation();
+          // console.log('1-->', user.verify);
+          if (!(user.verify - 0)) {
+            $state.go('phoneNumberCheck');
+            return;
+          }
+          ShoppingCart.add(event, good, shop, type);
+          $rootScope.$broadcast('cartChange');
+        };
+
+        $scope.removeCart = function (good, shop) {
+          event.stopPropagation();
+          ShoppingCart.remove(good, shop, type);
+          $rootScope.$broadcast('cartChange');
+        };
+      });
+    }]
+  };
+}).directive('uxuanTime', function () {
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: 'templateDirectives/timePick.html',
+    controller: ["$scope", "$stateParams", function controller($scope, $stateParams) {
+      var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
+      var date = new Date();
+      var startHour = date.getHours() > 8 ? date.getHours() : 8;
+      var weight = startHour >= 20 ? 1 : 0;
+      $scope.tp = {};
+
+      initDate();
+      // changeDateFunction;
+      $scope.changeTime = changeTimeFunction;
+
+      function initDate() {
+        $scope.tp.week = weekArray[(date.getDay() + weight) % 7];
+        $scope.tp.dates = [];
+        for (var i = 0 + weight; i < 8; i++) {
+          $scope.tp.dates.push({
+            name: addDate(date, i),
+            value: i
+          });
+        }
+        $scope.tp.preferDate = weight;
+        initTime(weight);
+        setOrderDate(weight);
+      }
+
+      $scope.changeDate = function changeDateFunction(index) {
+        startHour = date.getHours() > 8 ? date.getHours() : 8;
+        weight = startHour >= 20 ? 1 : 0;
+        if ($scope.tp.preferDate > 0) {
+          weight = 1;
+        }
+        initTime(weight);
+        $scope.tp.week = weekArray[(date.getDay() + index) % 7];
+        // $scope.tp.preferDate is used as index
+        setOrderDate($scope.tp.preferDate);
+      };
+
+      function initTime(weight) {
+        $scope.tp.times = [];
+        if (weight == 0) {
+          for (var i = 1; startHour + i < 21; i++) {
+            $scope.tp.times.push({
+              name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
+              value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
+            });
+            $scope.tp.times.push({
+              name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
+              value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
+            });
+          }
+        } else {
+          for (var i = 8; i < 21; i++) {
+            $scope.tp.times.push({
+              name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
+              value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
+            });
+            $scope.tp.times.push({
+              name: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00',
+              value: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00'
+            });
+          }
+        }
+        $scope.tp.preferTime = $scope.tp.times[0].value;
+      }
+
+      function changeTimeFunction(argument) {
+        setOrderDate();
+      }
+
+      function setOrderDate(dayOff) {
+        var pDate = addDate(date, dayOff);
+        if ($scope.order) {
+          $scope.order.sendTime = [date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[0] + ':00', date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[1] + ':00'];
+        }
+      }
+
+      function addDate(date, days) {
+        if (days === undefined || days === '') {
+          days = 1;
+        }
+        var date = new Date(date);
+        date.setDate(date.getDate() + days);
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        return addZero(month) + '-' + addZero(day);
+      }
+
+      function addZero(number) {
+        if (number >= 10) {
+          return number + '';
+        } else {
+          return '0' + '' + number;
+        }
+      }
+    }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('goodNearbyList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      listData: '=',
+      listType: '@',
+      listTitle: '@'
+    },
+    templateUrl: './build/components/good-list/nearby-list.html',
+    controler: function controler($scope) {
+      if ($scope.listType === 'fruit') {
+        $scope.goodHref = '/good/{{good.productId}}';
+      }
+      if ($scope.listType === 'wash') {
+        $scope.goodHref = '/shop/wash/{{washGood.shopId}}';
+      }
+    }
+  };
+}).directive('hotList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      hotList: '='
+    },
+    templateUrl: './build/components/good-list/hot-list.html'
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('scrollList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      goodList: '=',
+      classList: '='
+    },
+    templateUrl: './build/components/good-list/scroll-list.html',
+    controller: ["$scope", "$stateParams", "$ionicScrollDelegate", "$timeout", function controller($scope, $stateParams, $ionicScrollDelegate, $timeout) {
+      var scrollObj = {};
+      var indexArray = [];
+      var count = 0;
+      var lastId = -1;
+      var indexCount = 0;
+
+      $scope.currentIndex = 0;
+      $scope.$watch('goodList', function (nv) {
+        if (nv && nv.length > 0) {
+          $scope.goodList.forEach(function (el, index) {
+            if (el.productClassifyId != lastId) {
+              lastId = el.productClassifyId;
+              scrollObj[el.productClassifyId] = count;
+              indexArray[count] = indexCount++;
+            }
+            count++;
+          });
+        }
+      });
+
+      $scope.scrollTo = function (classifyId, index) {
+        $scope.currentIndex = index;
+        $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
+        $scope.getScrollPosition = null;
+        $timeout(function () {
+          $scope.getScrollPosition = getOffSet;
+        }, 500);
+      };
+      $scope.getScrollPosition = getOffSet;
+
+      function getOffSet() {
+        var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
+        var getIndex = 0;
+        for (var p in scrollObj) {
+          if (scrollObj[p] * 80 < currentScroll) {
+            getIndex = scrollObj[p];
+            continue;
+          }
+        }
+        if ($scope.currentIndex !== indexArray[getIndex]) {
+          $scope.currentIndex = indexArray[getIndex];
+          $scope.getScrollPosition = null;
+          $timeout(function () {
+            $scope.getScrollPosition = getOffSet;
+          }, 100);
+        }
+      }
+    }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('uHeader', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      noBack: '=',
+      hasSearch: '='
+    },
+    replace: true,
+    templateUrl: './build/components/header/header.html'
+  };
+}).directive('goBack', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
+    controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {
+      $scope.myGoBack = function () {
+        var $backView = $ionicHistory.backView();
+        if ($backView) {
+          $backView.go();
+        } else {
+          $state.go('app.index');
+        }
+      };
+    }]
+  };
+}).directive('eGuard', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    template: '<p class="u-guard">管家<strong>{{eGuard.eguardName}}</strong>为您服务</p>',
+    controller: ["$scope", "NearByEguard", "UserInfo", function controller($scope, NearByEguard, UserInfo) {
+      UserInfo.then(function (user) {
+        NearByEguard.get({
+          'longitude': user.longitude,
+          'latitude': user.latitude
+        }, function (data) {
+          $scope.eGuard = data.data[0];
+        });
+      });
+    }]
+  };
+});
 "use strict";
 'use strict';
 
-angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$state", "OrderList", "UserInfo", "StartPrice", "cancelFurit", "cancelWash", function ($scope, $state, OrderList, UserInfo, StartPrice, cancelFurit, cancelWash) {
+angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$state", "OrderList", "UserInfo", "StartPrice", "cancelFruit", "cancelWash", function ($scope, $state, OrderList, UserInfo, StartPrice, cancelFruit, cancelWash) {
 
   UserInfo.then(function (user) {
     getOrders();
@@ -976,7 +1333,7 @@ angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$s
         orderId: order.orderId
       }).$promise.then(function (res) {
         if (res.code === 0) {
-          FuritOrWash.toWash(order, false);
+          FruitOrWash.toWash(order, false);
           $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
         }
       });
@@ -985,7 +1342,7 @@ angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$s
     $scope.clickRed = function (event, order) {
       event.stopPropagation();
       event.preventDefault();
-      var cancelMethod = order.orderType == 17001 ? cancelFurit : cancelWash;
+      var cancelMethod = order.orderType == 17001 ? cancelFruit : cancelWash;
       cancelMethod.save({
         orderId: order.orderId
       }).$promise.then(function (res) {
@@ -1005,13 +1362,13 @@ angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$s
       });
     }
   });
-}]).controller('orderDetailCtrl', ["$scope", "$rootScope", "$stateParams", "FuritOrderDetail", "WashOrderDetail", "UserInfo", "StartPrice", "FuritOrWash", "$state", function ($scope, $rootScope, $stateParams, FuritOrderDetail, WashOrderDetail, UserInfo, StartPrice, FuritOrWash, $state) {
+}]).controller('orderDetailCtrl', ["$scope", "$rootScope", "$stateParams", "FruitOrderDetail", "WashOrderDetail", "UserInfo", "StartPrice", "FruitOrWash", "$state", function ($scope, $rootScope, $stateParams, FruitOrderDetail, WashOrderDetail, UserInfo, StartPrice, FruitOrWash, $state) {
   $scope.type = $stateParams.orderType;
   UserInfo.then(function (user) {
     getOrder();
 
     function getOrder(argument) {
-      var detailMethod = $scope.type == 17001 ? FuritOrderDetail : WashOrderDetail;
+      var detailMethod = $scope.type == 17001 ? FruitOrderDetail : WashOrderDetail;
       detailMethod.get({
         'longitude': user.longitude,
         'latitude': user.latitude,
@@ -1045,7 +1402,7 @@ angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$s
         orderId: order.orderId
       }).$promise.then(function (res) {
         if (res.code === 0) {
-          FuritOrWash.toWash(order, true);
+          FruitOrWash.toWash(order, true);
           $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
         }
       });
@@ -1077,18 +1434,18 @@ angular.module('starter.controllers').controller('OrderStatusCtrl', ["$scope", "
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootScope", "$state", "$q", "$timeout", "$ionicPopup", "UserInfo", "NearByEguard", "FruitOrderInsert", "WxPay", "WxPayParam", "ShoppingCart", "orderStatus", "FuritOrWash", "insertWashOrder", "insertWashReserve", function ($scope, $rootScope, $state, $q, $timeout, $ionicPopup, UserInfo, NearByEguard, FruitOrderInsert, WxPay, WxPayParam, ShoppingCart, orderStatus, FuritOrWash, insertWashOrder, insertWashReserve) {
-  var type = FuritOrWash.get();
-  var isReserve = FuritOrWash.getParams().isReserve;
+angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootScope", "$state", "$q", "$timeout", "$ionicPopup", "UserInfo", "NearByEguard", "FruitOrderInsert", "WxPay", "WxPayParam", "ShoppingCart", "orderStatus", "FruitOrWash", "insertWashOrder", "insertWashReserve", function ($scope, $rootScope, $state, $q, $timeout, $ionicPopup, UserInfo, NearByEguard, FruitOrderInsert, WxPay, WxPayParam, ShoppingCart, orderStatus, FruitOrWash, insertWashOrder, insertWashReserve) {
+  var type = FruitOrWash.get();
+  var isReserve = FruitOrWash.getParams().isReserve;
   $scope.$on("$ionicParentView.enter", function (event, data) {
-    type = FuritOrWash.get();
+    type = FruitOrWash.get();
   });
 
   UserInfo.then(function (user) {
 
     if (type == 'wash') {
-      $scope.washOrder = FuritOrWash.getParams().washOrder;
-      isReserve = FuritOrWash.getParams().isReserve;
+      $scope.washOrder = FruitOrWash.getParams().washOrder;
+      isReserve = FruitOrWash.getParams().isReserve;
     } else {
       isReserve = false;
     }
@@ -1217,9 +1574,9 @@ angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootSc
         'tip': '',
         'detail': ShoppingCart.getCart(type)
       };
-      if (FuritOrWash.getParams().washOrder) {
-        orderData.shopId = FuritOrWash.getParams().washOrder.shopId;
-        orderData.orderIdsList = [FuritOrWash.getParams().washOrder.orderId];
+      if (FruitOrWash.getParams().washOrder) {
+        orderData.shopId = FruitOrWash.getParams().washOrder.shopId;
+        orderData.orderIdsList = [FruitOrWash.getParams().washOrder.orderId];
       };
       if (type == 'furit') {
         insertMethod = FruitOrderInsert;
@@ -1238,7 +1595,7 @@ angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootSc
           $state.go('app.orders');
         } else {
           var data = res.data;
-          var sendData = FuritOrWash.get() == 'furit' ? {
+          var sendData = FruitOrWash.get() == 'furit' ? {
             'orderIdsList': data.orderIdsList,
             'orderType': 17001
           } : {
@@ -1304,7 +1661,7 @@ angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootSc
       return deferred.promise;
     }
   });
-}]).controller('wxPayCtrl', ["$scope", "$state", "$stateParams", "WxPayParam", "UserInfo", "orderStatus", "WxPay", "WxPayConfirmWash", "WxPayConfirmFurit", function ($scope, $state, $stateParams, WxPayParam, UserInfo, orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFurit) {
+}]).controller('wxPayCtrl', ["$scope", "$state", "$stateParams", "WxPayParam", "UserInfo", "orderStatus", "WxPay", "WxPayConfirmWash", "WxPayConfirmFruit", function ($scope, $state, $stateParams, WxPayParam, UserInfo, orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFruit) {
   UserInfo.then(function (user) {
     $scope.$on("$ionicParentView.leave", function (event, data) {
       // console.log('loaded');
@@ -1327,7 +1684,7 @@ angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootSc
               alert('支付成功');
               orderStatus.paied();
               if (sendData.orderType == 17001) {
-                WxPayConfirmFurit.save({ 'orderIdsList': sendData.orderIdsList });
+                WxPayConfirmFruit.save({ 'orderIdsList': sendData.orderIdsList });
               } else {
                 WxPayConfirmWash.save({ 'orderIdsList': sendData.orderIdsList });
               }
@@ -1671,7 +2028,7 @@ angular.module('starter.services').service('ShoppingCart', ["$rootScope", functi
 });
 'use strict';
 
-angular.module('starter.controllers').controller('wxPayCtrl', ["$scope", "$state", "$stateParams", "WxPayParam", "UserInfo", "orderStatus", "WxPay", "WxPayConfirmWash", "WxPayConfirmFurit", function ($scope, $state, $stateParams, WxPayParam, UserInfo, orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFurit) {
+angular.module('starter.controllers').controller('wxPayCtrl', ["$scope", "$state", "$stateParams", "WxPayParam", "UserInfo", "orderStatus", "WxPay", "WxPayConfirmWash", "WxPayConfirmFruit", function ($scope, $state, $stateParams, WxPayParam, UserInfo, orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFruit) {
   UserInfo.then(function (user) {
     $scope.$on("$ionicParentView.leave", function (event, data) {
       // console.log('loaded');
@@ -1694,7 +2051,7 @@ angular.module('starter.controllers').controller('wxPayCtrl', ["$scope", "$state
               alert('支付成功');
               orderStatus.paied();
               if (sendData.orderType == 17001) {
-                WxPayConfirmFurit.save({ 'orderIdsList': sendData.orderIdsList });
+                WxPayConfirmFruit.save({ 'orderIdsList': sendData.orderIdsList });
               } else {
                 WxPayConfirmWash.save({ 'orderIdsList': sendData.orderIdsList });
               }
@@ -1718,529 +2075,6 @@ angular.module('starter.controllers').controller('wxPayCtrl', ["$scope", "$state
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('washListCtrl', ["$scope", "UserInfo", "getWashHot", "getWashShops", "BannerWash", "$ionicSlideBoxDelegate", "FuritOrWash", function ($scope, UserInfo, getWashHot, getWashShops, BannerWash, $ionicSlideBoxDelegate, FuritOrWash) {
-  $scope.location = {};
-  UserInfo.then(function (user) {
-    getWashHot.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
-      FuritOrWash.toWash();
-      $scope.sessions = data.data;
-    }, function (data) {
-      alert('NO DATA MainPageHot');
-    });
-    getWashShops.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-      'shopId': 2
-    }, function (data) {
-      $scope.shops = data.data;
-    }, function (data) {
-      alert('NO DATA MainPageHot');
-    });
-    BannerWash.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    }, function (data) {
-      $scope.banners = data.data;
-      $ionicSlideBoxDelegate.update();
-      $ionicSlideBoxDelegate.loop(true);
-    }, function (data) {
-      alert('NO DATA banners');
-    });
-  });
-}]).controller('washSingleCtrl', ["$scope", "$stateParams", "$timeout", "$ionicScrollDelegate", "$state", "UserInfo", "getWashShop", "FuritOrWash", function ($scope, $stateParams, $timeout, $ionicScrollDelegate, $state, UserInfo, getWashShop, FuritOrWash) {
-  var scrollObj = {};
-  var indexArray = [];
-  $scope.currentIndex = 0;
-  UserInfo.then(function (user) {
-    console.log(user.verify);
-    getWashShop.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-      'shopId': $stateParams.shopId
-    }, function (res) {
-      FuritOrWash.toWash();
-      var count = 0;
-      var lastId = -1;
-      var indexCount = 0;
-      $scope.shop = res.data.shop;
-      $scope.goods = res.data.productsList;
-      $scope.classes = res.data.classifysList;
-      $scope.goods.forEach(function (el, index) {
-        if (el.productClassifyId != lastId) {
-          lastId = el.productClassifyId;
-          scrollObj[el.productClassifyId] = count;
-          indexArray[count] = indexCount++;
-        }
-        count++;
-      });
-      FuritOrWash.toWash($scope.shop, true);
-    }, function (data) {
-      alert('NO DATA getWashShop');
-    });
-
-    $scope.goCart = function () {
-      if (!(user.verify - 0)) {
-        $state.go('phoneNumberCheck');
-        return;
-      } else {
-        $state.go('app.cart');
-      }
-    };
-  });
-
-  $scope.scrollTo = function (classifyId, index) {
-    $scope.currentIndex = index;
-    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
-    $scope.getScrollPosition = null;
-    $timeout(function () {
-      $scope.getScrollPosition = getOffSet;
-    }, 500);
-  };
-  $scope.getScrollPosition = getOffSet;
-
-  function getOffSet() {
-    var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
-    var getIndex = 0;
-    for (var p in scrollObj) {
-      if (scrollObj[p] * 80 < currentScroll) {
-        getIndex = scrollObj[p];
-        continue;
-      }
-    }
-    console.log(getIndex);
-    if ($scope.currentIndex !== indexArray[getIndex]) {
-      $scope.currentIndex = indexArray[getIndex];
-      $scope.getScrollPosition = null;
-      $timeout(function () {
-        $scope.getScrollPosition = getOffSet;
-      }, 100);
-    }
-  }
-}]).controller('washSingleOrderCtrl', ["$scope", "$stateParams", "$rootScope", "$ionicScrollDelegate", "$ionicModal", "UserInfo", "getWashShop", "ShoppingCart", "FuritOrWash", function ($scope, $stateParams, $rootScope, $ionicScrollDelegate, $ionicModal, UserInfo, getWashShop, ShoppingCart, FuritOrWash) {
-  var scrollObj = {};
-  var indexArray = [];
-  $scope.currentIndex = 0;
-  UserInfo.then(function (user) {
-    FuritOrWash.toWash(null, false);
-    $scope.washOrder = FuritOrWash.getParams().washOrder;
-    getWashShop.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-      'shopId': $stateParams.shopId
-    }, function (res) {
-      var count = 0;
-      var lastId = -1;
-      var indexCount = 0;
-      $scope.shop = res.data.shop;
-      $scope.goods = res.data.productsList;
-      $scope.classes = res.data.classifysList;
-      $scope.goods.forEach(function (el, index) {
-        if (el.productClassifyId != lastId) {
-          lastId = el.productClassifyId;
-          scrollObj[el.productClassifyId] = count;
-          indexArray[count] = indexCount++;
-        }
-        count++;
-      });
-      $rootScope.$broadcast('cartChange');
-    }, function (res) {
-      alert('NO DATA getWashShop');
-    });
-  });
-
-  $scope.scrollTo = function (classifyId, index) {
-    $scope.currentIndex = index;
-    $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
-    $scope.getScrollPosition = null;
-    $timeout(function () {
-      $scope.getScrollPosition = getOffSet;
-    }, 500);
-  };
-  $scope.getScrollPosition = getOffSet;
-
-  function getOffSet() {
-    var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
-    var getIndex = 0;
-    for (var p in scrollObj) {
-      if (scrollObj[p] * 80 < currentScroll) {
-        getIndex = scrollObj[p];
-        continue;
-      }
-    }
-    console.log(getIndex);
-    if ($scope.currentIndex !== indexArray[getIndex]) {
-      $scope.currentIndex = indexArray[getIndex];
-      $scope.getScrollPosition = null;
-      $timeout(function () {
-        $scope.getScrollPosition = getOffSet;
-      }, 100);
-    }
-  }
-}]);
-'use strict';
-
-angular.module('starter.directives').directive('payOrder', function () {
-  return {
-    restrict: 'E',
-    replace: true,
-    scope: {
-      order: '='
-    },
-    transclude: true,
-    template: '<button ng-click="rePay($event, order)" ng-transclude></button>',
-    controller: ["$scope", "WxPayParam", "$state", function controller($scope, WxPayParam, $state) {
-      $scope.rePay = function (event, order) {
-        event.stopPropagation();
-        event.preventDefault();
-        var data = order.orderType === 17001 ? {
-          'orderIdsList': [order.orderId],
-          'orderType': 17001
-        } : {
-          'orderIdsList': [order.orderId],
-          'orderType': 17002
-        };
-        data.money = order.money;
-        WxPayParam.set(data);
-        $state.go('pay');
-      };
-    }]
-  };
-}).directive('addCart', function () {
-  return {
-    restrict: 'A',
-    replace: true,
-    templateUrl: 'templateDirectives/addCart.html',
-    controller: ["$scope", "$rootScope", "ShoppingCart", "UserInfo", function controller($scope, $rootScope, ShoppingCart, UserInfo) {
-      $scope.$on('cartChange', function (event, data) {
-        $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
-        if ($scope.singleNumber > 0) {
-          $scope.isHideAddCart = true;
-        } else {
-          $scope.isHideAddCart = false;
-        }
-      });
-      UserInfo.then(function (user) {
-        if ($scope.singleNumber > 0) {
-          $scope.isHideAddCart = true;
-        }
-        $scope.addCart = function (event, good, shop) {
-          event.stopPropagation();
-          // console.log('1-->', user.verify);
-          if (!(user.verify - 0)) {
-            $state.go('phoneNumberCheck');
-            return;
-          }
-          ShoppingCart.add(event, good, shop);
-          $rootScope.$broadcast('cartChange');
-        };
-      });
-    }]
-  };
-}).directive('cartModalIcon', function () {
-  return {
-    restrict: 'A',
-    replace: true,
-    templateUrl: 'templateDirectives/cartModalIcon.html',
-    controller: ["$scope", "$rootScope", "$ionicModal", "ShoppingCart", "FuritOrWash", function controller($scope, $rootScope, $ionicModal, ShoppingCart, FuritOrWash) {
-      var type = FuritOrWash.get();
-      $scope.$on('cartChange', function (event, data) {
-        $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId, type);
-        $scope.totalMoney = ShoppingCart.getshopCartMoney($scope.shop.shopId, type);
-      });
-      $ionicModal.fromTemplateUrl('templateDirectives/cartModal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        $scope.modal = modal;
-        $scope.modal.hide();
-      });
-      $scope.openModal = function () {
-        if ($scope.totalNumber > 0) {
-          $scope.modal.show();
-          $scope.cartGoods = ShoppingCart.getshopProductList($scope.shop.shopId, type);
-        }
-      };
-      $scope.closeModal = function () {
-        $scope.modal.hide();
-      };
-    }]
-  };
-}).directive('singleCart', function () {
-  return {
-    restrict: 'A',
-    templateUrl: 'templateDirectives/singleCart.html',
-    controller: ["$scope", "$rootScope", "$state", "ShoppingCart", "UserInfo", "FuritOrWash", function controller($scope, $rootScope, $state, ShoppingCart, UserInfo, FuritOrWash) {
-      var type = FuritOrWash.get();
-      $scope.cartAction = {};
-      if ($scope.good) {
-        $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop, type);
-      }
-      UserInfo.then(function (user) {
-        $scope.$on('cartChange', function (event, data) {
-          $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop, type);
-        });
-        $scope.addCart = function (event, good, shop) {
-          event.stopPropagation();
-          // console.log('1-->', user.verify);
-          if (!(user.verify - 0)) {
-            $state.go('phoneNumberCheck');
-            return;
-          }
-          ShoppingCart.add(event, good, shop, type);
-          $rootScope.$broadcast('cartChange');
-        };
-
-        $scope.removeCart = function (good, shop) {
-          event.stopPropagation();
-          ShoppingCart.remove(good, shop, type);
-          $rootScope.$broadcast('cartChange');
-        };
-      });
-    }]
-  };
-}).directive('uxuanTime', function () {
-  return {
-    restrict: 'A',
-    replace: true,
-    templateUrl: 'templateDirectives/timePick.html',
-    controller: ["$scope", "$stateParams", function controller($scope, $stateParams) {
-      var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
-      var date = new Date();
-      var startHour = date.getHours() > 8 ? date.getHours() : 8;
-      var weight = startHour >= 20 ? 1 : 0;
-      $scope.tp = {};
-
-      initDate();
-      // changeDateFunction;
-      $scope.changeTime = changeTimeFunction;
-
-      function initDate() {
-        $scope.tp.week = weekArray[(date.getDay() + weight) % 7];
-        $scope.tp.dates = [];
-        for (var i = 0 + weight; i < 8; i++) {
-          $scope.tp.dates.push({
-            name: addDate(date, i),
-            value: i
-          });
-        }
-        $scope.tp.preferDate = weight;
-        initTime(weight);
-        setOrderDate(weight);
-      }
-
-      $scope.changeDate = function changeDateFunction(index) {
-        startHour = date.getHours() > 8 ? date.getHours() : 8;
-        weight = startHour >= 20 ? 1 : 0;
-        if ($scope.tp.preferDate > 0) {
-          weight = 1;
-        }
-        initTime(weight);
-        $scope.tp.week = weekArray[(date.getDay() + index) % 7];
-        // $scope.tp.preferDate is used as index
-        setOrderDate($scope.tp.preferDate);
-      };
-
-      function initTime(weight) {
-        $scope.tp.times = [];
-        if (weight == 0) {
-          for (var i = 1; startHour + i < 21; i++) {
-            $scope.tp.times.push({
-              name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
-              value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
-            });
-            $scope.tp.times.push({
-              name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
-              value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
-            });
-          }
-        } else {
-          for (var i = 8; i < 21; i++) {
-            $scope.tp.times.push({
-              name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
-              value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
-            });
-            $scope.tp.times.push({
-              name: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00',
-              value: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00'
-            });
-          }
-        }
-        $scope.tp.preferTime = $scope.tp.times[0].value;
-      }
-
-      function changeTimeFunction(argument) {
-        setOrderDate();
-      }
-
-      function setOrderDate(dayOff) {
-        var pDate = addDate(date, dayOff);
-        if ($scope.order) {
-          $scope.order.sendTime = [date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[0] + ':00', date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[1] + ':00'];
-        }
-      }
-
-      function addDate(date, days) {
-        if (days === undefined || days === '') {
-          days = 1;
-        }
-        var date = new Date(date);
-        date.setDate(date.getDate() + days);
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        return addZero(month) + '-' + addZero(day);
-      }
-
-      function addZero(number) {
-        if (number >= 10) {
-          return number + '';
-        } else {
-          return '0' + '' + number;
-        }
-      }
-    }]
-  };
-});
-'use strict';
-
-angular.module('starter.directives').directive('goodNearbyList', function () {
-  return {
-    restrict: 'E',
-    scope: {
-      listData: '=',
-      listType: '@',
-      listTitle: '@'
-    },
-    templateUrl: './build/components/good-list/nearby-list.html',
-    controler: function controler($scope) {
-      if ($scope.listType === 'fruit') {
-        $scope.goodHref = '/good/{{good.productId}}';
-      }
-      if ($scope.listType === 'wash') {
-        $scope.goodHref = '/shop/wash/{{washGood.shopId}}';
-      }
-    }
-  };
-}).directive('hotList', function () {
-  return {
-    restrict: 'E',
-    scope: {
-      hotList: '='
-    },
-    templateUrl: './build/components/good-list/hot-list.html'
-  };
-});
-'use strict';
-
-angular.module('starter.directives').directive('scrollList', function () {
-  return {
-    restrict: 'E',
-    scope: {
-      goodList: '=',
-      classList: '='
-    },
-    templateUrl: './build/components/good-list/scroll-list.html',
-    controller: ["$scope", "$stateParams", "$ionicScrollDelegate", "$timeout", function controller($scope, $stateParams, $ionicScrollDelegate, $timeout) {
-      var scrollObj = {};
-      var indexArray = [];
-      var count = 0;
-      var lastId = -1;
-      var indexCount = 0;
-
-      $scope.currentIndex = 0;
-      $scope.$watch('goodList', function (nv) {
-        if (nv && nv.length > 0) {
-          $scope.goodList.forEach(function (el, index) {
-            if (el.productClassifyId != lastId) {
-              lastId = el.productClassifyId;
-              scrollObj[el.productClassifyId] = count;
-              indexArray[count] = indexCount++;
-            }
-            count++;
-          });
-        }
-      });
-
-      $scope.scrollTo = function (classifyId, index) {
-        $scope.currentIndex = index;
-        $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
-        $scope.getScrollPosition = null;
-        $timeout(function () {
-          $scope.getScrollPosition = getOffSet;
-        }, 500);
-      };
-      $scope.getScrollPosition = getOffSet;
-
-      function getOffSet() {
-        var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
-        var getIndex = 0;
-        for (var p in scrollObj) {
-          if (scrollObj[p] * 80 < currentScroll) {
-            getIndex = scrollObj[p];
-            continue;
-          }
-        }
-        if ($scope.currentIndex !== indexArray[getIndex]) {
-          $scope.currentIndex = indexArray[getIndex];
-          $scope.getScrollPosition = null;
-          $timeout(function () {
-            $scope.getScrollPosition = getOffSet;
-          }, 100);
-        }
-      }
-    }]
-  };
-});
-'use strict';
-
-angular.module('starter.directives').directive('uHeader', function () {
-  return {
-    restrict: 'E',
-    scope: {
-      noBack: '='
-    },
-    replace: true,
-    templateUrl: './build/components/header/header.html'
-  };
-}).directive('goBack', function () {
-  return {
-    restrict: 'E',
-    replace: true,
-    template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
-    controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {
-      $scope.myGoBack = function () {
-        var $backView = $ionicHistory.backView();
-        if ($backView) {
-          $backView.go();
-        } else {
-          $state.go('app.index');
-        }
-      };
-    }]
-  };
-}).directive('eGuard', function () {
-  return {
-    restrict: 'E',
-    replace: true,
-    template: '<p class="u-guard">管家<strong>{{eGuard.eguardName}}</strong>为您服务</p>',
-    controller: ["$scope", "$rootScope", "NearByEguard", "Location", "UserInfo", function controller($scope, $rootScope, NearByEguard, Location, UserInfo) {
-      UserInfo.then(function (user) {
-        NearByEguard.get({
-          'longitude': user.longitude,
-          'latitude': user.latitude
-        }, function (data) {
-          $rootScope.eGuard = data.data[0];
-        }, function (data) {
-          alert('NO DATA');
-        });
-      });
-    }]
-  };
-});
-'use strict';
-
 angular.module('starter.directives').directive('shopDetail', function () {
   return {
     restrict: 'E',
@@ -2254,7 +2088,6 @@ angular.module('starter.directives').directive('shopDetail', function () {
     replace: true,
     templateUrl: './build/components/shop-detail/shop-detail.html',
     controller: ["$scope", function controller($scope) {
-      debugger;
       $scope.img = $scope.img || 'http://lifeuxuan.com/images/washshopimage/WS0000005/1.jpg';
     }]
   };

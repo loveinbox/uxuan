@@ -2,13 +2,8 @@
   <ion-content class="u-index"
     delegate-handle="mainScroll">
     <section>
-      <div class="u-header">
-        <div go-back></div>
-        <e-guard></e-guard>
-        <!-- <a href="/search">
-          <label class="header-icon"> <i class="icon ion-ios-search placeholder-icon"></i> </label>
-        </a> -->
-      </div>
+      <u-header>
+      </u-header>
       <ion-slide-box class="u-slider"
         slide-interval="3500"
         loop="true"
@@ -20,39 +15,13 @@
         </ion-slide>
       </ion-slide-box>
     </section>
-    <div class="u-hot-list"
-      ng-show="location.isOut || dataList.length <= 0">
-      <div class="divider">不在服务区域内</div>
-    </div>
-    <div class="u-hot-list"
-      ng-show="!location.isOut && dataList.length > 0">
-      <div class="divider">U选爆款</div>
-      <ion-scroll direction="x"
-        zooming="false"
-        delegate-handle="horizontal"
-        horizontal-scroll-fix="mainScroll"
-        scrollbar-x="false">
-        <ion-list>
-          <ion-item class="u-item"
-            ng-repeat="dataItem in dataList"
-            href="/washSingle/{{dataItem.shopId}}"> <img ng-src="http://lifeuxuan.com/{{dataItem.productHeadImg}}"> <span class="u-name">{{dataItem.productName}}</span>
-            <p class="u-price">￥{{dataItem.productPrice/100}}<span style="font-size: 10px">/{{dataItem.productUnit}}<span></p>
-          </ion-item>
-        </ion-list>
-      </ion-scroll>
-    </div>
-    <div class="index-shop-list list-top" ng-show="!location.isOut && shops.length > 0">
-      <div class="divider">附近商家</div>
-      <ion-list class="shop-list clearfix">
-        <ion-item ng-repeat="shop in shops" href="/washSingle/{{shop.shopId}}">
-          <div class="shop-img clearfix"> <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}"> </div>
-          <div class="shop-info-wrap">
-            <div class="shop-info1"> <span class="name">{{shop.shopName}}</span> </div>
-    <div class="shop-info2"> <span>月售{{shop.shopMonthSaleVolume}}单</span> <span class="distance"><i class="icon ion-location placeholder-icon"></i>{{shop.shopDistance}}米</span> </div>
-    <div class="shop-info3"> <span>配送满{{shop.shopStartMoney}}元免运费，不满{{shop.shopStartMoney}}收{{shop.shopDeliveryFee}}元运费</span> </div>
-    </div>
-    </ion-item>
-    </ion-list>
-    </div>
+    <section>
+      <hot-list hot-list="hotList"></hot-list>
+    </section>
+    <section>
+      <shop-list list-data="shops"
+        list-title="附近商家"
+        list-type="{{type}}"></shop-list>
+    </section>
   </ion-content>
 </ion-view>

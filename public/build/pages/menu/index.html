@@ -1,7 +1,8 @@
 <ion-view view-title="U选到家">
   <ion-content class="u-index"
     delegate-handle="mainScroll">
-    <u-header no-back="true">
+    <u-header no-back="true"
+      has-search="true">
     </u-header>
     <section>
       <ion-slide-box class="u-slider"
@@ -31,21 +32,21 @@
       <div class="u-icon-nav">
         <ul class="clearfix">
           <li>
-            <a href="/shopList"><img src="img/fruit.svg">
+            <a href="/shop/fruit"><img src="img/fruit.svg">
               <p>生鲜水果</p>
             </a>
           </li>
           <li>
-            <a href="/washList"><img src="img/wash.svg">
+            <a href="/shop/wash"><img src="img/wash.svg">
               <p>洗衣洗鞋</p>
             </a>
           </li>
-          <li class="coming-soon-li">
+          <li>
             <a href=""><img src="img/star.png">
               <p><span>咖啡饮品</span>
             </a>
           </li>
-          <li class="coming-soon-li">
+          <li>
             <a href=""><img src="img/help-buy.svg">
               <p><span>生活代购</span>
             </a>
@@ -57,22 +58,22 @@
       <hot-list hot-list="hotList"></hot-list>
     </section>
     <section>
-      <shop-list list-data="shops"
+      <shop-list list-data="FruitShops"
         list-title="附近水果店"
         list-type="fruit"></shop-list>
     </section>
     <section>
-      <shop-list list-data="washShops"
+      <shop-list list-data="WashShops"
         list-title="附近洗衣店"
         list-type="wash"></shop-list>
     </section>
     <section>
-      <good-nearby-list list-data="goods"
+      <good-nearby-list list-data="FruitRank"
         list-title="U选水果"
         list-type="fruit"></good-nearby-list>
     </section>
     <section>
-      <good-nearby-list list-data="washShopsRank"
+      <good-nearby-list list-data="washRank"
         list-title="U选洗衣"
         list-type="wash"></good-nearby-list>
     </section>
