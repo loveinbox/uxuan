@@ -6,10 +6,10 @@ a {
   color: #001;
 }
 section {
-  padding: 15px 0;
   background: #fff;
 }
 section + section {
+  padding: 15px 0;
   margin-top: 10px;
 }
 .bl {
@@ -58,77 +58,11 @@ section + section {
   width: 70px;
   border-radius: 6px;
 }
-.u-header {
-  position: absolute;
-  width: 100%;
-  height: 45px;
-  padding: 10px 2%;
-  overflow: hidden;
-  background: rgba(0,0,0,0.4);
-  z-index: 100;
-}
-.u-header .back-wrap {
-  position: absolute;
-  left: 15px;
-  color: #fff;
-  line-height: 25px;
-  font-size: 18px;
-}
-.u-header .u-guard {
-  width: 165px;
-  margin: 0 auto;
-  text-align: center;
-  line-height: 25px;
-  color: #222;
-  font-size: 14px;
-  background: #d4efff;
-  border-radius: 10px;
-}
-.u-header .u-search-icon {
-  position: absolute;
-  top: 4px;
-  right: 15px;
-  line-height: 40px;
-}
-.u-header .u-search-icon i {
-  color: #fff;
-  font-size: 24px;
-}
 .u-slider {
   height: 220px;
 }
 .u-slider img {
   width: 100%;
-}
-.u-hot-list {
-  white-space: nowrap;
-  width: auto;
-  text-align: center;
-}
-.u-hot-list .u-item {
-  display: inline-block;
-  float: none;
-  margin: 0;
-  padding-top: 15px;
-  border: none;
-}
-.u-hot-list img {
-  display: block;
-  width: 100px;
-  height: 75px;
-  margin: 0 auto;
-  border-radius: 10px;
-  border: solid 1px #ccc;
-}
-.u-hot-list .u-name {
-  font-size: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.u-hot-list .u-price {
-  color: #619de5;
-  font-size: 13px;
-  text-indent: -3px;
 }
 .user-info h1 {
   text-align: center;
@@ -285,6 +219,126 @@ section + section {
 }
 .order-list .button-list-wrap {
   text-align: right;
+}
+.u-list .img {
+  float: left;
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+}
+.u-list .img img {
+  width: 100%;
+  height: 100%;
+  border-radius: 100px;
+}
+.u-list .info-wrap {
+  position: absolute;
+  left: 90px;
+  right: 20px;
+  font-size: 12px;
+  color: #808080;
+}
+.u-list .info-wrap .name {
+  display: inline-block;
+  width: 100%;
+  font-size: 17px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.u-list .info-wrap .distance {
+  float: right;
+}
+.u-list .info-wrap .send-divide {
+  padding: 0 8px;
+  color: #e6e6e6;
+}
+.u-list .top {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  width: 35px;
+  text-align: center;
+  color: #6e96c7;
+}
+.u-list .top .top-header {
+  border-radius: 5px 5px 0 0;
+  background: rgba(97,157,229,0.4);
+}
+.u-list .top .top-body {
+  background: #d4efff;
+}
+.divider {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  overflow: hidden;
+}
+.u-hot-list {
+  white-space: nowrap;
+  width: auto;
+  text-align: center;
+}
+.u-hot-list .u-item {
+  display: inline-block;
+  float: none;
+  margin: 0;
+  padding-top: 15px;
+  border: none;
+}
+.u-hot-list img {
+  display: block;
+  width: 100px;
+  height: 75px;
+  margin: 0 auto;
+  border-radius: 10px;
+  border: solid 1px #ccc;
+}
+.u-hot-list .u-name {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.u-hot-list .u-price {
+  color: #619de5;
+  font-size: 13px;
+  text-indent: -3px;
+}
+.u-header {
+  position: absolute;
+  width: 100%;
+  height: 45px;
+  padding: 10px 2%;
+  overflow: hidden;
+  background: rgba(0,0,0,0.4);
+  z-index: 100;
+}
+.u-header .back-wrap {
+  position: absolute;
+  left: 15px;
+  color: #fff;
+  line-height: 25px;
+  font-size: 18px;
+}
+.u-header .u-guard {
+  width: 165px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 25px;
+  color: #222;
+  font-size: 14px;
+  background: #d4efff;
+  border-radius: 10px;
+}
+.u-header .u-search-icon {
+  position: absolute;
+  top: 4px;
+  right: 15px;
+  line-height: 40px;
+}
+.u-header .u-search-icon i {
+  color: #fff;
+  font-size: 24px;
 }
 .u-list .img {
   float: left;

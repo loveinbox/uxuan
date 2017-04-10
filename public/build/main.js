@@ -496,7 +496,7 @@ angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootS
           value.href = '/washSingle/' + value.shopId;
         }
       });
-      $scope.sessions = data.data;
+      $scope.hotList = data.data;
     }, function (data) {
       alert('NO DATA MainPageHot');
     });
@@ -2093,6 +2093,42 @@ angular.module('starter.directives').directive('goodList', function () {
       }
     }
   };
+}).directive('hotList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      hotList: '='
+    },
+    templateUrl: './build/components/good-list/hot-list.html'
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('goBack', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
+    controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {
+      $scope.myGoBack = function () {
+        var $backView = $ionicHistory.backView();
+        if ($backView) {
+          $backView.go();
+        } else {
+          $state.go('app.index');
+        }
+      };
+    }]
+  };
+}).directive('uHeader', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      hasBack: '='
+    },
+    replace: true,
+    templateUrl: './build/components/header/header.html'
+  };
 });
 'use strict';
 
@@ -2131,7 +2167,7 @@ angular.module('starter.directives').directive('bigPic', function () {
   };
 }).directive('goBack', function () {
   return {
-    restrict: 'A',
+    restrict: 'E',
     replace: true,
     template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
     controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {

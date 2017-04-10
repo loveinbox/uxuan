@@ -19,3 +19,13 @@ angular.module('starter.directives')
     }
   }
 })
+
+.directive('hotList', function() {
+  return {
+    restrict: 'E',
+    scope: {
+      hotList: '=',
+    },
+    templateUrl: './build/components/good-list/hot-list.html',
+  }
+})

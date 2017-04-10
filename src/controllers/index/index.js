@@ -31,7 +31,7 @@ angular.module('starter.controllers')
           value.href = '/washSingle/' + value.shopId;
         }
       });
-      $scope.sessions = data.data;
+      $scope.hotList = data.data;
     }, function(data) {
       alert('NO DATA MainPageHot');
     });

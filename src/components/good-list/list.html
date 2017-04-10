@@ -32,65 +32,10 @@
           <span class="price">￥{{good.productPrice/100}}/{{good.productUnit}}</span>
         </div>
       </div>
+      <div class="top">
+        <div class="top-header">top</div>
+        <div class="top-body">{{$index + 1}}</div>
+      </div>
     </ion-item>
   </ion-list>
 </div>
-<!-- <section>
-  <div class="u-list">
-    <div class="divider">U选水果</div>
-    <ion-list>
-      <ion-item ng-repeat="good in goods"
-        href="/sessions/{{good.productId}}">
-        <div class="img">
-          <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
-        </div>
-        <div class="info-wrap">
-          <div class="info">
-            <span class="name">{{good.productName}}</span>
-          </div>
-          <div class="info">
-            <span>{{good.productDescription}}</span>
-          </div>
-          <div class="info">
-            <span class="price">
-                ￥{{good.productPrice/100}}
-                <span>/{{(good.productMeasure)}}</span>
-          </div>
-        </div>
-        <div class="top">
-          <div class="top-header">top</div>
-          <div class="top-body">{{$index + 1}}</div>
-        </div>
-      </ion-item>
-    </ion-list>
-  </div>
-</section>
-<section>
-  <div class="u-list"
-    ng-show="!location.isOut && goods.length > 0">
-    <div class="divider">U选洗衣</div>
-    <ion-list>
-      <ion-item ng-repeat="washGood in washShopsRank"
-        href="/washSingle/{{washGood.shopId}}">
-        <div>
-          <img class="img"
-            ng-src="http://lifeuxuan.com/{{washGood.productHeadImg}}">
-        </div>
-        <div class="info-wrap info">
-          <div class="info1 name">
-            <span class="name">{{washGood.productName}}</span>
-          </div>
-          <div class="info2">
-            <span>{{washGood.productDescription}}</span> </div>
-          <div class="info3">
-            <span class="price">￥{{washGood.productPrice/100}}/{{washGood.productUnit}}</span>
-          </div>
-        </div>
-        <div class="top">
-          <div class="top-header">top</div>
-          <div class="top-body">{{$index + 1}}</div>
-        </div>
-      </ion-item>
-    </ion-list>
-  </div>
-</section> -->
