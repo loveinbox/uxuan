@@ -12,6 +12,9 @@ section + section {
   padding: 15px 0;
   margin-top: 10px;
 }
+p {
+  margin: 0;
+}
 .bl {
   color: #619de5;
 }
@@ -96,6 +99,67 @@ section + section {
   width: 25px;
   text-align: center;
   margin-right: 15px;
+}
+.good-detail .good-img {
+  height: 200px;
+  overflow: hidden;
+}
+.good-detail .good-img img {
+  width: 100%;
+  min-height: 100%;
+}
+.good-detail .good-main-info {
+  padding: 5px 10px;
+}
+.good-detail .good-main-info .good-name {
+  font-size: 18px;
+}
+.good-detail .good-main-info .good-descirbe {
+  padding: 0px 10px;
+}
+.good-detail .good-main-info .good-price {
+  height: 30px;
+  font-size: 18px;
+  line-height: 30px;
+  margin: 10px 5px;
+  color: #619de5;
+}
+.good-detail .good-shop a {
+  display: block;
+}
+.good-detail .good-shop .shop-info {
+  position: relative;
+  float: left;
+  width: 48%;
+  padding: 0 15px;
+  text-align: center;
+}
+.good-detail .good-shop .shop-info .shop-icon {
+  position: absolute;
+  padding: 0 10px;
+  color: #619de5;
+}
+.good-detail .good-shop .shop-info .shop-icon i {
+  font-size: 22px;
+  color: #619de5;
+}
+.good-detail .good-shop .shop-info .shop-name {
+  padding-left: 50px;
+}
+.good-detail .good-shop .shop-info .shop-time {
+  margin: 0 auto;
+}
+.good-detail .good-shop .shop-info + .shop-info {
+  border-left: solid 1px #333;
+}
+.good-detail .good-shop .shop-address {
+  padding: 10px 25px 0;
+}
+.good-detail .item {
+  padding: 0;
+}
+.good-detail .good-more-pics {
+  padding: 0;
 }
 .u-index .u-location {
   position: relative;
@@ -223,6 +287,45 @@ section + section {
 .order-list .button-list-wrap {
   text-align: right;
 }
+.u-header {
+  position: absolute;
+  width: 100%;
+  height: 45px;
+  padding: 10px 2%;
+  overflow: hidden;
+  background: rgba(0,0,0,0.4);
+  z-index: 100;
+}
+.u-header .back-wrap {
+  position: absolute;
+  left: 15px;
+  color: #fff;
+  line-height: 25px;
+  font-size: 18px;
+}
+.u-header .u-guard {
+  width: 165px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 25px;
+  color: #222;
+  font-size: 14px;
+  background: #d4efff;
+  border-radius: 10px;
+}
+.u-header .u-search-icon {
+  position: absolute;
+  top: 4px;
+  right: 15px;
+  line-height: 40px;
+}
+.u-header .u-search-icon i {
+  color: #fff;
+  font-size: 24px;
+}
+.u-list a {
+  display: block;
+}
 .u-list .img {
   float: left;
   width: 60px;
@@ -349,42 +452,6 @@ section + section {
 }
 .scroll-list .item .info .price .measure {
   font-size: 12px;
-}
-.u-header {
-  position: absolute;
-  width: 100%;
-  height: 45px;
-  padding: 10px 2%;
-  overflow: hidden;
-  background: rgba(0,0,0,0.4);
-  z-index: 100;
-}
-.u-header .back-wrap {
-  position: absolute;
-  left: 15px;
-  color: #fff;
-  line-height: 25px;
-  font-size: 18px;
-}
-.u-header .u-guard {
-  width: 165px;
-  margin: 0 auto;
-  text-align: center;
-  line-height: 25px;
-  color: #222;
-  font-size: 14px;
-  background: #d4efff;
-  border-radius: 10px;
-}
-.u-header .u-search-icon {
-  position: absolute;
-  top: 4px;
-  right: 15px;
-  line-height: 40px;
-}
-.u-header .u-search-icon i {
-  color: #fff;
-  font-size: 24px;
 }
 .shop-detail {
   height: 150px;

@@ -72,22 +72,15 @@ angular.module('starter')
     })
 
 
-    // /*
-    //  *  Goods route
-    //  */
-    // .state('good-list', {
-    //   url: '/good/:type',
-    //   cache: false,
-    //   templateUrl: 'templates/good-detail.html',
-    //   controller: 'SessionCtrl'
-    // })
-
-    // .state('good-detail', {
-    //   url: '/good/:type/:sessionId',
-    //   cache: false,
-    //   templateUrl: 'templates/good-detail.html',
-    //   controller: 'SessionCtrl'
-    // })
+    /*
+     *  Goods route
+     */
+    .state('good-detail', {
+      url: '/good/:type/:goodId',
+      cache: false,
+      templateUrl: './build/pages/good/good-detail.html',
+      controller: 'GoodDetailCtrl'
+    })
 
 
     // .state('orderStatus', {

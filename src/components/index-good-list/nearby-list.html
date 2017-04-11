@@ -1,0 +1,49 @@
+<div class="u-list"
+  ng-show="listData.length > 0">
+  <div class="divider">{{listTitle}}</div>
+  <ion-list>
+    <ion-item ng-repeat="good in listData">
+      <section ng-if="listType === 'fruit'">
+        <a ng-href="/good/fruit/{{good.productId}}">
+          <div class="img">
+            <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
+          </div>
+          <div class="info-wrap">
+            <div class="info">
+              <span class="name">{{good.productName}}</span>
+            </div>
+            <div class="info">
+              <span>{{good.productDescription}}</span>
+            </div>
+            <div class="info">
+              <span class="price">
+                ￥{{good.productPrice/100}}
+                <span>/{{(good.productMeasure)}}</span>
+            </div>
+          </div>
+        </a>
+      </section>
+      <section ng-if="listType === 'wash'">
+        <a ng-href="/shop/wash/{{good.shopId}}">
+          <div class="img">
+            <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
+          </div>
+          <div class="info-wrap">
+            <div class="info">
+              <span class="name">{{good.productName}}</span>
+            </div>
+            <div class="info">
+              <span>{{good.productDescription}}</span> </div>
+            <div class="info">
+              <span class="price">￥{{good.productPrice/100}}/{{good.productUnit}}</span>
+            </div>
+          </div>
+        </a>
+      </section>
+      <div class="top">
+        <div class="top-header">top</div>
+        <div class="top-body">{{$index + 1}}</div>
+      </div>
+    </ion-item>
+  </ion-list>
+</div>

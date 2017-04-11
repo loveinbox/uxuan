@@ -178,23 +178,15 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
     controller: 'ShopDetailCtrl'
   })
 
-  // /*
-  //  *  Goods route
-  //  */
-  // .state('good-list', {
-  //   url: '/good/:type',
-  //   cache: false,
-  //   templateUrl: 'templates/good-detail.html',
-  //   controller: 'SessionCtrl'
-  // })
-
-  // .state('good-detail', {
-  //   url: '/good/:type/:sessionId',
-  //   cache: false,
-  //   templateUrl: 'templates/good-detail.html',
-  //   controller: 'SessionCtrl'
-  // })
-
+  /*
+   *  Goods route
+   */
+  .state('good-detail', {
+    url: '/good/:type/:goodId',
+    cache: false,
+    templateUrl: './build/pages/good/good-detail.html',
+    controller: 'GoodDetailCtrl'
+  })
 
   // .state('orderStatus', {
   //   url: '/orderStatus',
@@ -399,6 +391,42 @@ angular.module('starter.services').factory('userWechatInfo', ["$resource", funct
 }]);
 'use strict';
 
+angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", function ($rootScope, $scope, $stateParams, UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
+  var goodId = $stateParams.goodId;
+  var type = $stateParams.type;
+  $scope.isHideAddCart = false;
+  $scope.singleNumber = 0;
+
+  UserInfo.then(function (user) {
+    FruitDetail.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+      'productId': goodId
+    }, function (data) {
+      $scope.good = data.data.product;
+      $scope.shop = data.data.shop;
+      $rootScope.$broadcast('cartChange');
+      FruitPicShow.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'productId': goodId
+      }, function (data) {
+        $scope.imgs = data.data;
+      });
+    });
+
+    $scope.$on('cartChange', function (event, data) {
+      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+      if ($scope.singleNumber > 0) {
+        $scope.isHideAddCart = true;
+      } else {
+        $scope.isHideAddCart = false;
+      }
+    });
+  });
+}]);
+'use strict';
+
 angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootScope", "$timeout", "$ionicScrollDelegate", "$ionicSlideBoxDelegate", "UserInfo", "BannerIndex", "MainPageHot", "NearByFruitShops", "NearByWashShops", "FruitRank", "WashRank", function ($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicSlideBoxDelegate, UserInfo, BannerIndex, MainPageHot, NearByFruitShops, NearByWashShops, FruitRank, WashRank) {
   $scope.location = {
     isGet: false,
@@ -422,13 +450,6 @@ angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootS
     };
 
     MainPageHot.get(baseData, function (data) {
-      // data.data.forEach(function(value) {
-      //   if (value.productType == 17001) {
-      //     value.href = '/sessions/' + value.productId;
-      //   } else {
-      //     value.href = '/washSingle/' + value.shopId;
-      //   }
-      // });
       $scope.hotList = data.data;
     });
 
@@ -439,62 +460,43 @@ angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootS
     });
 
     NearByFruitShops.get(baseData, function (data) {
-      $scope.FruitShops = data.data;
+      $scope.fruitShop = data.data;
     });
 
     NearByWashShops.get(baseData, function (data) {
-      $scope.WashShops = data.data;
+      $scope.washShop = data.data;
     });
 
     FruitRank.get(baseData, function (data) {
-      $scope.FruitRank = data.data;
+      $scope.fruitRank = data.data;
     });
 
     WashRank.get(baseData, function (data) {
-      $scope.WashRank = data.data;
+      $scope.washRank = data.data;
     });
   });
+}]);
+'use strict';
 
-  $timeout(function () {
-    //return false; // <--- comment this to "fix" the problem
-    var sv = $ionicScrollDelegate.$getByHandle('horizontal').getScrollView();
+angular.module('starter.controllers').controller('SearchCtrl', ["$scope", "UserInfo", "Search", function ($scope, UserInfo, Search) {
 
-    var container = sv.__container;
-
-    var originaltouchStart = sv.touchStart;
-    var originalmouseDown = sv.mouseDown;
-    var originaltouchMove = sv.touchMove;
-    var originalmouseMove = sv.mouseMove;
-
-    container.removeEventListener('touchstart', sv.touchStart);
-    container.removeEventListener('mousedown', sv.mouseDown);
-    document.removeEventListener('touchmove', sv.touchMove);
-    document.removeEventListener('mousemove', sv.mousemove);
-
-    sv.touchStart = function (e) {
-      e.preventDefault = function () {};
-      originaltouchStart && originaltouchStart.apply(sv, [e]);
+  $scope.search = {};
+  $scope.search.keyword = '';
+  UserInfo.then(function (user) {
+    $scope.searchGo = function (e, order) {
+      Search.get({
+        'latitude': user.latitude,
+        'longitude': user.longitude,
+        'keyword': $scope.search.keyword
+      }, function (e) {
+        if (e.data) {
+          $scope.goodsOfWash = e.data.productsList['wash'];
+          $scope.goodsOfFruit = e.data.productsList['fruit'];
+          $scope.shopsOfWash = e.data.shopsList['wash'];
+          $scope.shopsOfFruit = e.data.shopsList['fruit'];
+        }
+      });
     };
-
-    sv.touchMove = function (e) {
-      e.preventDefault = function () {};
-      originaltouchMove && originaltouchMove.apply(sv, [e]);
-    };
-
-    sv.mouseDown = function (e) {
-      e.preventDefault = function () {};
-      originalmouseDown && originalmouseDown.apply(sv, [e]);
-    };
-
-    sv.mouseMove = function (e) {
-      e.preventDefault = function () {};
-      originalmouseMove && originalmouseMove.apply(sv, [e]);
-    };
-
-    container.addEventListener("touchstart", sv.touchStart, false);
-    container.addEventListener("mousedown", sv.mouseDown, false);
-    document.addEventListener("touchmove", sv.touchMove, false);
-    document.addEventListener("mousemove", sv.mouseMove, false);
   });
 }]);
 'use strict';
@@ -561,29 +563,6 @@ angular.module('starter.controllers').controller('phoneNumberCheckCtrl', ["$scop
         user.rdvPhone = $scope.check.phoneNumber;
         user.verify = '1';
         $state.go('app.sessions');
-      });
-    };
-  });
-}]);
-'use strict';
-
-angular.module('starter.controllers').controller('SearchCtrl', ["$scope", "UserInfo", "Search", function ($scope, UserInfo, Search) {
-
-  $scope.search = {};
-  $scope.search.keyword = '';
-  UserInfo.then(function (user) {
-    $scope.searchGo = function (e, order) {
-      Search.get({
-        'latitude': user.latitude,
-        'longitude': user.longitude,
-        'keyword': $scope.search.keyword
-      }, function (e) {
-        if (e.data) {
-          $scope.goodsOfWash = e.data.productsList['wash'];
-          $scope.goodsOfFruit = e.data.productsList['fruit'];
-          $scope.shopsOfWash = e.data.shopsList['wash'];
-          $scope.shopsOfFruit = e.data.shopsList['fruit'];
-        }
       });
     };
   });
@@ -711,41 +690,6 @@ angular.module('starter').filter('toTimeStamp', function () {
     return moment(input).unix() * 1000;
   };
 });
-'use strict';
-
-angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "$state", "$ionicHistory", "$ionicModal", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", "FruitOrWash", function ($rootScope, $scope, $stateParams, $state, $ionicHistory, $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, FruitOrWash) {
-  $scope.isHideAddCart = false;
-  $scope.singleNumber = 0;
-
-  UserInfo.then(function (user) {
-    FruitOrWash.toFruit();
-    FruitDetail.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-      'productId': $stateParams.sessionId
-    }, function (data) {
-      $scope.good = data.data.product;
-      $scope.shop = data.data.shop;
-      $rootScope.$broadcast('cartChange');
-      FruitPicShow.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'productId': $stateParams.sessionId
-      }, function (data) {
-        $scope.imgs = data.data;
-      });
-    });
-
-    $scope.$on('cartChange', function (event, data) {
-      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
-      if ($scope.singleNumber > 0) {
-        $scope.isHideAddCart = true;
-      } else {
-        $scope.isHideAddCart = false;
-      }
-    });
-  });
-}]);
 'use strict';
 
 (function () {
@@ -1179,96 +1123,6 @@ angular.module('starter.directives').directive('payOrder', function () {
 });
 'use strict';
 
-angular.module('starter.directives').directive('goodNearbyList', function () {
-  return {
-    restrict: 'E',
-    scope: {
-      listData: '=',
-      listType: '@',
-      listTitle: '@'
-    },
-    templateUrl: './build/components/good-list/nearby-list.html',
-    controler: function controler($scope) {
-      if ($scope.listType === 'fruit') {
-        $scope.goodHref = '/good/{{good.productId}}';
-      }
-      if ($scope.listType === 'wash') {
-        $scope.goodHref = '/shop/wash/{{washGood.shopId}}';
-      }
-    }
-  };
-}).directive('hotList', function () {
-  return {
-    restrict: 'E',
-    scope: {
-      hotList: '='
-    },
-    templateUrl: './build/components/good-list/hot-list.html'
-  };
-});
-'use strict';
-
-angular.module('starter.directives').directive('scrollList', function () {
-  return {
-    restrict: 'E',
-    scope: {
-      goodList: '=',
-      classList: '='
-    },
-    templateUrl: './build/components/good-list/scroll-list.html',
-    controller: ["$scope", "$stateParams", "$ionicScrollDelegate", "$timeout", function controller($scope, $stateParams, $ionicScrollDelegate, $timeout) {
-      var scrollObj = {};
-      var indexArray = [];
-      var count = 0;
-      var lastId = -1;
-      var indexCount = 0;
-
-      $scope.currentIndex = 0;
-      $scope.$watch('goodList', function (nv) {
-        if (nv && nv.length > 0) {
-          $scope.goodList.forEach(function (el, index) {
-            if (el.productClassifyId != lastId) {
-              lastId = el.productClassifyId;
-              scrollObj[el.productClassifyId] = count;
-              indexArray[count] = indexCount++;
-            }
-            count++;
-          });
-        }
-      });
-
-      $scope.scrollTo = function (classifyId, index) {
-        $scope.currentIndex = index;
-        $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
-        $scope.getScrollPosition = null;
-        $timeout(function () {
-          $scope.getScrollPosition = getOffSet;
-        }, 500);
-      };
-      $scope.getScrollPosition = getOffSet;
-
-      function getOffSet() {
-        var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
-        var getIndex = 0;
-        for (var p in scrollObj) {
-          if (scrollObj[p] * 80 < currentScroll) {
-            getIndex = scrollObj[p];
-            continue;
-          }
-        }
-        if ($scope.currentIndex !== indexArray[getIndex]) {
-          $scope.currentIndex = indexArray[getIndex];
-          $scope.getScrollPosition = null;
-          $timeout(function () {
-            $scope.getScrollPosition = getOffSet;
-          }, 100);
-        }
-      }
-    }]
-  };
-});
-'use strict';
-
 angular.module('starter.directives').directive('uHeader', function () {
   return {
     restrict: 'E',
@@ -1308,6 +1162,82 @@ angular.module('starter.directives').directive('uHeader', function () {
         }, function (data) {
           $scope.eGuard = data.data[0];
         });
+      });
+    }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('goodNearbyList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      listData: '=',
+      listType: '@',
+      listTitle: '@'
+    },
+    templateUrl: './build/components/index-good-list/nearby-list.html'
+  };
+}).directive('hotList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      hotList: '='
+    },
+    templateUrl: './build/components/index-good-list/hot-list.html',
+    controller: ["$scope", "$timeout", "$ionicScrollDelegate", function controller($scope, $timeout, $ionicScrollDelegate) {
+      $scope.$watch('hotList', function (nv) {
+        if (!nv) {
+          return;
+        }
+        nv.forEach(function (value) {
+          if (value.productType == 17001) {
+            value.href = '/good/fruit/' + value.productId;
+          } else {
+            value.href = '/shop/wash/' + value.shopId;
+          }
+        });
+      });
+
+      $timeout(function () {
+        var sv = $ionicScrollDelegate.$getByHandle('horizontal').getScrollView();
+
+        var container = sv.__container;
+
+        var originaltouchStart = sv.touchStart;
+        var originalmouseDown = sv.mouseDown;
+        var originaltouchMove = sv.touchMove;
+        var originalmouseMove = sv.mouseMove;
+
+        container.removeEventListener('touchstart', sv.touchStart);
+        container.removeEventListener('mousedown', sv.mouseDown);
+        document.removeEventListener('touchmove', sv.touchMove);
+        document.removeEventListener('mousemove', sv.mousemove);
+
+        sv.touchStart = function (e) {
+          e.preventDefault = function () {};
+          originaltouchStart && originaltouchStart.apply(sv, [e]);
+        };
+
+        sv.touchMove = function (e) {
+          e.preventDefault = function () {};
+          originaltouchMove && originaltouchMove.apply(sv, [e]);
+        };
+
+        sv.mouseDown = function (e) {
+          e.preventDefault = function () {};
+          originalmouseDown && originalmouseDown.apply(sv, [e]);
+        };
+
+        sv.mouseMove = function (e) {
+          e.preventDefault = function () {};
+          originalmouseMove && originalmouseMove.apply(sv, [e]);
+        };
+
+        container.addEventListener("touchstart", sv.touchStart, false);
+        container.addEventListener("mousedown", sv.mouseDown, false);
+        document.addEventListener("touchmove", sv.touchMove, false);
+        document.addEventListener("mousemove", sv.mouseMove, false);
       });
     }]
   };
@@ -2073,6 +2003,67 @@ angular.module('starter.controllers').controller('wxPayCtrl', ["$scope", "$state
     };
   });
 }]);
+'use strict';
+
+angular.module('starter.directives').directive('scrollList', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      goodList: '=',
+      classList: '='
+    },
+    templateUrl: './build/components/scroll-list/scroll-list.html',
+    controller: ["$scope", "$stateParams", "$ionicScrollDelegate", "$timeout", function controller($scope, $stateParams, $ionicScrollDelegate, $timeout) {
+      var scrollObj = {};
+      var indexArray = [];
+      var count = 0;
+      var lastId = -1;
+      var indexCount = 0;
+
+      $scope.currentIndex = 0;
+      $scope.$watch('goodList', function (nv) {
+        if (nv && nv.length > 0) {
+          $scope.goodList.forEach(function (el, index) {
+            if (el.productClassifyId != lastId) {
+              lastId = el.productClassifyId;
+              scrollObj[el.productClassifyId] = count;
+              indexArray[count] = indexCount++;
+            }
+            count++;
+          });
+        }
+      });
+
+      $scope.scrollTo = function (classifyId, index) {
+        $scope.currentIndex = index;
+        $ionicScrollDelegate.$getByHandle('wash-scroll').scrollTo(0, scrollObj[classifyId] * 80, true);
+        $scope.getScrollPosition = null;
+        $timeout(function () {
+          $scope.getScrollPosition = getOffSet;
+        }, 500);
+      };
+      $scope.getScrollPosition = getOffSet;
+
+      function getOffSet() {
+        var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
+        var getIndex = 0;
+        for (var p in scrollObj) {
+          if (scrollObj[p] * 80 < currentScroll) {
+            getIndex = scrollObj[p];
+            continue;
+          }
+        }
+        if ($scope.currentIndex !== indexArray[getIndex]) {
+          $scope.currentIndex = indexArray[getIndex];
+          $scope.getScrollPosition = null;
+          $timeout(function () {
+            $scope.getScrollPosition = getOffSet;
+          }, 100);
+        }
+      }
+    }]
+  };
+});
 'use strict';
 
 angular.module('starter.directives').directive('shopDetail', function () {

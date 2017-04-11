@@ -7,7 +7,7 @@ angular.module('starter.directives')
       goodList: '=',
       classList: '='
     },
-    templateUrl: './build/components/good-list/scroll-list.html',
+    templateUrl: './build/components/scroll-list/scroll-list.html',
     controller: function($scope, $stateParams, $ionicScrollDelegate, $timeout) {
       var scrollObj = {};
       var indexArray = [];

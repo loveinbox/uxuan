@@ -1,16 +1,17 @@
 angular.module('starter.controllers')
 
-.controller('GoodDetailCtrl', function($rootScope, $scope, $stateParams, $state, $ionicHistory,
-  $ionicModal, UserInfo, FruitDetail, FruitPicShow, ShoppingCart, FruitOrWash) {
+.controller('GoodDetailCtrl', function($rootScope, $scope, $stateParams,
+  UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
+  const goodId = $stateParams.goodId
+  const type = $stateParams.type
   $scope.isHideAddCart = false;
   $scope.singleNumber = 0;
 
   UserInfo.then(function(user) {
-    FruitOrWash.toFruit();
     FruitDetail.get({
       'longitude': user.longitude,
       'latitude': user.latitude,
-      'productId': $stateParams.sessionId
+      'productId': goodId
     }, function(data) {
       $scope.good = data.data.product;
       $scope.shop = data.data.shop;
@@ -18,7 +19,7 @@ angular.module('starter.controllers')
       FruitPicShow.get({
         'longitude': user.longitude,
         'latitude': user.latitude,
-        'productId': $stateParams.sessionId
+        'productId': goodId
       }, function(data) {
         $scope.imgs = data.data;
       });
