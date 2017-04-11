@@ -25,7 +25,7 @@ angular.module('starter')
       cache: false,
       views: {
         'tab-cart': {
-          templateUrl: './build/pages/order/cart.html',
+          templateUrl: './build/pages/cart/cart.html',
           controller: 'CartCtrl'
         }
       }
@@ -47,12 +47,11 @@ angular.module('starter')
       cache: false,
       views: {
         'tab-account': {
-          templateUrl: './build/pages/menu/account.html',
+          templateUrl: './build/pages/account/account.html',
           controller: 'AccountCtrl'
         }
       }
     })
-
 
     /*
      *  Shop route

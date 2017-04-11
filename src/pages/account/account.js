@@ -32,7 +32,6 @@ angular.module('starter.services')
     var geolocation = new BMap.Geolocation();
     geolocation.getCurrentPosition(function(r) {
       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
         userLocation.latitude = r.point.lat;
         userLocation.longitude = r.point.lng;
         GetAddress(userLocation.latitude, userLocation.longitude);
@@ -136,9 +135,7 @@ angular.module('starter.services')
     wx.ready(function() {
       wx.openAddress({
         success: function(res) {},
-        cancel: function() {
-          // alert("fa");
-        }
+        cancel: function() {}
       });
     });
   }

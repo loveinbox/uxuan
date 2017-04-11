@@ -1,0 +1,41 @@
+<ion-view class="create-order"
+  view-title="U选到家">
+  <ion-content class="singePage cart-page has-footer">
+    <section>
+      <u-address address="address"></u-address>
+    </section>
+    <section>
+      <u-time-pick time="time"></u-time-pick>
+    </section>
+    <section>
+      <guard-pick guard="guard"></guard-pick>
+    </section>
+    <section>
+      <cart-item-list></cart-item-list>
+    </section>
+  </ion-content>
+  <ion-footer-bar class="order-cart"
+    ng-if="order.isReserve">
+    <div class="bottom-bar shopping-cart-bar shopping-cart-bar-wash">
+      <div class="button button-assertive button-full go-wash-cart"
+        ng-click="confirmOrder($event)">确认预约</div>
+    </div>
+  </ion-footer-bar>
+  <ion-footer-bar class="order-cart"
+    ng-if="!order.isReserve">
+    <label class="pick-all">
+      <input type="checkbox"
+        name=""
+        ng-model="order.isAllChecked"
+        ng-click="pickAll()">
+      <span>全选</span>
+    </label>
+    <div class="total-price">
+      <span>总价</span>
+      <span>￥{{order.totalMoney/100}}</span>
+    </div>
+    <div class="button confirm-cart"
+      ng-click="confirmOrder($event)"
+      ng-class="{'disable-pay': orderButton.isDisabled}">{{payButton.text}}</div>
+  </ion-footer-bar>
+</ion-view>

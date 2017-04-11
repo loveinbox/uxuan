@@ -22,6 +22,7 @@ var serviceURLs = {
    */
   FruitOrder: '/order/insert/fruit',
   WashOrder: '/order/insert/wash',
+  WashReserve: '/order/reserve/wash',
   WxPay: '/wxctrl/pay',
   WxPayConfirmFruit: '/payconfirm/fruit',
   WxPayConfirmWash: '/payconfirm/wash',
@@ -44,7 +45,6 @@ var serviceURLs = {
   NearByWashShops: '/shoplist/wash',
   WashByShop: '/shop/wash',
   WashHot: '/hot/shoplist/wash',
-  WashReserve: '/order/reserve/wash',
 };
 ServiceFactory(serviceURLs);
 

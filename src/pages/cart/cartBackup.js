@@ -1,24 +1,20 @@
 angular.module('starter.controllers')
 
-.controller('CartCtrl', function($scope, $rootScope, $state, $q, $timeout, $ionicPopup, UserInfo, NearByEguard,
-  FruitOrderInsert, WxPay, WxPayParam, ShoppingCart, orderStatus, FruitOrWash,
-  insertWashOrder, insertWashReserve) {
-  var type = FruitOrWash.get();
-  var isReserve = FruitOrWash.getParams().isReserve;
-  $scope.$on("$ionicParentView.enter", function(event, data) {
-    type = FruitOrWash.get();
-  });
+.controller('CartCtrl999', function($scope, $rootScope, $state, $q, $stateParams,
+  UserInfo, NearByEguard, ShoppingCart, WxPay,
+  FruitOrder, WashOrder, WashReserve) {
+  const type = $stateParams.type
+  $scope.type = type
+  let isReserve = false
 
   UserInfo.then(function(user) {
+    // if (type == 'wash') {
+    //   $scope.washOrder = FruitOrWash.getParams().washOrder;
+    //   let isReserve = FruitOrWash.getParams().isReserve;
+    // } else {
+    //   isReserve = false;
+    // }
 
-    if (type == 'wash') {
-      $scope.washOrder = FruitOrWash.getParams().washOrder;
-      isReserve = FruitOrWash.getParams().isReserve;
-    } else {
-      isReserve = false;
-    }
-
-    $scope.type = type;
     $scope.order = {
       user: user,
       sendTime: [],
@@ -232,59 +228,6 @@ angular.module('starter.controllers')
         }
       });
       return deferred.promise;
-    }
-  })
-})
-
-
-
-.controller('wxPayCtrl', function($scope, $state, $stateParams, WxPayParam, UserInfo,
-  orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFruit) {
-  UserInfo.then(function(user) {
-    $scope.$on("$ionicParentView.leave", function(event, data) {
-      // console.log('loaded');
-      localStorage.setItem('backForbidden', true);
-    });
-    var sendData = WxPayParam.get();
-    $scope.pay = {
-      money: sendData.money
-    };
-    $scope.payOrder = function() {
-      WxPay.save(sendData)
-        .$promise
-        .then(function(res) {
-          wx.ready(function() {
-            wx.chooseWXPay({
-              timestamp: res.timeStamp,
-              nonceStr: res.nonceStr,
-              package: res.package,
-              signType: res.signType,
-              paySign: res.paySign,
-              success: function(res) {
-                alert('支付成功');
-                orderStatus.paied();
-                if (sendData.orderType == 17001) {
-                  WxPayConfirmFruit.save({ 'orderIdsList': sendData.orderIdsList })
-                } else {
-                  WxPayConfirmWash.save({ 'orderIdsList': sendData.orderIdsList })
-                }
-                WxPayParam.set({});
-                $state.go('app.orders');
-              },
-              cancel: function(res) {
-                orderStatus.ordered();
-                $state.go('app.orders')
-              },
-              complete: function(res) {
-
-              }
-            });
-          });
-        }, function() {
-          alert('下订单成功，等待支付');
-          orderStatus.ordered();
-          $state.go('app.orders')
-        })
     }
   })
 })
