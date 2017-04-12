@@ -4,96 +4,68 @@ angular.module('starter.directives')
   return {
     restrict: 'E',
     replace: true,
+    scope: {
+      sendDate: '=',
+      sendTime: '='
+    },
     templateUrl: './build/components/settlement/time.html',
     controller: function($scope, $stateParams) {
       var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
       var date = new Date;
       var startHour = date.getHours() > 8 ? date.getHours() : 8;
-      var weight = startHour >= 20 ? 1 : 0;
-      $scope.tp = {};
+      var startDay = startHour >= 20 ? 1 : 0;
 
-      initDate();
-      // changeDateFunction;
-      $scope.changeTime = changeTimeFunction;
+      date.setDate(date.getDate() + startDay);
+      $scope.timePick = {
+        avaliableWeek: weekArray[(date.getDay() + startDay) % 7],
+        AvaliableDates: [],
+        AvaliableTimes: []
+      };
 
-      function initDate() {
-        $scope.tp.week = weekArray[(date.getDay() + weight) % 7];
-        $scope.tp.dates = [];
-        for (var i = 0 + weight; i < 8; i++) {
-          $scope.tp.dates.push({
-            name: addDate(date, i),
-            value: i
-          })
-        }
-        $scope.tp.preferDate = weight;
-        initTime(weight);
-        setOrderDate(weight);
-      }
+      initAvaliableDate();
+      initAvaliableTime();
+
+      $scope.sendDate = $scope.timePick.AvaliableDates[0].value
+      $scope.sendTime = $scope.timePick.AvaliableTimes[0].value
 
       $scope.changeDate = function changeDateFunction(index) {
-        startHour = date.getHours() > 8 ? date.getHours() : 8;
-        weight = startHour >= 20 ? 1 : 0;
-        if ($scope.tp.preferDate > 0) {
-          weight = 1;
-        }
-        initTime(weight);
-        $scope.tp.week = weekArray[(date.getDay() + index) % 7];
-        // $scope.tp.preferDate is used as index
-        setOrderDate($scope.tp.preferDate);
-      }
-
-      function initTime(weight) {
-        $scope.tp.times = [];
-        if (weight == 0) {
-          for (var i = 1; startHour + i < 21; i++) {
-            $scope.tp.times.push({
-              name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
-              value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
-            })
-            $scope.tp.times.push({
-              name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) +
-                ':00',
-              value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) +
-                ':00'
-            })
-          }
+        // 选择当天时间
+        if (index === 0) {
+          initAvaliableTime(startHour);
         } else {
-          for (var i = 8; i < 21; i++) {
-            $scope.tp.times.push({
-              name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
-              value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
-            })
-            $scope.tp.times.push({
-              name: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00',
-              value: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00'
-            })
-          }
-        }
-        $scope.tp.preferTime = $scope.tp.times[0].value;
-      }
-
-      function changeTimeFunction(argument) {
-        setOrderDate();
-      }
-
-      function setOrderDate(dayOff) {
-        var pDate = addDate(date, dayOff);
-        if ($scope.order) {
-          $scope.order.sendTime = [
-            date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[0] +
-            ':00',
-            date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[1] +
-            ':00'
-          ];
+          initAvaliableTime();
         }
       }
 
-      function addDate(date, days) {
-        if (days === undefined || days === '') {
-          days = 1;
+      /*-----------------------------------------------------------------*/
+
+      function initAvaliableDate() {
+        for (var i = 0 + startDay; i < 8; i++) {
+          $scope.timePick.AvaliableDates.push({
+            name: getFormatedDate(i),
+            value: getFormatedDate(i)
+          })
         }
-        var date = new Date(date);
-        date.setDate(date.getDate() + days);
+      }
+
+      function initAvaliableTime(startHour) {
+        startHour = startHour || 8
+        for (var i = startHour; i < 21; i++) {
+          $scope.timePick.AvaliableTimes.push({
+            name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
+            value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
+          })
+          $scope.timePick.AvaliableTimes.push({
+            name: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00',
+            value: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00'
+          })
+        }
+      }
+
+      function getFormatedDate(dayOff) {
+        dayOff = dayOff || 1;
+        var date = new Date();
+        date.setDate(date.getDate() + dayOff);
         var month = date.getMonth() + 1;
         var day = date.getDate();
         return addZero(month) + '-' + addZero(day);

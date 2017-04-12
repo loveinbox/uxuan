@@ -740,42 +740,6 @@ angular.module('starter.controllers').controller('CartCtrl999', ["$scope", "$roo
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", function ($rootScope, $scope, $stateParams, UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
-  var goodId = $stateParams.goodId;
-  var type = $stateParams.type;
-  $scope.isHideAddCart = false;
-  $scope.singleNumber = 0;
-
-  UserInfo.then(function (user) {
-    FruitDetail.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-      'productId': goodId
-    }, function (data) {
-      $scope.good = data.data.product;
-      $scope.shop = data.data.shop;
-      $rootScope.$broadcast('cartChange');
-      FruitPicShow.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'productId': goodId
-      }, function (data) {
-        $scope.imgs = data.data;
-      });
-    });
-
-    $scope.$on('cartChange', function (event, data) {
-      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
-      if ($scope.singleNumber > 0) {
-        $scope.isHideAddCart = true;
-      } else {
-        $scope.isHideAddCart = false;
-      }
-    });
-  });
-}]);
-'use strict';
-
 angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootScope", "$timeout", "$ionicScrollDelegate", "$ionicSlideBoxDelegate", "UserInfo", "BannerIndex", "MainPageHot", "NearByFruitShops", "NearByWashShops", "FruitRank", "WashRank", function ($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicSlideBoxDelegate, UserInfo, BannerIndex, MainPageHot, NearByFruitShops, NearByWashShops, FruitRank, WashRank) {
   $scope.location = {
     isGet: false,
@@ -822,6 +786,42 @@ angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootS
 
     WashRank.get(baseData, function (data) {
       $scope.washRank = data.data;
+    });
+  });
+}]);
+'use strict';
+
+angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", function ($rootScope, $scope, $stateParams, UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
+  var goodId = $stateParams.goodId;
+  var type = $stateParams.type;
+  $scope.isHideAddCart = false;
+  $scope.singleNumber = 0;
+
+  UserInfo.then(function (user) {
+    FruitDetail.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+      'productId': goodId
+    }, function (data) {
+      $scope.good = data.data.product;
+      $scope.shop = data.data.shop;
+      $rootScope.$broadcast('cartChange');
+      FruitPicShow.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'productId': goodId
+      }, function (data) {
+        $scope.imgs = data.data;
+      });
+    });
+
+    $scope.$on('cartChange', function (event, data) {
+      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+      if ($scope.singleNumber > 0) {
+        $scope.isHideAddCart = true;
+      } else {
+        $scope.isHideAddCart = false;
+      }
     });
   });
 }]);
@@ -1520,13 +1520,6 @@ function ServiceFactory(serviceURLs) {
 };
 'use strict';
 
-angular.module('starter').filter('toTimeStamp', function () {
-  return function (input, param) {
-    return moment(input).unix() * 1000;
-  };
-});
-'use strict';
-
 (function () {
   var HorizontalScrollFix = function () {
     function HorizontalScrollFix($timeout, $ionicScrollDelegate) {
@@ -1904,81 +1897,6 @@ angular.module('starter.directives').directive('scrollList', function () {
 });
 'use strict';
 
-angular.module('starter.directives').directive('uAddress', function () {
-  return {
-    restrict: 'A',
-    replace: true,
-    scope: {
-      user: '='
-    },
-    transclude: true,
-    template: '<div ng-click="getAddress()"><ng-transclude></ng-transclude></div>',
-    controller: ["$scope", "$q", function controller($scope, $q) {
-      var user = $scope.user || {};
-      if (user.rcvPhone) {
-        $scope.status.isAdded = true;
-        user.rcvName = user.rcvName;
-        user.rcvPhone = user.rcvPhone;
-        user.rcvAddress = user.rcvAddress;
-      }
-
-      isTooFar(user.rcvAddress).then(function () {
-        $scope.status.isAddressValidated = false;
-      }, function () {
-        $scope.status.isAddressValidated = true;
-      });
-
-      $scope.getAddress = function (event) {
-        wx.ready(function () {
-          wx.openAddress({
-            success: function success(res) {
-              var addressGot = res.provinceName + res.cityName + res.countryName + res.detailInfo;
-              $scope.$apply(function () {
-                user.rcvAddress = addressGot;
-                user.rcvName = res.userName;
-                user.rcvPhone = res.telNumber + '';
-                $scope.status.isAdded = true;
-                isTooFar(addressGot).then(function () {
-                  $scope.status.isAddressValidated = false;
-                }, function () {
-                  $scope.status.isAddressValidated = true;
-                });
-              });
-            }
-          });
-        });
-      };
-
-      $scope.showAlert = function () {
-        var alertPopup = $ionicPopup.alert({
-          title: 'U选到家',
-          template: '收货地址超出您选择店面服务范围'
-        });
-      };
-
-      function isTooFar(address) {
-        var deferred = $q.defer();
-        var gc = new BMap.Geocoder();
-        address = address || '';
-        gc.getPoint(address, function (point) {
-          var map = new BMap.Map("allmap");
-          var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
-          var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
-          var distacne = map.getDistance(pointA, pointB).toFixed(2);
-          if (distacne > 6000) {
-            $scope.showAlert();
-            deferred.resolve(true);
-          } else {
-            deferred.reject(false);
-          }
-        });
-        return deferred.promise;
-      }
-    }]
-  };
-});
-'use strict';
-
 angular.module('starter.directives').directive('cartItemList', function () {
   return {
     restrict: 'E',
@@ -2047,93 +1965,113 @@ angular.module('starter.directives').directive('guardPick', function () {
 });
 'use strict';
 
+angular.module('starter.directives').directive('uAddress', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    scope: {
+      address: '='
+    },
+    templateUrl: './build/components/settlement/order-address.html',
+    controller: ["$scope", "$q", "$ionicPopup", "UserInfo", "isTooFar", function controller($scope, $q, $ionicPopup, UserInfo, isTooFar) {
+      $scope.isAdddressAdded = false;
+      $scope.$watch('address', function (nv) {
+        if (nv && nv.rcvPhone) {
+          $scope.isAdddressAdded = true;
+        }
+      });
+
+      $scope.getAddress = function () {
+        wx.ready(function () {
+          wx.openAddress({
+            success: function success(res) {
+              var addressGot = res.provinceName + res.cityName + res.countryName + res.detailInfo;
+              $scope.$apply(function () {
+                $scope.address.rcvAddress = addressGot;
+                $scope.address.rcvName = res.userName;
+                $scope.address.rcvPhone = res.telNumber + '';
+                $scope.status.isAdded = true;
+                isTooFar(addressGot).then(function () {
+                  $scope.status.isAddressValidated = true;
+                }, function () {
+                  $scope.status.isAddressValidated = false;
+                });
+              });
+            }
+          });
+        });
+      };
+    }]
+  };
+});
+'use strict';
+
 angular.module('starter.directives').directive('uTimePick', function () {
   return {
     restrict: 'E',
     replace: true,
+    scope: {
+      sendDate: '=',
+      sendTime: '='
+    },
     templateUrl: './build/components/settlement/time.html',
     controller: ["$scope", "$stateParams", function controller($scope, $stateParams) {
       var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
       var date = new Date();
       var startHour = date.getHours() > 8 ? date.getHours() : 8;
-      var weight = startHour >= 20 ? 1 : 0;
-      $scope.tp = {};
+      var startDay = startHour >= 20 ? 1 : 0;
 
-      initDate();
-      // changeDateFunction;
-      $scope.changeTime = changeTimeFunction;
-
-      function initDate() {
-        $scope.tp.week = weekArray[(date.getDay() + weight) % 7];
-        $scope.tp.dates = [];
-        for (var i = 0 + weight; i < 8; i++) {
-          $scope.tp.dates.push({
-            name: addDate(date, i),
-            value: i
-          });
-        }
-        $scope.tp.preferDate = weight;
-        initTime(weight);
-        setOrderDate(weight);
-      }
-
-      $scope.changeDate = function changeDateFunction(index) {
-        startHour = date.getHours() > 8 ? date.getHours() : 8;
-        weight = startHour >= 20 ? 1 : 0;
-        if ($scope.tp.preferDate > 0) {
-          weight = 1;
-        }
-        initTime(weight);
-        $scope.tp.week = weekArray[(date.getDay() + index) % 7];
-        // $scope.tp.preferDate is used as index
-        setOrderDate($scope.tp.preferDate);
+      date.setDate(date.getDate() + startDay);
+      $scope.timePick = {
+        avaliableWeek: weekArray[(date.getDay() + startDay) % 7],
+        AvaliableDates: [],
+        AvaliableTimes: []
       };
 
-      function initTime(weight) {
-        $scope.tp.times = [];
-        if (weight == 0) {
-          for (var i = 1; startHour + i < 21; i++) {
-            $scope.tp.times.push({
-              name: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30',
-              value: addZero(startHour + i) + ':00 -- ' + addZero(startHour + i) + ':30'
-            });
-            $scope.tp.times.push({
-              name: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00',
-              value: addZero(startHour + i) + ':30 -- ' + addZero(startHour + i + 1) + ':00'
-            });
-          }
+      initAvaliableDate();
+      initAvaliableTime();
+
+      $scope.sendDate = $scope.timePick.AvaliableDates[0].value;
+      $scope.sendTime = $scope.timePick.AvaliableTimes[0].value;
+
+      $scope.changeDate = function changeDateFunction(index) {
+        // 选择当天时间
+        if (index === 0) {
+          initAvaliableTime(startHour);
         } else {
-          for (var i = 8; i < 21; i++) {
-            $scope.tp.times.push({
-              name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
-              value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
-            });
-            $scope.tp.times.push({
-              name: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00',
-              value: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00'
-            });
-          }
+          initAvaliableTime();
         }
-        $scope.tp.preferTime = $scope.tp.times[0].value;
-      }
+      };
 
-      function changeTimeFunction(argument) {
-        setOrderDate();
-      }
+      /*-----------------------------------------------------------------*/
 
-      function setOrderDate(dayOff) {
-        var pDate = addDate(date, dayOff);
-        if ($scope.order) {
-          $scope.order.sendTime = [date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[0] + ':00', date.getFullYear() + '-' + pDate + ' ' + $scope.tp.preferTime.split(' -- ')[1] + ':00'];
+      function initAvaliableDate() {
+        for (var i = 0 + startDay; i < 8; i++) {
+          $scope.timePick.AvaliableDates.push({
+            name: getFormatedDate(i),
+            value: getFormatedDate(i)
+          });
         }
       }
 
-      function addDate(date, days) {
-        if (days === undefined || days === '') {
-          days = 1;
+      function initAvaliableTime(startHour) {
+        startHour = startHour || 8;
+        for (var i = startHour; i < 21; i++) {
+          $scope.timePick.AvaliableTimes.push({
+            name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
+            value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
+          });
+          $scope.timePick.AvaliableTimes.push({
+            name: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00',
+            value: addZero(i) + ':30 -- ' + addZero(i + 1) + ':00'
+          });
         }
-        var date = new Date(date);
-        date.setDate(date.getDate() + days);
+      }
+
+      function getFormatedDate(dayOff) {
+        dayOff = dayOff || 1;
+        var date = new Date();
+        date.setDate(date.getDate() + dayOff);
         var month = date.getMonth() + 1;
         var day = date.getDate();
         return addZero(month) + '-' + addZero(day);
@@ -2200,6 +2138,41 @@ angular.module('starter.directives').directive('bigPic', function () {
           'margin': '50px auto'
         });
         picModal.append(img).show();
+      });
+    }
+  };
+});
+'use strict';
+
+angular.module('starter').filter('toTimeStamp', function () {
+  return function (input, param) {
+    return moment(input).unix() * 1000;
+  };
+}).factory('isTooFar', function () {
+  return function isTooFar(address) {
+    UserInfo.then(function (user) {
+      var deferred = $q.defer();
+      var gc = new BMap.Geocoder();
+      address = address || '';
+      gc.getPoint(address, function (point) {
+        var map = new BMap.Map("allmap");
+        var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
+        var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
+        var distacne = map.getDistance(pointA, pointB).toFixed(2);
+        if (distacne > 6000) {
+          showAlert();
+          deferred.reject();
+        } else {
+          deferred.resolve();
+        }
+      });
+      return deferred.promise;
+    });
+
+    function showAlert() {
+      var alertPopup = $ionicPopup.alert({
+        title: 'U选到家',
+        template: '收货地址超出您选择店面服务范围'
       });
     }
   };
