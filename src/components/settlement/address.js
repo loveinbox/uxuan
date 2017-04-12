@@ -2,12 +2,13 @@ angular.module('starter.directives')
 
 .directive('uAddress', function() {
   return {
-    restrict: 'E',
+    restrict: 'A',
     replace: true,
     scope: {
       user: '='
     },
-    templateUrl: './build/components/settlement/address.html',
+    transclude: true,
+    template: `<div ng-click="getAddress()"><ng-transclude></ng-transclude></div>`,
     controller: function($scope, $q) {
       const user = $scope.user || {}
       if (user.rcvPhone) {
