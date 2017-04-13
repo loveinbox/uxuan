@@ -1,150 +1,129 @@
 <ion-view view-title="U选到家">
-  <div class="index-header">
-    <div go-back></div>
-  </div>
-  <ion-content class="has-header" style="background: #fff">
-    <p class="text-center" style="margin: 0;padding: 5px 0;background: #f2f7fa">订单信息</p>
-    <div>
+  <u-header></u-header>
+  <ion-content class="order-detail has-header">
+    <section>
+      <div class="divider">订单信息</div>
       <table class="order-detail-table">
         <tr>
-          <td class="order-detail-name">订单编号</td>
+          <td>订单编号</td>
           <td>{{order.orderId}}</td>
         </tr>
         <tr>
-          <td class="order-detail-name">订单状态</td>
+          <td>订单状态</td>
           <td>{{order.orderStatus}}</td>
         </tr>
         <tr ng-if="order.orderStatusId != 11001 && order.orderStatusId != 11002">
-          <td class="order-detail-name">订单金额</td>
+          <td>订单金额</td>
           <td>￥{{order.money/100 | number:2}}</td>
         </tr>
         <tr>
-          <td class="order-detail-name">服务管家</td>
-          <td>{{order.eguardName}} <a class="to-click-outline" ng-href="tel:{{order.eguardPhone}}">{{order.eguardPhone}}</a> </td>
+          <td>服务管家</td>
+          <td>{{order.eguardName}}
+            <a class="to-click-outline"
+              ng-href="tel:{{order.eguardPhone}}">{{order.eguardPhone}}</a>
+          </td>
         </tr>
         <tr ng-if="type == 17001">
-          <td class="order-detail-name" ng-if="order.orderStatusId != 10009">预计送达</td>
-          <td class="order-detail-name" ng-if="order.orderStatusId == 10009">送达时间</td>
+          <td ng-if="order.orderStatusId != 10009">预计送达</td>
+          <td ng-if="order.orderStatusId == 10009">送达时间</td>
           <td>{{order.finishTime * 1000 | date: 'yyyy/MM/dd HH:mm'}}</td>
         </tr>
         <tr ng-if="type == 17002">
-          <td ng-if="order.orderStatusId - 0 < 11004" class="order-detail-name">预计取衣</td>
-          <td ng-if="order.orderStatusId - 0 >= 11004" class="order-detail-name">取衣时间</td>
+          <td ng-if="order.orderStatusId - 0 < 11004">预计取衣</td>
+          <td ng-if="order.orderStatusId - 0 >= 11004">取衣时间</td>
           <td>{{order.fetchTime * 1000 | date: 'yyyy/MM/dd HH:mm'}}</td>
         </tr>
         <tr ng-if="type == 17002">
-          <td ng-if="order.orderStatusId == 11015" class="order-detail-name">到达时间</td>
+          <td ng-if="order.orderStatusId == 11015">到达时间</td>
           <td ng-if="order.orderStatusId == 11015">{{order.finishTime * 1000 | date: 'yyyy/MM/dd HH:mm'}}</td>
         </tr>
         <tr>
-          <td class="order-detail-name">收货信息</td>
+          <td>收货信息</td>
           <td>
             <div>{{order.rcvName}}</div>
             <div>{{order.rcvPhone}}</div>
-            <div style="max-width: 175px">{{order.rcvAddress}}</div>
+            <div>{{order.rcvAddress}}</div>
           </td>
         </tr>
         <tr>
-          <td class="order-detail-name">支付方式</td>
+          <td>支付方式</td>
           <td>微信支付</td>
         </tr>
         <tr>
-          <td class="order-detail-name">店铺信息</td>
+          <td>店铺信息</td>
           <td>{{order.shopName}}</td>
         </tr>
       </table>
-    </div>
-    <div ng-if="type == 17001">
-      <p class="text-center" style="margin: 0;padding: 5px 0;background: #f2f7fa">商品列表</p>
-      <ion-scroll direction="y" overflow-scroll="true">
-        <ion-list class=" index-list ">
-          <div>
-            <ion-item style="border-bottom: none; ">
-              <div class="row" ng-repeat="good in order.productsList " style="border-bottom: solid 1px #ddd;margin-bottom:10px ">
-                <div class="col-25 " style="margin-right: 10px ">
-                  <div class="shop-img ">
-                    <img class="single-good-img " ng-src="http://lifeuxuan.com/{{good.productHeadImg}} ">
-                  </div>
-                </div>
-                <div class="col-60 ">
-                  <p>{{good.productName}}</p>
-                  <p>{{good.description}}</p>
-                  <p class="fr ">x{{good.productQuantity}}</p>
-                  <p class="bl ">￥{{good.productPrice/100 }}<span style="font-size: 10px">/{{(good.productMeasure)}}<span></p>
-                </div>
-              </div>
-            </ion-item>
-          </div>
-        </ion-list>
-      </ion-scroll>
-    </div>
-    <div ng-if="type == 17002">
-      <div class="row" style="margin-bottom: 30px">
+    </section>
+    <section class="order-status">
+      <div ng-if="type == 17001">
+        <div class="divider">商品列表</div>
+        <order-detail-good-list list-data="order.productsList"></order-detail-good-list>
+      </div>
+      <div ng-if="type == 17002">
         <div class="row">
-          <div class="col-20 text-center"><i class="ion-ios-bell" style="font-size: 30px"></i></div>
+          <div class="col-20 text-center">
+            <i class="ion-ios-bell status-icon"></i>
+          </div>
           <div class="col">{{order.orderStatus}}</div>
         </div>
-      </div>
-      <div class="row text-center">
-        <div class="col-25" ng-class="{'to-click-outline': stage01}">预约</div>
-        <div class="col-25" ng-class="{'to-click-outline': stage02}">取件</div>
-        <div class="col-25" ng-class="{'to-click-outline': stage03}">清洗</div>
-        <div class="col-25" ng-class="{'to-click-outline': stage04}">送回</div>
-      </div>
-      <div class="row relative">
-        <div class="col-25 text-center">
-          <div class="to-click dot-line-r" ng-class="{'disabled': !(stage02 || stage03 || stage04)}"></div>
-          <div class="to-click dot"></div>
+        <div class="row text-center">
+          <div class="col-25"
+            ng-class="{'to-click-outline': stage01}">预约</div>
+          <div class="col-25"
+            ng-class="{'to-click-outline': stage02}">取件</div>
+          <div class="col-25"
+            ng-class="{'to-click-outline': stage03}">清洗</div>
+          <div class="col-25"
+            ng-class="{'to-click-outline': stage04}">送回</div>
         </div>
-        <div class="col-25 text-center">
-          <div class="to-click dot-line-l" ng-class="{'disabled': !(stage02 || stage03 || stage04)}"></div>
-          <div class="to-click dot-line-r" ng-class="{'disabled': !(stage03 || stage04)}"></div>
-          <div class="to-click dot" ng-class="{'disabled': !(stage02 || stage03 || stage04)}"></div>
+        <div class="row status-dots">
+          <div class="col-25 text-center">
+            <div class="to-click dot-line-r"
+              ng-class="{'disabled': !(stage02 || stage03 || stage04)}"></div>
+            <div class="to-click dot"></div>
+          </div>
+          <div class="col-25 text-center">
+            <div class="to-click dot-line-l"
+              ng-class="{'disabled': !(stage02 || stage03 || stage04)}"></div>
+            <div class="to-click dot-line-r"
+              ng-class="{'disabled': !(stage03 || stage04)}"></div>
+            <div class="to-click dot"
+              ng-class="{'disabled': !(stage02 || stage03 || stage04)}"></div>
+          </div>
+          <div class="col-25 text-center">
+            <div class="to-click dot-line-l"
+              ng-class="{'disabled': !(stage03 || stage04)}"></div>
+            <div class="to-click dot-line-r"
+              ng-class="{'disabled': !stage04}"></div>
+            <div class="to-click dot"
+              ng-class="{'disabled': !(stage03 || stage04)}"></div>
+          </div>
+          <div class="col-25 text-center">
+            <div class="to-click dot-line-l"
+              ng-class="{'disabled': !stage04} "></div>
+            <div class="to-click dot"
+              ng-class="{'disabled': !stage04} "></div>
+          </div>
         </div>
-        <div class="col-25 text-center">
-          <div class="to-click dot-line-l" ng-class="{'disabled': !(stage03 || stage04)}"></div>
-          <div class="to-click dot-line-r" ng-class="{'disabled': !stage04}"></div>
-          <div class="to-click dot" ng-class="{'disabled': !(stage03 || stage04)}"></div>
+        <div class="status-action">
+          <div ng-if="stage01">
+            <button class="button button-block disabled">
+              开始计价
+            </button>
+          </div>
+          <div ng-if="stage02 && order.orderStatusId - 0< 11006">
+            <button class="button button-block to-click"
+              ng-click="clickPrice($event, order)">
+              开始计价
+            </button>
+          </div>
         </div>
-        <div class="col-25 text-center">
-          <div class=" to-click dot-line-l " ng-class="{'disabled': !stage04} "></div>
-          <div class="to-click dot " ng-class="{'disabled': !stage04} "></div>
-        </div>
       </div>
-      <div ng-if="stage01" style="margin: 10px">
-        <button class="button button-block disabled " style="width: 50%;margin: 0 auto">
-          开始计价
-        </button>
-      </div>
-      <div ng-if="stage02 && order.orderStatusId - 0< 11006" style="margin: 10px">
-        <button class="button button-block to-click" style="width: 50%;margin: 0 auto" ng-click="clickPrice($event, order)">
-          开始计价
-        </button>
-      </div>
-      <div ng-if="stage03 || stage04 || order.orderStatusId == 11006 || order.orderStatusId == 11007">
-        <p class="text-center " style="margin: 0;padding: 5px 0;background: #f2f7fa ">商品列表</p>
-        <ion-scroll direction="y " overflow-scroll="true ">
-          <ion-list class=" index-list ">
-            <div>
-              <ion-item style="border-bottom: none; ">
-                <div class="row " ng-repeat="good in order.productsList " style="border-bottom: solid 1px #ddd;margin-bottom:10px ">
-                  <div class="col-25 " style="margin-right: 10px ">
-                    <div class="shop-img ">
-                      <img class="single-good-img " ng-src="http://lifeuxuan.com/{{good.productHeadImg}} ">
-                    </div>
-                  </div>
-                  <div class="col-60 ">
-                    <p>{{good.productName}}</p>
-                    <p>{{good.description}}</p>
-                    <p class="fr ">x{{good.productQuantity}}</p>
-                    <p class="bl ">￥{{good.productPrice/100 }}<span style="font-size: 10px">/{{(good.productUnit)}}<span></p>
-                  </div>
-                </div>
-              </ion-item>
-            </div>
-          </ion-list>
-        </ion-scroll>
-      </div>
-    </div>
+    </section>
+    <section ng-if="type == 17002 && (stage03 || stage04 || order.orderStatusId == 11006 || order.orderStatusId == 11007)">
+      <div class="divider">商品列表</div>
+      <order-detail-good-list list-data="order.productsList"></order-detail-good-list>
+    </section>
   </ion-content>
 </ion-view>

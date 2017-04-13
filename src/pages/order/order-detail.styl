@@ -1,44 +1,47 @@
-.button-cart-wrap
-  position absolute
-  bottom 20px
-  right 10px
-.button-cart
-	color #fff
-	background $bl;
-.button-cart-action-wrap
-  width 100px
-  line-height 30px
-	.button-cart-number, .cart-action
-		display inline-block
-		width 30px
-		height 30px
-		text-align center
-		border-radius 30px
-
-.cart-modal-icon
-	position absolute
-	.icon-cart
-	  padding-left 40px
-	  font-size 25px
-	  line-height 45px
-	  color $bl
-  .cart-number-tip
-	  position absolute
-	  top 0
-	  left 55px
-	  width 20px
-	  height 20px
-	  background $bl
-	  border-radius 50px
-	  color #fff
-	  font-weight bold
-	  text-align center
-	  overflow hidden
-
-.cart-item
-  line-height 25px
-  width 100%
-  padding 5px 0
-  border none
-	  
-
+.order-detail
+  .order-detail-table
+    width 90%
+    margin 5px auto
+    padding 5px 0
+    background #fff
+    tr
+      margin 5px 0
+      border-top 1px solid #eee
+      border-bottom 1px solid #eee
+      td
+        max-width 200px
+        padding 3px
+      
+  .order-status
+    i
+      font-size 30px
+    .status-dots
+      &>div
+        position relative
+        margin 15px auto 10px
+      .dot 
+        position absolute
+        top 50%
+        left 50%
+        transform translate(-50%, -50%)
+        width 15px
+        height 15px
+        border-radius 30px
+        margin 0 auto
+      .dot-line-r,
+      .dot-line-l 
+        position absolute
+        top 50%
+        width 50%
+        height 5px
+        transform translateY(-50%)
+      .dot-line-r 
+        right 0
+      .dot-line-l 
+        left 0
+        
+    .status-action
+      margin-top 5px
+      button
+        width 50%
+        margin 0 auto

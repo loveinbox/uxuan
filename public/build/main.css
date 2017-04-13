@@ -64,37 +64,6 @@ p {
   width: 70px;
   border-radius: 6px;
 }
-.order-cart {
-  padding: 0;
-}
-.order-cart .pick-all {
-  display: flex;
-  width: 20%;
-  justify-content: center;
-  align-items: center;
-}
-.order-cart .pick-all input {
-  margin-right: 5px;
-}
-.order-cart .total-price {
-  display: flex;
-  width: 40%;
-  align-items: center;
-  color: #619de5;
-  font-size: 16px;
-  font-weight: bold;
-}
-.order-cart .confirm-cart {
-  position: relative;
-  right: 0;
-  height: 100%;
-  width: 40%;
-  font-weight: bold;
-  border-radius: 0;
-  line-height: 40px;
-  background: #619de5;
-  color: #fff;
-}
 .good-detail .good-img {
   height: 200px;
   overflow: hidden;
@@ -155,6 +124,37 @@ p {
 }
 .good-detail .good-more-pics {
   padding: 0;
+}
+.order-cart {
+  padding: 0;
+}
+.order-cart .pick-all {
+  display: flex;
+  width: 20%;
+  justify-content: center;
+  align-items: center;
+}
+.order-cart .pick-all input {
+  margin-right: 5px;
+}
+.order-cart .total-price {
+  display: flex;
+  width: 40%;
+  align-items: center;
+  color: #619de5;
+  font-size: 16px;
+  font-weight: bold;
+}
+.order-cart .confirm-cart {
+  position: relative;
+  right: 0;
+  height: 100%;
+  width: 40%;
+  font-weight: bold;
+  border-radius: 0;
+  line-height: 40px;
+  background: #619de5;
+  color: #fff;
 }
 .u-index .u-location {
   position: relative;
@@ -248,54 +248,58 @@ p {
   text-align: center;
   margin-right: 15px;
 }
-.button-cart-wrap {
-  position: absolute;
-  bottom: 20px;
-  right: 10px;
-}
-.button-cart {
-  color: #fff;
-  background: $bl;
-}
-.button-cart-action-wrap {
-  width: 100px;
-  line-height: 30px;
-}
-.button-cart-number,
-.cart-action {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  border-radius: 30px;
-}
-.cart-modal-icon {
-  position: absolute;
-}
-.cart-modal-icon .icon-cart {
-  padding-left: 40px;
-  font-size: 25px;
-  line-height: 45px;
-  color: $bl;
-}
-.cart-modal-icon .cart-number-tip {
-  position: absolute;
-  top: 0;
-  left: 55px;
-  width: 20px;
-  height: 20px;
-  background: $bl;
-  border-radius: 50px;
-  color: #fff;
-  font-weight: bold;
-  text-align: center;
-  overflow: hidden;
-}
-.cart-item {
-  line-height: 25px;
-  width: 100%;
+.order-detail .order-detail-table {
+  width: 90%;
+  margin: 5px auto;
   padding: 5px 0;
-  border: none;
+  background: #fff;
+}
+.order-detail .order-detail-table tr {
+  margin: 5px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+.order-detail .order-detail-table tr td {
+  max-width: 200px;
+  padding: 3px;
+}
+.order-detail .order-status i {
+  font-size: 30px;
+}
+.order-detail .order-status .status-dots>div {
+  position: relative;
+  margin: 15px auto 10px;
+}
+.order-detail .order-status .status-dots .dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 30px;
+  margin: 0 auto;
+}
+.order-detail .order-status .status-dots .dot-line-r,
+.order-detail .order-status .status-dots .dot-line-l {
+  position: absolute;
+  top: 50%;
+  width: 50%;
+  height: 5px;
+  transform: translateY(-50%);
+}
+.order-detail .order-status .status-dots .dot-line-r {
+  right: 0;
+}
+.order-detail .order-status .status-dots .dot-line-l {
+  left: 0;
+}
+.order-detail .order-status .status-action {
+  margin-top: 5px;
+}
+.order-detail .order-status .status-action button {
+  width: 50%;
+  margin: 0 auto;
 }
 .no-order {
   width: 50%;
@@ -441,6 +445,49 @@ p {
   color: #fff;
   font-size: 24px;
 }
+.class-list {
+  float: left;
+  width: 20%;
+  height: 100%;
+  background: #eee;
+  text-align: center;
+}
+.class-list .item {
+  padding: 0;
+  background: #f2f7fa;
+}
+.class-list .item.show {
+  background: #fff;
+}
+.class-list .item p {
+  padding: 10px;
+}
+.scroll-list {
+  width: 80%;
+  height: 100%;
+}
+.scroll-list .item {
+  padding: 10px;
+}
+.scroll-list .item img {
+  float: left;
+  width: 75px;
+  height: 60px;
+  border-radius: 20px;
+}
+.scroll-list .item .info {
+  margin-left: 90px;
+}
+.scroll-list .item .info .name {
+  font-size: 14px;
+}
+.scroll-list .item .info .price {
+  font-size: 16px;
+  color: #619de5;
+}
+.scroll-list .item .info .price .measure {
+  font-size: 12px;
+}
 .shop-detail {
   height: 150px;
   padding: 55px 0px 5px 20px;
@@ -565,47 +612,4 @@ p {
   font-size: 18px;
   background: #fff;
   overflow: hidden;
-}
-.class-list {
-  float: left;
-  width: 20%;
-  height: 100%;
-  background: #eee;
-  text-align: center;
-}
-.class-list .item {
-  padding: 0;
-  background: #f2f7fa;
-}
-.class-list .item.show {
-  background: #fff;
-}
-.class-list .item p {
-  padding: 10px;
-}
-.scroll-list {
-  width: 80%;
-  height: 100%;
-}
-.scroll-list .item {
-  padding: 10px;
-}
-.scroll-list .item img {
-  float: left;
-  width: 75px;
-  height: 60px;
-  border-radius: 20px;
-}
-.scroll-list .item .info {
-  margin-left: 90px;
-}
-.scroll-list .item .info .name {
-  font-size: 14px;
-}
-.scroll-list .item .info .price {
-  font-size: 16px;
-  color: #619de5;
-}
-.scroll-list .item .info .price .measure {
-  font-size: 12px;
 }

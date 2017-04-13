@@ -9,7 +9,7 @@ angular.module('starter.directives')
     },
     transclude: true,
     template: '<button ng-click="rePay($event, order)" ng-transclude></button>',
-    controller: function($scope, WxPayParam, $state) {
+    controller: function($scope, $state) {
       $scope.rePay = function(event, order) {
         event.stopPropagation();
         event.preventDefault();
@@ -21,7 +21,6 @@ angular.module('starter.directives')
           'orderType': 17002
         };
         data.money = order.money;
-        WxPayParam.set(data);
         $state.go('pay');
       }
     }

@@ -24,6 +24,7 @@ angular.module('starter.controllers')
     if (type == 'wash' && isReserve) {
       $scope.order.carts = [];
     }
+    $scope.order.isAllChecked = true;
 
     $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
 

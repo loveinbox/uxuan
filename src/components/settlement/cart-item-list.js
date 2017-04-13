@@ -4,6 +4,9 @@ angular.module('starter.directives')
   return {
     restrict: 'E',
     replace: true,
+    scope: {
+      isAllChecked: '='
+    },
     templateUrl: './build/components/settlement/cart-item-list.html',
     controller: function($scope, $rootScope, $stateParams,
       ShoppingCart) {

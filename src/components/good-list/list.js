@@ -1,5 +1,15 @@
 angular.module('starter.directives')
 
+.directive('orderDetailGoodList', function() {
+  return {
+    restrict: 'E',
+    scope: {
+      listData: '=',
+    },
+    templateUrl: './build/components/good-list/order-detail-good-list.html'
+  }
+})
+
 .directive('goodNearbyList', function() {
   return {
     restrict: 'E',
@@ -8,7 +18,7 @@ angular.module('starter.directives')
       listType: '@',
       listTitle: '@'
     },
-    templateUrl: './build/components/index-good-list/nearby-list.html'
+    templateUrl: './build/components/good-list/nearby-list.html'
   }
 })
 
@@ -18,7 +28,7 @@ angular.module('starter.directives')
     scope: {
       hotList: '=',
     },
-    templateUrl: './build/components/index-good-list/hot-list.html',
+    templateUrl: './build/components/good-list/hot-list.html',
     controller: function($scope, $timeout, $ionicScrollDelegate) {
       $scope.$watch('hotList', function(nv) {
         if (!nv) {

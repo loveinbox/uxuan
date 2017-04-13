@@ -136,7 +136,6 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
     }
   }).state('app.cart', {
     url: '/cart',
-    cache: false,
     views: {
       'tab-cart': {
         templateUrl: './build/pages/cart/cart.html',
@@ -145,7 +144,6 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
     }
   }).state('app.order-list', {
     url: '/order',
-    cache: false,
     views: {
       'tab-order-list': {
         templateUrl: './build/pages/order/order-list.html',
@@ -154,7 +152,6 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
     }
   }).state('app.account', {
     url: '/account',
-    cache: false,
     views: {
       'tab-account': {
         templateUrl: './build/pages/account/account.html',
@@ -168,12 +165,10 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
    */
   .state('shop-list', {
     url: '/shop/:type',
-    cache: false,
     templateUrl: './build/pages/shop/shop-list.html',
     controller: 'ShopListCtrl'
   }).state('shop-detail', {
     url: '/shop/:type/:shopId',
-    cache: false,
     templateUrl: './build/pages/shop/shop-detail.html',
     controller: 'ShopDetailCtrl'
   })
@@ -183,24 +178,21 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
    */
   .state('good-detail', {
     url: '/good/:type/:goodId',
-    cache: false,
     templateUrl: './build/pages/good/good-detail.html',
     controller: 'GoodDetailCtrl'
   })
 
   // .state('orderStatus', {
   //   url: '/orderStatus',
-  //   cache: false,
   //   templateUrl: 'templates/orderStatus.html',
   //   controller: 'OrderStatusCtrl'
   // })
 
-  // .state('orderDetail', {
-  //   url: '/orderDetail/:orderId/:orderType',
-  //   cache: false,
-  //   templateUrl: 'templates/orderDetail.html ',
-  //   controller: 'orderDetailCtrl'
-  // })
+  .state('orderDetail', {
+    url: '/order/:type/:orderId',
+    templateUrl: './build/pages/order/order-detail.html ',
+    controller: 'orderDetailCtrl'
+  })
 
   // .state('phoneNumberCheck', {
   //   url: '/phoneNumberCheck',
@@ -210,34 +202,29 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
 
   // .state('washList', {
   //   url: '/washList',
-  //   cache: false,
   //   templateUrl: 'templates/washTemplates/washList.html ',
   //   controller: 'washListCtrl'
   // })
 
   // .state('washSingle', {
   //   url: '/washSingle/:shopId',
-  //   cache: false,
   //   templateUrl: 'templates/washTemplates/washSingle.html ',
   //   controller: 'washSingleCtrl'
   // })
 
   // .state('washCart', {
   //   url: '/washCart/:shopId',
-  //   cache: false,
   //   templateUrl: 'templates/washTemplates/washCart.html '
   // })
 
   // .state('washSingleOrder', {
   //   url: '/washSingleOrder/:shopId/:orderId',
-  //   cache: false,
   //   templateUrl: 'templates/washTemplates/washSingle-order.html ',
   //   controller: 'washSingleOrderCtrl'
   // })
 
   .state('search', {
     url: '/search',
-    cache: false,
     templateUrl: './build/pages/search/search.html',
     controller: 'SearchCtrl'
   }).state('location', {
@@ -248,7 +235,6 @@ angular.module('starter').config(["$stateProvider", "$urlRouterProvider", functi
     }
   }).state('pay', {
     url: '/pay',
-    cache: false,
     templateUrl: './build/pages/order/wxPay.html ',
     controller: 'wxPayCtrl'
   });
@@ -410,6 +396,7 @@ angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootSc
     if (type == 'wash' && isReserve) {
       $scope.order.carts = [];
     }
+    $scope.order.isAllChecked = true;
 
     $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
 
@@ -825,58 +812,10 @@ angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope"
     });
   });
 }]);
-"use strict";
 'use strict';
 
-angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$state", "OrderList", "UserInfo", "StartPrice", "cancelFruit", "cancelWash", function ($scope, $state, OrderList, UserInfo, StartPrice, cancelFruit, cancelWash) {
-
-  UserInfo.then(function (user) {
-    getOrders();
-
-    $scope.doRefresh = function () {
-      getOrders();
-      //Stop the ion-refresher from spinning
-      $scope.$broadcast('scroll.refreshComplete');
-    };
-
-    $scope.clickPrice = function (event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      StartPrice.save({
-        orderId: order.orderId
-      }).$promise.then(function (res) {
-        if (res.code === 0) {
-          FruitOrWash.toWash(order, false);
-          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
-        }
-      });
-    };
-
-    $scope.clickRed = function (event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      var cancelMethod = order.orderType == 17001 ? cancelFruit : cancelWash;
-      cancelMethod.save({
-        orderId: order.orderId
-      }).$promise.then(function (res) {
-        if (res.code === 0) {
-          alert('取消成功');
-          getOrders();
-        }
-      });
-    };
-
-    function getOrders() {
-      OrderList.get({
-        'customerId': user.userId,
-        'pos': 0
-      }, function (data) {
-        $scope.orders = data.data;
-      });
-    }
-  });
-}]).controller('orderDetailCtrl', ["$scope", "$rootScope", "$stateParams", "FruitOrderDetail", "WashOrderDetail", "UserInfo", "StartPrice", "FruitOrWash", "$state", function ($scope, $rootScope, $stateParams, FruitOrderDetail, WashOrderDetail, UserInfo, StartPrice, FruitOrWash, $state) {
-  $scope.type = $stateParams.orderType;
+angular.module('starter.controllers').controller('orderDetailCtrl', ["$scope", "$rootScope", "$stateParams", "FruitOrderDetail", "WashOrderDetail", "UserInfo", "StartPrice", "$state", function ($scope, $rootScope, $stateParams, FruitOrderDetail, WashOrderDetail, UserInfo, StartPrice, $state) {
+  $scope.type = $stateParams.type;
   UserInfo.then(function (user) {
     getOrder();
 
@@ -915,7 +854,6 @@ angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$s
         orderId: order.orderId
       }).$promise.then(function (res) {
         if (res.code === 0) {
-          FruitOrWash.toWash(order, true);
           $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
         }
       });
@@ -928,6 +866,61 @@ angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$s
     $scope.stage03 = array[2] === 1;
     $scope.stage04 = array[3] === 1;
   }
+}]);
+'use strict';
+
+angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$state", "OrderList", "UserInfo", "StartPrice", "cancelFruit", "cancelWash", function ($scope, $state, OrderList, UserInfo, StartPrice, cancelFruit, cancelWash) {
+
+  UserInfo.then(function (user) {
+    getOrders();
+
+    $scope.$on('order-status-change', function () {
+      getOrders();
+    });
+
+    $scope.doRefresh = function () {
+      getOrders();
+      //Stop the ion-refresher from spinning
+      $scope.$broadcast('scroll.refreshComplete');
+    };
+
+    $scope.clickPrice = function (event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      StartPrice.save({
+        orderId: order.orderId
+      }).$promise.then(function (res) {
+        if (res.code === 0) {
+          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
+        }
+      });
+    };
+
+    $scope.clickRed = function (event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      // var cancelMethod = order.orderType == 17001 ? cancelFruit : cancelWash;
+      // cancelMethod.save({
+      //     orderId: order.orderId
+      //   })
+      //   .$promise
+      //   .then(function(res) {
+      //     if (res.code === 0) {
+      //       alert('取消成功');
+      //       getOrders();
+      //     }
+      //   });
+    };
+
+    function getOrders() {
+      OrderList.get({
+        'customerId': user.userId,
+        'pos': 0
+      }, function (data) {
+        $scope.orders = data.data;
+      });
+    }
+  });
 }]);
 'use strict';
 
@@ -1602,7 +1595,7 @@ angular.module('starter.directives').directive('payOrder', function () {
     },
     transclude: true,
     template: '<button ng-click="rePay($event, order)" ng-transclude></button>',
-    controller: ["$scope", "WxPayParam", "$state", function controller($scope, WxPayParam, $state) {
+    controller: ["$scope", "$state", function controller($scope, $state) {
       $scope.rePay = function (event, order) {
         event.stopPropagation();
         event.preventDefault();
@@ -1614,7 +1607,6 @@ angular.module('starter.directives').directive('payOrder', function () {
           'orderType': 17002
         };
         data.money = order.money;
-        WxPayParam.set(data);
         $state.go('pay');
       };
     }]
@@ -1715,52 +1707,15 @@ angular.module('starter.directives').directive('payOrder', function () {
 });
 'use strict';
 
-angular.module('starter.directives').directive('uHeader', function () {
+angular.module('starter.directives').directive('orderDetailGoodList', function () {
   return {
     restrict: 'E',
     scope: {
-      noBack: '=',
-      hasSearch: '='
+      listData: '='
     },
-    replace: true,
-    templateUrl: './build/components/header/header.html'
+    templateUrl: './build/components/good-list/order-detail-good-list.html'
   };
-}).directive('goBack', function () {
-  return {
-    restrict: 'E',
-    replace: true,
-    template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
-    controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {
-      $scope.myGoBack = function () {
-        var $backView = $ionicHistory.backView();
-        if ($backView) {
-          $backView.go();
-        } else {
-          $state.go('app.index');
-        }
-      };
-    }]
-  };
-}).directive('eGuard', function () {
-  return {
-    restrict: 'E',
-    replace: true,
-    template: '<p class="u-guard">管家<strong>{{eGuard.eguardName}}</strong>为您服务</p>',
-    controller: ["$scope", "NearByEguard", "UserInfo", function controller($scope, NearByEguard, UserInfo) {
-      UserInfo.then(function (user) {
-        NearByEguard.get({
-          'longitude': user.longitude,
-          'latitude': user.latitude
-        }, function (data) {
-          $scope.eGuard = data.data[0];
-        });
-      });
-    }]
-  };
-});
-'use strict';
-
-angular.module('starter.directives').directive('goodNearbyList', function () {
+}).directive('goodNearbyList', function () {
   return {
     restrict: 'E',
     scope: {
@@ -1768,7 +1723,7 @@ angular.module('starter.directives').directive('goodNearbyList', function () {
       listType: '@',
       listTitle: '@'
     },
-    templateUrl: './build/components/index-good-list/nearby-list.html'
+    templateUrl: './build/components/good-list/nearby-list.html'
   };
 }).directive('hotList', function () {
   return {
@@ -1776,7 +1731,7 @@ angular.module('starter.directives').directive('goodNearbyList', function () {
     scope: {
       hotList: '='
     },
-    templateUrl: './build/components/index-good-list/hot-list.html',
+    templateUrl: './build/components/good-list/hot-list.html',
     controller: ["$scope", "$timeout", "$ionicScrollDelegate", function controller($scope, $timeout, $ionicScrollDelegate) {
       $scope.$watch('hotList', function (nv) {
         if (!nv) {
@@ -1830,6 +1785,51 @@ angular.module('starter.directives').directive('goodNearbyList', function () {
         container.addEventListener("mousedown", sv.mouseDown, false);
         document.addEventListener("touchmove", sv.touchMove, false);
         document.addEventListener("mousemove", sv.mouseMove, false);
+      });
+    }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives').directive('uHeader', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      noBack: '=',
+      hasSearch: '='
+    },
+    replace: true,
+    templateUrl: './build/components/header/header.html'
+  };
+}).directive('goBack', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    template: '<div class="back-wrap" ng-click="myGoBack()"> ' + '<i class="ion-arrow-left-c"></i><span>返回</span>' + '</div>',
+    controller: ["$scope", "$state", "$ionicHistory", function controller($scope, $state, $ionicHistory) {
+      $scope.myGoBack = function () {
+        var $backView = $ionicHistory.backView();
+        if ($backView) {
+          $backView.go();
+        } else {
+          $state.go('app.index');
+        }
+      };
+    }]
+  };
+}).directive('eGuard', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    template: '<p class="u-guard">管家<strong>{{eGuard.eguardName}}</strong>为您服务</p>',
+    controller: ["$scope", "NearByEguard", "UserInfo", function controller($scope, NearByEguard, UserInfo) {
+      UserInfo.then(function (user) {
+        NearByEguard.get({
+          'longitude': user.longitude,
+          'latitude': user.latitude
+        }, function (data) {
+          $scope.eGuard = data.data[0];
+        });
       });
     }]
   };
@@ -1901,6 +1901,9 @@ angular.module('starter.directives').directive('cartItemList', function () {
   return {
     restrict: 'E',
     replace: true,
+    scope: {
+      isAllChecked: '='
+    },
     templateUrl: './build/components/settlement/cart-item-list.html',
     controller: ["$scope", "$rootScope", "$stateParams", "ShoppingCart", function controller($scope, $rootScope, $stateParams, ShoppingCart) {
       var type = $stateParams.type;

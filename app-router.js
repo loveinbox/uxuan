@@ -22,7 +22,6 @@ angular.module('starter')
 
     .state('app.cart', {
       url: '/cart',
-      cache: false,
       views: {
         'tab-cart': {
           templateUrl: './build/pages/cart/cart.html',
@@ -33,7 +32,6 @@ angular.module('starter')
 
     .state('app.order-list', {
       url: '/order',
-      cache: false,
       views: {
         'tab-order-list': {
           templateUrl: './build/pages/order/order-list.html',
@@ -44,7 +42,6 @@ angular.module('starter')
 
     .state('app.account', {
       url: '/account',
-      cache: false,
       views: {
         'tab-account': {
           templateUrl: './build/pages/account/account.html',
@@ -58,14 +55,12 @@ angular.module('starter')
      */
     .state('shop-list', {
       url: '/shop/:type',
-      cache: false,
       templateUrl: './build/pages/shop/shop-list.html',
       controller: 'ShopListCtrl'
     })
 
     .state('shop-detail', {
       url: '/shop/:type/:shopId',
-      cache: false,
       templateUrl: './build/pages/shop/shop-detail.html',
       controller: 'ShopDetailCtrl'
     })
@@ -76,7 +71,6 @@ angular.module('starter')
      */
     .state('good-detail', {
       url: '/good/:type/:goodId',
-      cache: false,
       templateUrl: './build/pages/good/good-detail.html',
       controller: 'GoodDetailCtrl'
     })
@@ -84,17 +78,15 @@ angular.module('starter')
 
     // .state('orderStatus', {
     //   url: '/orderStatus',
-    //   cache: false,
     //   templateUrl: 'templates/orderStatus.html',
     //   controller: 'OrderStatusCtrl'
     // })
 
-    // .state('orderDetail', {
-    //   url: '/orderDetail/:orderId/:orderType',
-    //   cache: false,
-    //   templateUrl: 'templates/orderDetail.html ',
-    //   controller: 'orderDetailCtrl'
-    // })
+    .state('orderDetail', {
+      url: '/order/:type/:orderId',
+      templateUrl: './build/pages/order/order-detail.html ',
+      controller: 'orderDetailCtrl'
+    })
 
     // .state('phoneNumberCheck', {
     //   url: '/phoneNumberCheck',
@@ -104,34 +96,29 @@ angular.module('starter')
 
     // .state('washList', {
     //   url: '/washList',
-    //   cache: false,
     //   templateUrl: 'templates/washTemplates/washList.html ',
     //   controller: 'washListCtrl'
     // })
 
     // .state('washSingle', {
     //   url: '/washSingle/:shopId',
-    //   cache: false,
     //   templateUrl: 'templates/washTemplates/washSingle.html ',
     //   controller: 'washSingleCtrl'
     // })
 
     // .state('washCart', {
     //   url: '/washCart/:shopId',
-    //   cache: false,
     //   templateUrl: 'templates/washTemplates/washCart.html '
     // })
 
     // .state('washSingleOrder', {
     //   url: '/washSingleOrder/:shopId/:orderId',
-    //   cache: false,
     //   templateUrl: 'templates/washTemplates/washSingle-order.html ',
     //   controller: 'washSingleOrderCtrl'
     // })
 
     .state('search', {
       url: '/search',
-      cache: false,
       templateUrl: './build/pages/search/search.html',
       controller: 'SearchCtrl'
     })
@@ -146,7 +133,6 @@ angular.module('starter')
 
     .state('pay', {
       url: '/pay',
-      cache: false,
       templateUrl: './build/pages/order/wxPay.html ',
       controller: 'wxPayCtrl'
     })
