@@ -45,6 +45,11 @@ var serviceURLs = {
   NearByWashShops: '/shoplist/wash',
   WashByShop: '/shop/wash',
   WashHot: '/hot/shoplist/wash',
+  /*
+   * Coffee
+   */
+  NearByCoffeeShops: '/shoplist/coffee',
+  CoffeeByShop: '/shop/coffee',
 };
 ServiceFactory(serviceURLs);
 

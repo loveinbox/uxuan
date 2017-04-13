@@ -1,12 +1,15 @@
 angular.module('starter.controllers')
 
 .controller('ShopDetailCtrl', function($scope, $stateParams,
-  FruitByShop, WashByShop, UserInfo) {
+  UserInfo, FruitByShop, WashByShop, CoffeeByShop) {
   UserInfo.then(function(user) {
     const type = $stateParams.type
-    const method = type === 'fruit' ? FruitByShop : WashByShop
-    $scope.type = type
-    method.get({
+    const methodMap = {
+      fruit: FruitByShop,
+      wash: WashByShop,
+      coffee: FruitByShop
+    }
+    methodMap[type].get({
       'shopId': $stateParams.shopId
     }, function(res) {
       $scope.shop = res.data.shop;

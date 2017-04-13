@@ -374,77 +374,81 @@ angular.module('starter.services').factory('userWechatInfo', ["$resource", funct
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootScope", "$state", "$q", "$stateParams", "UserInfo", "NearByEguard", "ShoppingCart", "WxPay", "FruitOrder", "WashOrder", "WashReserve", function ($scope, $rootScope, $state, $q, $stateParams, UserInfo, NearByEguard, ShoppingCart, WxPay, FruitOrder, WashOrder, WashReserve) {
+angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$state", "$q", "$stateParams", "UserInfo", "ShoppingCart", "FruitOrder", "WashOrder", "WashReserve", function ($scope, $state, $q, $stateParams, UserInfo, ShoppingCart, FruitOrder, WashOrder, WashReserve) {
   var type = $stateParams.type;
-  $scope.type = type;
-  var isReserve = false;
+  var methodMap = {
+    wash: WashReserve,
+    'wash-order': WashOrder,
+    fruit: FruitOrder
+  };
+  var insertMethod = methodMap[type];
+  var orderData = {};
+  $scope.isAllChecked = false;
+  $scope.totalMoney = ShoppingCart.getTotalCartMoney(type);
+  $scope.payButton = '微信支付';
 
   UserInfo.then(function (user) {
-    // if (type == 'wash') {
-    //   $scope.washOrder = FruitOrWash.getParams().washOrder;
-    //   let isReserve = FruitOrWash.getParams().isReserve;
-    // } else {
-    //   isReserve = false;
-    // }
-
-    $scope.order = {
-      user: user,
-      sendTime: [],
-      guard: 0,
-      carts: ShoppingCart.getCart(type)
-    };
-    if (type == 'wash' && isReserve) {
-      $scope.order.carts = [];
-    }
-    $scope.order.isAllChecked = true;
-
-    $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
-
-    $scope.payButton = {
-      text: '微信支付'
-    };
-
-    function judgeOrder() {
-      $scope.payButton.text = '微信支付';
-      if (type == 'furit' && $scope.status.isGetThroesold == false) {
-        // alert('未达起送价');
-        $scope.payButton.text = '未达起送价';
-        return false;
-      }
-      if ($scope.status.isAdded == false) {
-        // alert('请添加收货地址');
-        $scope.payButton.text = '请添加收货地址';
-        return false;
-      }
-      if ((type == 'furit' || !isReserve) && !$scope.order.carts.length) {
-        // alert('请添加商品');
-        $scope.payButton.text = '请添加商品';
-        return false;
-      }
-      if (!$scope.status.isAddressValidated) {
-        $scope.payButton.text = '请修改送货地址';
-        return false;
-      }
-      if (isReserve) {
-        $scope.payButton.text = '预约洗衣';
-      } else {
-        $scope.payButton.text = '微信支付';
-      }
-      return true;
-    }
     $scope.confirmOrder = function (event) {
-      if (!(user.verify - 0)) {
-        $state.go('phoneNumberCheck');
+      if (!isOrderAvaliable()) {
         return;
+      } else {
+        orderData = buildOrderData();
       }
-      event.stopPropagation();
-      event.preventDefault();
-      if (!judgeOrder()) {
-        return;
-      };
 
-      var insertMethod = null;
-      var orderData = {
+      insertMethod.save(orderData).$promise.then(function (res) {
+        if (isReserve) {
+          alert('预约成功');
+          $state.go('app.order-list');
+        } else {
+          var data = res.data;
+          var payData = FruitOrWash.get() == 'furit' ? {
+            'orderIdsList': data.orderIdsList,
+            'orderType': 17001
+          } : {
+            'orderIdsList': data.orderIdsList,
+            'orderType': 17002
+          };
+          payData.money = data.money;
+          WxPayParam.set(payData);
+          $state.go('pay');
+        }
+        ShoppingCart.cleanCart(type);
+      }).catch(function (res) {
+        alert('下订单失败');
+        orderStatus.failed();
+        $state.go('app.order-list');
+      });
+    };
+
+    function isOrderAvaliable() {
+      $scope.payButton = '微信支付';
+      if (type == 'furit' && $scope.status.isGetThroesold == false) {
+        $scope.payButton = '未达起送价';
+        return false;
+      }
+      if (_.isEmpty($scope.address)) {
+        $scope.payButton = '请添加收货地址';
+        return false;
+      }
+      if (!$scope.address.isAddressValidated) {
+        $scope.payButton = '请修改送货地址';
+        return false;
+      }
+      if (type == 'wash-reserve') {
+        $scope.payButton = '预约洗衣';
+        return true;
+      } else {
+        if (!ShoppingCart.getCart(type).length) {
+          $scope.payButton = '请添加商品';
+          return false;
+        } else {
+          return true;
+        }
+      }
+    }
+
+    function buildOrderData() {
+      return {
         'latitude': user.longitude,
         'longitude': user.latitude,
         'userId': user.userId,
@@ -458,45 +462,21 @@ angular.module('starter.controllers').controller('CartCtrl', ["$scope", "$rootSc
         'tip': '',
         'detail': ShoppingCart.getCart(type)
       };
-      if (FruitOrWash.getParams().washOrder) {
-        orderData.shopId = FruitOrWash.getParams().washOrder.shopId;
-        orderData.orderIdsList = [FruitOrWash.getParams().washOrder.orderId];
-      };
-      if (type == 'furit') {
-        insertMethod = FruitOrderInsert;
-      } else {
-        if (isReserve) {
-          insertMethod = insertWashReserve;
-        } else {
-          insertMethod = insertWashOrder;
-          orderData.detail = ShoppingCart.getCart(type)[0].productsList;
-        }
-      }
-      insertMethod.save(orderData).$promise.then(function (res) {
-        if (isReserve) {
-          alert('预约成功');
-          ShoppingCart.cleanCart(type);
-          $state.go('app.orders');
-        } else {
-          var data = res.data;
-          var sendData = FruitOrWash.get() == 'furit' ? {
-            'orderIdsList': data.orderIdsList,
-            'orderType': 17001
-          } : {
-            'orderIdsList': data.orderIdsList,
-            'orderType': 17002
-          };
-          sendData.money = data.money;
-          WxPayParam.set(sendData);
-          ShoppingCart.cleanCart(type);
-          $state.go('pay');
-        }
-      }).catch(function (res) {
-        alert('下订单失败');
-        orderStatus.failed();
-        $state.go('app.orders');
-      });
-    };
+      // if (FruitOrWash.getParams().washOrder) {
+      //   orderData.shopId = FruitOrWash.getParams().washOrder.shopId
+      //   orderData.orderIdsList = [FruitOrWash.getParams().washOrder.orderId]
+      // };
+      // if (type == 'furit') {
+      //   insertMethod = FruitOrderInsert;
+      // } else {
+      //   if (isReserve) {
+      //     insertMethod = insertWashReserve;
+      //   } else {
+      //     insertMethod = insertWashOrder;
+      //     orderData.detail = ShoppingCart.getCart(type)[0].productsList;
+      //   }
+      // }
+    }
   });
 }]);
 'use strict';
@@ -722,203 +702,6 @@ angular.module('starter.controllers').controller('CartCtrl999', ["$scope", "$roo
         }
       });
       return deferred.promise;
-    }
-  });
-}]);
-'use strict';
-
-angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootScope", "$timeout", "$ionicScrollDelegate", "$ionicSlideBoxDelegate", "UserInfo", "BannerIndex", "MainPageHot", "NearByFruitShops", "NearByWashShops", "FruitRank", "WashRank", function ($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicSlideBoxDelegate, UserInfo, BannerIndex, MainPageHot, NearByFruitShops, NearByWashShops, FruitRank, WashRank) {
-  $scope.location = {
-    isGet: false,
-    isOut: false,
-    text: '定位中...'
-  };
-  UserInfo.then(function (user) {
-    $scope.location = user.userLocation;
-    if (user.userLocation.street) {
-      $scope.location.text = user.userLocation.street;
-    }
-    $scope.$watch('user.userLocation', function () {
-      if (user.userLocation.street) {
-        $scope.location.text = user.userLocation.street;
-      }
-    }, true);
-
-    var baseData = {
-      'longitude': user.longitude,
-      'latitude': user.latitude
-    };
-
-    MainPageHot.get(baseData, function (data) {
-      $scope.hotList = data.data;
-    });
-
-    BannerIndex.get(baseData, function (data) {
-      $scope.banners = data.data;
-      $ionicSlideBoxDelegate.update();
-      $ionicSlideBoxDelegate.loop(true);
-    });
-
-    NearByFruitShops.get(baseData, function (data) {
-      $scope.fruitShop = data.data;
-    });
-
-    NearByWashShops.get(baseData, function (data) {
-      $scope.washShop = data.data;
-    });
-
-    FruitRank.get(baseData, function (data) {
-      $scope.fruitRank = data.data;
-    });
-
-    WashRank.get(baseData, function (data) {
-      $scope.washRank = data.data;
-    });
-  });
-}]);
-'use strict';
-
-angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", function ($rootScope, $scope, $stateParams, UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
-  var goodId = $stateParams.goodId;
-  var type = $stateParams.type;
-  $scope.isHideAddCart = false;
-  $scope.singleNumber = 0;
-
-  UserInfo.then(function (user) {
-    FruitDetail.get({
-      'longitude': user.longitude,
-      'latitude': user.latitude,
-      'productId': goodId
-    }, function (data) {
-      $scope.good = data.data.product;
-      $scope.shop = data.data.shop;
-      $rootScope.$broadcast('cartChange');
-      FruitPicShow.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'productId': goodId
-      }, function (data) {
-        $scope.imgs = data.data;
-      });
-    });
-
-    $scope.$on('cartChange', function (event, data) {
-      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
-      if ($scope.singleNumber > 0) {
-        $scope.isHideAddCart = true;
-      } else {
-        $scope.isHideAddCart = false;
-      }
-    });
-  });
-}]);
-'use strict';
-
-angular.module('starter.controllers').controller('orderDetailCtrl', ["$scope", "$rootScope", "$stateParams", "FruitOrderDetail", "WashOrderDetail", "UserInfo", "StartPrice", "$state", function ($scope, $rootScope, $stateParams, FruitOrderDetail, WashOrderDetail, UserInfo, StartPrice, $state) {
-  $scope.type = $stateParams.type;
-  UserInfo.then(function (user) {
-    getOrder();
-
-    function getOrder(argument) {
-      var detailMethod = $scope.type == 17001 ? FruitOrderDetail : WashOrderDetail;
-      detailMethod.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'orderId': $stateParams.orderId
-      }, function (data) {
-        $scope.order = data.data;
-        var orderStage = data.data.orderStatusId;
-        if (orderStage - 0 <= 11003) {
-          setStage([1]);
-          return;
-        }
-        if (orderStage - 0 < 11008) {
-          setStage([0, 1]);
-          return;
-        }
-        if (orderStage - 0 < 11012) {
-          setStage([0, 0, 1]);
-          return;
-        }
-        if (orderStage - 0 <= 11015) {
-          setStage([0, 0, 0, 1]);
-          return;
-        }
-      });
-    }
-
-    $scope.clickPrice = function (event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      StartPrice.save({
-        orderId: order.orderId
-      }).$promise.then(function (res) {
-        if (res.code === 0) {
-          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
-        }
-      });
-    };
-  });
-
-  function setStage(array) {
-    $scope.stage01 = array[0] === 1;
-    $scope.stage02 = array[1] === 1;
-    $scope.stage03 = array[2] === 1;
-    $scope.stage04 = array[3] === 1;
-  }
-}]);
-'use strict';
-
-angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$state", "OrderList", "UserInfo", "StartPrice", "cancelFruit", "cancelWash", function ($scope, $state, OrderList, UserInfo, StartPrice, cancelFruit, cancelWash) {
-
-  UserInfo.then(function (user) {
-    getOrders();
-
-    $scope.$on('order-status-change', function () {
-      getOrders();
-    });
-
-    $scope.doRefresh = function () {
-      getOrders();
-      //Stop the ion-refresher from spinning
-      $scope.$broadcast('scroll.refreshComplete');
-    };
-
-    $scope.clickPrice = function (event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      StartPrice.save({
-        orderId: order.orderId
-      }).$promise.then(function (res) {
-        if (res.code === 0) {
-          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
-        }
-      });
-    };
-
-    $scope.clickRed = function (event, order) {
-      event.stopPropagation();
-      event.preventDefault();
-      // var cancelMethod = order.orderType == 17001 ? cancelFruit : cancelWash;
-      // cancelMethod.save({
-      //     orderId: order.orderId
-      //   })
-      //   .$promise
-      //   .then(function(res) {
-      //     if (res.code === 0) {
-      //       alert('取消成功');
-      //       getOrders();
-      //     }
-      //   });
-    };
-
-    function getOrders() {
-      OrderList.get({
-        'customerId': user.userId,
-        'pos': 0
-      }, function (data) {
-        $scope.orders = data.data;
-      });
     }
   });
 }]);
@@ -1244,6 +1027,203 @@ angular.module('starter.services').service('ShoppingCart', ["$rootScope", functi
 });
 'use strict';
 
+angular.module('starter.controllers').controller('GoodDetailCtrl', ["$rootScope", "$scope", "$stateParams", "UserInfo", "FruitDetail", "FruitPicShow", "ShoppingCart", function ($rootScope, $scope, $stateParams, UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
+  var goodId = $stateParams.goodId;
+  var type = $stateParams.type;
+  $scope.isHideAddCart = false;
+  $scope.singleNumber = 0;
+
+  UserInfo.then(function (user) {
+    FruitDetail.get({
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+      'productId': goodId
+    }, function (data) {
+      $scope.good = data.data.product;
+      $scope.shop = data.data.shop;
+      $rootScope.$broadcast('cartChange');
+      FruitPicShow.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'productId': goodId
+      }, function (data) {
+        $scope.imgs = data.data;
+      });
+    });
+
+    $scope.$on('cartChange', function (event, data) {
+      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+      if ($scope.singleNumber > 0) {
+        $scope.isHideAddCart = true;
+      } else {
+        $scope.isHideAddCart = false;
+      }
+    });
+  });
+}]);
+'use strict';
+
+angular.module('starter.controllers').controller('orderDetailCtrl', ["$scope", "$rootScope", "$stateParams", "FruitOrderDetail", "WashOrderDetail", "UserInfo", "StartPrice", "$state", function ($scope, $rootScope, $stateParams, FruitOrderDetail, WashOrderDetail, UserInfo, StartPrice, $state) {
+  $scope.type = $stateParams.type;
+  UserInfo.then(function (user) {
+    getOrder();
+
+    function getOrder(argument) {
+      var detailMethod = $scope.type == 17001 ? FruitOrderDetail : WashOrderDetail;
+      detailMethod.get({
+        'longitude': user.longitude,
+        'latitude': user.latitude,
+        'orderId': $stateParams.orderId
+      }, function (data) {
+        $scope.order = data.data;
+        var orderStage = data.data.orderStatusId;
+        if (orderStage - 0 <= 11003) {
+          setStage([1]);
+          return;
+        }
+        if (orderStage - 0 < 11008) {
+          setStage([0, 1]);
+          return;
+        }
+        if (orderStage - 0 < 11012) {
+          setStage([0, 0, 1]);
+          return;
+        }
+        if (orderStage - 0 <= 11015) {
+          setStage([0, 0, 0, 1]);
+          return;
+        }
+      });
+    }
+
+    $scope.clickPrice = function (event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      StartPrice.save({
+        orderId: order.orderId
+      }).$promise.then(function (res) {
+        if (res.code === 0) {
+          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
+        }
+      });
+    };
+  });
+
+  function setStage(array) {
+    $scope.stage01 = array[0] === 1;
+    $scope.stage02 = array[1] === 1;
+    $scope.stage03 = array[2] === 1;
+    $scope.stage04 = array[3] === 1;
+  }
+}]);
+'use strict';
+
+angular.module('starter.controllers').controller('OrderListCtrl', ["$scope", "$state", "OrderList", "UserInfo", "StartPrice", "cancelFruit", "cancelWash", function ($scope, $state, OrderList, UserInfo, StartPrice, cancelFruit, cancelWash) {
+
+  UserInfo.then(function (user) {
+    getOrders();
+
+    $scope.$on('order-status-change', function () {
+      getOrders();
+    });
+
+    $scope.doRefresh = function () {
+      getOrders();
+      //Stop the ion-refresher from spinning
+      $scope.$broadcast('scroll.refreshComplete');
+    };
+
+    $scope.clickPrice = function (event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      StartPrice.save({
+        orderId: order.orderId
+      }).$promise.then(function (res) {
+        if (res.code === 0) {
+          $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
+        }
+      });
+    };
+
+    $scope.clickRed = function (event, order) {
+      event.stopPropagation();
+      event.preventDefault();
+      // var cancelMethod = order.orderType == 17001 ? cancelFruit : cancelWash;
+      // cancelMethod.save({
+      //     orderId: order.orderId
+      //   })
+      //   .$promise
+      //   .then(function(res) {
+      //     if (res.code === 0) {
+      //       alert('取消成功');
+      //       getOrders();
+      //     }
+      //   });
+    };
+
+    function getOrders() {
+      OrderList.get({
+        'customerId': user.userId,
+        'pos': 0
+      }, function (data) {
+        $scope.orders = data.data;
+      });
+    }
+  });
+}]);
+'use strict';
+
+angular.module('starter.controllers').controller('IndexCtrl', ["$scope", "$rootScope", "$timeout", "$ionicScrollDelegate", "$ionicSlideBoxDelegate", "UserInfo", "BannerIndex", "MainPageHot", "NearByFruitShops", "NearByWashShops", "FruitRank", "WashRank", function ($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicSlideBoxDelegate, UserInfo, BannerIndex, MainPageHot, NearByFruitShops, NearByWashShops, FruitRank, WashRank) {
+  $scope.location = {
+    isGet: false,
+    isOut: false,
+    text: '定位中...'
+  };
+  UserInfo.then(function (user) {
+    $scope.location = user.userLocation;
+    if (user.userLocation.street) {
+      $scope.location.text = user.userLocation.street;
+    }
+    $scope.$watch('user.userLocation', function () {
+      if (user.userLocation.street) {
+        $scope.location.text = user.userLocation.street;
+      }
+    }, true);
+
+    var baseData = {
+      'longitude': user.longitude,
+      'latitude': user.latitude
+    };
+
+    MainPageHot.get(baseData, function (data) {
+      $scope.hotList = data.data;
+    });
+
+    BannerIndex.get(baseData, function (data) {
+      $scope.banners = data.data;
+      $ionicSlideBoxDelegate.update();
+      $ionicSlideBoxDelegate.loop(true);
+    });
+
+    NearByFruitShops.get(baseData, function (data) {
+      $scope.fruitShop = data.data;
+    });
+
+    NearByWashShops.get(baseData, function (data) {
+      $scope.washShop = data.data;
+    });
+
+    FruitRank.get(baseData, function (data) {
+      $scope.fruitRank = data.data;
+    });
+
+    WashRank.get(baseData, function (data) {
+      $scope.washRank = data.data;
+    });
+  });
+}]);
+'use strict';
+
 angular.module('starter.controllers').controller('OrderStatusCtrl', ["$scope", "$stateParams", function ($scope, $stateParams) {
   var status = $stateParams.status;
   switch (status) {
@@ -1398,12 +1378,15 @@ angular.module('starter.controllers').controller('SearchCtrl', ["$scope", "UserI
 }]);
 'use strict';
 
-angular.module('starter.controllers').controller('ShopDetailCtrl', ["$scope", "$stateParams", "FruitByShop", "WashByShop", "UserInfo", function ($scope, $stateParams, FruitByShop, WashByShop, UserInfo) {
+angular.module('starter.controllers').controller('ShopDetailCtrl', ["$scope", "$stateParams", "UserInfo", "FruitByShop", "WashByShop", "CoffeeByShop", function ($scope, $stateParams, UserInfo, FruitByShop, WashByShop, CoffeeByShop) {
   UserInfo.then(function (user) {
     var type = $stateParams.type;
-    var method = type === 'fruit' ? FruitByShop : WashByShop;
-    $scope.type = type;
-    method.get({
+    var methodMap = {
+      fruit: FruitByShop,
+      wash: WashByShop,
+      coffee: FruitByShop
+    };
+    methodMap[type].get({
       'shopId': $stateParams.shopId
     }, function (res) {
       $scope.shop = res.data.shop;
@@ -1498,7 +1481,12 @@ var serviceURLs = {
   BannerWash: '/banner/shoplist/wash',
   NearByWashShops: '/shoplist/wash',
   WashByShop: '/shop/wash',
-  WashHot: '/hot/shoplist/wash'
+  WashHot: '/hot/shoplist/wash',
+  /*
+   * Coffee
+   */
+  NearByCoffeeShops: '/shoplist/coffee',
+  CoffeeByShop: '/shop/coffee'
 };
 ServiceFactory(serviceURLs);
 
@@ -1702,6 +1690,129 @@ angular.module('starter.directives').directive('payOrder', function () {
           $rootScope.$broadcast('cartChange');
         };
       });
+    }]
+  };
+});
+'use strict';
+
+angular.module('starter.directives', [])
+
+// .directive('addCart', function() {
+//   return {
+//     restrict: 'A',
+//     replace: true,
+//     // scope: {
+//     //   gParamId: '@'
+//     // },
+//     templateUrl: './build/components/add-cart/add-cart.html',
+//     controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
+//       $scope.$on('cartChange', function(event, data) {
+//         $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+//         if ($scope.singleNumber > 0) {
+//           $scope.isHideAddCart = true;
+//         } else {
+//           $scope.isHideAddCart = false;
+//         }
+//       });
+//       UserInfo.then(function(user) {
+//         if ($scope.singleNumber > 0) {
+//           $scope.isHideAddCart = true;
+//         }
+//         $scope.addCart = function(event, good, shop) {
+//           event.stopPropagation();
+//           // console.log('1-->', user.verify);
+//           if (!(user.verify - 0)) {
+//             $state.go('phoneNumberCheck');
+//             return;
+//           }
+//           ShoppingCart.add(event, good, shop);
+//           $rootScope.$broadcast('cartChange');
+//         };
+//       })
+//     }
+//   }
+// })
+
+.directive('cartModal', function () {
+  return {
+    restrict: 'A',
+    replace: true,
+    templateUrl: './build/components/add-cart/cartModalIcon.html'
+  };
+})
+
+// .directive('singleCart', function() {
+//   return {
+//     restrict: 'A',
+//     templateUrl: './build/components/add-cart/singleCart.html',
+//     controller: function($scope, $rootScope, $state, ShoppingCart, UserInfo, FuritOrWash) {
+//       var type = FuritOrWash.get();
+//       $scope.cartAction = {};
+//       if ($scope.good) {
+//         $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop,
+//           type);
+//       }
+//       UserInfo.then(function(user) {
+//         $scope.$on('cartChange', function(event, data) {
+//           $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good,
+//             $scope.shop, type);
+//         });
+//         $scope.addCart = function(event, good, shop) {
+//           event.stopPropagation();
+//           // console.log('1-->', user.verify);
+//           if (!(user.verify - 0)) {
+//             $state.go('phoneNumberCheck');
+//             return;
+//           }
+//           ShoppingCart.add(event, good, shop, type);
+//           $rootScope.$broadcast('cartChange');
+//         };
+
+//         $scope.removeCart = function(good, shop) {
+//           event.stopPropagation();
+//           ShoppingCart.remove(good, shop, type);
+//           $rootScope.$broadcast('cartChange');
+//         };
+//       })
+//     }
+//   }
+// })
+
+
+.directive('goToCart', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    templateUrl: './build/components/add-cart/go-to-cart.html',
+    controller: ["$scope", "$rootScope", "$state", "ShoppingCart", "UserInfo", function controller($scope, $rootScope, $state, ShoppingCart, UserInfo) {
+      $scope.type = 'wash-reserve';
+      // $scope.cartAction = {};
+      // if ($scope.good) {
+      //   $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop,
+      //     type);
+      // }
+      // UserInfo.then(function(user) {
+      //   $scope.$on('cartChange', function(event, data) {
+      //     $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good,
+      //       $scope.shop, type);
+      //   });
+      //   $scope.addCart = function(event, good, shop) {
+      //     event.stopPropagation();
+      //     // console.log('1-->', user.verify);
+      //     if (!(user.verify - 0)) {
+      //       $state.go('phoneNumberCheck');
+      //       return;
+      //     }
+      //     ShoppingCart.add(event, good, shop, type);
+      //     $rootScope.$broadcast('cartChange');
+      //   };
+
+      //   $scope.removeCart = function(good, shop) {
+      //     event.stopPropagation();
+      //     ShoppingCart.remove(good, shop, type);
+      //     $rootScope.$broadcast('cartChange');
+      //   };
+      // })
     }]
   };
 });
