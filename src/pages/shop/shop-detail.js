@@ -9,6 +9,7 @@ angular.module('starter.controllers')
       wash: WashByShop,
       coffee: FruitByShop
     }
+
     $scope.type = type
     methodMap[type].get({
       'shopId': $stateParams.shopId

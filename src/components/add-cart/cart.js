@@ -1,4 +1,4 @@
-angular.module('starter.directives', [])
+angular.module('starter.directives')
 
 .directive('cartModal', function() {
   return {
@@ -24,8 +24,8 @@ angular.module('starter.directives', [])
       });
 
       function getShopCart() {
-        $scope.totalNumber = ShoppingCart.getshopCartNumber($scope.shop.shopId, $scope.type);
-        $scope.totalMoney = ShoppingCart.getshopCartMoney($scope.shop.shopId, $scope.type);
+        $scope.totalNumber = ShoppingCart.getShopCartNumber({ type: $scope.type, shop: $scope.shop });
+        $scope.totalMoney = ShoppingCart.getShopCartMoney({ type: $scope.type, shop: $scope.shop });
       }
       //   $ionicModal.fromTemplateUrl('./build/components/add-cart/cartModal.html', {
       //     scope: $scope,
@@ -56,35 +56,6 @@ angular.module('starter.directives', [])
       shop: '='
     },
     templateUrl: './build/components/add-cart/go-to-cart.html',
-    controller: function($scope, $rootScope, $state, ShoppingCart, UserInfo) {
-      // $scope.cartAction = {};
-      // if ($scope.good) {
-      //   $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop,
-      //     type);
-      // }
-      // UserInfo.then(function(user) {
-      //   $scope.$on('cartChange', function(event, data) {
-      //     $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good,
-      //       $scope.shop, type);
-      //   });
-      //   $scope.addCart = function(event, good, shop) {
-      //     event.stopPropagation();
-      //     // console.log('1-->', user.verify);
-      //     if (!(user.verify - 0)) {
-      //       $state.go('phoneNumberCheck');
-      //       return;
-      //     }
-      //     ShoppingCart.add(event, good, shop, type);
-      //     $rootScope.$broadcast('cartChange');
-      //   };
-
-      //   $scope.removeCart = function(good, shop) {
-      //     event.stopPropagation();
-      //     ShoppingCart.remove(good, shop, type);
-      //     $rootScope.$broadcast('cartChange');
-      //   };
-      // })
-    }
   }
 })
 

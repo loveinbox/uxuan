@@ -4,6 +4,8 @@ angular.module('starter.directives')
   return {
     restrict: 'E',
     scope: {
+      type: '=',
+      shop: '=',
       goodList: '=',
       classList: '='
     },

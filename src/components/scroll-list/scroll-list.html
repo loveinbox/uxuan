@@ -25,7 +25,9 @@
           ￥{{good.productPrice/100 }}
           <span class="measure">/{{good.productMeasure || '件'}}</span></p>
       </div>
-      <cart-in-list good="good"></cart-in-list>
+      <add-cart good="good"
+        shop="shop"
+        type="type"></add-cart>
     </ion-item>
   </ion-list>
 </ion-scroll>
