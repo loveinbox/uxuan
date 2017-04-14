@@ -65,7 +65,7 @@ angular.module('starter.controllers')
         $scope.payButton = '请修改送货地址';
         return false;
       }
-      if (type == 'wash-reserve') {
+      if (type == 'wash') {
         $scope.payButton = '预约洗衣';
         return true;
       } else {

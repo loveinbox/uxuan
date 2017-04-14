@@ -1,6 +1,6 @@
 <div class="shopping-cart-bar">
   <section class="clearfix"
-    ng-if="type !== 'wash-reserve'">
+    ng-if="type !== 'wash'">
     <cart-modal></cart-modal>
     <a class="go-cart-link"
       ng-href="/app/cart">
@@ -8,7 +8,7 @@
     </a>
   </section>
   <section class="clearfix"
-    ng-if="type === 'wash-reserve'">
+    ng-if="type === 'wash'">
     <a class="go-cart-link block"
       ng-href="/app/cart">
       <div class="button">预约洗衣</div>

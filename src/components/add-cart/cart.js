@@ -109,9 +109,11 @@ angular.module('starter.directives', [])
   return {
     restrict: 'E',
     replace: true,
+    scope: {
+      type: '='
+    },
     templateUrl: './build/components/add-cart/go-to-cart.html',
     controller: function($scope, $rootScope, $state, ShoppingCart, UserInfo) {
-      $scope.type = 'wash-reserve';
       // $scope.cartAction = {};
       // if ($scope.good) {
       //   $scope.cartAction.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop,
