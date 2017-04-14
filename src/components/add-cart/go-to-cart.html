@@ -1,7 +1,8 @@
 <div class="shopping-cart-bar">
   <section class="clearfix"
     ng-if="type !== 'wash'">
-    <cart-modal></cart-modal>
+    <cart-modal type="type"
+      shop="shop"></cart-modal>
     <a class="go-cart-link"
       ng-href="/app/cart">
       <div class="button">选好了</div>

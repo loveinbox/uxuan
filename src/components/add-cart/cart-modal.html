@@ -1,0 +1,16 @@
+<div class="cart-modal-icon"
+  ng-click="openModal()">
+  <i class="icon ion-ios-cart icon-cart"></i>
+  <div class="cart-number-tip"
+    ng-show="totalNumber > 0">{{totalNumber}}</div>
+  <div class="cart-number-total">共:{{totalMoney/100}}元</div>
+  <!-- <ion-modal-view class="cart-modal" ng-click="closeModal()">
+  <ion-list class="cart-modal-list">
+    <ion-item class="cart-item" ng-repeat="good in cartGoods">
+      <span class="cart-good-name"><strong>{{good.productName}}</strong></span>
+      <span class="cart-good-price">￥{{good.productPrice/100}}</span>
+      <div single-cart class="fr"></div>
+    </ion-item>
+  </ion-list>
+</ion-modal-view> -->
+</div>

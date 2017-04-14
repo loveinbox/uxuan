@@ -13,7 +13,7 @@ const uglify = require('gulp-uglifyjs');
 
 const codebase = './public/build'
 const htmlSource = ['./src/**/*.html', '!./src/index.html', '!./src/location.html']
-const cssSource = ['./src/components/utils/*.styl', './src/pages/**/*.styl', './src/components/**/*.styl']
+const cssSource = ['./src/components/utils/base.styl', './src/pages/**/*.styl', './src/components/**/*.styl']
 const jsSource = ['./app.js', './app-router.js',
   './src/pages/**/*.js', './src/services/**/*.js', './src/components/**/*.js'
 ]

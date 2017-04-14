@@ -2,15 +2,16 @@ angular.module('starter.services')
 
 .service('ShoppingCart', function($rootScope) {
   var stroage = {
-    'furit': 'UxuanShoppingCart',
-    'wash': 'washShoppingCart'
+    'furit': 'fruitShoppingCart',
+    'wash': 'washShoppingCart',
+    'coffee': 'coffeeShoppingCart'
   };
   // 所有商家的购物车，即整个购物车的集合
   var furitCart = {
     number: 0,
     money: 0,
     isGetThroesold: false,
-    cart: JSON.parse(localStorage.getItem('UxuanShoppingCart')) || []
+    cart: JSON.parse(localStorage.getItem('fruitShoppingCart')) || []
   }
   var washCart = {
     number: 0,
@@ -18,9 +19,16 @@ angular.module('starter.services')
     isGetThroesold: false,
     cart: JSON.parse(localStorage.getItem('washShoppingCart')) || []
   }
+  var coffeeCart = {
+    number: 0,
+    money: 0,
+    isGetThroesold: false,
+    cart: JSON.parse(localStorage.getItem('coffeeShoppingCart')) || []
+  }
   var totalCart = {
     furit: furitCart,
-    wash: washCart
+    wash: washCart,
+    coffee: coffeeCart
   }
 
   // 一个商家的购物车
