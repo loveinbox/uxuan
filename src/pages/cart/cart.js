@@ -29,17 +29,17 @@ angular.module('starter.controllers')
             alert('预约成功');
             $state.go('app.order-list');
           } else {
-            var data = res.data;
-            var payData = FruitOrWash.get() == 'furit' ? {
-              'orderIdsList': data.orderIdsList,
-              'orderType': 17001
-            } : {
-              'orderIdsList': data.orderIdsList,
-              'orderType': 17002
-            };
-            payData.money = data.money;
-            WxPayParam.set(payData);
-            $state.go('pay');
+            // var data = res.data;
+            // var payData = FruitOrWash.get() == 'furit' ? {
+            //   'orderIdsList': data.orderIdsList,
+            //   'orderType': 17001
+            // } : {
+            //   'orderIdsList': data.orderIdsList,
+            //   'orderType': 17002
+            // };
+            // payData.money = data.money;
+            // WxPayParam.set(payData);
+            // $state.go('pay');
           }
           ShoppingCart.cleanCart(type);
         })

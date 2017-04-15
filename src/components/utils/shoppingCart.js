@@ -19,8 +19,8 @@ angular.module('starter.services')
   this.getGoodNumber = function({ type, shop, good }) {
     return _getGoodNumber(type, ShopCart(shop), CartGood(good))
   }
-  this.getTypeCart = function({ type, shop }) {
-    return _getTypeCart(type, ShopCart(shop))
+  this.getTypeCart = function({ type }) {
+    return _getTypeCart(type)
   }
   this.getTypeCartNumber = function({ type }) {
     return _getTypeCartNumber(type)
@@ -146,8 +146,9 @@ angular.module('starter.services')
     return _cart[shopIndex].productsList[goodIndex].productQuantity;
   }
 
-  function _getShopCart(type, shopCart, cartGood) {
-
+  function _getTypeCart(type) {
+    let _cart = carts[type];
+    return _cart.shopCart;
   }
 
   function _getTypeCartNumber(type) {
