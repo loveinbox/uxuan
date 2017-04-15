@@ -1,0 +1,60 @@
+<ion-modal-view class="mask">
+  <div class="add-cart modal-coffee">
+    <div class="config clearfix">
+      <div class="temprature">
+        <div class="header">温度</div>
+        <div class="body">
+          <ul class="clearfix">
+            <li ng-repeat="temprature in tempratureList"
+              ng-class="{'u-active':temprature.id === selected.tempratureId}"
+              ng-click="pickTemprature(temprature, $event)">
+              {{temprature.name}}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="cup">
+        <div class="header">杯型</div>
+        <div class="body">
+          <ul class="clearfix">
+            <li ng-repeat="cup in cupList"
+              ng-class="{'u-active':cup.id === selected.cupId}"
+              ng-click="pickCup(cup, $event)">
+              {{cup.name}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="buy clearfix">
+      <div class="price">{{good.productPrice/100 || 50}}元/杯</div>
+      <div class="action">
+        <div class="action-tip">购买数量</div>
+        <div class="add-icon fl"
+          ng-click="removeCart(good, shop)">
+          <i class="icon ion-minus-round"></i>
+        </div>
+        <div class="cart-number fl">{{goodNumber || 0}}</div>
+        <div class="remove-icon fl"
+          ng-click="addCart()">
+          <i class="icon ion-plus-round"></i>
+        </div>
+      </div>
+    </div>
+    <div class="cancel">
+      <div class="button button-small"
+        ng-click="closeModal()">X</div>
+    </div>
+    <div class="confirm">
+      <div class="button button-small to-click"
+        ng-click="closeModal()">完成</div>
+    </div>
+  </div>
+  <!-- <ion-list class="cart-modal-list">
+    <ion-item class="cart-item" ng-repeat="good in cartGoods">
+      <span class="cart-good-name"><strong>{{good.productName}}</strong></span>
+      <span class="cart-good-price">￥{{good.productPrice/100}}</span>
+      <div single-cart class="fr"></div>
+    </ion-item>
+  </ion-list> -->
+</ion-modal-view>

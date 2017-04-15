@@ -1,0 +1,59 @@
+.modal-coffee
+	position relative
+	width 80%
+	padding 15px
+	margin 160px auto 0
+	background #f1f1f1
+	.config
+		padding 7px 0
+		border-bottom 1px solid #ddd
+		.temprature, .cup
+			float left
+		.cup
+			padding-left 30px
+			li + li
+				margin-left 10px
+		.header
+			text-align center
+		ul
+			margin 5px 0
+			li
+				float left
+				padding 3px 6px
+				border 1px solid #ddd
+			li + li
+				margin-left 20px
+
+	.buy
+		padding 7px 0
+		border-bottom 1px solid #ddd
+		.price
+			float left
+			color $main
+			line-height 28px
+			font-size 14px
+		.action
+			float right
+			.action-tip
+				float left
+				margin-right 15px
+				line-height 28px
+				font-size 14px
+		
+	.confirm
+		margin-top 10px
+		text-align center
+		
+	.cancel
+		position absolute
+		top -10px
+		right -10px
+		.button
+			padding 0
+			width 20px
+			min-width 20px
+			height 20px
+			min-height 20px
+			border-radius 100%
+			line-height 20px
+			background $bg

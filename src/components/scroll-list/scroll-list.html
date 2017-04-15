@@ -25,10 +25,16 @@
           ￥{{good.productPrice/100 }}
           <span class="measure">/{{good.productMeasure || '件'}}</span></p>
       </div>
-      <add-cart class="shop-detail__add-cart"
+      <add-cart ng-if="type !== 'coffee'"
+        class="shop-detail__add-cart"
         good="good"
         shop="shop"
         type="type"></add-cart>
+      <add-coffee ng-if="type === 'coffee'"
+        class="shop-detail__add-cart"
+        type="type"
+        shop="shop"
+        good="good"></add-coffee>
     </ion-item>
   </ion-list>
 </ion-scroll>
