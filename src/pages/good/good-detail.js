@@ -1,37 +1,26 @@
 angular.module('starter.controllers')
 
-.controller('GoodDetailCtrl', function($rootScope, $scope, $stateParams,
-  UserInfo, FruitDetail, FruitPicShow, ShoppingCart) {
+.controller('GoodDetailCtrl', function($scope, $stateParams,
+  UserInfo, FruitDetail, FruitPicShow) {
   const goodId = $stateParams.goodId
   const type = $stateParams.type
-  $scope.isHideAddCart = false;
-  $scope.singleNumber = 0;
+
+  $scope.type = type
 
   UserInfo.then(function(user) {
-    FruitDetail.get({
+    const data = {
       'longitude': user.longitude,
       'latitude': user.latitude,
       'productId': goodId
-    }, function(data) {
-      $scope.good = data.data.product;
-      $scope.shop = data.data.shop;
-      $rootScope.$broadcast('cartChange');
-      FruitPicShow.get({
-        'longitude': user.longitude,
-        'latitude': user.latitude,
-        'productId': goodId
-      }, function(data) {
-        $scope.imgs = data.data;
-      });
-    });
+    }
 
-    $scope.$on('cartChange', function(event, data) {
-      $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
-      if ($scope.singleNumber > 0) {
-        $scope.isHideAddCart = true;
-      } else {
-        $scope.isHideAddCart = false;
-      }
+    FruitDetail.get(data, function(res) {
+      $scope.good = res.data.product;
+      $scope.shop = res.data.shop;
+
+      FruitPicShow.get(data, function(res) {
+        $scope.imgs = res.data;
+      });
     });
 
   })

@@ -10,22 +10,21 @@ angular.module('starter.directives')
     },
     templateUrl: './build/components/add-cart/cart-modal.html',
     controller: function($scope, ShoppingCart) {
-
-      $scope.$watch('shop', function(nv) {
-        if (!nv) {
+      $scope.$watch('shop', function(value) {
+        if (!value) {
           return
         } else {
-          getShopCart();
+          getTypeCart();
         }
       })
 
       $scope.$on('cartChange', function(event, data) {
-        getShopCart();
+        getTypeCart();
       });
 
-      function getShopCart() {
-        $scope.totalNumber = ShoppingCart.getShopCartNumber({ type: $scope.type, shop: $scope.shop });
-        $scope.totalMoney = ShoppingCart.getShopCartMoney({ type: $scope.type, shop: $scope.shop });
+      function getTypeCart() {
+        $scope.typeCartNumber = ShoppingCart.getTypeCartNumber({ type: $scope.type });
+        $scope.typeCartMoney = ShoppingCart.getTypeCartMoney({ type: $scope.type });
       }
       //   $ionicModal.fromTemplateUrl('./build/components/add-cart/cartModal.html', {
       //     scope: $scope,

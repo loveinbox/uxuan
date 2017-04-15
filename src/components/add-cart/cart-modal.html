@@ -2,8 +2,8 @@
   ng-click="openModal()">
   <i class="icon ion-ios-cart icon-cart"></i>
   <div class="cart-number-tip"
-    ng-show="totalNumber > 0">{{totalNumber}}</div>
-  <div class="cart-number-total">共:{{totalMoney/100}}元</div>
+    ng-show="typeCartNumber > 0">{{typeCartNumber}}</div>
+  <div class="cart-number-total">共:{{typeCartMoney/100 || 0}}元</div>
   <!-- <ion-modal-view class="cart-modal" ng-click="closeModal()">
   <ion-list class="cart-modal-list">
     <ion-item class="cart-item" ng-repeat="good in cartGoods">

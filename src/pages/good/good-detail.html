@@ -4,13 +4,17 @@
     <section class="good-img">
       <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
     </section>
-    <section class="good-main-info">
+    <section class="good-main-info relative">
       <div class="good-name">{{good.productName}}</div>
       <div class="good-descirbe">
         {{good.productDescription}}&nbsp;&nbsp;{{(good.productMeasure)}}
       </div>
       <div class="good-price">￥{{good.productPrice/100 || 10}}</div>
-      <!-- <div add-cart></div> -->
+      <add-cart class="good-detail__add-cart"
+        type="type"
+        shop="shop"
+        good="good"
+        cart-type="text"></add-cart>
     </section>
     <section class="good-shop">
       <a class="clearfix"
@@ -36,11 +40,14 @@
     <section class="good-more-pics">
       <ion-list class="index-list">
         <ion-item class="index-list-item"
-          ng-repeat="img in imgs"> <img ng-src="http://lifeuxuan.com/{{img}}"> </ion-item>
+          ng-repeat="img in imgs">
+          <img ng-src="http://lifeuxuan.com/{{img}}">
+        </ion-item>
       </ion-list>
     </section>
   </ion-content>
   <ion-footer-bar>
-    <go-to-cart type="fruit"></go-to-cart>
+    <go-to-cart type="type"
+      shop="shop"></go-to-cart>
   </ion-footer-bar>
 </ion-view>

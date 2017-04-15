@@ -3,11 +3,11 @@ angular.module('starter.directives')
 .directive('addCart', function() {
   return {
     restrict: 'E',
-    replace: true,
     scope: {
       type: '=',
       shop: '=',
       good: '=',
+      cartType: '@'
     },
     templateUrl: './build/components/add-cart/add-cart.html',
     controller: function($scope, $rootScope, ShoppingCart, UserInfo) {
@@ -24,8 +24,6 @@ angular.module('starter.directives')
         //   $scope.isHideAddCart = true;
         // }
         $scope.addCart = function(event, good, shop) {
-          event.stopPropagation();
-          // console.log('1-->', user.verify);
           // if (!(user.verify - 0)) {
           //   $state.go('phoneNumberCheck');
           //   return;
@@ -35,9 +33,48 @@ angular.module('starter.directives')
             good: $scope.good,
             shop: $scope.shop
           });
-          $rootScope.$broadcast('cartChange');
+        };
+        $scope.removeCart = function(event, good, shop) {
+          // if (!(user.verify - 0)) {
+          //   $state.go('phoneNumberCheck');
+          //   return;
+          // }
+          ShoppingCart.removeItem({
+            type: $scope.type,
+            good: $scope.good,
+            shop: $scope.shop
+          });
         };
       })
+
+      $scope.$watch('shop', function(value) {
+        if (!value) {
+          return
+        } else {
+          getGoodNumber();
+        }
+      })
+
+      $scope.$on('cartChange', function(event) {
+        getGoodNumber();
+      });
+
+      function getGoodNumber() {
+        $scope.goodNumber = ShoppingCart.getGoodNumber({
+          type: $scope.type,
+          good: $scope.good,
+          shop: $scope.shop
+        });
+      }
+
+      // $scope.$on('cartChange', function(event, data) {
+      //   $scope.singleNumber = ShoppingCart.getGoodNumber($scope.good, $scope.shop);
+      //   if ($scope.singleNumber > 0) {
+      //     $scope.isHideAddCart = true;
+      //   } else {
+      //     $scope.isHideAddCart = false;
+      //   }
+      // });
 
       // cartFly(event);
 

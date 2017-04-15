@@ -1,7 +1,24 @@
-<div class="button-cart-wrap">
-  <div class="button button-small button-cart"
-    ng-click="addCart($event)"
-    ng-hide="isHideAddCart"><span>加入购物车</span>
+<div class="add-cart">
+  <div ng-show="goodNumber <= 0"
+    ng-click="addCart($event)">
+    <div ng-if="cartType === 'text' "
+      class="button button-small text-button">
+      <span>加入购物车</span>
+    </div>
+    <div ng-if="cartType !== 'text' "
+      class="icon-button">
+      <i class="icon ion-ios-cart icon-cart"></i>
+    </div>
   </div>
-  <!-- <div single-cart ng-hide="!isHideAddCart"></div> -->
+  <div ng-show="goodNumber > 0">
+    <div class="add-icon fl"
+      ng-click="removeCart(good, shop)">
+      <i class="icon ion-minus-round"></i>
+    </div>
+    <div class="cart-number fl">{{goodNumber}}</div>
+    <div class="remove-icon fl"
+      ng-click="addCart($event)">
+      <i class="icon ion-plus-round"></i>
+    </div>
+  </div>
 </div>

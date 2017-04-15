@@ -11,7 +11,7 @@ angular.module('starter.controllers')
   let insertMethod = methodMap[type];
   let orderData = {}
   $scope.isAllChecked = false;
-  $scope.totalMoney = ShoppingCart.getTotalCartMoney(type);
+  $scope.totalMoney = ShoppingCart.getTypeCartMoney({ type });
   $scope.payButton = '微信支付'
 
   UserInfo.then(function(user) {

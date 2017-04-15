@@ -19,6 +19,7 @@ angular.module('starter.directives')
 
       $scope.order.isAllChecked = true;
       $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
+      $scope.totalMoney = ShoppingCart.getTypeCartMoney({ type });
 
       $scope.$on('cartChange', function(event, data) {
         $scope.status.isGetThroesold = ShoppingCart.isGetThroesold(type);
