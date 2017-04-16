@@ -9,13 +9,14 @@ angular.module('starter.directives')
       good: '='
     },
     templateUrl: './build/components/add-coffee/add-coffee.html',
-    controller: function($scope, $rootScope, $ionicModal, ShoppingCart, UserInfo) {
+    controller: function($scope, $state, $ionicModal, ShoppingCart, UserInfo) {
       UserInfo.then(function(user) {
         $scope.addCart = function(event, good, shop) {
-          // if (!(user.verify - 0)) {
-          //   $state.go('phoneNumberCheck');
-          //   return;
-          // }
+          if (user.verifyCode !== 1) {
+            $scope.modal.hide();
+            $state.go('phoneCheck');
+            return;
+          }
           Object.assign($scope.good, $scope.selected)
           ShoppingCart.addItem({
             type: $scope.type,
@@ -45,23 +46,18 @@ angular.module('starter.directives')
         getGoodNumber();
       });
 
-      $scope.tempratureList = [{ name: '冷', id: 12 }, { name: '热', id: 34 }]
+      $scope.temperatureList = [{ name: '冷', id: 22001 }, { name: '热', id: 22002 }]
       $scope.cupList = [{
         name: '中杯',
-        id: 56
+        id: 23001
       }, {
         name: '大杯',
-        id: 78
+        id: 23002
       }, {
         name: '超大杯',
-        id: 90
+        id: 23003
       }]
 
-      $scope.selected = {
-        temperatureId: 12,
-        cupId: 56,
-        number: 1
-      }
       $ionicModal.fromTemplateUrl('./build/components/add-coffee/modal-coffee.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -70,19 +66,17 @@ angular.module('starter.directives')
         $scope.modal.hide();
       });
 
-      $scope.pickTemprature = function(temprature, event) {
-        event.stopPropagation()
-        $scope.selected.temperatureId = temprature.id
+      $scope.pickTemprature = function(temperature) {
+        $scope.selected.temperatureId = temperature.id
       }
-      $scope.pickCup = function(cup, event) {
-        event.stopPropagation()
+      $scope.pickCup = function(cup) {
         $scope.selected.cupId = cup.id
       }
 
       $scope.openModal = function() {
         $scope.selected = {
-            temperatureId: 12,
-            cupId: 56,
+            temperatureId: 22001,
+            cupId: 23001,
             number: 1
           }
           // if ($scope.totalNumber > 0) {

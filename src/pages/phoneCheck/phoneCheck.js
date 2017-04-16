@@ -2,20 +2,14 @@ angular.module('starter.controllers')
 
 .controller('phoneNumberCheckCtrl', function($scope, $rootScope, $interval, UserInfo, SendCheckCode,
   CheckCheckCode, $ionicHistory, $state) {
-  var e = {};
-  $scope.check = {};
-  $scope.check.time = 0;
+  $scope.check = {
+    time: 0
+  };
   var timer = 0;
 
   UserInfo.then(function(user) {
-    $scope.check.phoneNumber = localStorage.getItem('userPhone')
-    $scope.$watch('check.phoneNumber', function(nv, ov) {
-      if (nv) {
-        localStorage.setItem('userPhone', nv);
-      }
-    })
 
-    $scope.sendCode = function(e, order) {
+    $scope.sendCode = function() {
       if ($scope.check.time > 0) {
         return;
       } else {
@@ -40,8 +34,7 @@ angular.module('starter.controllers')
       })
     }
 
-    $scope.checkCode = function(e, order) {
-      var phoneNumber = $scope.check.phoneNumber;
+    $scope.checkCode = function() {
       if (!$scope.check.isAgree) {
         return;
       }
@@ -52,17 +45,12 @@ angular.module('starter.controllers')
         'code': $scope.check.checkCode,
         'userId': user.userId
       }, function(data) {
-        localStorage.removeItem('userPhone');
-        // console.log(' checkcoode data.code', data.code);
-        // console.log(' checkcoode data.msg', data.msg);
         if (data.code == -1) {
           alert('验证失败');
           return;
         }
-        console.log('$scope.check.phoneNumber', phoneNumber);
-        user.rdvPhone = $scope.check.phoneNumber;
         user.verify = '1';
-        $state.go('app.sessions');
+        $state.go('app.index');
       });
     }
   })

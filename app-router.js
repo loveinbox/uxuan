@@ -84,25 +84,25 @@ angular.module('starter')
 
     .state('orderDetail', {
       url: '/order/:type/:orderId',
-      templateUrl: './build/pages/order/order-detail.html ',
+      templateUrl: './build/pages/order/order-detail.html',
       controller: 'orderDetailCtrl'
     })
 
-    // .state('phoneNumberCheck', {
-    //   url: '/phoneNumberCheck',
-    //   templateUrl: 'templates/phoneNumberCheck.html ',
-    //   controller: 'phoneNumberCheckCtrl'
-    // })
+    .state('phoneCheck', {
+      url: '/phoneCheck',
+      templateUrl: './build/pages/phoneCheck/phoneCheck.html',
+      controller: 'phoneNumberCheckCtrl'
+    })
 
     // .state('washList', {
     //   url: '/washList',
-    //   templateUrl: 'templates/washTemplates/washList.html ',
+    //   templateUrl: 'templates/washTemplates/washList.html',
     //   controller: 'washListCtrl'
     // })
 
     // .state('washSingle', {
     //   url: '/washSingle/:shopId',
-    //   templateUrl: 'templates/washTemplates/washSingle.html ',
+    //   templateUrl: 'templates/washTemplates/washSingle.html',
     //   controller: 'washSingleCtrl'
     // })
 
@@ -113,7 +113,7 @@ angular.module('starter')
 
     // .state('washSingleOrder', {
     //   url: '/washSingleOrder/:shopId/:orderId',
-    //   templateUrl: 'templates/washTemplates/washSingle-order.html ',
+    //   templateUrl: 'templates/washTemplates/washSingle-order.html',
     //   controller: 'washSingleOrderCtrl'
     // })
 
@@ -133,7 +133,7 @@ angular.module('starter')
 
     .state('pay', {
       url: '/pay',
-      templateUrl: './build/pages/order/wxPay.html ',
+      templateUrl: './build/pages/order/wxPay.html',
       controller: 'wxPayCtrl'
     })
 

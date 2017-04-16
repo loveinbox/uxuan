@@ -3,14 +3,22 @@ var serviceURLs = {
   /*
    * Common
    */
-  BannerIndex: '/banner/index',
   NearByEguard: '/eguards',
+  Search: '/search/normal',
+  /*
+   * Index
+   */
+  BannerIndex: '/banner/index',
   MainPageHot: '/hot/index',
   FruitRank: '/rank/index/fruit',
   WashRank: '/rank/index/wash',
+  /*
+   * User
+   */
+  userWechatInfo: '/user/basicinfo',
+  userRegister: '/user/register',
   SendCheckCode: '/code/send',
   CheckCheckCode: '/code/check',
-  Search: '/search/normal',
   /*
    * Order show
    */

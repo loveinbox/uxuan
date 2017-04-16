@@ -1,23 +1,38 @@
 <ion-view view-title="U选到家">
-  <div class="index-header">
-    <div go-back></div>
-  </div>
-  <ion-content class="has-header">
+  <u-header></u-header>
+  <ion-content class="has-header phone-check">
     <div>
       <h4 class="text-center">请验证手机</h4>
-      <input type="text" name="phoneNumber" class="check-phone-number" ng-model="check.phoneNumber" autofocus placeholder="手机号" style="padding-left: 10px;">
-      <div class="check-action-wrap">
-        <input type="text" name="checkCode" class="check-code" ng-model="check.checkCode" placeholder="验证码" style="padding-left: 10px;">
-        <div class="check-action button button-small button-balanced" ng-click="sendCode()" ng-class="{'disabled': check.time > 0}">
-          <span>发送</span>
-          <span ng-show="check.time > 0">{{check.time}}</span>
+      <div class="input-section clearfix">
+        <input type="text"
+          ng-model="check.phoneNumber"
+          autofocus
+          placeholder="手机号">
+        <div class="check-code">
+          <input type="text"
+            ng-model="check.checkCode"
+            placeholder="验证码">
         </div>
-        <div class="text-center" style="margin: 10px">
-          <input id='agree' type="checkbox" ng-model='check.isAgree'>
-          <span><label for='agree'>同意</label> 《<a href="http://mp.weixin.qq.com/s/puylqePsMkR3PhC2vju1Yg" class="to-click-outline">用户协议</a>》</span>
+        <div class="check-action">
+          <div class="button button-small button-balanced"
+            ng-click="sendCode()"
+            ng-class="{'disabled': check.time > 0}">
+            <span ng-hide="check.time > 0">发送</span>
+            <span ng-show="check.time > 0">{{check.time}}</span>
+          </div>
         </div>
-        <button class="button button-small button-balanced" ng-class="{'disabled': !check.isAgree}" ng-click="checkCode()" style='display:block;width: 80%;margin: 10px auto;'>验证</button>
       </div>
+      <div class="text-center">
+        <input id="agree"
+          type="checkbox"
+          ng-model='check.isAgree'>
+        <span>
+          <label for='agree'>同意</label> 《<a href="http://mp.weixin.qq.com/s/puylqePsMkR3PhC2vju1Yg" class="to-click-outline">用户协议</a>》
+        </span>
+      </div>
+      <button class="button button-small button-balanced check-button"
+        ng-class="{'disabled': !check.isAgree}"
+        ng-click="checkCode()">验证</button>
     </div>
   </ion-content>
 </ion-view>

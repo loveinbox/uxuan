@@ -11,13 +11,13 @@ angular.module('starter.services')
   let carts = CartStore.getCarts()
 
   this.addItem = function({ type, shop, good }) {
-    _addItem(typeWrap(type), ShopCart(shop), CartGood(good))
+    _addItem(typeWrap(type), ShopCartItem(shop), CartGoodItem(good))
   }
   this.removeItem = function({ type, shop, good }) {
-    _removeItem(typeWrap(type), ShopCart(shop), CartGood(good))
+    _removeItem(typeWrap(type), ShopCartItem(shop), CartGoodItem(good))
   }
   this.getGoodNumber = function({ type, shop, good }) {
-    return _getGoodNumber(typeWrap(type), ShopCart(shop), CartGood(good))
+    return _getGoodNumber(typeWrap(type), ShopCartItem(shop), CartGoodItem(good))
   }
   this.getTypeCart = function({ type }) {
     return _getTypeCart(typeWrap(type))
@@ -28,14 +28,14 @@ angular.module('starter.services')
   this.getTypeCartMoney = function({ type }) {
     return _getTypeCartMoney(typeWrap(type))
   }
-  this.getTypeCartProductList = function({ type }) {
-    return _getTypeCartProductList(typeWrap(type))
+  this.getShopCartProductsList = function({ type, shop }) {
+    return _getShopCartProductsList(typeWrap(type), ShopCartItem(shop))
   }
   this.checkGood = function({ type, shop, good }) {
-    _checkGood(typeWrap(type), ShopCart(shop), CartGood(good))
+    _checkGood(typeWrap(type), ShopCartItem(shop), CartGoodItem(good))
   }
   this.checkShop = function({ type, shop }) {
-    _checkShop(typeWrap(type), ShopCart(shop))
+    _checkShop(typeWrap(type), ShopCartItem(shop))
   }
   this.checkAll = function({ type }) {
     _checkAll(typeWrap(type))
@@ -47,28 +47,28 @@ angular.module('starter.services')
     _cleanCart(typeWrap(type))
   }
 
-  function _addItem(type, shopCart, cartGood) {
+  function _addItem(type, shopCartItem, cartGoodItem) {
     let _cart = carts[type]
-    let shopIndex = _.findIndex(_cart.shopCart, { 'shopId': shopCart.shopId });
+    let shopIndex = _.findIndex(_cart.shopCart, { 'shopId': shopCartItem.shopId });
     // 商店购物车第一次被添加
     if (shopIndex < 0) {
-      cartGood.productQuantity = 1;
-      shopCart.number = 1;
-      shopCart.productsList = [cartGood];
+      cartGoodItem.productQuantity = 1;
+      shopCartItem.number = 1;
+      shopCartItem.productsList = [cartGoodItem];
       _cart.number = 1;
-      _cart.shopCart.push(shopCart);
+      _cart.shopCart.push(shopCartItem);
     } else {
       // 商店购物车第二次被添加
       let goodIndex = _.findIndex(_cart.shopCart[shopIndex].productsList, {
-        'productId': cartGood.productId,
-        'cupId': cartGood.cupId,
-        'temperatureId': cartGood.temperatureId
+        'productId': cartGoodItem.productId,
+        'cupId': cartGoodItem.cupId,
+        'temperatureId': cartGoodItem.temperatureId
       });
       // 商品第一次被添加
       if (goodIndex < 0) {
-        cartGood.productQuantity = 1;
+        cartGoodItem.productQuantity = 1;
         _cart.shopCart[shopIndex].number++;
-        _cart.shopCart[shopIndex].productsList.push(cartGood);
+        _cart.shopCart[shopIndex].productsList.push(cartGoodItem);
       } else {
         // 商品第二次被添加
         _cart.shopCart[shopIndex].productsList[goodIndex].productQuantity++;
@@ -79,16 +79,16 @@ angular.module('starter.services')
     _cartChange(type, _cart)
   }
 
-  function _removeItem(type, shopCart, cartGood) {
+  function _removeItem(type, shopCartItem, cartGoodItem) {
     let _cart = carts[type];
-    let shopIndex = _.findIndex(_cart.shopCart, { 'shopId': shopCart.shopId });
+    let shopIndex = _.findIndex(_cart.shopCart, { 'shopId': shopCartItem.shopId });
     if (shopIndex < 0) {
       return;
     }
     let goodIndex = _.findIndex(_cart.shopCart[shopIndex].productsList, {
-      'productId': cartGood.productId,
-      'cupId': cartGood.cupId,
-      'temperatureId': cartGood.temperatureId
+      'productId': cartGoodItem.productId,
+      'cupId': cartGoodItem.cupId,
+      'temperatureId': cartGoodItem.temperatureId
     });
     if (goodIndex < 0) {
       return;
@@ -105,23 +105,23 @@ angular.module('starter.services')
     _cartChange(type, _cart)
   }
 
-  function _getGoodNumber(type, shopCart, cartGood) {
-    let _cart = carts[type].shopCart;
-    let shopIndex = _.findIndex(_cart, { 'shopId': shopCart.shopId });
+  function _getGoodNumber(type, shopCartItem, cartGoodItem) {
+    let _shopCart = carts[type].shopCart;
+    let shopIndex = _.findIndex(_shopCart, { 'shopId': shopCartItem.shopId });
     if (shopIndex < 0) {
       return 0;
     }
 
-    let goodIndex = _.findIndex(_cart[shopIndex].productsList, {
-      'productId': cartGood.productId,
-      'cupId': cartGood.cupId,
-      'temperatureId': cartGood.temperatureId
+    let goodIndex = _.findIndex(_shopCart[shopIndex].productsList, {
+      'productId': cartGoodItem.productId,
+      'cupId': cartGoodItem.cupId,
+      'temperatureId': cartGoodItem.temperatureId
     });
     if (goodIndex < 0) {
       return 0;
     }
 
-    return _cart[shopIndex].productsList[goodIndex].productQuantity;
+    return _shopCart[shopIndex].productsList[goodIndex].productQuantity;
   }
 
   function _getTypeCart(type) {
@@ -135,15 +135,19 @@ angular.module('starter.services')
   }
 
   function _getTypeCartMoney(type) {
-    let _cart = carts[type].shopCart;
     return calculateMoney(type);
   }
 
-  function _getTypeCartProductList(type) {
-    return carts[type].shopCart;
+  function _getShopCartProductsList(type, shopCartItem) {
+    let _shopCart = carts[type].shopCart;
+    let shopIndex = _.findIndex(_shopCart, { 'shopId': shopCartItem.shopId });
+    if (shopIndex < 0) {
+      return 0;
+    }
+    return _shopCart[shopIndex].productsList;
   }
 
-  function _checkGood(type, shopCart, cartGood) {
+  function _checkGood(type, shopCartItem, cartGoodItem) {
     _cartChange(type, _cart)
   }
 
@@ -169,8 +173,8 @@ angular.module('starter.services')
   }
 
   // 一个商家的购物车
-  function ShopCart(shop) {
-    let shopCart = {
+  function ShopCartItem(shop) {
+    let shopCartItem = {
       'shopId': shop.shopId,
       'shopInfo': {
         shopName: shop.shopName,
@@ -183,11 +187,11 @@ angular.module('starter.services')
       'number': 0, //购物车内所有商品的数量
       'productsList': [] //goods in this shopCart
     }
-    return shopCart;
+    return shopCartItem;
   }
 
-  function CartGood(good) {
-    let cartGood = {
+  function CartGoodItem(good) {
+    let cartGoodItem = {
       'productId': good.productId,
       'productName': good.productName,
       'productDescription': good.productDescription,
@@ -202,7 +206,7 @@ angular.module('starter.services')
       'productQuantity': 0, //该商品的数量
       'isChecked': true
     }
-    return cartGood;
+    return cartGoodItem;
   }
 
   function typeWrap(type) {
@@ -210,12 +214,12 @@ angular.module('starter.services')
   }
 
   function calculateMoney(type) {
-    let _cart = carts[type].shopCart;
-    let shopCartMoney = 0;
-    _cart.forEach(shopCart => {
+    let _shopCart = carts[type].shopCart;
+    let _shopCartMoney = 0;
+    _shopCart.forEach(shopCart => {
       shopCart.productsList.forEach(value => {
         if (value.isChecked) {
-          shopCartMoney += value.productPrice * value.productQuantity;
+          _shopCartMoney += value.productPrice * value.productQuantity;
         }
       });
       // shopCart.singleCartTotalNumber = tempTotalMoney;
@@ -232,7 +236,7 @@ angular.module('starter.services')
       // }
       // money += shopCart.singleCartTotalNumber;
     });
-    return shopCartMoney
+    return _shopCartMoney
   }
 
 })

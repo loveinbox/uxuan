@@ -66,9 +66,10 @@ angular.module('starter.directives')
         dayOff = dayOff || 1;
         var date = new Date();
         date.setDate(date.getDate() + dayOff);
+        var year = date.getFullYear()
         var month = date.getMonth() + 1;
         var day = date.getDate();
-        return addZero(month) + '-' + addZero(day);
+        return year + '-' + addZero(month) + '-' + addZero(day);
       }
 
       function addZero(number) {

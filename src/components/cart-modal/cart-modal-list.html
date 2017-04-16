@@ -1,0 +1,20 @@
+<ion-modal-view class="mask"
+  ng-click="closeModal()">
+  <div class="car-modal-list"
+    ng-click="stop($event)">
+    <ion-list>
+      <ion-item class="cart-item"
+        ng-repeat="good in cartGoods">
+        <div class="info clearfix">
+          <p class="name"><strong>{{good.productName}}</strong></p>
+          <p>{{good.cupId | coffeeIdMapText}}</p>
+          <p>{{good.temperatureId | coffeeIdMapText}}</p>
+        </div>
+        <add-cart class="car-modal-list__add-cart"
+          good="good"
+          shop="shop"
+          type="type"></add-cart>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-modal-view>

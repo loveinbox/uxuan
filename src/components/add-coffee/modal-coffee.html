@@ -1,14 +1,14 @@
 <ion-modal-view class="mask">
   <div class="add-cart modal-coffee">
     <div class="config clearfix">
-      <div class="temprature">
+      <div class="temperature">
         <div class="header">温度</div>
         <div class="body">
           <ul class="clearfix">
-            <li ng-repeat="temprature in tempratureList"
-              ng-class="{'u-active':temprature.id === selected.tempratureId}"
-              ng-click="pickTemprature(temprature, $event)">
-              {{temprature.name}}
+            <li ng-repeat="temperature in temperatureList"
+              ng-class="{'u-active':temperature.id === selected.temperatureId}"
+              ng-click="pickTemprature(temperature)">
+              {{temperature.name}}
             </li>
           </ul>
         </div>
@@ -19,7 +19,7 @@
           <ul class="clearfix">
             <li ng-repeat="cup in cupList"
               ng-class="{'u-active':cup.id === selected.cupId}"
-              ng-click="pickCup(cup, $event)">
+              ng-click="pickCup(cup)">
               {{cup.name}}
             </li>
           </ul>
@@ -50,11 +50,4 @@
         ng-click="closeModal()">完成</div>
     </div>
   </div>
-  <!-- <ion-list class="cart-modal-list">
-    <ion-item class="cart-item" ng-repeat="good in cartGoods">
-      <span class="cart-good-name"><strong>{{good.productName}}</strong></span>
-      <span class="cart-good-price">￥{{good.productPrice/100}}</span>
-      <div single-cart class="fr"></div>
-    </ion-item>
-  </ion-list> -->
 </ion-modal-view>

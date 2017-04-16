@@ -3,10 +3,13 @@
 
 <head>
   <base href="/">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <meta http-equiv="content-type"
+    content="text/html; charset=utf-8" />
+  <meta name="viewport"
+    content="initial-scale=1.0, user-scalable=no" />
   <script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
-  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.08&ak=GmTMxfwhUXAjvt2RvxHYTIayFOSUtPRv"></script>
+  <script type="text/javascript"
+    src="http://api.map.baidu.com/api?v=2.08&ak=GmTMxfwhUXAjvt2RvxHYTIayFOSUtPRv"></script>
   <title>定位</title>
   <style type="text/css">
     body,
@@ -47,7 +50,8 @@
   <div id="localCurrent">
     <table>
       <tr>
-        <td><img src="http://www.lifeuxuan.com/backend/images/comm/local.jpg" style="width:30px;height:30px" /></td>
+        <td><img src="http://www.lifeuxuan.com/backend/images/comm/local.jpg"
+            style="width:30px;height:30px" /></td>
         <td align="left">
           <label style="color: #0066CC">定位当前位置</label>
         </td>
@@ -58,38 +62,43 @@
   <div id="r-result">
     <table>
       <tr>
-        <td><img src="http://www.lifeuxuan.com/backend/images/comm/search.jpg" style="width:30px;height:30px" /></td>
-        <td align="left" width="100%">
-          <input type="text" id="suggestId" size="20" value="" style="width:90%;border-color:#0066cc" />
+        <td><img src="http://www.lifeuxuan.com/backend/images/comm/search.jpg"
+            style="width:30px;height:30px" /></td>
+        <td align="left"
+          width="100%">
+          <input type="text"
+            id="suggestId"
+            size="20"
+            value=""
+            style="width:90%;border-color:#0066cc" />
         </td>
       </tr>
     </table>
   </div>
-  <div id="searchResultPanel" style="border:1px solid #c0c0c0;width:150px;height:auto;display:none;"></div>
+  <div id="searchResultPanel"
+    style="border:1px solid #c0c0c0;width:150px;height:auto;display:none;"></div>
   <div id="l-map"></div>
   <!-- <input type="button" class="mapsearch" value="搜索" /> -->
-  <button id="ok" class="mapsearch">搜索</button>
+  <button id="ok"
+    class="mapsearch">搜索</button>
 </body>
 
 </html>
 <script type="text/javascript">
 $(document).ready(function() {
 
-  var userLocation = JSON.parse(localStorage.getItem('userLocation')) || {};
+  var userLocation = {};
 
   $('#localCurrent').click(function(event) {
     $(".mapsearch").text("确定");
-    userLocation.isSearchGeo = true;
     var geolocation = new BMap.Geolocation();
     geolocation.getCurrentPosition(function(r) {
       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
         var mk = new BMap.Marker(r.point);
         map.addOverlay(mk);
         map.panTo(r.point);
-        // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
         userLocation.latitude = r.point.lat;
         userLocation.longitude = r.point.lng;
-        console.log('current', userLocation.latitude, userLocation.longitude)
         SetPlace(userLocation.latitude, userLocation.longitude);
       } else {
         alert('failed' + this.getStatus());
@@ -100,8 +109,10 @@ $(document).ready(function() {
   });
 
   $('#ok').click(function(event) {
+    var query = 'latitude=' + userLocation.latitude + '&longitude=' + userLocation.longitude
     if ($(this).text() === '确定') {
-      window.location.href = 'http://www.lifeuxuan.com';
+      window.location.href = 'http://localhost:8585/app/index?' + query;
+      // window.location.href = 'http://www.lifeuxuan.com?' + query;
     }
   });
 
