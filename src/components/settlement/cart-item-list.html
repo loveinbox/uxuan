@@ -44,7 +44,11 @@
               </div>
               <div class="name">
                 <p>{{good.productName}}</p>
-                <p>￥{{good.productPrice/100}}</p>
+                <p>
+                  <span>￥{{good.productPrice/100}}</span>
+                  <span>{{good.temperatureId | coffeeIdMapText}}</span>
+                  <span>{{good.cupId | coffeeIdMapText}}</span>
+                </p>
               </div>
               <add-cart class="cart-item-list__add-cart"
                 type="type"

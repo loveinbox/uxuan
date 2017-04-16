@@ -45,11 +45,21 @@ angular.module('starter.directives')
         getGoodNumber();
       });
 
-      $scope.tempratureList = [{ name: '冷', id: 123 }, { name: '热', id: 456 }]
-      $scope.cupList = [{ name: '中杯', id: 123 }, { name: '大杯', id: 456 }, { name: '超大杯', id: 789 }]
+      $scope.tempratureList = [{ name: '冷', id: 12 }, { name: '热', id: 34 }]
+      $scope.cupList = [{
+        name: '中杯',
+        id: 56
+      }, {
+        name: '大杯',
+        id: 78
+      }, {
+        name: '超大杯',
+        id: 90
+      }]
+
       $scope.selected = {
-        temprature: { name: '冷', id: 123 },
-        cup: { name: '中杯', id: 123 },
+        temperatureId: 12,
+        cupId: 56,
         number: 1
       }
       $ionicModal.fromTemplateUrl('./build/components/add-coffee/modal-coffee.html', {
@@ -62,7 +72,7 @@ angular.module('starter.directives')
 
       $scope.pickTemprature = function(temprature, event) {
         event.stopPropagation()
-        $scope.selected.tempratureId = temprature.id
+        $scope.selected.temperatureId = temprature.id
       }
       $scope.pickCup = function(cup, event) {
         event.stopPropagation()
@@ -71,8 +81,8 @@ angular.module('starter.directives')
 
       $scope.openModal = function() {
         $scope.selected = {
-            tempratureId: 123,
-            cupId: 123,
+            temperatureId: 12,
+            cupId: 56,
             number: 1
           }
           // if ($scope.totalNumber > 0) {

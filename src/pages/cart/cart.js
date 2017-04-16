@@ -14,6 +14,10 @@ angular.module('starter.controllers')
   $scope.totalMoney = ShoppingCart.getTypeCartMoney({ type });
   $scope.payButton = '微信支付'
 
+  $scope.$on('cartChange', function(event, data) {
+    $scope.totalMoney = ShoppingCart.getTypeCartMoney({ type });
+  });
+
   UserInfo.then(function(user) {
     $scope.confirmOrder = function(event) {
       if (!isOrderAvaliable()) {

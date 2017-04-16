@@ -6,6 +6,19 @@ angular.module('starter')
   }
 })
 
+.filter('coffeeIdMapText', function() {
+  const mapRule = {
+    12: '冷',
+    34: '热',
+    56: '中杯',
+    78: '大杯',
+    90: '超大杯'
+  }
+  return function(input) {
+    return mapRule[input];
+  }
+})
+
 .factory('isTooFar', function() {
   return function isTooFar(address) {
     UserInfo.then(function(user) {
