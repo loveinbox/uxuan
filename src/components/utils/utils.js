@@ -25,12 +25,13 @@ angular.module('starter.directives')
 })
 
 
-.factory('isTooFar', function() {
+.factory('isTooFar', function(UserInfo, $q, $ionicPopup) {
   return function isTooFar(address) {
+    address = address || '';
+    var deferred = $q.defer();
+
     UserInfo.then(function(user) {
-      var deferred = $q.defer();
       var gc = new BMap.Geocoder();
-      address = address || '';
       gc.getPoint(address, function(point) {
         var map = new BMap.Map("allmap");
         var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
@@ -43,14 +44,16 @@ angular.module('starter.directives')
           deferred.resolve();
         }
       });
-      return deferred.promise;
     })
 
     function showAlert() {
-      var alertPopup = $ionicPopup.alert({
+      $ionicPopup.alert({
         title: 'U选到家',
         template: '收货地址超出您选择店面服务范围'
       });
     }
+
+    return deferred.promise;
+
   }
 })

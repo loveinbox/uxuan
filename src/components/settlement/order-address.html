@@ -1,19 +1,21 @@
 <div class="order-address">
   <div class="add-address"
-    ng-hide="isAdddressAdded">
-    添加收货地址
+    ng-hide="address.isValidated">
+    <a href="/address/new">添加收货地址</a>
   </div>
-  <div ng-hide="!isAdddressAdded"
+  <div ng-hide="!address.isValidated"
     class="current-address">
-    <span class="to-click-outline fr">修改地址</span>
+    <span class="to-click-outline fr">
+      <a href="/address/edit">修改地址</a>
+    </span>
     <div class="current-address-name">
-      {{address.rcvName || 123}}
+      {{address.name}}
     </div>
     <div class="current-address-tel"
-      ng-bind="address.rcvPhone || 123">
+      ng-bind="address.phone">
     </div>
     <div class="current-address-string">
-      {{address.rcvAddress || 123}}
+      {{address.address}}
     </div>
   </div>
 </div>

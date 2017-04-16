@@ -1,0 +1,22 @@
+<ion-view view-title="U选到家">
+  <u-header></u-header>
+  <ion-content class="has-header phone-check">
+    <div>
+      <h4 class="text-center">{{tipText}}</h4>
+      <div class="input-section clearfix">
+        <input type="text"
+          ng-model="address.name"
+          autofocus
+          placeholder="联系人">
+        <input type="number"
+          ng-model="address.phone"
+          placeholder="手机号">
+        <textarea type="text"
+          ng-model="address.address"
+          placeholder="详细地址"></textarea>
+      </div>
+      <button class="button button-small button-balanced check-button"
+        ng-click="confirmAddress()">完成</button>
+    </div>
+  </ion-content>
+</ion-view>

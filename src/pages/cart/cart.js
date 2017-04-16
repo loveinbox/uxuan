@@ -1,7 +1,7 @@
 angular.module('starter.controllers')
 
 .controller('CartCtrl', function($scope, $state, $q, $stateParams,
-  UserInfo, ShoppingCart, FruitOrder, WashOrder, WashReserve) {
+  UserInfo, ShoppingCart, FruitOrder, WashOrder, WashReserve, Address) {
   const type = $stateParams.type
   const methodMap = {
     wash: WashReserve,
@@ -11,7 +11,7 @@ angular.module('starter.controllers')
   let insertMethod = methodMap[type];
   let orderData = {}
 
-  $scope.address = {}
+  $scope.address = Object.assign({}, Address)
   $scope.sendDate = {}
   $scope.sendTime = {}
   $scope.guard = {}
@@ -99,9 +99,9 @@ angular.module('starter.controllers')
         'longitude': user.latitude,
         'userId': user.userId,
         'eguardId': $scope.guard.current.eguardId,
-        'rcvName': $scope.address.rcvName,
-        'rcvPhone': $scope.address.rcvPhone,
-        'rcvAddress': $scope.address.rcvAddress,
+        'rcvName': $scope.address.name,
+        'rcvPhone': $scope.address.phone,
+        'rcvAddress': $scope.address.address,
         'preferRcvTime': [preferFullTime[0], preferFullTime[1]], //期望收货时间
         'preferFetchTime': [preferFullTime[0], preferFullTime[1]],
         'needTicket': false,

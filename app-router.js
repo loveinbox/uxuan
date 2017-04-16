@@ -22,6 +22,7 @@ angular.module('starter')
 
     .state('app.cart', {
       url: '/cart/:type',
+      cache: false,
       views: {
         'tab-cart': {
           templateUrl: './build/pages/cart/cart.html',
@@ -116,6 +117,12 @@ angular.module('starter')
     //   templateUrl: 'templates/washTemplates/washSingle-order.html',
     //   controller: 'washSingleOrderCtrl'
     // })
+
+    .state('address', {
+      url: '/address/:type',
+      templateUrl: './build/pages/address/address.html',
+      controller: 'AddressCtrl'
+    })
 
     .state('search', {
       url: '/search',
