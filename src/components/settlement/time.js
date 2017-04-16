@@ -25,8 +25,8 @@ angular.module('starter.directives')
       initAvaliableDate();
       initAvaliableTime();
 
-      $scope.sendDate = $scope.timePick.AvaliableDates[0].value
-      $scope.sendTime = $scope.timePick.AvaliableTimes[0].value
+      $scope.sendDate.current = $scope.timePick.AvaliableDates[0].value
+      $scope.sendTime.current = $scope.timePick.AvaliableTimes[0].value
 
       $scope.changeDate = function changeDateFunction(index) {
         // 选择当天时间

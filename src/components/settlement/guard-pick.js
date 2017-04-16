@@ -15,6 +15,7 @@ angular.module('starter.directives')
           'latitude': user.latitude,
         }, function(data) {
           $scope.guards = data.data;
+          $scope.guard.current = $scope.guards[0]
         }, function(data) {
           alert('NO DATA');
         });

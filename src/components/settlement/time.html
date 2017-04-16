@@ -4,7 +4,7 @@
       <span ng-if="type == 'furit'">收货时间</span>
       <span ng-if="type == 'wash'">预约时间</span>
       <select class="data-pick"
-        ng-model="sendDate"
+        ng-model="sendDate.current"
         ng-options='option.value as option.name for option in timePick.AvaliableDates'
         ng-change="changeDate($index)"></select>
     </label>
@@ -13,7 +13,7 @@
     <label>
       <span>周{{timePick.avaliableWeek}}</span>
       <select class="data-pick"
-        ng-model="sendTime"
+        ng-model="sendTime.current"
         ng-options='option.value as option.name for option in timePick.AvaliableTimes'>
       </select>
     </label>

@@ -52,29 +52,27 @@ angular.module('starter.services')
   var deferred = $q.defer();
   var user = {}
 
-  // for testing
+  // ---for testing
   if (window.location.hostname == "localhost") {
     var user = {
-      'latitude': 31.214197,
-      'longitude': 121.496322,
-      'isOut': false,
-      'isGet': true,
-      'text': '测试定位',
-      'verifyCode': 1,
+      latitude: 31.214197,
+      longitude: 121.496322,
+      userId: 'C0000000001',
+      verifyCode: 1,
       userLocation: {
-        'latitude': 31.214197,
-        'longitude': 121.496322,
-        'isOut': false,
-        'isGet': true,
-        'text': '测试定位'
+        latitude: 31.214197,
+        longitude: 121.496322,
+        isOut: false,
+        isGet: true,
+        text: '测试定位'
       }
     };
     deferred.resolve(user);
     return deferred.promise;
-  }
+  } // ---for testing
+
 
   Location.then(function(userLocation) {
-    // user default value
     user.latitude = userLocation.latitude;
     user.longitude = userLocation.longitude;
     user.userLocation = userLocation;

@@ -85,11 +85,7 @@ angular.module('starter.services')
     if (shopIndex < 0) {
       return;
     }
-    let goodIndex = _.findIndex(_cart.shopCart[shopIndex].productsList, {
-      'productId': cartGoodItem.productId,
-      'cupId': cartGoodItem.cupId,
-      'temperatureId': cartGoodItem.temperatureId
-    });
+    let goodIndex = _.findIndex(_cart.shopCart[shopIndex].productsList, testCartGood(cartGoodItem));
     if (goodIndex < 0) {
       return;
     }
@@ -112,11 +108,7 @@ angular.module('starter.services')
       return 0;
     }
 
-    let goodIndex = _.findIndex(_shopCart[shopIndex].productsList, {
-      'productId': cartGoodItem.productId,
-      'cupId': cartGoodItem.cupId,
-      'temperatureId': cartGoodItem.temperatureId
-    });
+    let goodIndex = _.findIndex(_shopCart[shopIndex].productsList, testCartGood(cartGoodItem));
     if (goodIndex < 0) {
       return 0;
     }
@@ -207,6 +199,19 @@ angular.module('starter.services')
       'isChecked': true
     }
     return cartGoodItem;
+  }
+
+  function testCartGood(cartGoodItem) {
+    let _cartGood = {
+      'productId': cartGoodItem.productId,
+    }
+    if (cartGoodItem.cupId) {
+      _cartGood.cupId = cartGoodItem.cupId
+    }
+    if (cartGoodItem.temperatureId) {
+      _cartGood.temperatureId = cartGoodItem.temperatureId
+    }
+    return _cartGood
   }
 
   function typeWrap(type) {

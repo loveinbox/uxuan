@@ -2,6 +2,7 @@
   ng-click="openModal()">
   <i class="icon ion-ios-cart icon-cart"></i>
   <div class="cart-number-tip"
+    ng-class="{see: seeing}"
     ng-show="typeCartNumber > 0">{{typeCartNumber}}</div>
   <div class="cart-number-total">共:{{typeCartMoney/100 || 0}}元</div>
 </div>

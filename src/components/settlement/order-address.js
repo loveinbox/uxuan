@@ -9,6 +9,9 @@ angular.module('starter.directives')
     },
     templateUrl: './build/components/settlement/order-address.html',
     controller: function($scope, $q, $ionicPopup, UserInfo, isTooFar) {
+      $scope.address.rcvName = 123
+      $scope.address.rcvPhone = 123
+      $scope.address.rcvAddress = 123
       $scope.isAdddressAdded = false;
       $scope.$watch('address', function(nv) {
         if (nv && nv.rcvPhone) {

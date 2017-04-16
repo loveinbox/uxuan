@@ -9,9 +9,11 @@ angular.module('starter.directives')
       shop: '='
     },
     templateUrl: './build/components/cart-modal/cart-modal.html',
-    controller: function($scope, $ionicModal, ShoppingCart) {
+    controller: function($scope, $ionicModal, $timeout, ShoppingCart) {
       const type = $scope.type
       const shop = $scope.shop
+      let time = 0
+
       $scope.$watch('shop', function(value) {
         if (!value) {
           return
@@ -22,6 +24,11 @@ angular.module('starter.directives')
 
       $scope.$on('cartChange', function(event, data) {
         getTypeCart();
+        $timeout.cancel(time);
+        $scope.seeing = true
+        time = $timeout(function() {
+          $scope.seeing = false
+        }, 500)
       });
 
       function getTypeCart() {
