@@ -29,23 +29,23 @@
             <div class="clearfix">
               <p class="fl">总计:￥{{order.money/100| number:2}}</p>
               <p class="fl">共{{order.totalCount}}件</p>
-              <p class="fr">{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}</p>
+              <p class="fr">{{order.orderTime | addSeconds | date: 'yyyy-MM-dd HH:mm'}}</p>
             </div>
           </div>
           <!-- order more info -->
           <!-- wash -->
           <div ng-if="order.orderType == 17002">
             <p>
-              下单时间：{{order.orderTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+              下单时间：{{order.orderTime | addSeconds | date: 'yyyy-MM-dd HH:mm'}}
             </p>
             <p ng-if="order.orderStatusId - 0 < 11004">
-              预计取衣：{{order.preferFetchTime[0] * 1000 | date: 'yyyy-MM-dd HH:mm'}}--{{order.preferFetchTime[1] * 1000 | date: 'HH:mm'}}
+              预计取衣：{{order.preferFetchTime[0] | addSeconds | date: 'yyyy-MM-dd HH:mm'}}--{{order.preferFetchTime[1] | addSeconds | date: 'HH:mm'}}
             </p>
             <p ng-if="order.orderStatusId - 0 >= 11004 && order.orderStatusId - 0 < 11015">
-              取衣时间：{{order.fetchTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+              取衣时间：{{order.fetchTime | addSeconds | date: 'yyyy-MM-dd HH:mm'}}
             </p>
             <p ng-if="order.orderStatusId - 0 == 11015">
-              送回时间：{{order.finishTime * 1000 | date: 'yyyy-MM-dd HH:mm'}}
+              送回时间：{{order.finishTime | addSeconds | date: 'yyyy-MM-dd HH:mm'}}
             </p>
           </div>
         </div>

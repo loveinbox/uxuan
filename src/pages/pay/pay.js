@@ -1,16 +1,21 @@
 angular.module('starter.controllers')
 
-.controller('wxPayCtrl', function($scope, $state, $stateParams, WxPayParam, UserInfo,
-  orderStatus, WxPay, WxPayConfirmWash, WxPayConfirmFruit) {
+.controller('wxPayCtrl', function($scope, $state, $stateParams, $location,
+  UserInfo, WxPay, WxPayConfirmWash, WxPayConfirmFruit) {
   UserInfo.then(function(user) {
-    $scope.$on("$ionicParentView.leave", function(event, data) {
-      // console.log('loaded');
-      localStorage.setItem('backForbidden', true);
-    });
-    var sendData = WxPayParam.get();
+    var type = $location.search().type;
+    var money = $location.search().money;
+    var orderIdsList = $location.search().orderIdsList;
+    var sendData = {
+      type,
+      money,
+      orderIdsList,
+    }
+
     $scope.pay = {
       money: sendData.money
     };
+
     $scope.payOrder = function() {
       WxPay.save(sendData)
         .$promise
@@ -24,28 +29,22 @@ angular.module('starter.controllers')
               paySign: res.paySign,
               success: function(res) {
                 alert('支付成功');
-                orderStatus.paied();
                 if (sendData.orderType == 17001) {
                   WxPayConfirmFruit.save({ 'orderIdsList': sendData.orderIdsList })
                 } else {
                   WxPayConfirmWash.save({ 'orderIdsList': sendData.orderIdsList })
                 }
-                WxPayParam.set({});
-                $state.go('app.orders');
+                $state.go('app.order-list');
               },
               cancel: function(res) {
-                orderStatus.ordered();
-                $state.go('app.orders')
-              },
-              complete: function(res) {
-
+                alert('下订单成功，等待支付')
+                $state.go('app.order-list')
               }
             });
           });
         }, function() {
-          alert('下订单成功，等待支付');
-          orderStatus.ordered();
-          $state.go('app.orders')
+          alert('支付异常')
+          $state.go('app.order-list')
         })
     }
   })

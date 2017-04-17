@@ -26,16 +26,16 @@
         <tr ng-if="type == 17001">
           <td ng-if="order.orderStatusId != 10009">预计送达</td>
           <td ng-if="order.orderStatusId == 10009">送达时间</td>
-          <td>{{order.finishTime * 1000 | date: 'yyyy/MM/dd HH:mm'}}</td>
+          <td>{{order.finishTime | addSeconds | date: 'yyyy/MM/dd HH:mm'}}</td>
         </tr>
         <tr ng-if="type == 17002">
           <td ng-if="order.orderStatusId - 0 < 11004">预计取衣</td>
           <td ng-if="order.orderStatusId - 0 >= 11004">取衣时间</td>
-          <td>{{order.fetchTime * 1000 | date: 'yyyy/MM/dd HH:mm'}}</td>
+          <td>{{order.fetchTime | addSeconds | date: 'yyyy/MM/dd HH:mm'}}</td>
         </tr>
         <tr ng-if="type == 17002">
           <td ng-if="order.orderStatusId == 11015">到达时间</td>
-          <td ng-if="order.orderStatusId == 11015">{{order.finishTime * 1000 | date: 'yyyy/MM/dd HH:mm'}}</td>
+          <td ng-if="order.orderStatusId == 11015">{{order.finishTime | addSeconds | date: 'yyyy/MM/dd HH:mm'}}</td>
         </tr>
         <tr>
           <td>收货信息</td>

@@ -10,9 +10,9 @@ angular.module('starter.controllers')
     if (!judgeAddress()) {
       return
     }
-    Address.name = $scope.address.name
-    Address.phone = $scope.address.phone
-    Address.address = $scope.address.address
+    Address.rcvName = $scope.address.name
+    Address.rcvPhone = $scope.address.phone
+    Address.rcvAddress = $scope.address.address
     $state.go('app.cart', { type: 'fruit' })
   }
 

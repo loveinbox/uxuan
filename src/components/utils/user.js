@@ -48,7 +48,7 @@ angular.module('starter.services')
   return deferred.promise;
 })
 
-.factory('UserInfo', function($resource, $q, userWechatInfo, userRegister, Location) {
+.factory('UserInfo', function($resource, $q, userWechatInfo, userRegister, Location, Address) {
   var deferred = $q.defer();
   var user = {}
 
@@ -82,11 +82,7 @@ angular.module('starter.services')
       user.img = e.data.headimgurl;
       user.openid = e.data.openid;
       user.headPicUrl = e.data.headimgurl;
-      if (user.name == '哈库那玛塔塔') {
-        // screenLog.init({ autoScroll: true });
-      }
       userRegister.get({
-        'userId': 'C0000000001',
         'latitude': user.latitude,
         'longitude': user.longitude,
         'openId': user.openid,
@@ -95,7 +91,16 @@ angular.module('starter.services')
         'headPicUrl': user.headPicUrl
       }, function(res) {
         if (res.data) {
-          Object.assign(user, res.data)
+          var address = e.data.lastAddress;
+
+          user.userId = e.data.userId;
+          user.verify = e.data.verifyCode;
+          user.rcvName = address.rcvName;
+          user.rcvPhone = address.rcvPhone;
+          user.rcvAddress = address.rcvAddress;
+
+          Object.assign(Address, user)
+
           deferred.resolve(user);
         }
       })
