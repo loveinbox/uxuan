@@ -7,7 +7,8 @@ angular.module('starter.directives')
       type: '=',
       shop: '=',
       goodList: '=',
-      classList: '='
+      classList: '=',
+      isHideCart: '='
     },
     templateUrl: './build/components/scroll-list/scroll-list.html',
     controller: function($scope, $stateParams, $ionicScrollDelegate, $timeout) {

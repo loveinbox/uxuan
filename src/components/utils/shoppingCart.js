@@ -156,7 +156,8 @@ angular.module('starter.services')
   }
 
   function _cleanCart(type) {
-    _cartChange(type, _cart)
+    // let _shopCart = carts[type].shopCart;
+    // _cartChange(type, _cart)
   }
 
   function _cartChange(type, cart) {
@@ -247,7 +248,7 @@ angular.module('starter.services')
 })
 
 .service('CartStore', function() {
-  const TYPES = ['fruit', 'wash', 'coffee']
+  const TYPES = ['fruit', 'coffee', 'wash-order']
   let store = JSON.parse(localStorage.getItem('UShoppingCart')) || initStore()
   this.getCarts = function() {
     return store

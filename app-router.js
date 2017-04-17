@@ -130,18 +130,23 @@ angular.module('starter')
       controller: 'SearchCtrl'
     })
 
+    .state('pay', {
+      url: '/pay',
+      templateUrl: './build/pages/pay/pay.html',
+      controller: 'wxPayCtrl',
+      params: {
+        orderType: null,
+        orderIdsList: null,
+        money: null,
+      }
+    })
+
     .state('location', {
       url: '/location',
       template: "<div></div>",
       controller: function() {
         window.location.replace('/location.html');
       }
-    })
-
-    .state('pay', {
-      url: '/pay',
-      templateUrl: './build/pages/order/wxPay.html',
-      controller: 'wxPayCtrl'
     })
 
     ;

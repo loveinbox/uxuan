@@ -6,7 +6,8 @@ angular.module('starter.directives')
     replace: true,
     scope: {
       type: '=',
-      shop: '='
+      shop: '=',
+      isReserve: '='
     },
     templateUrl: './build/components/add-cart/go-to-cart.html',
   }

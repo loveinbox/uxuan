@@ -24,9 +24,11 @@ angular.module('starter.controllers')
         })
         .$promise
         .then(function(res) {
-          if (res.code === 0) {
-            $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
-          }
+          $state.go('shop-detail', {
+            type: 'wash-order',
+            shopId: order.shopId,
+            orderId: order.orderId
+          });
         });
     }
 

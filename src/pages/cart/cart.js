@@ -9,20 +9,28 @@ angular.module('starter.controllers')
     'wash-order': WashOrder,
     'fruit': FruitOrder
   }
-  let insertMethod = methodMap[type];
+  const insertMethod = methodMap[type];
+  const isReserve = type === 'wash'
+  const orderTypeMap = {
+    fruit: 17001,
+    'wash-order': 17002
+  }
+
   let orderData = {}
 
+
+  $scope.type = type
   $scope.address = Object.assign({}, Address)
   $scope.sendDate = {}
   $scope.sendTime = {}
   $scope.guard = {}
   $scope.sendDate = {}
   $scope.sendTime = {}
-  $scope.totalMoney = ShoppingCart.getTypeCartMoney({ type });
-  $scope.payButton = '微信支付'
+  $scope.totalMoney = isReserve ? 0 : ShoppingCart.getTypeCartMoney({ type });
+  $scope.payButton = isReserve ? '确认预约' : '微信支付'
 
   $scope.$on('cartChange', function(event, data) {
-    $scope.totalMoney = ShoppingCart.getTypeCartMoney({ type });
+    $scope.totalMoney = isReserve ? 0 : ShoppingCart.getTypeCartMoney({ type });
   });
 
   UserInfo.then(function(user) {
@@ -32,33 +40,25 @@ angular.module('starter.controllers')
       // } else {
       orderData = buildOrderData()
         // }
-      debugger
-      // insertMethod.save(orderData)
-      //   .$promise
-      //   .then(function(res) {
-      //     if (isReserve) {
-      //       alert('预约成功');
-      //       $state.go('app.order-list');
-      //     } else {
-      //       // var data = res.data;
-      //       // var payData = FruitOrWash.get() == 'furit' ? {
-      //       //   'orderIdsList': data.orderIdsList,
-      //       //   'orderType': 17001
-      //       // } : {
-      //       //   'orderIdsList': data.orderIdsList,
-      //       //   'orderType': 17002
-      //       // };
-      //       // payData.money = data.money;
-      //       // WxPayParam.set(payData);
-      //       // $state.go('pay');
-      //     }
-      //     ShoppingCart.cleanCart(type);
-      //   })
-      //   .catch(function(res) {
-      //     alert('下订单失败');
-      //     orderStatus.failed();
-      //     $state.go('app.order-list');
-      //   })
+      insertMethod.save(orderData)
+        .$promise
+        .then(function(res) {
+          if (isReserve) {
+            alert('预约成功');
+            $state.go('app.order-list');
+          } else {
+            const data = res.data;
+            const orderType = orderTypeMap[type]
+            const orderIdsList = data.orderIdsList
+            const money = data.money;
+            $state.go('pay', {
+              orderType,
+              orderIdsList,
+              money,
+            });
+          }
+          ShoppingCart.cleanCart(type);
+        })
     }
 
 
@@ -107,7 +107,7 @@ angular.module('starter.controllers')
         'preferFetchTime': [preferFullTime[0], preferFullTime[1]],
         'needTicket': false,
         'tip': '',
-        'detail': ShoppingCart.getTypeCart({ type })
+        'detail': isReserve ? {} : ShoppingCart.getTypeCart({ type })
       };
     }
 
