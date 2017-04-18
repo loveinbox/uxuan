@@ -5,7 +5,7 @@ angular.module('starter.directives')
     restrict: 'A',
     scope: {},
     link: function(scope, element, attr) {
-      var picModal = $('<div class="pic-modal">').appendTo('body');
+      var picModal = $('<div class="mask">').hide().appendTo('body');
       picModal.click(function(event) {
         picModal.hide();
         picModal.empty();
@@ -15,8 +15,8 @@ angular.module('starter.directives')
           .attr('src', attr.ngSrc)
           .css({
             'display': 'block',
-            'width': '95%',
-            'margin': '50px auto'
+            'width': '75%',
+            'margin': '150px auto'
           });
         picModal.append(img).show();
       });
