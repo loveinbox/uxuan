@@ -9,7 +9,7 @@ angular.module('starter.directives')
       shop: '='
     },
     templateUrl: './build/components/cart-modal/cart-modal.html',
-    controller: function($scope, $ionicModal, $timeout, ShoppingCart) {
+    controller: function($scope, $ionicModal, $timeout, ShoppingCart, MoneyCart) {
       const type = $scope.type
       const shop = $scope.shop
       let time = 0
@@ -33,7 +33,7 @@ angular.module('starter.directives')
 
       function getTypeCart() {
         $scope.typeCartNumber = ShoppingCart.getTypeCartNumber({ type });
-        $scope.typeCartMoney = ShoppingCart.getTypeCartMoney({ type });
+        $scope.money = MoneyCart.getTypeMoney({ type });
       }
 
       $ionicModal.fromTemplateUrl('./build/components/cart-modal/cart-modal-list.html', {

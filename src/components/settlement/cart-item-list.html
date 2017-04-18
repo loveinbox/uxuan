@@ -9,24 +9,14 @@
             ng-click="pickShop($event, shop)">
         </label>
         <div class="img">
-          <img ng-src="http://lifeuxuan.com/{{shop.shopInfo.shopPicUrl}}">
+          <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
         </div>
         <div class="name">
-          <span>{{shop.shopInfo.shopName}}</span>
+          <span>{{shop.shopName}}</span>
         </div>
         <div class="calculate-money">
-          <span class="totalMoney">￥{{shop.singleCartTotalNumber/100|number:2}}</span>
-          <p ng-if="type == 'furit'">含运费{{shop.shopInfo.sendPrice}}元</p>
-          <p class="sendStartPrice"
-            ng-hide="shop.isReachStartPrice"
-            ng-class="{'danger': !isReachStartPrice}"
-            ng-if="type == 'furit'">起送价{{shop.shopInfo.sendStartPrice}}元</p>
-          <p ng-hide="shop.isReachStartPrice"
-            ng-if="type == 'wash'">含运费{{shop.shopInfo.sendPrice}}元</p>
-          <p class="sendStartPrice"
-            ng-hide="shop.isReachStartPrice"
-            ng-class="{'danger': !isReachStartPrice}"
-            ng-if="type == 'wash'">满{{shop.shopInfo.sendStartPrice}}元免运费</p>
+          <cart-item-money type="type"
+            shop="shop"></cart-item-money>
         </div>
       </div>
       <div class="u-list">

@@ -1,7 +1,7 @@
 angular.module('starter.controllers')
 
 .controller('CartCtrl', function($scope, $state, $stateParams,
-  UserInfo, Address, ShoppingCart,
+  UserInfo, Address, ShoppingCart, MoneyCart,
   FruitOrder, WashOrder, WashReserve) {
   const type = $stateParams.type
   const methodMap = {
@@ -18,7 +18,6 @@ angular.module('starter.controllers')
 
   let orderData = {}
 
-
   $scope.type = type
   $scope.address = Object.assign({}, Address)
   $scope.sendDate = {}
@@ -26,11 +25,11 @@ angular.module('starter.controllers')
   $scope.guard = {}
   $scope.sendDate = {}
   $scope.sendTime = {}
-  $scope.totalMoney = isReserve ? 0 : ShoppingCart.getTypeCartMoney({ type });
+  $scope.money = isReserve ? 0 : MoneyCart.getTypeMoney({ type })
   $scope.payButton = isReserve ? '确认预约' : '微信支付'
 
   $scope.$on('cartChange', function(event, data) {
-    $scope.totalMoney = isReserve ? 0 : ShoppingCart.getTypeCartMoney({ type });
+    $scope.money = isReserve ? 0 : MoneyCart.getTypeMoney({ type })
   });
 
   UserInfo.then(function(user) {
@@ -109,10 +108,10 @@ angular.module('starter.controllers')
         'tip': '',
         'detail': isReserve ? {} : ShoppingCart.getTypeCart({ type })
       };
-    }
 
-    function buildTime(time) {
-      return new Date(time).getTime() / 1000
+      function buildTime(time) {
+        return new Date(time).getTime() / 1000
+      }
     }
 
   })

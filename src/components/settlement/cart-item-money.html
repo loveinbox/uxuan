@@ -1,0 +1,23 @@
+<div>
+  <span class="totalMoney">￥{{money.total/100|number:2}}</span>
+  <p>含运费{{money.shopDeliveryFee}}元</p>
+  <p class="send-start-price danger"
+    ng-if="money.showSendStartPrice">起送价{{money.shopStartMoney}}元</p>
+  <p class="sendFreePrice"
+    ng-class="{'danger': money.showSendFreePriceDanger}"
+    ng-if="money.showSendFreePrice">满{{money.shopFreeDeliveryMoney}}元免运费</p>
+  <!--   <div>
+  <span class="totalMoney">￥{{money.total/100|number:2}}</span>
+  <p ng-if="showSendPricetype == 'furit'">含运费{{money.sendPrice}}元</p>
+  <p class="sendStartPrice"
+    ng-hide="shop.isReachStartPrice"
+    ng-class="{'danger': !money.isReachStartPrice}"
+    ng-if="type == 'furit'">起送价{{money.sendStartPrice}}元</p>
+  <p ng-hide="shop.isReachStartPrice"
+    ng-if="type == 'wash'">含运费{{money.sendPrice}}元</p>
+  <p class="sendStartPrice"
+    ng-hide="shop.isReachStartPrice"
+    ng-class="{'danger': !money.isReachStartPrice}"
+    ng-if="type == 'wash'">满{{money.sendStartPrice}}元免运费</p>
+</div> -->
+</div>

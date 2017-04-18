@@ -6,20 +6,12 @@ angular.module('starter.directives')
     replace: true,
     scope: {},
     templateUrl: './build/components/settlement/cart-item-list.html',
-    controller: function($scope, $rootScope, $stateParams, ShoppingCart) {
+    controller: function($scope, $rootScope, $stateParams, ShoppingCart, MoneyCart) {
       const type = $stateParams.type
+
       $scope.type = type
       $scope.order = {}
-      $scope.totalMoney = ShoppingCart.getTypeCartMoney({ type });
-
       $scope.carts = ShoppingCart.getTypeCart({ type })
-
-      // $scope.$on('cartChange', function(event, data) {
-      //   $scope.status.isGetThroesold = ShoppingCart.isGetThroesold(type);
-      //   $scope.order.carts = ShoppingCart.getCart(type);
-      //   $scope.order.totalMoney = ShoppingCart.getTotalCartMoney(type);
-      //   judgeOrder();
-      // });
 
       // $scope.pickShop = function(event, shop) {
       //   event.stopPropagation();

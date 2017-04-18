@@ -1,11 +1,13 @@
 angular.module('starter.services')
 
-// typeCart:{
-//   shopCart:[{
-//     shopId:123,
-//     goodCart:[]
-//   }]
-// }
+/*
+ * typeCart:{
+ * shopCart:[{
+ *     shopId:123,
+ *     goodCart:[]
+ *   }]
+ * }
+ */
 
 .service('ShoppingCart', function($rootScope, CartStore) {
   let carts = CartStore.getCarts()
@@ -24,9 +26,6 @@ angular.module('starter.services')
   }
   this.getTypeCartNumber = function({ type }) {
     return _getTypeCartNumber(typeWrap(type))
-  }
-  this.getTypeCartMoney = function({ type }) {
-    return _getTypeCartMoney(typeWrap(type))
   }
   this.getShopCartProductsList = function({ type, shop }) {
     return _getShopCartProductsList(typeWrap(type), ShopCartItem(shop))
@@ -59,11 +58,7 @@ angular.module('starter.services')
       _cart.shopCart.push(shopCartItem);
     } else {
       // 商店购物车第二次被添加
-      let goodIndex = _.findIndex(_cart.shopCart[shopIndex].productsList, {
-        'productId': cartGoodItem.productId,
-        'cupId': cartGoodItem.cupId,
-        'temperatureId': cartGoodItem.temperatureId
-      });
+      let goodIndex = _.findIndex(_cart.shopCart[shopIndex].productsList, testCartGood(cartGoodItem));
       // 商品第一次被添加
       if (goodIndex < 0) {
         cartGoodItem.productQuantity = 1;
@@ -107,7 +102,6 @@ angular.module('starter.services')
     if (shopIndex < 0) {
       return 0;
     }
-
     let goodIndex = _.findIndex(_shopCart[shopIndex].productsList, testCartGood(cartGoodItem));
     if (goodIndex < 0) {
       return 0;
@@ -124,10 +118,6 @@ angular.module('starter.services')
   function _getTypeCartNumber(type) {
     let _cart = carts[type];
     return _cart.number;
-  }
-
-  function _getTypeCartMoney(type) {
-    return calculateMoney(type);
   }
 
   function _getShopCartProductsList(type, shopCartItem) {
@@ -167,15 +157,16 @@ angular.module('starter.services')
 
   // 一个商家的购物车
   function ShopCartItem(shop) {
+    if (!shop) {
+      return shop
+    }
     let shopCartItem = {
       'shopId': shop.shopId,
-      'shopInfo': {
-        shopName: shop.shopName,
-        shopPicUrl: shop.shopHeadImg,
-        sendPrice: shop.shopDeliveryFee,
-        sendStartPrice: shop.shopStartMoney || shop.shopFreeDeliveryMoney
-      },
-      'singleCartTotalNumber': 0,
+      'shopName': shop.shopName,
+      'shopHeadImg': shop.shopHeadImg,
+      'shopDeliveryFee': shop.shopDeliveryFee,
+      'shopStartMoney': shop.shopStartMoney,
+      'shopFreeDeliveryMoney': shop.shopFreeDeliveryMoney,
       'isChecked': true,
       'number': 0, //购物车内所有商品的数量
       'productsList': [] //goods in this shopCart
@@ -184,6 +175,9 @@ angular.module('starter.services')
   }
 
   function CartGoodItem(good) {
+    if (!good) {
+      return good
+    }
     let cartGoodItem = {
       'productId': good.productId,
       'productName': good.productName,
@@ -193,11 +187,15 @@ angular.module('starter.services')
       'productUnit': good.productUnit,
       'productMeasure': good.productMeasure,
       'productPrice': good.productPrice,
-      'cupId': good.cupId,
-      'temperatureId': good.temperatureId,
       'productMonthSaleVolume': good.productMonthSaleVolume,
       'productQuantity': 0, //该商品的数量
       'isChecked': true
+    }
+    if (good.cupId) {
+      cartGoodItem.cupId = good.cupId
+    }
+    if (good.temperatureId) {
+      cartGoodItem.temperatureId = good.temperatureId
     }
     return cartGoodItem;
   }
@@ -219,30 +217,11 @@ angular.module('starter.services')
     return type === 'coffee' ? 'fruit' : type
   }
 
-  function calculateMoney(type) {
-    let _shopCart = carts[type].shopCart;
-    let _shopCartMoney = 0;
-    _shopCart.forEach(shopCart => {
-      shopCart.productsList.forEach(value => {
-        if (value.isChecked) {
-          _shopCartMoney += value.productPrice * value.productQuantity;
-        }
-      });
-      // shopCart.singleCartTotalNumber = tempTotalMoney;
-      // // 是否达到起送价
-      // if (shopCart.singleCartTotalNumber < shopCart.shopInfo.sendStartPrice * 100) {
-      //   shopCart.isReachStartPrice = false;
-      // } else {
-      //   shopCart.isReachStartPrice = true;
-      // }
-      // // 是否计算运费
-      // if (tempTotalMoney > 0) {
-      //   if (!(type == 'wash' && shopCart.isReachStartPrice))
-      //     shopCart.singleCartTotalNumber += shopCart.shopInfo.sendPrice * 100;
-      // }
-      // money += shopCart.singleCartTotalNumber;
-    });
-    return _shopCartMoney
+  this.utils = {
+    ShopCartItem,
+    CartGoodItem,
+    testCartGood,
+    typeWrap,
   }
 
 })
