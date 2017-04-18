@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('OrderListCtrl', function($scope, $state, OrderList, UserInfo,
+.controller('OrderListCtrl', function($rootScope, $scope, $state, OrderList, UserInfo,
   StartPrice, cancelFruit, cancelWash) {
 
   UserInfo.then(function(user) {
@@ -24,6 +24,7 @@ angular.module('starter.controllers')
         })
         .$promise
         .then(function(res) {
+          $rootScope.orderIdsList = [order.orderId]
           $state.go('shop-detail', {
             type: 'wash-order',
             shopId: order.shopId,

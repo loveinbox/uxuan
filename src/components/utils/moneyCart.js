@@ -28,7 +28,7 @@ angular.module('starter.services')
     let _shopCartMoney = 0;
 
     _shopCart.forEach(shopCart => {
-      shopCart.productsList.forEach(value => {
+      shopCart && shopCart.productsList.forEach(value => {
         _shopCartMoney += calculateShopMoney(type, shopCart).total
       });
     });
@@ -42,7 +42,7 @@ angular.module('starter.services')
     let _shopCartMoney = 0;
     let result = {}
 
-    _shopCart.productsList.forEach(value => {
+    _shopCart && _shopCart.productsList.forEach(value => {
       if (value.isChecked) {
         _shopCartMoney += value.productPrice * value.productQuantity;
       }

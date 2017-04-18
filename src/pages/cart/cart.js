@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('CartCtrl', function($scope, $state, $stateParams,
+.controller('CartCtrl', function($scope, $state, $stateParams, $rootScope,
   UserInfo, Address, ShoppingCart, MoneyCart,
   FruitOrder, WashOrder, WashReserve) {
   const type = $stateParams.type
@@ -106,7 +106,8 @@ angular.module('starter.controllers')
         'preferFetchTime': [preferFullTime[0], preferFullTime[1]],
         'needTicket': false,
         'tip': '',
-        'detail': isReserve ? {} : ShoppingCart.getTypeCart({ type })
+        'detail': isReserve ? {} : ShoppingCart.getTypeCart({ type }),
+        'orderIdsList': $rootScope.orderIdsList
       };
 
       function buildTime(time) {

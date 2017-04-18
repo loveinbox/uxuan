@@ -42,7 +42,7 @@ angular.module('starter.services')
   this.isAllCartChecked = function({ type }) {
     return _isAllCartChecked(typeWrap(type))
   }
-  this.cleanCart = function({ type }) {
+  this.cleanCart = function(type) {
     _cleanCart(typeWrap(type))
   }
 
@@ -112,7 +112,7 @@ angular.module('starter.services')
 
   function _getTypeCart(type) {
     let _cart = carts[type];
-    return _cart.shopCart;
+    return _cart.shopCart || {};
   }
 
   function _getTypeCartNumber(type) {
@@ -146,8 +146,7 @@ angular.module('starter.services')
   }
 
   function _cleanCart(type) {
-    // let _shopCart = carts[type].shopCart;
-    // _cartChange(type, _cart)
+    _cartChange(type, { shopCart: [] })
   }
 
   function _cartChange(type, cart) {
