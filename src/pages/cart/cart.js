@@ -26,6 +26,7 @@ angular.module('starter.controllers')
   $scope.sendDate = {}
   $scope.sendTime = {}
   $scope.money = isReserve ? 0 : MoneyCart.getTypeMoney({ type })
+  $scope.tip = '订单备注：'
   $scope.payButton = isReserve ? '确认预约' : '微信支付'
 
   $scope.$on('cartChange', function(event, data) {
@@ -105,7 +106,7 @@ angular.module('starter.controllers')
         'preferRcvTime': [preferFullTime[0], preferFullTime[1]], //期望收货时间
         'preferFetchTime': [preferFullTime[0], preferFullTime[1]],
         'needTicket': false,
-        'tip': '',
+        'tip': $scope.tip,
         'detail': isReserve ? {} : ShoppingCart.getTypeCart({ type }),
         'orderIdsList': $rootScope.orderIdsList
       };
