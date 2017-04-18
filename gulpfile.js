@@ -62,7 +62,7 @@ gulp.task('inject', function() {
 
 // 开发时，使用watch监测变化并重新build
 gulp.task('default', ['build'], function() {
-  gulp.watch(htmlSource, ['html']);
+  gulp.watch(htmlSource, ['./src/index.html', './src/location.html'], ['html']);
   gulp.watch(cssSource, ['src-styl']);
   gulp.watch(jsSource, ['src-js']);
 });

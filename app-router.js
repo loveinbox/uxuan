@@ -7,7 +7,7 @@ angular.module('starter')
       .state('app', {
       url: '/app',
       abstract: true,
-      templateUrl: './build/pages/menu/menu.html'
+      templateUrl: './build/pages/menu/menu.html',
     })
 
     .state('app.index', {
@@ -66,7 +66,6 @@ angular.module('starter')
       controller: 'ShopDetailCtrl'
     })
 
-
     /*
      *  Goods route
      */
@@ -76,13 +75,9 @@ angular.module('starter')
       controller: 'GoodDetailCtrl'
     })
 
-
-    // .state('orderStatus', {
-    //   url: '/orderStatus',
-    //   templateUrl: 'templates/orderStatus.html',
-    //   controller: 'OrderStatusCtrl'
-    // })
-
+    /*
+     *  Order route
+     */
     .state('orderDetail', {
       url: '/order/:type/:orderId',
       templateUrl: './build/pages/order/order-detail.html',
@@ -94,29 +89,6 @@ angular.module('starter')
       templateUrl: './build/pages/phoneCheck/phoneCheck.html',
       controller: 'phoneNumberCheckCtrl'
     })
-
-    // .state('washList', {
-    //   url: '/washList',
-    //   templateUrl: 'templates/washTemplates/washList.html',
-    //   controller: 'washListCtrl'
-    // })
-
-    // .state('washSingle', {
-    //   url: '/washSingle/:shopId',
-    //   templateUrl: 'templates/washTemplates/washSingle.html',
-    //   controller: 'washSingleCtrl'
-    // })
-
-    // .state('washCart', {
-    //   url: '/washCart/:shopId',
-    //   templateUrl: 'templates/washTemplates/washCart.html '
-    // })
-
-    // .state('washSingleOrder', {
-    //   url: '/washSingleOrder/:shopId/:orderId',
-    //   templateUrl: 'templates/washTemplates/washSingle-order.html',
-    //   controller: 'washSingleOrderCtrl'
-    // })
 
     .state('address', {
       url: '/address/:type',
@@ -139,6 +111,15 @@ angular.module('starter')
         orderIdsList: null,
         money: null,
       }
+    })
+
+    /*
+     *  buy route
+     */
+    .state('buy', {
+      url: '/buy',
+      templateUrl: './build/pages/menu/index.html',
+      controller: 'IndexCtrl'
     })
 
     .state('location', {

@@ -29,9 +29,12 @@
   <script src="./build/main.js"></script>
 </head>
 
-<body ng-app="starter">
+<body ng-app="starter"
+  ng-controller="AppCtrl">
   <ion-nav-view view-title="Index"
     animation="slide-left-right "></ion-nav-view>
+  <div class="fixed"
+    ng-click="goTop()">123{{location.text}}</div>
 </body>
 
 </html>

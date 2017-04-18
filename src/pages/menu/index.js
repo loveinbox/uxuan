@@ -10,6 +10,10 @@ angular.module('starter.controllers')
     isOut: false,
     text: '定位中...'
   };
+  $scope.$on('goTop', function() {
+    $ionicScrollDelegate.scrollTop(true)
+  })
+
   UserInfo.then(function(user) {
     $scope.location = user.userLocation;
     if (user.userLocation.street) {
