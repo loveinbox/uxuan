@@ -118,8 +118,8 @@ angular.module('starter')
      */
     .state('buy', {
       url: '/buy',
-      templateUrl: './build/pages/menu/index.html',
-      controller: 'IndexCtrl'
+      templateUrl: './build/pages/buy/buy.html',
+      controller: 'BuyCtrl'
     })
 
     .state('location', {
