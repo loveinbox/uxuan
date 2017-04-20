@@ -129,7 +129,7 @@ angular.module('starter')
 
     .state('buy.food', {
       url: '/food',
-      templateUrl: './build/pages/buy/pages/food.html',
+      templateUrl: './build/pages/buy/pages/others.html',
     })
 
     .state('location', {
