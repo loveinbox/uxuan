@@ -20,6 +20,9 @@ angular.module('starter.directives')
           });
         picModal.append(img).show();
       });
+      scope.$on('$destroy', function() {
+        $('div.mask').remove()
+      });
     }
   }
 })

@@ -3,8 +3,9 @@ angular.module('starter', ['ionic',
 ])
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $locationProvider) {
-  $locationProvider.html5Mode(true);
-  $ionicConfigProvider.tabs.position('bottom');
+  $locationProvider.html5Mode(true)
+  $ionicConfigProvider.tabs.position('bottom')
+  $ionicConfigProvider.views.transition('none');
 })
 
 // .config(function($httpProvider) {

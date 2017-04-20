@@ -56,8 +56,7 @@ var serviceURLs = {
   /*
    * Coffee
    */
-  NearByCoffeeShops: '/shoplist/coffee',
-  CoffeeByShop: '/shop/coffee',
+  CoffeeByShop: '/shop/drink',
 };
 ServiceFactory(serviceURLs);
 

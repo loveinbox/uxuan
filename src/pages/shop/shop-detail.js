@@ -9,16 +9,20 @@ angular.module('starter.controllers')
       fruit: FruitByShop,
       wash: WashByShop,
       'wash-order': WashByShop,
-      coffee: FruitByShop
+      coffee: CoffeeByShop
+    }
+
+    const requestData = {
+      'longitude': user.longitude,
+      'latitude': user.latitude,
+      'shopId': $stateParams.shopId
     }
 
     $scope.isHideCart = isReserve
     $scope.isReserve = isReserve
 
     $scope.type = type
-    methodMap[type].get({
-      'shopId': $stateParams.shopId
-    }, function(res) {
+    methodMap[type].get(requestData, function(res) {
       $scope.shop = res.data.shop;
       $scope.goodList = res.data.productsList;
       $scope.classList = res.data.classifysList;

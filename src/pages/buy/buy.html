@@ -1,38 +1,14 @@
 <ion-view view-title="U选到家">
   <div class="flex-wrap">
+    <u-header></u-header>
     <div class="buy-input">
-      999
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
-      <p>FIXED</p>
+      <textarea type="text"
+        placeholder="输入您想要的，请标明名称、数量等"
+        onkeyup="auto_grow(this)"></textarea>
+      <p class="tip">{{tip}}</p>
     </div>
-    <!-- <ion-content scroll="false"> -->
-    <!-- </ion-content> -->
-    <!-- <ion-content> -->
     <div class="buy-list">
-      <div class="buy-list-scroll">
-        <ion-scroll direction="y"
-          overflow-scroll="true"
-          class="buy-list-scroll">
-          <good-nearby-list list-data="washRank"
-            list-title="U选洗衣"
-            list-type="wash"></good-nearby-list>
-        </ion-scroll>
-      </div>
+      <ion-nav-view animation="no-animation"></ion-nav-view>
     </div>
   </div>
-  <!-- </ion-content> -->
-  <!-- </div> -->
 </ion-view>

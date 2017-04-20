@@ -5,25 +5,12 @@ angular.module('starter.controllers')
   UserInfo, BannerIndex, MainPageHot,
   NearByFruitShops, NearByWashShops, FruitRank, WashRank
 ) {
-  $scope.location = {
-    isGet: false,
-    isOut: false,
-    text: '定位中...'
-  };
+  $scope.tip = '星巴克摩卡（冷/中杯）1杯'
   $scope.$on('goTop', function() {
     $ionicScrollDelegate.scrollTop(true)
   })
 
   UserInfo.then(function(user) {
-    $scope.location = user.userLocation;
-    if (user.userLocation.street) {
-      $scope.location.text = user.userLocation.street;
-    }
-    $scope.$watch('user.userLocation', function() {
-      if (user.userLocation.street) {
-        $scope.location.text = user.userLocation.street;
-      }
-    }, true);
 
     const baseData = {
       'longitude': user.longitude,
@@ -58,3 +45,8 @@ angular.module('starter.controllers')
 
   })
 });
+
+function auto_grow(element) {
+  element.style.height = "5px";
+  element.style.height = (25 + element.scrollHeight) + "px";
+}
