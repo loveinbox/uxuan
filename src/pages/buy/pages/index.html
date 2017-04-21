@@ -1,44 +1,49 @@
 <ion-view>
-  <a href="/buy/food">12312312312</a>
-  <div class="index-icons">
-    <ul class="clearfix">
-      <li><span>买吃的</span></li>
-      <li><span>超市代买</span></li>
-      <li><span>买水果</span></li>
-      <li><span>咖啡甜品</span></li>
-      <li><span>买菜</span></li>
-      <li><span>大药房</span></li>
-      <li><span>买香烟</span></li>
-      <li><span>女性护理</span></li>
-      <li><span>一点点</span></li>
-      <li><span>买早餐</span></li>
-      <li><span>便利店</span></li>
-      <li><span>面包蛋糕</span></li>
-    </ul>
-  </div>
-  <div class="button-wrap">
-    <div class="button">下一步</div>
-  </div>
-  <div class="u-list">
-    <div class="divider">U选管家帮你买</div>
-    <ion-list>
-      <ion-item ng-repeat="item in buyRecords">
-        <div class="img">
-          <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
-        </div>
-        <div class="info-wrap">
-          <div class="info">
-            <span class="name">帮用户买了{{shop.shopName}}，{{time}}送到！</span>
+  <ion-scroll direction="y"
+    overflow-scroll="true"
+    class="scroll-list">
+    <a href="/buy/food">12312312312</a>
+    <div class="index-icons">
+      <ul class="clearfix">
+        <li><span>买吃的</span></li>
+        <li><span>超市代买</span></li>
+        <li><span>买水果</span></li>
+        <li><span>咖啡甜品</span></li>
+        <li><span>买菜</span></li>
+        <li><span>大药房</span></li>
+        <li><span>买香烟</span></li>
+        <li><span>女性护理</span></li>
+        <li><span>一点点</span></li>
+        <li><span>买早餐</span></li>
+        <li><span>便利店</span></li>
+        <li><span>面包蛋糕</span></li>
+      </ul>
+    </div>
+    <div class="button-wrap">
+      <div class="button">下一步</div>
+    </div>
+    <div class="u-list">
+      <ion-list>
+        <ion-item ng-repeat="item in buyRecords">
+          <div class="img">
+            <img ng-src="http://lifeuxuan.com/{{item.shopHeadImg}}">
+            <p class="full-desc">管家12312312312{{item.productUnit}}</p>
           </div>
-          <div class="info">
-            <span>购买地址：{{shop.shopMonthSaleVolume}}</span>
-            <span>据您{{shop.shopMonthSaleVolume}}公里</span>
+          <div class="info-wrap">
+            <div class="info">
+              <span class="full-name">帮用户买了{{item.productName}}，{{item.productName}}送到！</span>
+            </div>
+            <div class="info">
+              <span class="full-desc">
+              购买地址：{{item.productName}}，据您{{item.productName}}公里</span>
+            </div>
+            <div class="info">
+              <span>完成时间：{{item.productName}}</span>
+            </div>
           </div>
-          <div class="info">
-            <span>完成时间：{{shop.shopMonthSaleVolume}}</span>
-          </div>
-        </div>
-      </ion-item>
-    </ion-list>
-  </div>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-scroll>
+  <to-top></to-top>
 </ion-view>

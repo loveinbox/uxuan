@@ -17,30 +17,8 @@ angular.module('starter.controllers')
       'latitude': user.latitude
     }
 
-    MainPageHot.get(baseData, function(data) {
-      $scope.hotList = data.data;
-    });
-
-    BannerIndex.get(baseData, function(data) {
-      $scope.banners = data.data;
-      $ionicSlideBoxDelegate.update();
-      $ionicSlideBoxDelegate.loop(true);
-    });
-
-    NearByFruitShops.get(baseData, function(data) {
-      $scope.fruitShop = data.data;
-    });
-
-    NearByWashShops.get(baseData, function(data) {
-      $scope.washShop = data.data;
-    });
-
     FruitRank.get(baseData, function(data) {
-      $scope.fruitRank = data.data;
-    });
-
-    WashRank.get(baseData, function(data) {
-      $scope.washRank = data.data;
+      $scope.buyRecords = data.data;
     });
 
   })

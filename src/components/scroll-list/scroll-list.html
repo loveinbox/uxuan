@@ -1,6 +1,6 @@
 <ion-scroll direction="y"
   overflow-scroll="true"
-  class="class-list">
+  class="class-list scroll-list">
   <ion-list>
     <ion-item ng-class="{'show': $index === currentIndex}"
       ng-repeat="class in classList">
@@ -11,7 +11,7 @@
 <ion-scroll direction="y"
   overflow-scroll="true"
   delegate-handle="wash-scroll"
-  class="scroll-list"
+  class="goods-list scroll-list"
   on-scroll="getScrollPosition()">
   <ion-list>
     <ion-item ng-repeat="good in goodList">

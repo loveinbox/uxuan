@@ -5,23 +5,51 @@ angular.module('starter.directives')
     restrict: 'A',
     scope: {},
     link: function(scope, element, attr) {
-      var picModal = $('<div class="mask">').hide().appendTo('body');
-      picModal.click(function(event) {
-        picModal.hide();
+      var picModal = angular.element('<div class="mask">')
+
+      angular.element(document).find('body').append(picModal)
+      picModal.bind('click', function(event) {
+        picModal.css({
+          'display': 'none',
+        });
         picModal.empty();
       });
-      element.on('click', function(event) {
-        let img = $('<img>')
+
+      element.bind('click', function(event) {
+        picModal.css({
+          'display': 'block',
+        });
+        let img = angular.element('<img>')
           .attr('src', attr.ngSrc)
           .css({
             'display': 'block',
             'width': '75%',
             'margin': '150px auto'
           });
-        picModal.append(img).show();
+        picModal.append(img)
       });
+
       scope.$on('$destroy', function() {
-        $('div.mask').remove()
+        picModal.remove()
+      });
+    }
+  }
+})
+
+.directive('toTop', function() {
+  return {
+    restrict: 'E',
+    controller: function($scope, $ionicScrollDelegate) {
+      const topTip = angular.element(`<div class="fixed" ng-click="goTop()">回到顶部</div>`)
+
+      angular.element(document).find('body').append(topTip)
+
+      topTip.bind('click', function(event) {
+        $ionicScrollDelegate.scrollTop(true)
+      });
+
+      $scope.$on('$destroy', function() {
+        $('div.fixed').remove()
       });
     }
   }
