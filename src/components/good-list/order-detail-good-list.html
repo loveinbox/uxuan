@@ -1,26 +1,21 @@
 <ion-scroll direction="y"
   overflow-scroll="true">
   <ion-list class="u-list">
-    <ion-item>
-      <div class="row"
-        ng-repeat="good in listData">
-        <div class="img">
-          <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}} ">
+    <ion-item ng-repeat="good in listData">
+      <div class="img">
+        <img ng-src="http://lifeuxuan.com/{{good.productHeadImg}} ">
+      </div>
+      <div class="info-wrap">
+        <div class="quantity fr">x{{good.productQuantity}}</div>
+        <div class="info">
+          <span class="name">{{good.productName}}</span>
         </div>
-        <div>
-          <div class="info-wrap">
-            <div class="quantity fr">x{{good.productQuantity}}</div>
-            <div class="info">
-              <span class="name">{{good.productName}}</span>
-            </div>
-            <div class="info">
-              <span>{{good.description}}</span>
-            </div>
-            <div class="info">
-              <span class="price">￥{{good.productPrice/100}}</span>
-              <span>/{{good.productMeasure || '件'}}</span>
-            </div>
-          </div>
+        <div class="info">
+          <span>{{good.description}}</span>
+        </div>
+        <div class="info">
+          <span class="price">￥{{good.productPrice/100}}</span>
+          <span>/{{good.productMeasure || '件'}}</span>
         </div>
       </div>
     </ion-item>
