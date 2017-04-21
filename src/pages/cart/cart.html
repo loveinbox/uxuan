@@ -1,25 +1,17 @@
 <ion-view class="create-order"
   view-title="U选到家">
   <ion-content class="singePage cart-page has-footer">
-    <section>
-      <u-address address="address"></u-address>
-    </section>
-    <section>
-      <u-time-pick send-date="sendDate"
-        send-time="sendTime"></u-time-pick>
-    </section>
-    <section>
-      <guard-pick guard="guard"></guard-pick>
-    </section>
+    <u-address address="address"></u-address>
+    <u-time-pick send-date="sendDate"
+      send-time="sendTime"></u-time-pick>
+    <guard-pick guard="guard"></guard-pick>
     <section>
       <textarea cols="30"
         rows="10"
         ng-model="tip">
       </textarea>
     </section>
-    <section>
-      <cart-item-list ng-if="type !== 'wash'"></cart-item-list>
-    </section>
+    <cart-item-list ng-if="type !== 'wash'"></cart-item-list>
   </ion-content>
   <ion-footer-bar class="order-cart">
     <label class="pick-all">

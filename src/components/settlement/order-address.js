@@ -17,11 +17,12 @@ angular.module('starter.directives')
       $scope.address.name = Address.name
       $scope.address.phone = Address.phone
       $scope.address.address = Address.address
-      isTooFar(Address.address).then(function() {
-        $scope.address.isValidated = true;
-      }, function() {
-        $scope.address.isValidated = false;
-      })
+      isTooFar(Address.address)
+        .then(function() {
+          $scope.address.isValidated = true;
+        }, function() {
+          $scope.address.isValidated = false;
+        })
 
       // })
 

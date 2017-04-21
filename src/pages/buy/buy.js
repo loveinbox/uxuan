@@ -1,11 +1,8 @@
 angular.module('starter.controllers')
 
-.controller('BuyCtrl', function($scope, $rootScope, $timeout,
-  $ionicScrollDelegate, $ionicSlideBoxDelegate,
-  UserInfo, BannerIndex, MainPageHot,
-  NearByFruitShops, NearByWashShops, FruitRank, WashRank
+.controller('BuyCtrl', function($scope, $ionicScrollDelegate,
+  UserInfo, FruitRank
 ) {
-  $scope.tip = '星巴克摩卡（冷/中杯）1杯'
   $scope.$on('goTop', function() {
     $ionicScrollDelegate.scrollTop(true)
   })

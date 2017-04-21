@@ -1,12 +1,42 @@
 <ion-view>
-  <a href="/buy/index">666666666666</a>
-  <!-- <div class="buy-list-scroll">
-    <ion-scroll direction="y"
-      overflow-scroll="true"
-      class="buy-list-scroll">
-      <good-nearby-list list-data="washRank"
-        list-title="U选洗衣"
-        list-type="wash"></good-nearby-list>
-    </ion-scroll>
-  </div> -->
+  <ion-content>
+    <p class="flag">{{flag}}</p>
+    <div class="index-icons others-icons">
+      <ul class="clearfix">
+        <li ng-repeat="item in recommands">
+          <span>{{item}}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="buy-cart">
+      <section class="buy-address">
+        <label for="buy-address">购买地址：</label>
+        <input type="text"
+          id="buy-address"
+          ng-model="moreAddress"
+          placeholder="（选填）">
+      </section>
+      <u-address address="address"></u-address>
+      <u-time-pick send-date="sendDate"
+        send-time="sendTime"></u-time-pick>
+      <guard-pick guard="guard"></guard-pick>
+      <section class="info">
+        <span>服务费</span>
+        <span class="small">(商品实际费用请根据小票，追加付款)</span>
+        <span class="fr">9元</span>
+      </section>
+    </div>
+  </ion-content>
+  <ion-footer-bar>
+    <section class="shopping-cart-bar clearfix">
+      <div class="cart-tip">
+        <p>服务费：9元</p>
+        <p class="small">(不含商品费)</p>
+      </div>
+      <a class="go-cart-link"
+        ng-href="/app/cart/{{type}}">
+        <div class="button">选好了</div>
+      </a>
+    </section>
+  </ion-footer-bar>
 </ion-view>

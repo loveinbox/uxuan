@@ -1,19 +1,21 @@
-<div class="guard-pick">
-  <span>选择管家</span>
-  <div class="row">
-    <div ng-repeat="guard in guards"
-      class="text-center col-33">
-      <img class="guard-header"
-        ng-src="http://www.lifeuxuan.com/{{guard.eguardHeaderImg}}"
-        big-pic>
-      <label>
-        <input type="radio"
-          name="guarduard"
-          ng-checked="$first"
-          value={{guard.eguardId}}
-          ng-model="guard.current">
-        <span>{{guard.eguardName}}</span>
-      </label>
+<section>
+  <div class="guard-pick">
+    <span>选择管家</span>
+    <div class="row">
+      <div ng-repeat="guard in guards"
+        class="text-center col-33">
+        <img class="guard-header"
+          ng-src="http://www.lifeuxuan.com/{{guard.eguardHeaderImg}}"
+          big-pic>
+        <label>
+          <input type="radio"
+            name="guarduard"
+            ng-checked="$first"
+            value={{guard.eguardId}}
+            ng-model="guard.current">
+          <span>{{guard.eguardName}}</span>
+        </label>
+      </div>
     </div>
   </div>
-</div>
+</section>

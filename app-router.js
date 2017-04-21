@@ -125,11 +125,13 @@ angular.module('starter')
     .state('buy.index', {
       url: '/index',
       templateUrl: './build/pages/buy/pages/index.html',
+      controller: 'BuyIndexCtrl',
     })
 
-    .state('buy.food', {
-      url: '/food',
+    .state('buy.others', {
+      url: '/others/:type',
       templateUrl: './build/pages/buy/pages/others.html',
+      controller: 'BuyOthersCtrl',
     })
 
     .state('location', {

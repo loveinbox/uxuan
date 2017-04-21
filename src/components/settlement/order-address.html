@@ -1,21 +1,23 @@
-<div class="order-address">
-  <div class="add-address"
-    ng-hide="address.isValidated">
-    <a href="/address/new">添加收货地址</a>
-  </div>
-  <div ng-hide="!address.isValidated"
-    class="current-address">
-    <span class="to-click-outline fr">
+<section>
+  <div class="order-address">
+    <div class="add-address"
+      ng-hide="address.isValidated">
+      <a href="/address/new">添加收货地址</a>
+    </div>
+    <div ng-hide="!address.isValidated"
+      class="current-address">
+      <span class="to-click-outline fr">
       <a href="/address/edit">修改地址</a>
     </span>
-    <div class="current-address-name">
-      {{address.name}}
-    </div>
-    <div class="current-address-tel"
-      ng-bind="address.phone">
-    </div>
-    <div class="current-address-string">
-      {{address.address}}
+      <div class="current-address-name">
+        {{address.name}}
+      </div>
+      <div class="current-address-tel"
+        ng-bind="address.phone">
+      </div>
+      <div class="current-address-string">
+        {{address.address}}
+      </div>
     </div>
   </div>
-</div>
+</section>

@@ -1,22 +1,13 @@
 <ion-view>
+  <p class="flag">{{flag}}</p>
   <ion-scroll direction="y"
     overflow-scroll="true"
     class="scroll-list">
-    <a href="/buy/food">12312312312</a>
     <div class="index-icons">
       <ul class="clearfix">
-        <li><span>买吃的</span></li>
-        <li><span>超市代买</span></li>
-        <li><span>买水果</span></li>
-        <li><span>咖啡甜品</span></li>
-        <li><span>买菜</span></li>
-        <li><span>大药房</span></li>
-        <li><span>买香烟</span></li>
-        <li><span>女性护理</span></li>
-        <li><span>一点点</span></li>
-        <li><span>买早餐</span></li>
-        <li><span>便利店</span></li>
-        <li><span>面包蛋糕</span></li>
+        <li ng-repeat="item in menu">
+          <a ng-href="/buy/others/{{item.key}}">{{item.name}}</a>
+        </li>
       </ul>
     </div>
     <div class="button-wrap">
