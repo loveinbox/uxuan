@@ -3,6 +3,8 @@ angular.module('starter.controllers')
 .controller('BuyCtrl', function($scope, $ionicScrollDelegate,
   UserInfo, FruitRank
 ) {
+  $scope.buyListInput = ''
+
   $scope.$on('goTop', function() {
     $ionicScrollDelegate.scrollTop(true)
   })
@@ -17,6 +19,10 @@ angular.module('starter.controllers')
     FruitRank.get(baseData, function(data) {
       $scope.buyRecords = data.data;
     });
+
+    $scope.$on('add-item', function(event, item) {
+      $scope.buyListInput += item + '，'
+    })
 
   })
 });

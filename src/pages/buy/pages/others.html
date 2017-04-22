@@ -3,7 +3,8 @@
     <p class="flag">{{flag}}</p>
     <div class="index-icons others-icons">
       <ul class="clearfix">
-        <li ng-repeat="item in recommands">
+        <li ng-repeat="item in recommands"
+          ng-click="addItem(item)">
           <span>{{item}}</span>
         </li>
       </ul>

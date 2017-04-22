@@ -14,9 +14,9 @@ angular.module('starter.controllers')
       'latitude': user.latitude
     }
 
-    FruitRank.get(baseData, function(data) {
-      $scope.buyRecords = data.data;
-    });
+    $scope.addItem = function(item) {
+      $scope.$emit('add-item', item)
+    }
   })
 
   const flagMap = {
