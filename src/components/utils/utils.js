@@ -7,7 +7,9 @@ angular.module('starter.directives')
     link: function(scope, element, attr) {
       var picModal = angular.element('<div class="mask">')
 
-      angular.element(document).find('body').append(picModal)
+      angular.element(document)
+        .find('body')
+        .append(picModal)
       picModal.bind('click', function(event) {
         picModal.css({
           'display': 'none',
@@ -42,14 +44,17 @@ angular.module('starter.directives')
     controller: function($scope, $ionicScrollDelegate) {
       const topTip = angular.element(`<div class="fixed" ng-click="goTop()">回到顶部</div>`)
 
-      angular.element(document).find('body').append(topTip)
+      angular.element(document)
+        .find('body')
+        .append(topTip)
 
       topTip.bind('click', function(event) {
         $ionicScrollDelegate.scrollTop(true)
       });
 
       $scope.$on('$destroy', function() {
-        $('div.fixed').remove()
+        $('div.fixed')
+          .remove()
       });
     }
   }
@@ -67,7 +72,8 @@ angular.module('starter.directives')
         var map = new BMap.Map("allmap");
         var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
         var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
-        var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
+        var distacne = (map.getDistance(pointA, pointB))
+          .toFixed(2);
         if (distacne > 6000) {
           showAlert()
           deferred.reject();
@@ -79,7 +85,7 @@ angular.module('starter.directives')
 
     function showAlert() {
       $ionicPopup.alert({
-        title: 'U选到家',
+        title: 'U选管家',
         template: '收货地址超出您选择店面服务范围'
       });
     }

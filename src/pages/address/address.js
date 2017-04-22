@@ -21,7 +21,8 @@ angular.module('starter.controllers')
     if (!($scope.address.name && $scope.address.name.length > 0)) {
       pass = false
     }
-    if (!($scope.address.phone && ($scope.address.phone + '').length === 11)) {
+    if (!($scope.address.phone && ($scope.address.phone + '')
+        .length === 11)) {
       pass = false
     }
     if (!($scope.address.address && $scope.address.address.length >= 6)) {
@@ -30,7 +31,7 @@ angular.module('starter.controllers')
 
     if (!pass) {
       $ionicPopup.alert({
-        title: 'U选到家',
+        title: 'U选管家',
         template: '请填写完整地址'
       });
     } else {

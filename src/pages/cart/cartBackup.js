@@ -41,11 +41,12 @@ angular.module('starter.controllers')
       $scope.order.user.rcvAddress = user.rcvAddress;
     }
 
-    isTooFar($scope.order.user.rcvAddress).then(function() {
-      $scope.status.isAddressValidated = false;
-    }, function() {
-      $scope.status.isAddressValidated = true;
-    })
+    isTooFar($scope.order.user.rcvAddress)
+      .then(function() {
+        $scope.status.isAddressValidated = false;
+      }, function() {
+        $scope.status.isAddressValidated = true;
+      })
 
     NearByEguard.get({
       'longitude': user.longitude,
@@ -132,15 +133,25 @@ angular.module('starter.controllers')
         'rcvName': $scope.order.user.rcvName || 'test',
         'rcvPhone': $scope.order.user.rcvPhone || '123',
         'rcvAddress': $scope.order.user.rcvAddress || 'test',
-        'preferRcvTime': [moment($scope.order.sendTime[0]).unix(), moment($scope.order.sendTime[1]).unix()], //期望收货时间
-        'preferFetchTime': [moment($scope.order.sendTime[0]).unix(), moment($scope.order.sendTime[1]).unix()],
+        'preferRcvTime': [moment($scope.order.sendTime[0])
+          .unix(), moment($scope.order.sendTime[1])
+          .unix()
+        ], //期望收货时间
+        'preferFetchTime': [moment($scope.order.sendTime[0])
+          .unix(), moment($scope.order.sendTime[1])
+          .unix()
+        ],
         'needTicket': false,
         'tip': '',
         'detail': ShoppingCart.getCart(type)
       };
-      if (FruitOrWash.getParams().washOrder) {
-        orderData.shopId = FruitOrWash.getParams().washOrder.shopId
-        orderData.orderIdsList = [FruitOrWash.getParams().washOrder.orderId]
+      if (FruitOrWash.getParams()
+        .washOrder) {
+        orderData.shopId = FruitOrWash.getParams()
+          .washOrder.shopId
+        orderData.orderIdsList = [FruitOrWash.getParams()
+          .washOrder.orderId
+        ]
       };
       if (type == 'furit') {
         insertMethod = FruitOrderInsert;
@@ -193,11 +204,12 @@ angular.module('starter.controllers')
               $scope.order.user.rcvName = res.userName;
               $scope.order.user.rcvPhone = res.telNumber + '';
               $scope.status.isAdded = true;
-              isTooFar(addressGot).then(function() {
-                $scope.status.isAddressValidated = false;
-              }, function() {
-                $scope.status.isAddressValidated = true;
-              })
+              isTooFar(addressGot)
+                .then(function() {
+                  $scope.status.isAddressValidated = false;
+                }, function() {
+                  $scope.status.isAddressValidated = true;
+                })
             })
           }
         });
@@ -206,7 +218,7 @@ angular.module('starter.controllers')
 
     $scope.showAlert = function() {
       var alertPopup = $ionicPopup.alert({
-        title: 'U选到家',
+        title: 'U选管家',
         template: '收货地址超出您选择店面服务范围'
       });
     }
@@ -219,7 +231,8 @@ angular.module('starter.controllers')
         var map = new BMap.Map("allmap");
         var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
         var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
-        var distacne = (map.getDistance(pointA, pointB)).toFixed(2);
+        var distacne = (map.getDistance(pointA, pointB))
+          .toFixed(2);
         if (distacne > 6000) {
           $scope.showAlert()
           deferred.resolve(true);
