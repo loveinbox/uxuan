@@ -50,34 +50,29 @@ angular.module('starter.services')
 
 .factory('UserInfo', function($resource, $q, userWechatInfo, userRegister, Location, Address) {
   var deferred = $q.defer();
-  var user = {}
-
-  // ---for testing
-  if (window.location.hostname == "localhost") {
-    var user = {
+  var user = {
+    latitude: 31.214197,
+    longitude: 121.496322,
+    userId: 'C0000000001',
+    verifyCode: 1,
+    userLocation: {
       latitude: 31.214197,
       longitude: 121.496322,
-      userId: 'C0000000001',
-      verifyCode: 1,
-      userLocation: {
-        latitude: 31.214197,
-        longitude: 121.496322,
-        isOut: false,
-        isGet: true,
-        text: '测试定位'
-      }
-    };
-    deferred.resolve(user);
-    return deferred.promise;
-  } // ---for testing
-
+      isOut: false,
+      isGet: true,
+      text: '获取用户信息失败'
+    }
+  };
 
   Location.then(function(userLocation) {
-    user.latitude = userLocation.latitude;
-    user.longitude = userLocation.longitude;
-    user.userLocation = userLocation;
-
     userWechatInfo.get({}, function(e) {
+      if (!e || e.code !== 0) {
+        deferred.resolve(user)
+        return deferred.promise;
+      }
+      user.latitude = userLocation.latitude;
+      user.longitude = userLocation.longitude;
+      user.userLocation = userLocation;
       user.name = e.data.nickname;
       user.img = e.data.headimgurl;
       user.openid = e.data.openid;
