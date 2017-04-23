@@ -22,7 +22,6 @@ angular.module('starter')
 
     .state('app.cart', {
       url: '/cart/:type',
-      cache: false,
       views: {
         'tab-cart': {
           templateUrl: './build/pages/cart/cart.html',

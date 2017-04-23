@@ -5,7 +5,7 @@ angular.module('starter.directives')
     restrict: 'A',
     scope: {},
     link: function(scope, element, attr) {
-      var picModal = angular.element('<div class="mask">')
+      let picModal = angular.element('<div class="mask">')
 
       angular.element(document)
         .find('body')
@@ -64,15 +64,20 @@ angular.module('starter.directives')
 .factory('isTooFar', function(UserInfo, $q, $ionicPopup) {
   return function isTooFar(address) {
     address = address || '';
-    var deferred = $q.defer();
+    let deferred = $q.defer();
 
     UserInfo.then(function(user) {
-      var gc = new BMap.Geocoder();
+      let gc = new BMap.Geocoder();
       gc.getPoint(address, function(point) {
-        var map = new BMap.Map("allmap");
-        var pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
-        var pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
-        var distacne = (map.getDistance(pointA, pointB))
+        if (!point) {
+          showAlert()
+          deferred.reject();
+          return
+        }
+        let map = new BMap.Map("allmap");
+        let pointA = new BMap.Point(user.longitude, user.latitude); // 创建点坐标A
+        let pointB = new BMap.Point(point.lng, point.lat); // 创建点坐标B
+        let distacne = (map.getDistance(pointA, pointB))
           .toFixed(2);
         if (distacne > 6000) {
           showAlert()
@@ -96,8 +101,8 @@ angular.module('starter.directives')
 })
 
 .service('Address', function() {
-  this.rcvName = "姓名"
-  this.rcvPhone = "手机"
-  this.rcvAddress = "地址"
+  this.rcvName = '1231'
+  this.rcvPhone = 23423423423
+  this.rcvAddress = 'adadasdasd'
   this.isValidated = false
 })

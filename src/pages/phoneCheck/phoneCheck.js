@@ -5,7 +5,7 @@ angular.module('starter.controllers')
   $scope.check = {
     time: 0
   };
-  var timer = 0;
+  let timer = 0;
 
   UserInfo.then(function(user) {
 

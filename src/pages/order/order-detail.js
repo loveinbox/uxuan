@@ -7,14 +7,14 @@ angular.module('starter.controllers')
     getOrder();
 
     function getOrder(argument) {
-      var detailMethod = $scope.type == 17001 ? FruitOrderDetail : WashOrderDetail;
+      let detailMethod = $scope.type == 17001 ? FruitOrderDetail : WashOrderDetail;
       detailMethod.get({
         'longitude': user.longitude,
         'latitude': user.latitude,
         'orderId': $stateParams.orderId
       }, function(data) {
         $scope.order = data.data;
-        var orderStage = data.data.orderStatusId
+        let orderStage = data.data.orderStatusId
         if (orderStage - 0 <= 11003) {
           setStage([1]);
           return;

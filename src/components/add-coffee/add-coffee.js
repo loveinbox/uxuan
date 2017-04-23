@@ -75,14 +75,11 @@ angular.module('starter.directives')
 
       $scope.openModal = function() {
         $scope.selected = {
-            temperatureId: 22001,
-            cupId: 23001,
-            number: 1
-          }
-          // if ($scope.totalNumber > 0) {
+          temperatureId: 22001,
+          cupId: 23001,
+          number: 1
+        }
         $scope.modal.show();
-        //   $scope.cartGoods = ShoppingCart.getshopProductList($scope.shop.shopId, type);
-        // }
       };
       $scope.closeModal = function() {
         $scope.modal.hide();

@@ -36,7 +36,7 @@ angular.module('starter.controllers')
     $scope.clickRed = function(event, order) {
       event.stopPropagation();
       event.preventDefault();
-      // var cancelMethod = order.orderType == 17001 ? cancelFruit : cancelWash;
+      // let cancelMethod = order.orderType == 17001 ? cancelFruit : cancelWash;
       // cancelMethod.save({
       //     orderId: order.orderId
       //   })

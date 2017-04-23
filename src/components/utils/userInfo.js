@@ -1,8 +1,8 @@
 angular.module('starter.services')
 
 .factory('Location', function($q, $location) {
-  var deferred = $q.defer();
-  var userLocation = {
+  let deferred = $q.defer();
+  let userLocation = {
     latitude: $location.search().latitude,
     longitude: $location.search().longitude
   }
@@ -10,7 +10,7 @@ angular.module('starter.services')
   if (userLocation.latitude) {
     GetAddress(userLocation.latitude, userLocation.longitude);
   } else {
-    var geolocation = new BMap.Geolocation();
+    let geolocation = new BMap.Geolocation();
     geolocation.getCurrentPosition(function(r) {
       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
         userLocation.latitude = r.point.lat;
@@ -25,10 +25,10 @@ angular.module('starter.services')
   }
 
   function GetAddress(lat, lng) {
-    var point = new BMap.Point(lng, lat);
-    var gc = new BMap.Geocoder();
+    let point = new BMap.Point(lng, lat);
+    let gc = new BMap.Geocoder();
     gc.getLocation(point, function(rs) {
-      var addComp = rs.addressComponents;
+      let addComp = rs.addressComponents;
       userLocation.province = addComp.province;
       userLocation.city = addComp.city;
       userLocation.district = addComp.district;
@@ -49,8 +49,8 @@ angular.module('starter.services')
 })
 
 .factory('UserInfo', function($resource, $q, userWechatInfo, userRegister, Location, Address) {
-  var deferred = $q.defer();
-  var user = {
+  let deferred = $q.defer();
+  let user = {
     latitude: 31.214197,
     longitude: 121.496322,
     userId: 'C0000000001',
@@ -86,7 +86,7 @@ angular.module('starter.services')
         'headPicUrl': user.headPicUrl
       }, function(res) {
         if (res.data) {
-          var address = e.data.lastAddress;
+          let address = e.data.lastAddress;
 
           user.userId = e.data.userId;
           user.verify = e.data.verifyCode;

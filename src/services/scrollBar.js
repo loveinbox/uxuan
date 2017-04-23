@@ -1,28 +1,28 @@
 (function() {
-  var HorizontalScrollFix = (function() {
+  let HorizontalScrollFix = (function() {
     function HorizontalScrollFix($timeout, $ionicScrollDelegate) {
       return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-          var mainScrollID = attrs.horizontalScrollFix,
+          let mainScrollID = attrs.horizontalScrollFix,
             scrollID = attrs.delegateHandle;
 
-          var getEventTouches = function(e) {
+          let getEventTouches = function(e) {
             return e.touches && (e.touches.length ? e.touches : [{
               pageX: e.pageX,
               pageY: e.pageY
             }]);
           };
 
-          var fixHorizontalAndVerticalScroll = function() {
-            var mainScroll, scroll;
+          let fixHorizontalAndVerticalScroll = function() {
+            let mainScroll, scroll;
             mainScroll = $ionicScrollDelegate.$getByHandle(mainScrollID).getScrollView();
             scroll = $ionicScrollDelegate.$getByHandle(scrollID).getScrollView();
 
             // patch touchstart
             scroll.__container.removeEventListener('touchstart', scroll.touchStart);
             scroll.touchStart = function(e) {
-              var startY;
+              let startY;
               scroll.startCoordinates = ionic.tap.pointerCoord(e);
               if (ionic.tap.ignoreScrollStart(e)) {
                 return;
@@ -43,7 +43,7 @@
 
               // lock main scroll if scrolling horizontal
               $timeout((function() {
-                var animate, yMovement;
+                let animate, yMovement;
                 yMovement = startY - mainScroll.__scrollTop;
                 if (scroll.__isDragging && yMovement < 2.0 && yMovement > -2.0) {
                   mainScroll.__isTracking = false;

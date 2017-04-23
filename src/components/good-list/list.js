@@ -44,14 +44,14 @@ angular.module('starter.directives')
       })
 
       $timeout(function() {
-        var sv = $ionicScrollDelegate.$getByHandle('horizontal').getScrollView();
+        let sv = $ionicScrollDelegate.$getByHandle('horizontal').getScrollView();
 
-        var container = sv.__container;
+        let container = sv.__container;
 
-        var originaltouchStart = sv.touchStart;
-        var originalmouseDown = sv.mouseDown;
-        var originaltouchMove = sv.touchMove;
-        var originalmouseMove = sv.mouseMove;
+        let originaltouchStart = sv.touchStart;
+        let originalmouseDown = sv.mouseDown;
+        let originaltouchMove = sv.touchMove;
+        let originalmouseMove = sv.mouseMove;
 
         container.removeEventListener('touchstart', sv.touchStart);
         container.removeEventListener('mousedown', sv.mouseDown);

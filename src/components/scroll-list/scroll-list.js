@@ -12,11 +12,11 @@ angular.module('starter.directives')
     },
     templateUrl: './build/components/scroll-list/scroll-list.html',
     controller: function($scope, $stateParams, $ionicScrollDelegate, $timeout) {
-      var scrollObj = {};
-      var indexArray = [];
-      var count = 0;
-      var lastId = -1;
-      var indexCount = 0;
+      let scrollObj = {};
+      let indexArray = [];
+      let count = 0;
+      let lastId = -1;
+      let indexCount = 0;
 
       $scope.currentIndex = 0;
       $scope.$watch('goodList', function(nv) {
@@ -45,9 +45,9 @@ angular.module('starter.directives')
       $scope.getScrollPosition = getOffSet;
 
       function getOffSet() {
-        var currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
-        var getIndex = 0;
-        for (var p in scrollObj) {
+        let currentScroll = $ionicScrollDelegate.$getByHandle('wash-scroll').getScrollPosition().top;
+        let getIndex = 0;
+        for (let p in scrollObj) {
           if (scrollObj[p] * 80 < currentScroll) {
             getIndex = scrollObj[p];
             continue;

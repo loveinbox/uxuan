@@ -10,10 +10,10 @@ angular.module('starter.directives')
     },
     templateUrl: './build/components/settlement/time.html',
     controller: function($scope, $stateParams) {
-      var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
-      var date = new Date;
-      var startHour = date.getHours() > 8 ? date.getHours() : 8;
-      var startDay = startHour >= 20 ? 1 : 0;
+      let weekArray = ['日', '一', '二', '三', '四', '五', '六'];
+      let date = new Date;
+      let startHour = date.getHours() > 8 ? date.getHours() : 8;
+      let startDay = startHour >= 20 ? 1 : 0;
 
       date.setDate(date.getDate() + startDay);
       $scope.timePick = {
@@ -40,7 +40,7 @@ angular.module('starter.directives')
       /*-----------------------------------------------------------------*/
 
       function initAvaliableDate() {
-        for (var i = 0 + startDay; i < 8; i++) {
+        for (let i = 0 + startDay; i < 8; i++) {
           $scope.timePick.AvaliableDates.push({
             name: getFormatedDate(i),
             value: getFormatedDate(i)
@@ -50,7 +50,7 @@ angular.module('starter.directives')
 
       function initAvaliableTime(startHour) {
         startHour = startHour || 8
-        for (var i = startHour; i < 21; i++) {
+        for (let i = startHour; i < 21; i++) {
           $scope.timePick.AvaliableTimes.push({
             name: addZero(i) + ':00 -- ' + addZero(i) + ':30',
             value: addZero(i) + ':00 -- ' + addZero(i) + ':30'
@@ -64,11 +64,11 @@ angular.module('starter.directives')
 
       function getFormatedDate(dayOff) {
         dayOff = dayOff || 1;
-        var date = new Date();
+        let date = new Date();
         date.setDate(date.getDate() + dayOff);
-        var year = date.getFullYear()
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
         return year + '-' + addZero(month) + '-' + addZero(day);
       }
 

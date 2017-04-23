@@ -19,7 +19,7 @@ angular.module('starter.controllers')
   let orderData = {}
 
   $scope.type = type
-  $scope.address = Object.assign({}, Address)
+  $scope.address = {}
   $scope.sendDate = {}
   $scope.sendTime = {}
   $scope.guard = {}
@@ -33,18 +33,20 @@ angular.module('starter.controllers')
     cartReBuild()
   });
 
+  $scope.$on("$ionicView.enter", function(scopes, states) {
+    $scope.address = Object.assign({}, Address)
+  });
+
   $scope.pickAll = function() {
     ShoppingCart.checkAll({ type })
   }
 
   UserInfo.then(function(user) {
     $scope.confirmOrder = function(event) {
-      // if (!isOrderAvaliable()) {
-      //   return;
-      // } else {
+      if (!isOrderAvaliable()) {
+        return;
+      }
       orderData = buildOrderData()
-        // }
-      debugger
       insertMethod.save(orderData)
         .$promise
         .then(function(res) {
@@ -77,7 +79,7 @@ angular.module('starter.controllers')
         $scope.payButton = '请添加收货地址';
         return false;
       }
-      if (!$scope.address.isAddressValidated) {
+      if (!$scope.address.isValidated) {
         $scope.payButton = '请修改送货地址';
         return false;
       }
@@ -95,9 +97,9 @@ angular.module('starter.controllers')
     }
 
     function buildOrderData() {
-      var preferFullTime = [];
-      var preferDate = $scope.sendDate.current;
-      var preferTime = $scope.sendTime.current.split(' -- ')
+      let preferFullTime = [];
+      let preferDate = $scope.sendDate.current;
+      let preferTime = $scope.sendTime.current.split(' -- ')
       preferFullTime[0] = buildTime(preferDate + ' ' + preferTime[0])
       preferFullTime[1] = buildTime(preferDate + ' ' + preferTime[1])
       return {

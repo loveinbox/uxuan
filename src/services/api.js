@@ -1,5 +1,5 @@
-var baseUrl = 'http://www.lifeuxuan.com/index.php';
-var serviceURLs = {
+let baseUrl = 'http://www.lifeuxuan.com/index.php';
+let serviceURLs = {
   /*
    * Common
    */
@@ -61,7 +61,7 @@ var serviceURLs = {
 ServiceFactory(serviceURLs);
 
 function ServiceFactory(serviceURLs) {
-  for (var p in serviceURLs) {
+  for (let p in serviceURLs) {
     (function(param) {
       angular.module('starter.services')
         .factory(p, function($resource) {
