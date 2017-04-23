@@ -44,6 +44,7 @@ angular.module('starter.controllers')
       // } else {
       orderData = buildOrderData()
         // }
+      debugger
       insertMethod.save(orderData)
         .$promise
         .then(function(res) {
@@ -111,9 +112,33 @@ angular.module('starter.controllers')
         'preferFetchTime': [preferFullTime[0], preferFullTime[1]],
         'needTicket': false,
         'tip': $scope.tip,
-        'detail': isReserve ? {} : ShoppingCart.getTypeCartCheckedProducts({ type }),
+        'detail': buildOrderDetail(),
         'orderIdsList': $rootScope.orderIdsList
       };
+
+      function buildOrderDetail() {
+        let detail = []
+        let carts = ShoppingCart.getShopCarts({ type })
+        if (isReserve) {
+          return detail
+        }
+
+        carts.forEach(shop => {
+          let checkedGood = []
+          if (!shop.showSendStartPrice) {
+            shop.productsList.forEach(good => {
+              if (good.isChecked) {
+                checkedGood.push(good)
+              }
+            })
+          }
+          detail.push(Object.assign({}, shop, {
+            productsList: checkedGood
+          }))
+        })
+
+        return detail
+      }
 
       function buildTime(time) {
         return new Date(time).getTime() / 1000
