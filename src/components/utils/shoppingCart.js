@@ -11,6 +11,7 @@ angular.module('starter.services')
 
 .service('ShoppingCart', function($rootScope, CartStore) {
   let carts = CartStore.getCarts()
+  $rootScope.$broadcast('cartChange');
 
   this.addItem = function({ type, shop, good }) {
     _addItem(typeWrap(type), ShopCartItem(shop), CartGoodItem(good))

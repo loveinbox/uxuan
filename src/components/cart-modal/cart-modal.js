@@ -32,8 +32,8 @@ angular.module('starter.directives')
       });
 
       function getTypeCart() {
-        $scope.typeCartNumber = ShoppingCart.getTypeCartNumber({ type });
-        $scope.money = MoneyCart.getTypeMoney({ type });
+        $scope.typeCartNumber = ShoppingCart.getTypeCartNumber({ type: $scope.type });
+        $scope.money = MoneyCart.getTypeMoney({ type: $scope.type });
       }
 
       $ionicModal.fromTemplateUrl('./build/components/cart-modal/cart-modal-list.html', {

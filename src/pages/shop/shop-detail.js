@@ -20,7 +20,6 @@ angular.module('starter.controllers')
 
     $scope.isHideCart = isReserve
     $scope.isReserve = isReserve
-
     $scope.type = type
     methodMap[type].get(requestData, function(res) {
       $scope.shop = res.data.shop;

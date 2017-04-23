@@ -7,7 +7,7 @@ angular.module('starter.controllers')
   $scope.address = Object.assign({}, Address)
 
   $scope.confirmAddress = function() {
-    judgeAddress().then(() => {
+    if (judgeAddress()) {
       Address.rcvName = $scope.address.rcvName
       Address.rcvPhone = $scope.address.rcvPhone
       Address.rcvAddress = $scope.address.rcvAddress
@@ -17,11 +17,10 @@ angular.module('starter.controllers')
       } else {
         $state.go('app.index')
       }
-    })
+    }
   }
 
   function judgeAddress() {
-    let deferred = $q.defer();
     let pass = true
     let message = ''
     if (!($scope.address.rcvName && $scope.address.rcvName.length > 0)) {
@@ -37,23 +36,12 @@ angular.module('starter.controllers')
       message = '请填写完整地址'
     }
 
-    isTooFar($scope.address.rcvAddress)
-      .then(function() {
-        $scope.address.isValidated = true;
-        deferred.resolve();
-      }, function() {
-        $scope.address.isValidated = false;
-        deferred.reject();
-      })
-
     if (!pass) {
       $ionicPopup.alert({
         title: 'U选管家',
         template: message
       });
-    } else {
-      return deferred.promise;
     }
-
+    return pass
   }
 })

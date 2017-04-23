@@ -1,7 +1,7 @@
 angular.module('starter.controllers')
 
-.controller('CartCtrl', function($scope, $state, $stateParams, $rootScope,
-  UserInfo, Address, ShoppingCart, MoneyCart,
+.controller('CartCtrl', function($scope, $state, $stateParams, $rootScope, $q,
+  UserInfo, Address, ShoppingCart, MoneyCart, isTooFar,
   FruitOrder, WashOrder, WashReserve) {
   const type = $stateParams.type
   const methodMap = {
@@ -31,6 +31,7 @@ angular.module('starter.controllers')
 
   $scope.$on('cartChange', function(event, data) {
     cartReBuild()
+    $scope.payButton = isReserve ? '确认预约' : '微信支付'
   });
 
   $scope.$on("$ionicView.enter", function(scopes, states) {
@@ -43,57 +44,56 @@ angular.module('starter.controllers')
 
   UserInfo.then(function(user) {
     $scope.confirmOrder = function(event) {
-      if (!isOrderAvaliable()) {
-        return;
-      }
       orderData = buildOrderData()
-      insertMethod.save(orderData)
-        .$promise
-        .then(function(res) {
-          if (isReserve) {
-            alert('预约成功');
-            $state.go('app.order-list');
-          } else {
-            const data = res.data;
-            const orderType = orderTypeMap[type]
-            const orderIdsList = data.orderIdsList
-            const money = data.money;
-            $state.go('pay', {
-              orderType,
-              orderIdsList,
-              money,
-            });
-          }
-          ShoppingCart.cleanCart(type);
-        })
+      isOrderAvaliable(orderData).then(() => {
+        insertMethod.save(orderData)
+          .$promise
+          .then(function(res) {
+            if (isReserve) {
+              alert('预约成功');
+              $state.go('app.order-list');
+            } else {
+              const data = res.data;
+              const orderType = orderTypeMap[type]
+              const orderIdsList = data.orderIdsList
+              const money = data.money;
+              $state.go('pay', {
+                orderType,
+                orderIdsList,
+                money,
+              }, {
+                location: 'replace'
+              });
+            }
+            ShoppingCart.cleanCart(type);
+          })
+      })
     }
 
+    function isOrderAvaliable(orderData) {
+      let deferred = $q.defer();
+      let pass = true
 
-    function isOrderAvaliable() {
-      $scope.payButton = '微信支付';
-      if (type == 'furit' && $scope.status.isGetThroesold == false) {
-        $scope.payButton = '未达起送价';
-        return false;
-      }
-      if (_.isEmpty($scope.address)) {
+      if (orderData.rcvPhone === '') {
         $scope.payButton = '请添加收货地址';
-        return false;
+        pass = false;
       }
-      if (!$scope.address.isValidated) {
-        $scope.payButton = '请修改送货地址';
-        return false;
+      if (orderData.detail.length === 0) {
+        $scope.payButton = '请添加更多商品';
+        pass = false;
       }
-      if (type == 'wash') {
-        $scope.payButton = '预约洗衣';
-        return true;
+      if (pass) {
+        isTooFar(orderData.rcvAddress)
+          .then(function() {
+            deferred.resolve();
+          }, function() {
+            deferred.reject();
+          })
       } else {
-        if (!ShoppingCart.getCart(type).length) {
-          $scope.payButton = '请添加商品';
-          return false;
-        } else {
-          return true;
-        }
+        deferred.reject();
       }
+
+      return deferred.promise;
     }
 
     function buildOrderData() {
@@ -134,9 +134,11 @@ angular.module('starter.controllers')
               }
             })
           }
-          detail.push(Object.assign({}, shop, {
-            productsList: checkedGood
-          }))
+          if (checkedGood.length > 0) {
+            detail.push(Object.assign({}, shop, {
+              productsList: checkedGood
+            }))
+          }
         })
 
         return detail

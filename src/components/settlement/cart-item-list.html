@@ -23,7 +23,7 @@
           </div>
           <div class="u-list">
             <ion-list>
-              <ion-item ng-repeat="good in shop.productsList">
+              <ion-item ng-repeat="good in shop.productsList track by $index">
                 <div class="shop-item good-item clearfix">
                   <label>
                     <input type="checkbox"

@@ -78,7 +78,6 @@
   <div id="searchResultPanel"
     style="border:1px solid #c0c0c0;width:150px;height:auto;display:none;"></div>
   <div id="l-map"></div>
-  <!-- <input type="button" class="mapsearch" value="搜索" /> -->
   <button id="ok"
     class="mapsearch">搜索</button>
 </body>
@@ -87,14 +86,14 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-  var userLocation = {};
+  let userLocation = {};
 
   $('#localCurrent').click(function(event) {
     $(".mapsearch").text("确定");
-    var geolocation = new BMap.Geolocation();
+    let geolocation = new BMap.Geolocation();
     geolocation.getCurrentPosition(function(r) {
       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        var mk = new BMap.Marker(r.point);
+        let mk = new BMap.Marker(r.point);
         map.addOverlay(mk);
         map.panTo(r.point);
         userLocation.latitude = r.point.lat;
@@ -109,10 +108,9 @@ $(document).ready(function() {
   });
 
   $('#ok').click(function(event) {
-    var query = 'latitude=' + userLocation.latitude + '&longitude=' + userLocation.longitude
+    let query = 'latitude=' + userLocation.latitude + '&longitude=' + userLocation.longitude
     if ($(this).text() === '确定') {
-      window.location.href = 'http://localhost:8585/app/index?' + query;
-      // window.location.href = 'http://www.lifeuxuan.com?' + query;
+      window.location.href = 'http://www.lifeuxuan.com?' + query;
     }
   });
 
@@ -121,10 +119,10 @@ $(document).ready(function() {
   }
 
   //地图初始化
-  var map = new BMap.Map("l-map");
+  let map = new BMap.Map("l-map");
   map.centerAndZoom("上海", 12);
 
-  var ac = new BMap.Autocomplete({
+  let ac = new BMap.Autocomplete({
     "input": "suggestId",
     "location": map
   });
@@ -143,22 +141,21 @@ $(document).ready(function() {
 
   //当鼠标点击下拉列表中某项时触发此函数
   ac.addEventListener("onconfirm", function(e) {
-    var _value = e.item.value;
-    var myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+    let _value = e.item.value;
+    let myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
 
     SearchPlace(myValue);
     userLocation.isSearchGeo = true;
-    // SetPlace(point.lat, point.lng);
     $(".mapsearch").text("确定");
   });
 
   //根据下拉选择搜索位置
   function SearchPlace(myValue) {
     function myFun() {
-      var pp = local.getResults().getPoi(0).point;
+      let pp = local.getResults().getPoi(0).point;
       SetPlace(pp.lat, pp.lng);
     }
-    var local = new BMap.LocalSearch(map, {
+    let local = new BMap.LocalSearch(map, {
       onSearchComplete: myFun
     });
     local.search(myValue);
@@ -167,10 +164,8 @@ $(document).ready(function() {
 
   //根据地址获取经纬度
   function GetPoint(address) {
-    var gc = new BMap.Geocoder();
+    let gc = new BMap.Geocoder();
     gc.getPoint(address, function(point) {
-      // alert(point.lng + " " + point.lat);
-      console.log(point.lng + " " + point.lat);
       SetPlace(point.lat, point.lng);
     });
   }
@@ -178,23 +173,19 @@ $(document).ready(function() {
   //根据经纬度获取地址
   function GetAddress(lat, lng) {
     point = new BMap.Point(lng, lat);
-    var gc = new BMap.Geocoder();
+    let gc = new BMap.Geocoder();
     gc.getLocation(point, function(rs) {
-      var addComp = rs.addressComponents;
-      var address = addComp.province + "," + addComp.city + "," + addComp.district + "," + addComp.street + "," + addComp.streetNumber;
+      let addComp = rs.addressComponents;
+      let address = addComp.province + "," + addComp.city + "," + addComp.district + "," + addComp.street + "," + addComp.streetNumber;
       alert(address);
     });
   }
 
   $(".mapsearch").click(function() {
-    var value = $("#suggestId").val();
-    // alert(value);
+    let value = $("#suggestId").val();
     GetPoint(value);
     userLocation.isSearchGeo = true;
     $(".mapsearch").text("确定");
-    // setPlace(value);
-    // GetAddress(31.29874, 121.444444);
-    // GetPoint('上海市浦东新区芳华路916弄');
   });
 
   $("#suggestId").keydown(function() {

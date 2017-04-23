@@ -6,6 +6,9 @@ angular.module('starter.directives')
     scope: {},
     link: function(scope, element, attr) {
       let picModal = angular.element('<div class="mask">')
+      picModal.css({
+        'display': 'none',
+      });
 
       angular.element(document)
         .find('body')
@@ -103,6 +106,6 @@ angular.module('starter.directives')
 .service('Address', function() {
   this.rcvName = '1231'
   this.rcvPhone = 23423423423
-  this.rcvAddress = 'adadasdasd'
+  this.rcvAddress = '黄浦区合肥路'
   this.isValidated = false
 })

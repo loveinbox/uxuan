@@ -48,20 +48,22 @@ angular.module('starter.services')
         _shopCartMoney += value.productPrice * value.productQuantity;
       }
     });
-
     if (_shopCartMoney < shop.shopStartMoney * 100) {
-      result.showSendStartPrice = true
+      shop.showSendStartPrice = true
+    } else {
+      shop.showSendStartPrice = false
     }
 
     if (!shop.shopFreeDeliveryMoney) {
       _shopCartMoney += shop.shopDeliveryFee * 100
-      result.showSendFreePrice = false
+      shop.showSendFreePrice = false
     } else if (shop.shopFreeDeliveryMoney * 100 > _shopCartMoney) {
       _shopCartMoney += shop.shopDeliveryFee * 100
-      result.showSendFreePrice = true
-      result.showSendFreePriceDanger = true
+      shop.showSendFreePrice = true
+      shop.showSendFreePriceDanger = true
     } else {
-      result.showSendFreePrice = true
+      shop.showSendFreePrice = true
+      shop.showSendFreePriceDanger = false
     }
     result.total = _shopCartMoney
     return Object.assign(result, shop)

@@ -17,6 +17,7 @@ angular.module('starter.directives')
             $state.go('phoneCheck');
             return;
           }
+          $scope.selected.number++;
           Object.assign($scope.good, $scope.selected)
           ShoppingCart.addItem({
             type: $scope.type,
@@ -25,6 +26,7 @@ angular.module('starter.directives')
           });
         };
         $scope.removeCart = function(event, good, shop) {
+          $scope.selected.number--;
           Object.assign($scope.good, $scope.selected)
           ShoppingCart.removeItem({
             type: $scope.type,
