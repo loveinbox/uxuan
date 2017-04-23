@@ -12,7 +12,7 @@ angular.module('starter.controllers')
   const insertMethod = methodMap[type];
   const isReserve = type === 'wash'
   const orderTypeMap = {
-    fruit: 17001,
+    'fruit': 17001,
     'wash-order': 17002
   }
 
@@ -25,13 +25,17 @@ angular.module('starter.controllers')
   $scope.guard = {}
   $scope.sendDate = {}
   $scope.sendTime = {}
-  $scope.money = isReserve ? 0 : MoneyCart.getTypeMoney({ type })
   $scope.tip = '订单备注：'
   $scope.payButton = isReserve ? '确认预约' : '微信支付'
+  cartReBuild()
 
   $scope.$on('cartChange', function(event, data) {
-    $scope.money = isReserve ? 0 : MoneyCart.getTypeMoney({ type })
+    cartReBuild()
   });
+
+  $scope.pickAll = function() {
+    ShoppingCart.checkAll({ type })
+  }
 
   UserInfo.then(function(user) {
     $scope.confirmOrder = function(event) {
@@ -107,7 +111,7 @@ angular.module('starter.controllers')
         'preferFetchTime': [preferFullTime[0], preferFullTime[1]],
         'needTicket': false,
         'tip': $scope.tip,
-        'detail': isReserve ? {} : ShoppingCart.getTypeCart({ type }),
+        'detail': isReserve ? {} : ShoppingCart.getTypeCartCheckedProducts({ type }),
         'orderIdsList': $rootScope.orderIdsList
       };
 
@@ -117,4 +121,9 @@ angular.module('starter.controllers')
     }
 
   })
+
+  function cartReBuild() {
+    $scope.money = isReserve ? 0 : MoneyCart.getTypeMoney({ type })
+    $scope.isAllChecked = ShoppingCart.getTypeCart({ type }).isAllChecked
+  }
 })

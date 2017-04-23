@@ -24,44 +24,30 @@ angular.module('starter.services')
   }
 
   function calculateTypeMoney(type) {
-    const _shopCart = ShoppingCart.getTypeCart({ type });
+    const _shopCart = ShoppingCart.getShopCarts({ type });
     let _shopCartMoney = 0;
 
     _shopCart.forEach(shopCart => {
-      shopCart && shopCart.productsList.forEach(value => {
-        _shopCartMoney += calculateShopMoney(type, shopCart).total
-      });
+      _shopCartMoney += calculateShopMoney(type, shopCart).total
     });
     return { total: _shopCartMoney }
   }
 
-
   function calculateShopMoney(type, shop) {
-    const typeCart = ShoppingCart.getTypeCart({ type });
+    const typeCart = ShoppingCart.getShopCarts({ type });
     const _shopCart = typeCart.filter(value => shop.shopId === value.shopId)[0];
     let _shopCartMoney = 0;
-    let result = {}
+    let result = { total: 0 }
+
+    if (!shop.isChecked) {
+      return result
+    }
 
     _shopCart && _shopCart.productsList.forEach(value => {
       if (value.isChecked) {
         _shopCartMoney += value.productPrice * value.productQuantity;
       }
     });
-    // shopCart.singleCartTotalNumber = tempTotalMoney;
-    // // 是否达到起送价
-    // if (shopCart.singleCartTotalNumber < shopCart.shopInfo.sendStartPrice * 100) {
-    //   shopCart.isReachStartPrice = false;
-    // } else {
-    //   shopCart.isReachStartPrice = true;
-    // }
-    // // 是否计算运费
-    // if (tempTotalMoney > 0) {
-    //   if (!(type == 'wash' && shopCart.isReachStartPrice))
-    //     shopCart.singleCartTotalNumber += shopCart.shopInfo.sendPrice * 100;
-    // }
-    // money += shopCart.singleCartTotalNumber;
-    // });
-
 
     if (_shopCartMoney < shop.shopStartMoney * 100) {
       result.showSendStartPrice = true
@@ -77,14 +63,8 @@ angular.module('starter.services')
     } else {
       result.showSendFreePrice = true
     }
-
-    // shopDeliveryFee
-    // shopStartMoney
-    // shopFreeDeliveryMoney
     result.total = _shopCartMoney
     return Object.assign(result, shop)
-
-    // return { total: _shopCartMoney, showSendPrice: true } //Object.assign({ total: _shopCartMoney }, _shopCart.shopInfo)
   }
 
 })

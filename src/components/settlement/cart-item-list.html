@@ -1,54 +1,56 @@
-<section ng-if="carts && carts.length">
-  <div class="cart-item-list">
-    <ion-list class="u-list">
-      <ion-item ng-repeat="shop in carts"
-        ng-class="{'not-reach': !shop.isReachStartPrice}">
-        <div class="shop-item clearfix">
-          <label>
-            <input type="checkbox"
-              ng-model="shop.isChecked"
-              ng-click="pickShop($event, shop)">
-          </label>
-          <div class="img">
-            <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
+<section>
+  <div ng-if="carts && carts.length">
+    <div class="cart-item-list">
+      <ion-list class="u-list">
+        <ion-item ng-repeat="shop in carts"
+          ng-class="{'not-reach': !shop.isReachStartPrice}">
+          <div class="shop-item clearfix">
+            <label>
+              <input type="checkbox"
+                ng-model="shop.isChecked"
+                ng-click="pickShop($event, shop)">
+            </label>
+            <div class="img">
+              <img ng-src="http://lifeuxuan.com/{{shop.shopHeadImg}}">
+            </div>
+            <div class="name">
+              <span>{{shop.shopName}}</span>
+            </div>
+            <div class="calculate-money">
+              <cart-item-money type="type"
+                shop="shop"></cart-item-money>
+            </div>
           </div>
-          <div class="name">
-            <span>{{shop.shopName}}</span>
-          </div>
-          <div class="calculate-money">
-            <cart-item-money type="type"
-              shop="shop"></cart-item-money>
-          </div>
-        </div>
-        <div class="u-list">
-          <ion-list>
-            <ion-item ng-repeat="good in shop.productsList">
-              <div class="shop-item good-item clearfix">
-                <label>
-                  <input type="checkbox"
-                    ng-model="good.isChecked"
-                    ng-click="pickShopGood($event, good, shop)">
-                </label>
-                <div class="img">
-                  <img class="cart-detail-img"
-                    ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
+          <div class="u-list">
+            <ion-list>
+              <ion-item ng-repeat="good in shop.productsList">
+                <div class="shop-item good-item clearfix">
+                  <label>
+                    <input type="checkbox"
+                      ng-model="good.isChecked"
+                      ng-click="pickShopGood($event, good, shop)">
+                  </label>
+                  <div class="img">
+                    <img class="cart-detail-img"
+                      ng-src="http://lifeuxuan.com/{{good.productHeadImg}}">
+                  </div>
+                  <div class="name">
+                    <p>{{good.productName}}</p>
+                    <p>
+                      <span>￥{{good.productPrice/100}}</span>
+                      <span>{{good.temperatureId | coffeeIdMapText}}</span>
+                      <span>{{good.cupId | coffeeIdMapText}}</span>
+                    </p>
+                  </div>
+                  <add-cart class="cart-item-list__add-cart"
+                    type="type"
+                    shop="shop"
+                    good="good"></add-cart>
                 </div>
-                <div class="name">
-                  <p>{{good.productName}}</p>
-                  <p>
-                    <span>￥{{good.productPrice/100}}</span>
-                    <span>{{good.temperatureId | coffeeIdMapText}}</span>
-                    <span>{{good.cupId | coffeeIdMapText}}</span>
-                  </p>
-                </div>
-                <add-cart class="cart-item-list__add-cart"
-                  type="type"
-                  shop="shop"
-                  good="good"></add-cart>
-              </div>
-          </ion-list>
-        </div>
-        </ion-item>
-    </ion-list>
+            </ion-list>
+          </div>
+          </ion-item>
+      </ion-list>
+    </div>
   </div>
 </section>
