@@ -25,14 +25,15 @@ let serviceURLs = {
   OrderList: '/orderlist/customer',
   FruitOrderDetail: '/orderdetail/customer/fruit',
   WashOrderDetail: '/orderdetail/customer/wash',
+  CoffeeOrderDetail: '/orderdetail/customer/drink',
   /*
    * Order Action
    */
-  FruitOrder: '/order/insert/fruit',
+  FruitOrder: '/order/insert/drink',
   WashOrder: '/order/insert/wash',
   WashReserve: '/order/reserve/wash',
-  WxPay: '/wxctrl/pay',
-  WxPayConfirmFruit: '/payconfirm/fruit',
+  WxPay: '/wxctrl/pay2',
+  WxPayConfirmFruit: '/payconfirm/drink',
   WxPayConfirmWash: '/payconfirm/wash',
   StartPrice: '/communicate/customer/wash/startprice',
   cancelFruit: '/communicate/customer/fruit/cancel',

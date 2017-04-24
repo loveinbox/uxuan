@@ -1,14 +1,19 @@
 angular.module('starter.controllers')
 
-.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, FruitOrderDetail,
-  WashOrderDetail, UserInfo, StartPrice, $state) {
-  $scope.type = $stateParams.type;
+.controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, $state, UserInfo, StartPrice,
+  FruitOrderDetail, WashOrderDetail, CoffeeOrderDetail) {
+  const type = $stateParams.type;
+  const detailMethodMap = {
+    17001: FruitOrderDetail,
+    17002: WashOrderDetail,
+    17003: CoffeeOrderDetail
+  }
+  $scope.type = type
   UserInfo.then(function(user) {
     getOrder();
 
-    function getOrder(argument) {
-      let detailMethod = $scope.type == 17001 ? FruitOrderDetail : WashOrderDetail;
-      detailMethod.get({
+    function getOrder() {
+      detailMethodMap[type].get({
         'longitude': user.longitude,
         'latitude': user.latitude,
         'orderId': $stateParams.orderId

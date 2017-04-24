@@ -7,7 +7,8 @@ angular.module('starter.controllers')
   const methodMap = {
     'wash': WashReserve,
     'wash-order': WashOrder,
-    'fruit': FruitOrder
+    'fruit': FruitOrder,
+    'coffee': FruitOrder,
   }
   const insertMethod = methodMap[type];
   const isReserve = type === 'wash'

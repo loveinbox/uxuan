@@ -230,17 +230,11 @@ angular.module('starter.services')
     if (!shop) {
       return shop
     }
-    let shopCartItem = {
-      'shopId': shop.shopId,
-      'shopName': shop.shopName,
-      'shopHeadImg': shop.shopHeadImg,
-      'shopDeliveryFee': shop.shopDeliveryFee,
-      'shopStartMoney': shop.shopStartMoney,
-      'shopFreeDeliveryMoney': shop.shopFreeDeliveryMoney,
+    let shopCartItem = Object.assign({}, shop, {
       'isChecked': true,
       'number': 0, //购物车内所有商品的数量
       'productsList': [] //goods in this shopCart
-    }
+    })
     return shopCartItem;
   }
 
