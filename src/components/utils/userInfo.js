@@ -1,8 +1,8 @@
 angular.module('starter.services')
 
 .factory('Location', function($q, $location) {
-  let deferred = $q.defer();
-  let userLocation = {
+  const deferred = $q.defer();
+  const userLocation = {
     latitude: $location.search().latitude,
     longitude: $location.search().longitude
   }
@@ -10,7 +10,7 @@ angular.module('starter.services')
   if (userLocation.latitude) {
     GetAddress(userLocation.latitude, userLocation.longitude);
   } else {
-    let geolocation = new BMap.Geolocation();
+    const geolocation = new BMap.Geolocation();
     geolocation.getCurrentPosition(function(r) {
       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
         userLocation.latitude = r.point.lat;
@@ -25,22 +25,16 @@ angular.module('starter.services')
   }
 
   function GetAddress(lat, lng) {
-    let point = new BMap.Point(lng, lat);
-    let gc = new BMap.Geocoder();
+    const point = new BMap.Point(lng, lat);
+    const gc = new BMap.Geocoder();
+
     gc.getLocation(point, function(rs) {
-      let addComp = rs.addressComponents;
+      const addComp = rs.addressComponents;
       userLocation.province = addComp.province;
       userLocation.city = addComp.city;
       userLocation.district = addComp.district;
       userLocation.street = addComp.street;
       userLocation.streetNumber = addComp.streetNumber;
-      if (addComp.city != '上海市') {
-        userLocation.isOut = true;
-      } else {
-        userLocation.isOut = false;
-      }
-      userLocation.isSearchGeo = false;
-      localStorage.setItem('userLocation', JSON.stringify(userLocation));
       deferred.resolve(userLocation);
     });
   }
@@ -64,7 +58,7 @@ angular.module('starter.services')
     }
   };
 
-  Location.then(function(userLocation) {
+  Location.then(userLocation => {
     userWechatInfo.get({}, function(e) {
       if (!e || e.code !== 0) {
         deferred.resolve(user)
@@ -86,10 +80,9 @@ angular.module('starter.services')
         'headPicUrl': user.headPicUrl
       }, function(res) {
         if (res.data) {
-          let address = e.data.lastAddress;
-
-          user.userId = e.data.userId;
-          user.verify = e.data.verifyCode;
+          const address = res.data.lastAddress;
+          user.userId = res.data.userId;
+          user.verify = res.data.verifyCode;
           user.rcvName = address.rcvName;
           user.rcvPhone = address.rcvPhone;
           user.rcvAddress = address.rcvAddress;

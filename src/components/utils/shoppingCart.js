@@ -126,7 +126,7 @@ angular.module('starter.services')
 
   function _getShopCarts(type) {
     let _cart = carts[type];
-    return _cart.shopCart || {};
+    return _cart && _cart.shopCart || {};
   }
 
   function _getShopCartProductsList(type, shopCartItem) {
@@ -302,7 +302,9 @@ angular.module('starter.services')
   }
 
   function initStore() {
-    let temp = {}
+    let temp = {
+      isAllChecked: true
+    }
     TYPES.forEach(type => {
       temp[type] = {
         shopCart: []

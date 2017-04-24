@@ -17,7 +17,10 @@ angular.module('starter', ['ionic',
 .run(function run($rootScope, WxRegister) {
   register(window.location.href);
 
-  function register(url) {
+  function register(url, isLoop) {
+    if (isLoop) {
+      return
+    }
     WxRegister.get({ url })
       .$promise
       .then(res => {
@@ -30,7 +33,7 @@ angular.module('starter', ['ionic',
           jsApiList: ['checkJsApi']
         });
         wx.error(function(res) {
-          register('http://www.lifeuxuan.com/app/cart/fruit');
+          register('http://www.lifeuxuan.com/app/cart/fruit', true);
         });
       })
   }

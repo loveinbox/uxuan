@@ -18,7 +18,6 @@ angular.module('starter.controllers')
       WxPay.save(sendData)
         .$promise
         .then(function(res) {
-          const backOrderIdsList = res.orderIdsList
           wx.ready(function() {
             wx.chooseWXPay({
               timestamp: res.timeStamp,
@@ -28,18 +27,18 @@ angular.module('starter.controllers')
               paySign: res.paySign,
               success: function(res) {
                 alert('支付成功');
-                WxPayConfirm.save({ 'orderIdsList': backOrderIdsList })
-                $state.go('app.order-list');
+                WxPayConfirm.save({ orderIdsList: orderIdsList })
+                $state.go('app.order-list', null, { location: 'replace' });
               },
               cancel: function(res) {
                 alert('下订单成功，等待支付')
-                $state.go('app.order-list')
+                $state.go('app.order-list', null, { location: 'replace' })
               }
             });
           });
         }, function() {
           alert('支付异常')
-          $state.go('app.order-list')
+          $state.go('app.order-list', { location: 'replace' })
         })
     }
   })

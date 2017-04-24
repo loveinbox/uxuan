@@ -14,12 +14,17 @@ angular.module('starter.directives')
           'longitude': user.longitude,
           'latitude': user.latitude,
         }, function(data) {
-          $scope.guards = data.data;
-          $scope.guard.current = $scope.guards[0]
+          $scope.guardList = data.data;
+          $scope.eguardId = $scope.guardList[0].eguardId
+          $scope.guard.eguardId = $scope.eguardId
         }, function(data) {
           alert('NO DATA');
         });
       })
+
+      $scope.pickGuard = function(guard) {
+        $scope.guard.eguardId = guard.eguardId
+      }
     }
   }
 })

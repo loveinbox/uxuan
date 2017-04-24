@@ -5,7 +5,8 @@ angular.module('starter.directives')
     restrict: 'E',
     replace: true,
     scope: {
-      address: '='
+      address: '=',
+      type: '='
     },
     templateUrl: './build/components/settlement/order-address.html',
     controller: function($scope, Address, isTooFar) {

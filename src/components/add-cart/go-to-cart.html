@@ -4,14 +4,14 @@
     <cart-modal type="type"
       shop="shop"></cart-modal>
     <a class="go-cart-link"
-      ng-href="/app/cart/{{type}}">
+      ng-href="/app/cart/{{type}}/0">
       <div class="button">选好了</div>
     </a>
   </section>
   <section class="clearfix"
     ng-if="isReserve">
     <a class="go-cart-link block"
-      ng-href="/app/cart/{{type}}">
+      ng-href="/app/cart/{{type}}/{{shop.shopId}}">
       <div class="button">预约洗衣</div>
     </a>
   </section>

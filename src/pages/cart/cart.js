@@ -4,6 +4,7 @@ angular.module('starter.controllers')
   UserInfo, Address, ShoppingCart, MoneyCart, isTooFar,
   FruitOrder, WashOrder, WashReserve) {
   const type = $stateParams.type
+  const shopId = $stateParams.shopId
   const methodMap = {
     'wash': WashReserve,
     'wash-order': WashOrder,
@@ -46,6 +47,9 @@ angular.module('starter.controllers')
   UserInfo.then(function(user) {
     $scope.confirmOrder = function(event) {
       orderData = buildOrderData(user)
+      if (shopId) {
+        orderData.shopId = shopId
+      }
       isOrderAvaliable(orderData).then(() => {
         insertMethod.save(orderData)
           .$promise
@@ -79,9 +83,11 @@ angular.module('starter.controllers')
         $scope.payButton = '请添加收货地址';
         pass = false;
       }
-      if (orderData.detail.length === 0) {
-        $scope.payButton = '请添加更多商品';
-        pass = false;
+      if (type !== 'wash') {
+        if (orderData.detail.length === 0) {
+          $scope.payButton = '请添加更多商品';
+          pass = false;
+        }
       }
       if (pass) {
         isTooFar(orderData.rcvAddress)
@@ -99,15 +105,17 @@ angular.module('starter.controllers')
 
     function buildOrderData(user) {
       let preferFullTime = [];
-      let preferDate = $scope.sendDate.current;
-      let preferTime = $scope.sendTime.current.split(' -- ')
-      preferFullTime[0] = buildTime(preferDate + ' ' + preferTime[0])
-      preferFullTime[1] = buildTime(preferDate + ' ' + preferTime[1])
+      if ($scope.sendDate.current && $scope.sendTime.current) {
+        let preferDate = $scope.sendDate.current;
+        let preferTime = $scope.sendTime.current.split(' -- ')
+        preferFullTime[0] = buildTime(preferDate + ' ' + preferTime[0])
+        preferFullTime[1] = buildTime(preferDate + ' ' + preferTime[1])
+      }
       return {
         'latitude': user.longitude,
         'longitude': user.latitude,
         'userId': user.userId,
-        'eguardId': $scope.guard.current.eguardId,
+        'eguardId': $scope.guard.eguardId,
         'rcvName': $scope.address.rcvName,
         'rcvPhone': $scope.address.rcvPhone,
         'rcvAddress': $scope.address.rcvAddress,

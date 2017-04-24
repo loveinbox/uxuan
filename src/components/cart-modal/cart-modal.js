@@ -28,7 +28,7 @@ angular.module('starter.directives')
         $scope.seeing = true
         time = $timeout(function() {
           $scope.seeing = false
-        }, 500)
+        }, 200)
       });
 
       function getTypeCart() {

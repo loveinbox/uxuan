@@ -1,10 +1,13 @@
 <ion-view class="create-order"
   view-title="U选管家">
   <ion-content class="singePage cart-page has-footer">
-    <u-address address="address"></u-address>
-    <u-time-pick send-date="sendDate"
+    <u-address address="address"
+      type="type"></u-address>
+    <u-time-pick ng-if="type !== 'wash-order'"
+      send-date="sendDate"
       send-time="sendTime"></u-time-pick>
-    <guard-pick guard="guard"></guard-pick>
+    <guard-pick ng-if="type !== 'wash-order'"
+      guard="guard"></guard-pick>
     <cart-item-list ng-if="type !== 'wash'"></cart-item-list>
     <section>
       <textarea cols="30"
@@ -22,7 +25,7 @@
     </label>
     <div class="total-price">
       <span>总价</span>
-      <span>￥{{money.total/100}}</span>
+      <span>￥{{money.total/100 || 0}}</span>
     </div>
     <div class="button confirm-cart"
       ng-click="confirmOrder()"

@@ -22,7 +22,7 @@ angular.module('starter')
     })
 
     .state('app.cart', {
-      url: '/cart/:type',
+      url: '/cart/:type/:shopId',
       cache: false,
       views: {
         'tab-cart': {

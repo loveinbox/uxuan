@@ -7,7 +7,7 @@
     <div ng-hide="!address.rcvPhone"
       class="current-address">
       <span class="to-click-outline fr">
-      <a href="/address/edit">修改地址</a>
+      <a href="/address/edit" ng-hide="type === 'wash-order'">修改地址</a>
     </span>
       <div class="current-address-name">
         {{address.rcvName}}

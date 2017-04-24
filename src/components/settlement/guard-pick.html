@@ -2,18 +2,18 @@
   <div class="guard-pick">
     <span>选择管家</span>
     <div class="row">
-      <div ng-repeat="guard in guards"
+      <div ng-repeat="guardItem in guardList"
         class="text-center col-33">
         <img class="guard-header"
-          ng-src="http://www.lifeuxuan.com/{{guard.eguardHeaderImg}}"
+          ng-src="http://www.lifeuxuan.com/{{guardItem.eguardHeaderImg}}"
           big-pic>
-        <label>
+        <label ng-click="pickGuard(guardItem)">
           <input type="radio"
             name="guarduard"
             ng-checked="$first"
-            value={{guard.eguardId}}
-            ng-model="guard.current">
-          <span>{{guard.eguardName}}</span>
+            value={{guardItem.eguardId}}
+            ng-model="eguardId">
+          <span>{{guardItem.eguardName}}</span>
         </label>
       </div>
     </div>
