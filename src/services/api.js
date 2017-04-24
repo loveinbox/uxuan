@@ -32,6 +32,7 @@ let serviceURLs = {
   FruitOrder: '/order/insert/drink',
   WashOrder: '/order/insert/wash',
   WashReserve: '/order/reserve/wash',
+  WxRegister: '/wxctrl/register',
   WxPay: '/wxctrl/pay2',
   WxPayConfirmFruit: '/payconfirm/drink',
   WxPayConfirmWash: '/payconfirm/wash',
