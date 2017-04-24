@@ -17,26 +17,24 @@ angular.module('starter', ['ionic',
 .run(function run($rootScope, WxRegister) {
   register(window.location.href);
 
-  function register(href) {
-    WxRegister.get({
-      'url': href
-    }).then(res => {
-      wx.config({
-        debug: false,
-        appId: e.appId,
-        timestamp: e.timestamp,
-        nonceStr: e.nonceStr,
-        signature: e.signature,
-        jsApiList: ['checkJsApi']
-      });
-      wx.error(function(res) {
-        register('http://www.lifeuxuan.com/app/cart');
-      });
-    })
+  function register(url) {
+    WxRegister.get({ url })
+      .$promise
+      .then(res => {
+        wx.config({
+          debug: false,
+          appId: res.appId,
+          timestamp: res.timestamp,
+          nonceStr: res.nonceStr,
+          signature: res.signature,
+          jsApiList: ['checkJsApi']
+        });
+        wx.error(function(res) {
+          register('http://www.lifeuxuan.com/app/cart/fruit');
+        });
+      })
   }
 })
-
-
 
 angular.module('starter.controllers', []);
 angular.module('starter.services', ['ngResource']);

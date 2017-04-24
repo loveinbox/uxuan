@@ -1,7 +1,7 @@
 angular.module('starter.controllers')
 
 .controller('wxPayCtrl', function($scope, $state, $stateParams,
-  UserInfo, WxPay, WxPayConfirmWash, WxPayConfirmFruit) {
+  UserInfo, WxPay, WxPayConfirm) {
   UserInfo.then(function(user) {
     const orderType = $stateParams.type;
     const money = $stateParams.money;
@@ -11,10 +11,6 @@ angular.module('starter.controllers')
       money,
       orderIdsList,
     }
-    const confirmMethodMap = {
-      '17001': WxPayConfirmFruit,
-      '17002': WxPayConfirmWash
-    }
 
     $scope.pay = sendData
 
@@ -22,6 +18,7 @@ angular.module('starter.controllers')
       WxPay.save(sendData)
         .$promise
         .then(function(res) {
+          const backOrderIdsList = res.orderIdsList
           wx.ready(function() {
             wx.chooseWXPay({
               timestamp: res.timeStamp,
@@ -31,7 +28,7 @@ angular.module('starter.controllers')
               paySign: res.paySign,
               success: function(res) {
                 alert('支付成功');
-                confirmMethodMap[orderType].save({ 'orderIdsList': sendData.orderIdsList })
+                WxPayConfirm.save({ 'orderIdsList': backOrderIdsList })
                 $state.go('app.order-list');
               },
               cancel: function(res) {
