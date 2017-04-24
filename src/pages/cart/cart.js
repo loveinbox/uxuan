@@ -45,7 +45,7 @@ angular.module('starter.controllers')
 
   UserInfo.then(function(user) {
     $scope.confirmOrder = function(event) {
-      orderData = buildOrderData()
+      orderData = buildOrderData(user)
       isOrderAvaliable(orderData).then(() => {
         insertMethod.save(orderData)
           .$promise
@@ -97,7 +97,7 @@ angular.module('starter.controllers')
       return deferred.promise;
     }
 
-    function buildOrderData() {
+    function buildOrderData(user) {
       let preferFullTime = [];
       let preferDate = $scope.sendDate.current;
       let preferTime = $scope.sendTime.current.split(' -- ')
