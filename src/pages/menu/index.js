@@ -12,15 +12,13 @@ angular.module('starter.controllers')
   };
 
   UserInfo.then(function(user) {
+    if (!user || !user.userLocation) {
+      return
+    }
     $scope.location = user.userLocation;
     if (user.userLocation.street) {
       $scope.location.text = user.userLocation.street;
     }
-    $scope.$watch('user.userLocation', function() {
-      if (user.userLocation.street) {
-        $scope.location.text = user.userLocation.street;
-      }
-    }, true);
 
     const baseData = {
       'longitude': user.longitude,
