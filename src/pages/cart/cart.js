@@ -54,6 +54,10 @@ angular.module('starter.controllers')
         insertMethod.save(orderData)
           .$promise
           .then(function(res) {
+            if (!res.data) {
+              alert('数据错误' + res.msg)
+              return
+            }
             if (isReserve) {
               alert('预约成功');
               $state.go('app.order-list');

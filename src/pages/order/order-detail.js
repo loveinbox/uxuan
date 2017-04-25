@@ -1,7 +1,7 @@
 angular.module('starter.controllers')
 
 .controller('orderDetailCtrl', function($scope, $rootScope, $stateParams, $state, UserInfo, StartPrice,
-  FruitOrderDetail, WashOrderDetail, CoffeeOrderDetail) {
+  FruitOrderDetail, WashOrderDetail, CoffeeOrderDetail, WashReserveIdsList) {
   const type = $stateParams.type;
   const detailMethodMap = {
     17001: FruitOrderDetail,
@@ -47,9 +47,11 @@ angular.module('starter.controllers')
         })
         .$promise
         .then(function(res) {
-          if (res.code === 0) {
-            $state.go('washSingleOrder', { shopId: order.shopId, orderId: order.orderId });
-          }
+          WashReserveIdsList.id = [order.orderId]
+          $state.go('shop-detail', {
+            type: 'wash-order',
+            shopId: order.shopId
+          });
         });
     }
   })
