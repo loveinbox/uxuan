@@ -109,3 +109,7 @@ angular.module('starter.directives')
   this.rcvAddress = '黄浦区合肥路'
   this.isValidated = false
 })
+
+.service('WashReserveIdsList', function() {
+  this.id = 0
+})

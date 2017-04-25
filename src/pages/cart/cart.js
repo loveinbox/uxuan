@@ -2,7 +2,7 @@ angular.module('starter.controllers')
 
 .controller('CartCtrl', function($scope, $state, $stateParams, $rootScope, $q,
   UserInfo, Address, ShoppingCart, MoneyCart, isTooFar,
-  FruitOrder, WashOrder, WashReserve) {
+  FruitOrder, WashOrder, WashReserve, WashReserveIdsList) {
   const type = $stateParams.type
   const shopId = $stateParams.shopId
   const methodMap = {
@@ -124,7 +124,10 @@ angular.module('starter.controllers')
         'needTicket': false,
         'tip': $scope.tip,
         'detail': buildOrderDetail(),
-        'orderIdsList': $rootScope.orderIdsList
+        /*
+         * 洗衣订单，要对应预约单
+         */
+        'orderIdsList': WashReserveIdsList.id
       };
 
       function buildOrderDetail() {
