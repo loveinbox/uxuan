@@ -19,14 +19,11 @@ angular.module('starter.controllers')
   }
 
   let orderData = {}
-
   $scope.type = type
   $scope.address = {}
   $scope.sendDate = {}
   $scope.sendTime = {}
   $scope.guard = {}
-  $scope.sendDate = {}
-  $scope.sendTime = {}
   $scope.tip = '订单备注：'
   $scope.payButton = isReserve ? '确认预约' : '微信支付'
   cartReBuild()
@@ -37,7 +34,11 @@ angular.module('starter.controllers')
   });
 
   $scope.$on("$ionicView.enter", function(scopes, states) {
-    $scope.address = Object.assign({}, Address)
+    if (type === 'wash-order') {
+      $scope.address = WashReserveIdsList.order
+    } else {
+      $scope.address = Object.assign({}, Address)
+    }
   });
 
   $scope.pickAll = function() {
@@ -54,6 +55,7 @@ angular.module('starter.controllers')
         insertMethod.save(orderData)
           .$promise
           .then(function(res) {
+            alert(orderData.preferRcvTime[0])
             if (!res.data) {
               alert('数据错误' + res.msg)
               return
@@ -108,12 +110,13 @@ angular.module('starter.controllers')
     }
 
     function buildOrderData(user) {
-      let preferFullTime = [];
+      let startTime
+      let endTime
       if ($scope.sendDate.current && $scope.sendTime.current) {
-        let preferDate = $scope.sendDate.current;
-        let preferTime = $scope.sendTime.current.split(' -- ')
-        preferFullTime[0] = buildTime(preferDate + ' ' + preferTime[0])
-        preferFullTime[1] = buildTime(preferDate + ' ' + preferTime[1])
+        const preferDate = $scope.sendDate.current;
+        const preferTime = $scope.sendTime.current.split(' -- ')
+        startTime = buildTime(preferDate + ' ' + preferTime[0] + ':00')
+        endTime = buildTime(preferDate + ' ' + preferTime[1] + ':00')
       }
       return {
         'latitude': user.longitude,
@@ -123,8 +126,8 @@ angular.module('starter.controllers')
         'rcvName': $scope.address.rcvName,
         'rcvPhone': $scope.address.rcvPhone,
         'rcvAddress': $scope.address.rcvAddress,
-        'preferRcvTime': [preferFullTime[0], preferFullTime[1]], //期望收货时间
-        'preferFetchTime': [preferFullTime[0], preferFullTime[1]],
+        'preferRcvTime': [startTime, endTime], //期望收货时间
+        'preferFetchTime': [startTime, endTime],
         'needTicket': false,
         'tip': $scope.tip,
         'detail': buildOrderDetail(),
@@ -161,7 +164,7 @@ angular.module('starter.controllers')
       }
 
       function buildTime(time) {
-        return new Date(time).getTime() / 1000
+        return (new Date(Date.parse(time.replace(/-/g, "/"))).getTime()) / 1000
       }
     }
 

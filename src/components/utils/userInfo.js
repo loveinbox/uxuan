@@ -45,13 +45,13 @@ angular.module('starter.services')
 .factory('UserInfo', function($resource, $q, userWechatInfo, userRegister, Location, Address) {
   let deferred = $q.defer();
   let user = {
-    latitude: 31.214197,
-    longitude: 121.496322,
+    latitude: 31.15609,
+    longitude: 121.504683,
     userId: 'C0000000001',
     verifyCode: 1,
     userLocation: {
-      latitude: 31.214197,
-      longitude: 121.496322,
+      latitude: 31.15609,
+      longitude: 121.504683,
       isOut: false,
       isGet: true,
       text: '获取用户信息失败'
@@ -86,9 +86,7 @@ angular.module('starter.services')
           user.rcvName = address.rcvName;
           user.rcvPhone = address.rcvPhone;
           user.rcvAddress = address.rcvAddress;
-
           Object.assign(Address, user)
-
           deferred.resolve(user);
         }
       })

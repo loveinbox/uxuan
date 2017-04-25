@@ -14,7 +14,7 @@ angular.module('starter.directives')
         $scope.order
         $state.go('pay', {
           orderType: $scope.order.orderType,
-          orderIdsList: [$scope.order.orderId],
+          orderIdsList: [{ orderId: $scope.order.orderId, orderTypeId: $scope.order.orderType }],
           money: $scope.order.money
         }, {
           location: 'replace'

@@ -112,4 +112,5 @@ angular.module('starter.directives')
 
 .service('WashReserveIdsList', function() {
   this.id = 0
+  this.order = {}
 })

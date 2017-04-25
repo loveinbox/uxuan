@@ -25,6 +25,7 @@ angular.module('starter.controllers')
         .$promise
         .then(function(res) {
           WashReserveIdsList.id = [order.orderId]
+          WashReserveIdsList.order = order
           $state.go('shop-detail', {
             type: 'wash-order',
             shopId: order.shopId

@@ -5,7 +5,7 @@
       ng-show="orders.length == 0">快去下个订单吧~</div>
     <ion-list class="order-list">
       <ion-item class="order-list-item"
-        ng-repeat="order in orders"
+        ng-repeat="order in orders track by $index"
         ng-href="/order/{{order.orderType}}/{{order.orderId}}">
         <div>
           <!-- order base info -->
@@ -17,10 +17,10 @@
           <p>{{order.shopName}}</p>
           <!-- order more info -->
           <!-- fruit -->
-          <div ng-if="order.orderType == 17001">
+          <div ng-if="order.orderType == 17001 || order.orderType == 17003">
             <ion-list class="clearfix">
               <ion-item class="fl"
-                ng-repeat="pic in order.productImgsList">
+                ng-repeat="pic in order.productImgsList track by $index">
                 <img class="good-img"
                   ng-if="$index < 4"
                   ng-src="http://lifeuxuan.com/{{pic}}">
@@ -56,12 +56,6 @@
           <button class="button button-small"
             ng-click="clickRed($event, order)">取消订单</button>
         </div>
-        <!-- <div class="button-list-wrap"
-          ng-show="order.orderStatusId == 10003 || order.orderStatusId == 10004">
-          <button class="button button-small disabled">支付订单</button>
-          <button class="button button-small"
-            ng-click="clickRed($event, order)">取消订单</button>
-        </div> -->
         <div class="button-list-wrap"
           ng-show="order.orderStatusId == 11001">
           <button class="button button-small"

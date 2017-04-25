@@ -22,15 +22,12 @@ angular.module('starter')
     })
 
     .state('app.cart', {
-      url: '/cart/:type',
+      url: '/cart/:type/:shopId',
       cache: false,
       views: {
         'tab-cart': {
           templateUrl: './build/pages/cart/cart.html',
-          controller: 'CartCtrl',
-          params: {
-            shopId: null,
-          }
+          controller: 'CartCtrl'
         }
       }
     })
