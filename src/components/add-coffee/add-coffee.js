@@ -11,28 +11,37 @@ angular.module('starter.directives')
     templateUrl: './build/components/add-coffee/add-coffee.html',
     controller: function($scope, $state, $ionicModal, ShoppingCart, UserInfo) {
       UserInfo.then(function(user) {
-        $scope.addCart = function(event, good, shop) {
+        $scope.addCart = function() {
           if (user.verifyCode !== 1) {
             $scope.modal.hide();
             $state.go('phoneCheck');
             return;
           }
-          $scope.selected.number++;
           Object.assign($scope.good, $scope.selected)
           ShoppingCart.addItem({
             type: $scope.type,
             good: $scope.good,
             shop: $scope.shop
           });
+          $scope.selected.number = ShoppingCart.getGoodNumber({
+            type: $scope.type,
+            good: $scope.good,
+            shop: $scope.shop
+          });
         };
-        $scope.removeCart = function(event, good, shop) {
-          $scope.selected.number--;
+        $scope.removeCart = function() {
           Object.assign($scope.good, $scope.selected)
           ShoppingCart.removeItem({
             type: $scope.type,
             good: $scope.good,
             shop: $scope.shop
           });
+          $scope.selected.number = ShoppingCart.getGoodNumber({
+            type: $scope.type,
+            good: $scope.good,
+            shop: $scope.shop
+          });
+
         };
       })
 
@@ -44,7 +53,7 @@ angular.module('starter.directives')
         }
       })
 
-      $scope.$on('cartChange', function(event) {
+      $scope.$on('cartChange', function() {
         getGoodNumber();
       });
 
@@ -86,6 +95,12 @@ angular.module('starter.directives')
       $scope.closeModal = function() {
         $scope.modal.hide();
       };
+      $scope.doneModal = function() {
+        if ($scope.selected.number > 0) {
+          $scope.addCart()
+        }
+        $scope.modal.hide();
+      }
       $scope.$on('$destroy', function() {
         $scope.modal.remove();
       });
@@ -101,5 +116,3 @@ angular.module('starter.directives')
     }
   }
 })
-
-;

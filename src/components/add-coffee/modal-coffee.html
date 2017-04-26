@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="cup">
-        <div class="header">杯型</div>
+        <div class="header">杯asfasdf型</div>
         <div class="body">
           <ul class="clearfix">
             <li ng-repeat="cup in cupList"
@@ -31,7 +31,7 @@
       <div class="action">
         <div class="action-tip">购买数量</div>
         <div class="add-icon fl"
-          ng-click="removeCart(good, shop)">
+          ng-click="removeCart()">
           <i class="icon ion-minus-round"></i>
         </div>
         <div class="cart-number fl">{{selected.number || 0}}</div>
@@ -47,7 +47,7 @@
     </div>
     <div class="confirm">
       <div class="button button-small to-click"
-        ng-click="closeModal()">完成</div>
+        ng-click="doneModal()">完成</div>
     </div>
   </div>
 </ion-modal-view>

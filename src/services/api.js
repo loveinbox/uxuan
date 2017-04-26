@@ -38,6 +38,7 @@ let serviceURLs = {
   StartPrice: '/communicate/customer/wash/startprice',
   cancelFruit: '/communicate/customer/fruit/cancel',
   cancelWash: '/communicate/customer/wash/cancel',
+  cancelDrink: '/communicate/customer/drink/cancel',
   /*
    * Fruit
    */

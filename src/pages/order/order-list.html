@@ -50,12 +50,15 @@
           </div>
         </div>
         <!-- buttons -->
+        <!-- 水果状态 -->
         <div class="button-list-wrap"
           ng-show="order.orderStatusId == 10001 || order.orderStatusId == 10002">
           <pay-order-link order="order"></pay-order-link>
           <button class="button button-small"
             ng-click="clickRed($event, order)">取消订单</button>
         </div>
+        <!-- end:水果状态 -->
+        <!-- 洗衣状态 -->
         <div class="button-list-wrap"
           ng-show="order.orderStatusId == 11001">
           <button class="button button-small"
@@ -71,6 +74,15 @@
             开始计价
           </button>
         </div>
+        <!-- end:洗衣状态 -->
+        <!-- 咖啡状态 -->
+        <div class="button-list-wrap"
+          ng-show="order.orderStatusId == 25001 || order.orderStatusId == 25002">
+          <pay-order-link order="order"></pay-order-link>
+          <button class="button button-small"
+            ng-click="clickRed($event, order)">取消订单</button>
+        </div>
+        <!-- end:咖啡状态 -->
         <div class="button-list-wrap"
           ng-show="order.orderStatusId == 11006">
           <pay-order-link order="order"></pay-order-link>

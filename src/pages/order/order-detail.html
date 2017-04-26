@@ -56,10 +56,12 @@
       </table>
     </section>
     <section class="order-status">
+      <!-- 水果和咖啡 -->
       <div ng-if="type == 17001 || type == 17003">
         <div class="divider">商品列表</div>
         <order-detail-good-list list-data="order.productsList"></order-detail-good-list>
       </div>
+      <!-- 洗衣 -->
       <div ng-if="type == 17002">
         <div class="row status-icon">
           <div class="col-20 text-center">

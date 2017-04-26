@@ -55,7 +55,6 @@ angular.module('starter.controllers')
         insertMethod.save(orderData)
           .$promise
           .then(function(res) {
-            alert(orderData.preferRcvTime[0])
             if (!res.data) {
               alert('数据错误' + res.msg)
               return

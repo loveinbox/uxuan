@@ -14,6 +14,11 @@ angular.module('starter.controllers')
 
     $scope.pay = sendData
 
+    $scope.$on("$ionicView.leave", function(scopes, states) {
+      console.log(123)
+      $state.go('app.order-list')
+    });
+
     $scope.payOrder = function() {
       WxPay.save(sendData)
         .$promise

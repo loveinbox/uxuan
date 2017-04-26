@@ -1,7 +1,13 @@
 angular.module('starter.controllers')
 
 .controller('OrderListCtrl', function($rootScope, $scope, $state, OrderList, UserInfo,
-  StartPrice, cancelFruit, cancelWash, WashReserveIdsList) {
+  StartPrice, cancelFruit, cancelWash, cancelDrink, WashReserveIdsList) {
+
+  const cancelMethodMap = {
+    17001: cancelFruit,
+    17002: cancelWash,
+    17003: cancelDrink
+  }
 
   UserInfo.then(function(user) {
     getOrders();
@@ -36,17 +42,16 @@ angular.module('starter.controllers')
     $scope.clickRed = function(event, order) {
       event.stopPropagation();
       event.preventDefault();
-      // let cancelMethod = order.orderType == 17001 ? cancelFruit : cancelWash;
-      // cancelMethod.save({
-      //     orderId: order.orderId
-      //   })
-      //   .$promise
-      //   .then(function(res) {
-      //     if (res.code === 0) {
-      //       alert('取消成功');
-      //       getOrders();
-      //     }
-      //   });
+      cancelMethodMap[order.orderType].save({
+          orderId: order.orderId
+        })
+        .$promise
+        .then(function(res) {
+          if (res.code === 0) {
+            alert('取消成功');
+            getOrders();
+          }
+        });
     }
 
     function getOrders() {

@@ -99,13 +99,12 @@ angular.module('starter.directives')
     }
 
     return deferred.promise;
-
   }
 })
 
 .service('Address', function() {
-  this.rcvName = '1231'
-  this.rcvPhone = 23423423423
+  this.rcvName = ''
+  this.rcvPhone = ''
   this.rcvAddress = '黄浦区合肥路'
   this.isValidated = false
 })
