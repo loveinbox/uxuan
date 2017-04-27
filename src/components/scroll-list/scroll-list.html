@@ -23,14 +23,14 @@
         <p class="description">{{good.productDescription}}</p>
         <p class="price">
           ￥{{good.productPrice/100 }}
-          <span class="measure">/{{good.productMeasure || '件'}}</span></p>
+          <span class="measure">/{{good.productUnit || '件'}}</span></p>
       </div>
-      <add-cart ng-if="!isHideCart && type !== 'coffee'"
+      <add-cart ng-if="!isHideCart && !good.cup"
         class="shop-detail__add-cart"
         good="good"
         shop="shop"
         type="type"></add-cart>
-      <add-coffee ng-if="!isHideCart && type === 'coffee'"
+      <add-coffee ng-if="!isHideCart && good.cup"
         class="shop-detail__add-cart"
         type="type"
         shop="shop"
