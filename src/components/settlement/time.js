@@ -14,7 +14,7 @@ angular.module('starter.directives')
       let date = new Date;
       let startHour = date.getHours() > 8 ? date.getHours() : 8;
       let startDay = startHour >= 20 ? 1 : 0;
-
+      debugger
       date.setDate(date.getDate() + startDay);
       $scope.timePick = {
         avaliableWeek: weekArray[(date.getDay() + startDay) % 7],
@@ -35,6 +35,7 @@ angular.module('starter.directives')
         } else {
           initAvaliableTime();
         }
+        $scope.timePick.avaliableWeek = weekArray[new Date($scope.sendDate.current).getDay()]
       }
 
       /*-----------------------------------------------------------------*/
@@ -63,7 +64,6 @@ angular.module('starter.directives')
       }
 
       function getFormatedDate(dayOff) {
-        dayOff = dayOff || 1;
         let date = new Date();
         date.setDate(date.getDate() + dayOff);
         let year = date.getFullYear()

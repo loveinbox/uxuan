@@ -82,6 +82,7 @@ angular.module('starter.directives')
       }
       $scope.pickCup = function(cup) {
         $scope.selected.cupId = cup.id
+          // $scope.good.productPrice = cup.price
       }
 
       $scope.openModal = function() {

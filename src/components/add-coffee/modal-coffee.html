@@ -14,10 +14,10 @@
         </div>
       </div>
       <div class="cup">
-        <div class="header">杯asfasdf型</div>
+        <div class="header">杯型</div>
         <div class="body">
           <ul class="clearfix">
-            <li ng-repeat="cup in cupList"
+            <li ng-repeat="cup in good.cup"
               ng-class="{'u-active':cup.id === selected.cupId}"
               ng-click="pickCup(cup)">
               {{cup.name}}

@@ -88,6 +88,10 @@ angular.module('starter.controllers')
         $scope.payButton = '请添加收货地址';
         pass = false;
       }
+      if (!orderData.eguardId && type !== 'wash-order') {
+        $scope.payButton = '请选择管家';
+        pass = false;
+      }
       if (type !== 'wash') {
         if (orderData.detail.length === 0) {
           $scope.payButton = '请添加更多商品';
@@ -95,12 +99,16 @@ angular.module('starter.controllers')
         }
       }
       if (pass) {
-        isTooFar(orderData.rcvAddress)
-          .then(function() {
-            deferred.resolve();
-          }, function() {
-            deferred.reject();
-          })
+        if (type === 'wash-order') {
+          deferred.resolve();
+        } else {
+          isTooFar(orderData.rcvAddress)
+            .then(function() {
+              deferred.resolve();
+            }, function() {
+              deferred.reject();
+            })
+        }
       } else {
         deferred.reject();
       }

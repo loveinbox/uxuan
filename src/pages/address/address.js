@@ -10,7 +10,11 @@ angular.module('starter.controllers')
     if (judgeAddress()) {
       Address.rcvName = $scope.address.rcvName
       Address.rcvPhone = $scope.address.rcvPhone
-      Address.rcvAddress = $scope.address.rcvAddress
+      if ($scope.address.rcvAddress.indexOf('上海市') < 0) {
+        Address.rcvAddress = '上海市' + $scope.address.rcvAddress
+      } else {
+        Address.rcvAddress = $scope.address.rcvAddress
+      }
       const $backView = $ionicHistory.backView();
       if ($backView) {
         $backView.go();
